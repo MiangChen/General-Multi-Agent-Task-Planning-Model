@@ -22,6 +22,12 @@ npm run build
 views/dashboard.html
 ```
 
+GitHub Pages 发布文件会同步生成到：
+
+```text
+docs/index.html
+```
+
 ## 目录
 
 ```text
@@ -31,9 +37,26 @@ findings/       跨论文发现
 open-problems/  开放问题
 scripts/        生成脚本
 views/          生成的 HTML dashboard
+docs/           GitHub Pages 发布目录
 data/           生成的中间数据
 assets/         后续放本地图片和附件索引
 templates/      note 模板
+```
+
+## GitHub Pages
+
+推荐用 `main` 分支的 `docs/` 目录发布：
+
+1. 打开 GitHub 仓库的 `Settings`。
+2. 进入 `Pages`。
+3. `Source` 选择 `Deploy from a branch`。
+4. `Branch` 选择 `main`，目录选择 `/docs`。
+5. 点击 `Save`。
+
+发布后地址通常是：
+
+```text
+https://miangchen.github.io/General-Multi-Agent-Task-Planning-Model/
 ```
 
 ## 当前主题

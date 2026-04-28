@@ -7,6 +7,7 @@ const rootDir = dirname(dirname(fileURLToPath(import.meta.url)));
 const papersDir = join(rootDir, "papers");
 const dataDir = join(rootDir, "data");
 const viewsDir = join(rootDir, "views");
+const docsDir = join(rootDir, "docs");
 const watchMode = process.argv.includes("--watch");
 
 const fieldLabels = {
@@ -1100,13 +1101,18 @@ function renderIndex(papers) {
 async function build() {
   await mkdir(dataDir, { recursive: true });
   await mkdir(viewsDir, { recursive: true });
+  await mkdir(docsDir, { recursive: true });
 
   const papers = await readPapers();
+  const html = renderIndex(papers);
   await writeFile(join(dataDir, "papers.json"), `${JSON.stringify(papers, null, 2)}\n`, "utf8");
-  await writeFile(join(viewsDir, "dashboard.html"), renderIndex(papers), "utf8");
+  await writeFile(join(viewsDir, "dashboard.html"), html, "utf8");
+  await writeFile(join(docsDir, "index.html"), html, "utf8");
+  await writeFile(join(docsDir, ".nojekyll"), "", "utf8");
 
   console.log(`Generated ${relative(rootDir, join(dataDir, "papers.json"))}`);
   console.log(`Generated ${relative(rootDir, join(viewsDir, "dashboard.html"))}`);
+  console.log(`Generated ${relative(rootDir, join(docsDir, "index.html"))}`);
   console.log(`Indexed ${papers.length} papers`);
 }
 
