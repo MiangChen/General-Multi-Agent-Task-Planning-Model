@@ -1,0 +1,10 @@
+{
+  "name": "general-multi-agent-task-planning-model",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node scripts/build-dashboard.mjs",
+    "dev": "node scripts/build-dashboard.mjs --watch"
+  }
+}
