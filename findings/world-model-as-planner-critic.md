@@ -19,5 +19,6 @@ tags: [world model, WAM, planning]
 ## 关联论文
 
 - [[2026-world-action-models-zero-shot-policies]]
+- [[2024-pyramidal-flow-matching-video]]
 - [[2023-dreamerv3-world-models]]
 - [[2023-daydreamer-world-models-for-physical-robot-learning]]

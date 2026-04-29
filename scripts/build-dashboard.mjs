@@ -18,12 +18,22 @@ const fieldLabels = {
 
 const valueLabels = {
   vla: "VLA",
+  llm_code_policy: "LLM Code Policy",
+  llm_reward_design: "LLM Reward Design",
   vla_flow_policy: "VLA Flow Policy",
   vla_rl: "VLA + RL",
   world_action_model: "World Action Model",
   world_model_rl: "World Model RL",
+  video_flow_model: "Video Flow Model",
+  multi_robot_allocation_rl: "Multi-Robot Allocation RL",
   semantic_grounding: "语义落地",
   action_representation: "动作表示",
+  code_policy_generation: "代码策略生成",
+  reward_design: "奖励函数设计",
+  efficient_action_tokenization: "高效动作 token 化",
+  long_horizon_memory: "长程记忆",
+  video_generation: "视频生成",
+  decentralized_task_allocation: "分布式任务分配",
   open_world_generalization: "开放世界泛化",
   deployment_generalization: "部署泛化",
   policy_improvement: "策略改进",
@@ -32,6 +42,12 @@ const valueLabels = {
   imagination_planning: "想象规划",
   embodied_learning: "真实机器人学习",
   language_conditioned_execution: "语言条件执行",
+  swarm_policy_generation: "集群策略生成",
+  reward_shaping: "奖励塑形",
+  high_frequency_control: "高频控制",
+  memory_augmented_execution: "记忆增强执行",
+  video_dynamics_generation: "视频动态生成",
+  heterogeneous_task_allocation: "异构任务分配",
   generalist_robot_control: "通用机器人控制",
   long_horizon_execution: "长程执行",
   robust_execution: "鲁棒执行",
@@ -47,6 +63,11 @@ const valueLabels = {
   heterogeneous_robot_data: "异构机器人数据",
   simulated_control_domains: "仿真控制域",
   physical_robot_learning: "真实机器人学习",
+  multi_robot_swarm: "多机器人集群",
+  dexterous_manipulation: "灵巧操作",
+  long_horizon_manipulation: "长程操作",
+  video_generation_models: "视频生成模型",
+  heterogeneous_multi_robot_systems: "异构多机器人系统",
   in_scope: "范围内",
   candidate: "候选",
   out_of_scope: "范围外",
@@ -74,6 +95,18 @@ const palette = [
   "#4a56b8",
   "#0f7894",
 ];
+
+const domainColumns = ["LLM", "VLA", "World Model", "World Action Model", "RL", "GNN", "Planning"];
+
+const domainColors = {
+  LLM: "#246bfe",
+  VLA: "#00a7c7",
+  "World Model": "#6a7dff",
+  "World Action Model": "#7c67d8",
+  RL: "#188aa6",
+  GNN: "#4b6f96",
+  Planning: "#2f80ed",
+};
 
 function parseValue(raw) {
   const value = raw.trim();
@@ -170,6 +203,20 @@ function markdownToHtml(text) {
     .join("\n");
 }
 
+function normalizeMonth(value, fallbackYear) {
+  const raw = String(value || fallbackYear || "").trim();
+  const match = raw.match(/^(\d{4})(?:-(\d{1,2}))?/);
+  if (!match) return `${fallbackYear || "1970"}-01`;
+  const year = match[1];
+  const month = String(Math.min(Math.max(Number(match[2] || 1), 1), 12)).padStart(2, "0");
+  return `${year}-${month}`;
+}
+
+function monthValue(month) {
+  const [year, value] = String(month).split("-").map(Number);
+  return year * 12 + (value || 1) - 1;
+}
+
 async function readPapers() {
   const entries = await readdir(papersDir, { withFileTypes: true });
   const files = entries
@@ -181,9 +228,16 @@ async function readPapers() {
   for (const filePath of files) {
     const raw = await readFile(filePath, "utf8");
     const { meta, body } = parseFrontmatter(raw, filePath);
+    const year = Number(meta.year);
+    const published = normalizeMonth(meta.published, year);
     papers.push({
       ...meta,
-      year: Number(meta.year),
+      year,
+      published,
+      published_value: monthValue(published),
+      domains: asList(meta.domains),
+      cites: asList(meta.cites),
+      primary_domain: meta.primary_domain || asList(meta.domains)[0] || label(meta.tech_paradigm),
       file: relative(rootDir, filePath),
       summary: section(body, "一句话结论"),
       research_question: section(body, "研究问题"),
@@ -196,7 +250,9 @@ async function readPapers() {
     });
   }
 
-  return papers.sort((a, b) => a.year - b.year || a.short_title.localeCompare(b.short_title));
+  return papers.sort(
+    (a, b) => a.published_value - b.published_value || a.short_title.localeCompare(b.short_title),
+  );
 }
 
 function uniqueValues(papers, field) {
@@ -256,6 +312,129 @@ function renderStats(papers) {
         <div class="stat-label">高优先级</div>
       </div>
     </div>
+  `;
+}
+
+function renderDomainGraph(papers) {
+  const graphPapers = papers
+    .map((paper) => ({
+      ...paper,
+      graph_domain: domainColumns.includes(paper.primary_domain) ? paper.primary_domain : "Planning",
+    }))
+    .sort((a, b) => a.published_value - b.published_value || a.graph_domain.localeCompare(b.graph_domain));
+
+  const byId = new Map(graphPapers.map((paper) => [paper.id, paper]));
+  const minMonth = Math.min(...graphPapers.map((paper) => paper.published_value));
+  const maxMonth = Math.max(...graphPapers.map((paper) => paper.published_value));
+  const left = 56;
+  const top = 48;
+  const bottom = 66;
+  const colWidth = 108;
+  const monthStep = 17;
+  const width = left + domainColumns.length * colWidth + 40;
+  const height = top + Math.max(18, maxMonth - minMonth) * monthStep + bottom;
+  const positions = new Map();
+  const placedByDomain = new Map();
+  const nearNodeOffsets = [0, 12, -12, 24, -24];
+  const nodes = graphPapers
+    .map((paper) => {
+      const domainIndex = domainColumns.indexOf(paper.graph_domain);
+      const y = top + (paper.published_value - minMonth) * monthStep;
+      const placed = placedByDomain.get(paper.graph_domain) ?? [];
+      const nearIndex = placed.filter((placedY) => Math.abs(placedY - y) < 30).length;
+      placed.push(y);
+      placedByDomain.set(paper.graph_domain, placed);
+      const x = left + domainIndex * colWidth + colWidth / 2 + nearNodeOffsets[nearIndex % nearNodeOffsets.length];
+      positions.set(paper.id, { x, y, paper });
+      const secondaryDomains = asList(paper.domains)
+        .filter((domain) => domain !== paper.graph_domain)
+        .slice(0, 2)
+        .join(" · ");
+      return `
+        <button class="graph-node"
+          style="--x:${x}px; --y:${y}px; --node:${domainColors[paper.graph_domain] ?? palette[0]}"
+          data-node-id="${escapeHtml(paper.id)}"
+          data-node-title="${escapeHtml(paper.short_title)}"
+          data-note-path="${escapeHtml(paper.file)}"
+          aria-label="${escapeHtml(`${paper.short_title} ${paper.published}`)}">
+          <strong>${escapeHtml(paper.short_title)}</strong>
+          <span>${escapeHtml(paper.graph_domain)}</span>
+          ${secondaryDomains ? `<em>${escapeHtml(secondaryDomains)}</em>` : ""}
+        </button>
+      `;
+    })
+    .join("\n");
+
+  const edges = graphPapers
+    .flatMap((paper) =>
+      asList(paper.cites)
+        .filter((targetId) => byId.has(targetId) && positions.has(paper.id) && positions.has(targetId))
+        .map((targetId) => ({ source: paper.id, target: targetId })),
+    )
+    .map(({ source, target }) => {
+      const from = positions.get(source);
+      const to = positions.get(target);
+      const bend = Math.max(40, Math.abs(from.y - to.y) * 0.28);
+      const midY = (from.y + to.y) / 2;
+      const d = `M ${from.x} ${from.y} C ${from.x} ${midY - bend}, ${to.x} ${midY + bend}, ${to.x} ${to.y}`;
+      return `<path class="graph-edge" data-edge-source="${escapeHtml(source)}" data-edge-target="${escapeHtml(target)}" d="${d}" marker-end="url(#arrowhead)"></path>`;
+    })
+    .join("\n");
+
+  const paperMonths = [...new Set(graphPapers.map((paper) => paper.published))].sort(
+    (a, b) => monthValue(a) - monthValue(b),
+  );
+  const monthLabels = paperMonths
+    .map((month) => {
+      const y = top + (monthValue(month) - minMonth) * monthStep;
+      return `<div class="graph-month" style="--y:${y}px">${escapeHtml(month)}</div>`;
+    })
+    .join("\n");
+
+  const columns = domainColumns
+    .map((domain, index) => {
+      const x = left + index * colWidth;
+      return `
+        <div class="graph-column" style="--x:${x}px; --w:${colWidth}px; --domain:${domainColors[domain]}">
+          <span>${escapeHtml(domain)}</span>
+        </div>
+      `;
+    })
+    .join("\n");
+
+  const legend = domainColumns
+    .map((domain) => `<span><i style="--domain:${domainColors[domain]}"></i>${escapeHtml(domain)}</span>`)
+    .join("");
+
+  return `
+    <section class="section" id="domain-graph">
+      <div class="section-kicker">Node-edge timeline</div>
+      <div class="section-head">
+        <div>
+          <h2>领域时间关系图</h2>
+          <p>纵向按论文发表年月排序，横向按领域分列。连线表示当前知识库里手工标注的引用或技术脉络关系。</p>
+        </div>
+        <div class="graph-tools">
+          <div class="graph-legend">${legend}</div>
+          <a class="graph-note-button is-disabled" data-open-note target="_blank" rel="noreferrer" aria-disabled="true">选择节点后打开 Note</a>
+        </div>
+      </div>
+      <div class="graph-frame">
+        <div class="domain-graph" style="--graph-width:${width}px; --graph-height:${height}px">
+          ${columns}
+          ${monthLabels}
+          <svg class="graph-edges" viewBox="0 0 ${width} ${height}" aria-hidden="true">
+            <defs>
+              <marker id="arrowhead" markerWidth="4.5" markerHeight="4.5" refX="3.5" refY="2.25" orient="auto">
+                <path d="M 0 0 L 4.5 2.25 L 0 4.5 z"></path>
+              </marker>
+            </defs>
+            ${edges}
+          </svg>
+          ${nodes}
+        </div>
+      </div>
+    </section>
   `;
 }
 
@@ -347,6 +526,9 @@ function renderPapers(papers) {
               paper.summary,
               paper.method,
               paper.contribution,
+              paper.published,
+              paper.primary_domain,
+              asList(paper.domains).join(" "),
               asList(paper.tags).join(" "),
               authors,
               institutions,
@@ -358,7 +540,7 @@ function renderPapers(papers) {
                 ? `<img src="${escapeHtml(paper.image_url)}" alt="${escapeHtml(paper.short_title)}" loading="lazy">`
                 : `<div class="paper-placeholder">${escapeHtml(paper.short_title)}</div>`
             }
-            <span>${paper.year}</span>
+            <span>${escapeHtml(paper.published)}</span>
           </div>
           <div class="paper-main">
             <div class="paper-meta">
@@ -503,7 +685,7 @@ function renderIndex(papers) {
     }
 
     .page {
-      width: min(1200px, calc(100% - 48px));
+      width: min(1740px, calc(100% - 48px));
       margin: 0 auto;
     }
 
@@ -628,6 +810,255 @@ function renderIndex(papers) {
       box-shadow: 0 12px 28px rgba(22, 50, 83, 0.08);
     }
 
+    .graph-tools {
+      position: sticky;
+      top: 76px;
+      z-index: 7;
+      display: grid;
+      justify-items: end;
+      gap: 8px;
+      padding: 6px;
+      border-radius: 8px;
+      background: rgba(247, 251, 255, 0.72);
+    }
+
+    .graph-legend {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      gap: 4px;
+      max-width: 230px;
+    }
+
+    .graph-legend span {
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+      min-height: 14px;
+      padding: 0 5px;
+      border: 1px solid var(--soft-line);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.66);
+      color: #405570;
+      font-size: 6px;
+      font-family: var(--mono);
+    }
+
+    .graph-legend i {
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: var(--domain);
+      box-shadow: 0 0 6px color-mix(in srgb, var(--domain), transparent 35%);
+    }
+
+    .graph-note-button {
+      position: fixed;
+      right: 22px;
+      bottom: 22px;
+      z-index: 40;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 28px;
+      min-width: 178px;
+      max-width: min(320px, calc(100vw - 44px));
+      padding: 0 10px;
+      border-color: rgba(36, 107, 254, 0.34);
+      border-radius: 5px;
+      background: rgba(255, 255, 255, 0.82);
+      color: #1f4fd6;
+      font-family: var(--mono);
+      font-size: 11px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      box-shadow: 0 8px 18px rgba(22, 50, 83, 0.08);
+      text-decoration: none;
+      transition: opacity 0.16s ease, transform 0.16s ease, background 0.16s ease, box-shadow 0.16s ease;
+    }
+
+    .graph-note-button.is-disabled {
+      cursor: default;
+      opacity: 0;
+      color: #64748b;
+      border-color: var(--soft-line);
+      box-shadow: none;
+      transform: translateY(8px);
+      pointer-events: none;
+    }
+
+    .graph-note-button:not(.is-disabled):hover {
+      transform: translateY(-1px);
+      background: rgba(236, 246, 255, 0.96);
+      border-color: rgba(36, 107, 254, 0.58);
+      box-shadow: 0 0 0 3px var(--glow);
+    }
+
+    .graph-frame {
+      width: max-content;
+      overflow: visible;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background:
+        linear-gradient(rgba(106, 125, 255, 0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(36, 107, 254, 0.055) 1px, transparent 1px),
+        rgba(247, 251, 255, 0.78);
+      background-size: 17px 17px;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(18px);
+    }
+
+    .domain-graph {
+      position: relative;
+      width: var(--graph-width);
+      height: var(--graph-height);
+    }
+
+    .graph-column {
+      position: absolute;
+      left: var(--x);
+      top: 10px;
+      width: var(--w);
+      height: calc(var(--graph-height) - 21px);
+      border-left: 1px solid color-mix(in srgb, var(--domain), transparent 68%);
+      background: linear-gradient(180deg, color-mix(in srgb, var(--domain), transparent 92%), transparent 9rem);
+    }
+
+    .graph-column span {
+      position: sticky;
+      top: 6px;
+      z-index: 3;
+      display: inline-flex;
+      align-items: center;
+      min-height: 15px;
+      margin-left: 6px;
+      padding: 0 5px;
+      border: 1px solid color-mix(in srgb, var(--domain), transparent 52%);
+      border-radius: 999px;
+      background: rgba(255,255,255,0.88);
+      color: color-mix(in srgb, var(--domain), #111827 34%);
+      font-family: var(--mono);
+      font-size: 6px;
+      font-weight: 700;
+      box-shadow: 0 5px 13px rgba(22, 50, 83, 0.09);
+    }
+
+    .graph-month {
+      position: absolute;
+      left: 9px;
+      top: var(--y);
+      transform: translateY(-50%);
+      width: 39px;
+      color: #74849a;
+      font-family: var(--mono);
+      font-size: 6px;
+      text-align: right;
+    }
+
+    .graph-month::after {
+      content: "";
+      position: absolute;
+      left: 44px;
+      right: -800px;
+      top: 50%;
+      border-top: 1px solid rgba(100, 116, 139, 0.16);
+    }
+
+    .graph-edges {
+      position: absolute;
+      inset: 0;
+      width: var(--graph-width);
+      height: var(--graph-height);
+      pointer-events: none;
+      overflow: visible;
+    }
+
+    .graph-edge {
+      fill: none;
+      stroke: rgba(105, 92, 255, 0.34);
+      stroke-width: 0.75;
+      transition: opacity 0.16s ease, stroke 0.16s ease, stroke-width 0.16s ease;
+    }
+
+    .graph-edges marker path {
+      fill: rgba(105, 92, 255, 0.48);
+    }
+
+    .graph-node {
+      position: absolute;
+      left: var(--x);
+      top: var(--y);
+      transform: translate(-50%, -50%);
+      z-index: 2;
+      display: grid;
+      align-content: start;
+      gap: 0;
+      width: 88px;
+      height: 32px;
+      padding: 4px 5px;
+      border: 1px solid color-mix(in srgb, var(--node), transparent 38%);
+      border-radius: 5px;
+      background: rgba(255,255,255,0.9);
+      color: #142033;
+      text-align: left;
+      overflow: hidden;
+      box-shadow: 0 7px 15px rgba(22, 50, 83, 0.13), 0 0 0 2px color-mix(in srgb, var(--node), transparent 88%);
+    }
+
+    .graph-node::before {
+      content: "";
+      position: absolute;
+      left: 4px;
+      top: 6px;
+      width: 4.5px;
+      height: 4.5px;
+      border-radius: 50%;
+      background: var(--node);
+      box-shadow: 0 0 8px color-mix(in srgb, var(--node), transparent 20%);
+    }
+
+    .graph-node:hover,
+    .graph-node.is-active {
+      transform: translate(-50%, -52%);
+      border-color: var(--node);
+      box-shadow: 0 9px 19px rgba(22, 50, 83, 0.18), 0 0 0 2px color-mix(in srgb, var(--node), transparent 82%);
+    }
+
+    .graph-node.is-dimmed {
+      opacity: 0.28;
+    }
+
+    .graph-edge.is-active {
+      stroke: rgba(36, 107, 254, 0.78);
+      stroke-width: 1.3;
+      opacity: 1;
+    }
+
+    .graph-edge.is-dimmed {
+      opacity: 0.12;
+    }
+
+    .graph-node strong {
+      margin-left: 7px;
+      font-size: 7.5px;
+      line-height: 1.08;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .graph-node span,
+    .graph-node em {
+      color: #627188;
+      font-size: 6px;
+      font-style: normal;
+      line-height: 1.12;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
     input,
     select,
     button {
@@ -650,6 +1081,13 @@ function renderIndex(papers) {
       background: rgba(236, 246, 255, 0.96);
       border-color: rgba(36, 107, 254, 0.58);
       box-shadow: 0 0 0 3px var(--glow);
+    }
+
+    .graph-note-button.is-disabled:hover {
+      transform: none;
+      background: rgba(255, 255, 255, 0.82);
+      border-color: var(--soft-line);
+      box-shadow: none;
     }
 
     .icon-button {
@@ -954,6 +1392,7 @@ function renderIndex(papers) {
   <header class="topbar">
     <a class="brand" href="#">General Multi-Agent Model</a>
     <nav class="nav">
+      <a href="#domain-graph">关系图</a>
       <a href="#tech_paradigm">技术范式</a>
       <a href="#primary_technical_layer">主技术层</a>
       <a href="#primary_task_family">任务族</a>
@@ -970,6 +1409,7 @@ function renderIndex(papers) {
       ${renderStats(papers)}
     </section>
 
+    ${renderDomainGraph(papers)}
     ${renderTimeline(papers, "tech_paradigm")}
     ${renderTimeline(papers, "primary_technical_layer")}
     ${renderTimeline(papers, "primary_task_family")}
@@ -1084,6 +1524,50 @@ function renderIndex(papers) {
       });
     });
 
+    const graphNodes = Array.from(document.querySelectorAll(".graph-node"));
+    const graphEdges = Array.from(document.querySelectorAll(".graph-edge"));
+    const graphNoteButton = document.querySelector("[data-open-note]");
+    let selectedGraphNode = null;
+
+    function noteUrlFor(path) {
+      const prefix = window.location.pathname.endsWith("/views/dashboard.html") ? "../" : "";
+      return new URL(prefix + path, window.location.href).href;
+    }
+
+    function selectGraphNode(id) {
+      const connected = new Set([id]);
+      for (const edge of graphEdges) {
+        if (edge.dataset.edgeSource === id || edge.dataset.edgeTarget === id) {
+          connected.add(edge.dataset.edgeSource);
+          connected.add(edge.dataset.edgeTarget);
+          edge.classList.add("is-active");
+          edge.classList.remove("is-dimmed");
+        } else {
+          edge.classList.remove("is-active");
+          edge.classList.add("is-dimmed");
+        }
+      }
+
+      for (const node of graphNodes) {
+        const isActive = node.dataset.nodeId === id;
+        const isConnected = connected.has(node.dataset.nodeId);
+        node.classList.toggle("is-active", isActive);
+        node.classList.toggle("is-dimmed", !isConnected);
+        if (isActive) selectedGraphNode = node;
+      }
+
+      if (graphNoteButton && selectedGraphNode) {
+        graphNoteButton.href = noteUrlFor(selectedGraphNode.dataset.notePath);
+        graphNoteButton.classList.remove("is-disabled");
+        graphNoteButton.setAttribute("aria-disabled", "false");
+        graphNoteButton.textContent = "打开 Note · " + selectedGraphNode.dataset.nodeTitle;
+      }
+    }
+
+    graphNodes.forEach((node) => {
+      node.addEventListener("click", () => selectGraphNode(node.dataset.nodeId));
+    });
+
     document.querySelectorAll(".paper-media img").forEach((img) => {
       img.addEventListener("error", () => {
         const holder = document.createElement("div");
@@ -1102,10 +1586,13 @@ async function build() {
   await mkdir(viewsDir, { recursive: true });
 
   const papers = await readPapers();
+  const dashboardHtml = renderIndex(papers);
   await writeFile(join(dataDir, "papers.json"), `${JSON.stringify(papers, null, 2)}\n`, "utf8");
-  await writeFile(join(viewsDir, "dashboard.html"), renderIndex(papers), "utf8");
+  await writeFile(join(rootDir, "index.html"), dashboardHtml, "utf8");
+  await writeFile(join(viewsDir, "dashboard.html"), dashboardHtml, "utf8");
 
   console.log(`Generated ${relative(rootDir, join(dataDir, "papers.json"))}`);
+  console.log(`Generated ${relative(rootDir, join(rootDir, "index.html"))}`);
   console.log(`Generated ${relative(rootDir, join(viewsDir, "dashboard.html"))}`);
   console.log(`Indexed ${papers.length} papers`);
 }

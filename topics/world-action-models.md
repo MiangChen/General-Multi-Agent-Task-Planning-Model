@@ -19,6 +19,7 @@ World Action Model 的核心是联合建模视频世界状态和动作。它比�
 ## 关键论文
 
 - [[2026-world-action-models-zero-shot-policies]]
+- [[2024-pyramidal-flow-matching-video]]
 
 ## 需要补的空白
 

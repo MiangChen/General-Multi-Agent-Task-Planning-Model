@@ -3,12 +3,15 @@ id: 2025-pi06-model-card
 title: "π0.6 Model Card"
 short_title: π0.6
 year: 2025
+published: 2025-11
 venue: Model Card / Physical Intelligence
 status: skimmed
 scope: in_scope
 readiness: medium
 action: buffer
 tech_paradigm: vla
+primary_domain: VLA
+domains: [VLA, Planning]
 primary_technical_layer: deployment_generalization
 primary_task_family: robust_execution
 platform: multi_embodiment_manipulation
@@ -24,6 +27,7 @@ project_url: https://physicalintelligence.company/
 image_url:
 zotero_key:
 citekey: physicalintelligence2025pi06
+cites: [2025-pi05-open-world-generalization, 2024-pi0-vla-flow-model]
 ---
 
 ## 一句话结论

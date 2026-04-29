@@ -3,12 +3,15 @@ id: 2025-pi05-open-world-generalization
 title: "π0.5: a Vision-Language-Action Model with Open-World Generalization"
 short_title: π0.5
 year: 2025
+published: 2025-04
 venue: arXiv / Physical Intelligence
 status: read
 scope: in_scope
 readiness: high
 action: deep_read
 tech_paradigm: vla
+primary_domain: VLA
+domains: [LLM, VLA, Planning]
 primary_technical_layer: open_world_generalization
 primary_task_family: long_horizon_execution
 platform: mobile_manipulator
@@ -24,11 +27,12 @@ project_url: https://www.physicalintelligence.company/download/pi05.pdf
 image_url:
 zotero_key:
 citekey: physicalintelligence2025pi05
+cites: [2025-fast-action-tokenization-vla, 2024-pi0-vla-flow-model, 2023-rt-2-vla]
 ---
 
 ## 一句话结论
 
-π0.5 关注开放世界泛化，把多机器人、多任务、网页数据、目标检测和语义子任务预测合并到 VLA 训练中。
+π0.5 关注开放世界泛化，把多任务、网页数据、目标检测、语义子任务预测和 FAST/π0 训练路线合并到 VLA 训练中。
 
 ## 研究问题
 
@@ -48,7 +52,7 @@ VLA 能否在训练环境之外的真实家庭中完成长程灵巧任务，而�
 
 ## 和其他论文的关系
 
-π0.5 是 π0 的开放世界扩展。π0.7 后续用更丰富的上下文条件让模型可被更精细地 steer，减少多策略数据混合造成的平均化问题。
+π0.5 是 π0 的开放世界扩展，并借鉴 FAST 式动作 tokenization 来提升大规模预训练效率。π0.7 后续用更丰富的上下文条件让模型可被更精细地 steer，减少多策略数据混合造成的平均化问题。
 
 ## 对多智能体任务规划模型的启发
 

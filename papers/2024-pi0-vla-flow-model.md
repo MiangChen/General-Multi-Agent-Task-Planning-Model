@@ -3,12 +3,15 @@ id: 2024-pi0-vla-flow-model
 title: "π0: A Vision-Language-Action Flow Model for General Robot Control"
 short_title: π0
 year: 2024
+published: 2024-10
 venue: RSS 2025
 status: read
 scope: in_scope
 readiness: high
 action: build_note
 tech_paradigm: vla_flow_policy
+primary_domain: VLA
+domains: [LLM, VLA]
 primary_technical_layer: action_representation
 primary_task_family: generalist_robot_control
 platform: multi_embodiment_manipulation
@@ -24,6 +27,7 @@ project_url: https://physicalintelligence.company/blog/pi0
 image_url:
 zotero_key:
 citekey: black2024pi0
+cites: [2023-rt-2-vla]
 ---
 
 ## 一句话结论

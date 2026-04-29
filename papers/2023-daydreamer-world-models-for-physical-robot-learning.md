@@ -2,13 +2,16 @@
 id: 2023-daydreamer-world-models-for-physical-robot-learning
 title: "DayDreamer: World Models for Physical Robot Learning"
 short_title: DayDreamer
-year: 2023
-venue: CoRL
+year: 2022
+published: 2022-06
+venue: CoRL 2022 / PMLR 2023
 status: skimmed
 scope: in_scope
 readiness: medium
 action: buffer
 tech_paradigm: world_model_rl
+primary_domain: World Model
+domains: [World Model, RL]
 primary_technical_layer: embodied_learning
 primary_task_family: real_robot_learning
 platform: physical_robot_learning
@@ -24,6 +27,7 @@ project_url: https://sites.google.com/view/daydreamer-robot-learning/
 image_url:
 zotero_key:
 citekey: wu2023daydreamer
+cites: []
 ---
 
 ## 一句话结论

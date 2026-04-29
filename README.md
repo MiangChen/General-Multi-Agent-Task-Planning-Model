@@ -18,16 +18,16 @@ Repository structure:
 - templates/paper.md is the paper-note template
 - scripts/build-dashboard.mjs generates the static dashboard
 - data/papers.json is generated structured paper data
-- views/dashboard.html is the local dashboard to open in a browser
+- index.html is the local dashboard to open in a browser
 
 What I need you to do:
 1. Open the repository locally.
 2. Check whether Node.js is available.
 3. Run:
    npm run build
-4. Confirm that data/papers.json and views/dashboard.html were generated.
+4. Confirm that data/papers.json and index.html were generated.
 5. Tell me to open this local HTML file in my browser:
-   views/dashboard.html
+   index.html
 
 Do not set up GitHub Pages unless I explicitly ask for it.
 Do not push, publish, upload, or expose any files unless I explicitly ask for it.
@@ -36,5 +36,5 @@ Do not push, publish, upload, or expose any files unless I explicitly ask for it
 Open this file after building:
 
 ```text
-views/dashboard.html
+index.html
 ```

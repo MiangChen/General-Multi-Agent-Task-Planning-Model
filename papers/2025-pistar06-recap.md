@@ -3,12 +3,15 @@ id: 2025-pistar06-recap
 title: "π*0.6: a VLA That Learns From Experience"
 short_title: π*0.6 / RECAP
 year: 2025
+published: 2025-11
 venue: Technical Report / Physical Intelligence
 status: skimmed
 scope: in_scope
 readiness: high
 action: deep_read
 tech_paradigm: vla_rl
+primary_domain: RL
+domains: [VLA, RL]
 primary_technical_layer: policy_improvement
 primary_task_family: experience_driven_recovery
 platform: multi_embodiment_manipulation
@@ -24,6 +27,7 @@ project_url: https://physicalintelligence.company/
 image_url:
 zotero_key:
 citekey: physicalintelligence2025pistar06
+cites: [2025-pi06-model-card, 2025-pi05-open-world-generalization, 2024-pi0-vla-flow-model]
 ---
 
 ## 一句话结论

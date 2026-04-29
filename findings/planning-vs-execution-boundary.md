@@ -25,6 +25,8 @@ goal -> one giant VLA controls all robots
 
 ## 关联论文
 
+- [[2026-genswarm-multi-robot-code-policy]]
+- [[2025-heterogeneous-mrta-rl]]
 - [[2023-rt-2-vla]]
 - [[2024-pi0-vla-flow-model]]
 - [[2026-pi07-steerable-generalist-robotic-foundation-model]]

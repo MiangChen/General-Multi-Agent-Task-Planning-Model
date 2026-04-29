@@ -3,12 +3,15 @@ id: 2026-pi07-steerable-generalist-robotic-foundation-model
 title: "π0.7: a Steerable Generalist Robotic Foundation Model with Emergent Capabilities"
 short_title: π0.7
 year: 2026
+published: 2026-04
 venue: arXiv / Physical Intelligence
 status: read
 scope: in_scope
 readiness: high
 action: deep_read
 tech_paradigm: vla
+primary_domain: VLA
+domains: [LLM, VLA, Planning]
 primary_technical_layer: compositional_generalization
 primary_task_family: steerable_long_horizon_execution
 platform: cross_embodiment_manipulation
@@ -24,6 +27,7 @@ project_url: https://physicalintelligence.company/
 image_url:
 zotero_key:
 citekey: physicalintelligence2026pi07
+cites: [2026-mem-multi-scale-embodied-memory, 2025-pistar06-recap, 2025-pi06-model-card, 2025-pi05-open-world-generalization, 2024-pi0-vla-flow-model]
 ---
 
 ## 一句话结论
@@ -36,7 +40,7 @@ citekey: physicalintelligence2026pi07
 
 ## 方法
 
-论文使用 diverse context conditioning：不仅给语言命令，还给任务表现元数据、策略信息和子目标图像等多模态上下文。
+论文使用 diverse context conditioning：不仅给语言命令，还给任务表现元数据、策略信息、子目标图像和记忆相关上下文等多模态条件。
 
 ## 关键贡献
 
@@ -48,7 +52,7 @@ citekey: physicalintelligence2026pi07
 
 ## 和其他论文的关系
 
-相对 π0.5 的开放世界泛化和 π*0.6 的经验学习，π0.7 更强调上下文条件对策略行为的可控性。它和 WAM 的区别在于：π0.7 仍偏直接策略，WAM 偏预测世界状态和动作。
+相对 π0.5 的开放世界泛化、π*0.6 的经验学习和 MEM 的长程记忆，π0.7 更强调上下文条件对策略行为的可控性。它和 WAM 的区别在于：π0.7 仍偏直接策略，WAM 偏预测世界状态和动作。
 
 ## 对多智能体任务规划模型的启发
 

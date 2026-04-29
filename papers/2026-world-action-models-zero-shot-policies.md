@@ -3,12 +3,15 @@ id: 2026-world-action-models-zero-shot-policies
 title: "World Action Models are Zero-shot Policies"
 short_title: DreamZero / WAM
 year: 2026
+published: 2026-02
 venue: arXiv
 status: read
 scope: in_scope
 readiness: high
 action: deep_read
 tech_paradigm: world_action_model
+primary_domain: World Action Model
+domains: [World Action Model, VLA, World Model]
 primary_technical_layer: dynamics_prediction
 primary_task_family: zero_shot_policy
 platform: heterogeneous_robot_data
@@ -24,6 +27,7 @@ project_url: https://dreamzero0.github.io/
 image_url:
 zotero_key:
 citekey: ye2026world
+cites: [2024-pyramidal-flow-matching-video, 2025-pi05-open-world-generalization, 2024-pi0-vla-flow-model, 2023-rt-2-vla, 2023-dreamerv3-world-models]
 ---
 
 ## 一句话结论
@@ -36,7 +40,7 @@ VLA 语义泛化强，但对未见物理运动和新环境动作泛化弱。能�
 
 ## 方法
 
-DreamZero 基于预训练视频扩散骨干，联合建模视频和动作，并做系统优化，使 14B 自回归视频扩散模型能以约 7Hz 做实时闭环控制。
+DreamZero 基于预训练视频扩散/生成骨干，联合建模视频和动作，并做系统优化，使大规模视频生成模型能以约 7Hz 做实时闭环控制。
 
 ## 关键贡献
 
@@ -48,7 +52,7 @@ WAM 当前仍主要面向机器人操作策略。对于多机器人，关键挑�
 
 ## 和其他论文的关系
 
-DreamZero 和 Dreamer 都是 world model 思路，但侧重点不同：Dreamer 在 latent world model 中用 RL 学行为，DreamZero 借视频生成模型和动作联合预测直接成为策略。
+DreamZero 和 Dreamer 都是 world model 思路，但侧重点不同：Dreamer 在 latent world model 中用 RL 学行为，DreamZero 借视频生成模型和动作联合预测直接成为策略。Pyramidal Flow 是其视频生成和 flow matching 技术背景之一。
 
 ## 对多智能体任务规划模型的启发
 

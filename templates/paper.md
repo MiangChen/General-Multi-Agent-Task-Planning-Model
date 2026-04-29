@@ -3,12 +3,15 @@ id:
 title:
 short_title:
 year:
+published:
 venue:
 status: unread
 scope: candidate
 readiness: medium
 action: buffer
 tech_paradigm:
+primary_domain:
+domains: []
 primary_technical_layer:
 primary_task_family:
 platform:
@@ -24,6 +27,7 @@ project_url:
 image_url:
 zotero_key:
 citekey:
+cites: []
 ---
 
 ## 一句话结论
