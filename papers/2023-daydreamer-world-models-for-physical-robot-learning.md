@@ -17,6 +17,10 @@ primary_task_family: real_robot_learning
 platform: physical_robot_learning
 planning_relevance: 说明 world model 可以在真实机器人交互中学习，不必只依赖离线数据或纯仿真。
 multi_robot_relevance: 多机器人系统可用类似机制让机器人从实际执行中更新局部模型。
+system_roles: [world_simulator, policy_trainer]
+reusable_modules: [latent_world_model, real_robot_online_learning, imagination_rollout]
+evidence_level: paper_read
+next_action: compare_with_dreamerv3
 tags: [DayDreamer, Dreamer, world model, physical robot learning, sample efficiency]
 authors: [Wu, Escontrela, Hafner, Abbeel, Goldberg]
 institutions: [UC Berkeley]
@@ -28,6 +32,11 @@ image_url:
 zotero_key:
 citekey: wu2023daydreamer
 cites: []
+extends: []
+uses: []
+enables: []
+complements: []
+contrasts: []
 ---
 
 ## 一句话结论
@@ -57,6 +66,14 @@ DayDreamer 是 Dreamer 到机器人现实交互的桥。π*0.6 也强调从真�
 ## 对多智能体任务规划模型的启发
 
 多机器人系统可以让每个机器人维护自己的局部 world model，同时把执行经验汇总到共享能力库，服务于后续任务分配。
+
+## 可复用模块
+
+latent world model、online adaptation loop、imagination rollout。适合迁移到“任务分配方案的短期后果预测”和“失败后快速再规划”。
+
+## 证据与风险
+
+证据来自真实机器人在线学习，但任务规模和多主体交互都有限。迁移到多机器人时，最大的风险是联合状态维度和通信延迟。
 
 ## 开放问题
 

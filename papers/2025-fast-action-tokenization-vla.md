@@ -17,6 +17,10 @@ primary_task_family: high_frequency_control
 platform: dexterous_manipulation
 planning_relevance: 改进 VLA 的动作表示，使高频连续动作可以被自回归模型更高效地学习。
 multi_robot_relevance: 多机器人系统若把 VLA 当执行器，FAST 有助于降低高频动作 token 对训练和推理的负担。
+system_roles: [action_tokenizer, executor_interface]
+reusable_modules: [dct_action_tokenizer, fast_plus_tokenizer, high_frequency_action_compression]
+evidence_level: paper_read
+next_action: keep_as_action_interface
 tags: [FAST, FAST+, VLA, action tokenization, discrete cosine transform, high-frequency control]
 authors: [Pertsch, Stachowicz, Ichter, Driess, Nair, Vuong, Mees, Finn, Levine]
 institutions: [Physical Intelligence, UC Berkeley, Stanford]
@@ -27,7 +31,12 @@ project_url: https://pi.website/research/fast
 image_url:
 zotero_key:
 citekey: pertsch2025fast
-cites: [2024-pi0-vla-flow-model, 2023-rt-2-vla]
+cites: [2024-pi0-vla-flow-model]
+extends: []
+uses: []
+enables: []
+complements: [2024-pi0-vla-flow-model]
+contrasts: []
 ---
 
 ## 一句话结论
@@ -57,6 +66,14 @@ FAST 主要优化动作编码和训练效率，不负责高层任务分解、长
 ## 对多智能体任务规划模型的启发
 
 如果多机器人 planner 需要训练统一执行器，动作 tokenizer 的效率会影响数据规模、推理速度和跨平台泛化。FAST 提醒我们动作接口设计本身就是模型能力的一部分。
+
+## 可复用模块
+
+DCT action tokenizer、FAST+ tokenizer、high-frequency action compression。适合定义 planner 到 executor 之间的动作表示边界。
+
+## 证据与风险
+
+证据集中在动作表示效率；风险是它不解决任务分解、记忆、协作或世界预测。
 
 ## 开放问题
 

@@ -17,6 +17,10 @@ primary_task_family: latent_world_model_control
 platform: simulated_control_domains
 planning_relevance: 提供从环境模型中想象未来并学习策略的基础范式，Nature 版本进一步强调跨 150+ 控制任务和 Minecraft 长程目标。
 multi_robot_relevance: 可迁移为多智能体 latent world model，但需要额外处理多主体状态、联合动作和非平稳性。
+system_roles: [world_simulator, planner_critic, policy_trainer]
+reusable_modules: [latent_world_model, imagination_rollout, long_horizon_value_learning]
+evidence_level: paper_read
+next_action: map_to_planner_critic
 tags: [DreamerV3, world model, model-based RL, latent imagination, reinforcement learning, Minecraft]
 authors: [Hafner, Pasukonis, Ba, Lillicrap]
 institutions: [Google DeepMind]
@@ -28,6 +32,11 @@ image_url:
 zotero_key:
 citekey: hafner2023dreamerv3
 cites: [2023-daydreamer-world-models-for-physical-robot-learning]
+extends: []
+uses: []
+enables: []
+complements: []
+contrasts: []
 ---
 
 ## 一句话结论
@@ -57,6 +66,14 @@ DayDreamer 把 Dreamer 类方法带到真实机器人在线学习；DreamZero �
 ## 对多智能体任务规划模型的启发
 
 对多机器人 planner 来说，Dreamer 的价值是“可学习的任务级 transition model”：可以用来评估分配方案的长期后果，而不只是贪心分配当前任务。Minecraft 技术树式任务也提示，多机器人任务可以被建模为长程状态推进和资源转换过程。
+
+## 可复用模块
+
+latent transition model、imagination rollout、value model。可作为上层 planner 的 critic，用来评估任务分配、重规划和长期资源转换。
+
+## 证据与风险
+
+证据强在跨领域 benchmark 和长程控制；风险在于多机器人场景需要显式建模 agent identity、通信动作和局部观测。
 
 ## 开放问题
 

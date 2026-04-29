@@ -17,6 +17,10 @@ primary_task_family: experience_driven_recovery
 platform: multi_embodiment_manipulation
 planning_relevance: 提供从失败轨迹、人工纠错和自主经验中更新执行策略的闭环。
 multi_robot_relevance: 多机器人系统可借鉴其“失败状态定向采样 + 纠错”的经验收集机制。
+system_roles: [executor, recovery_policy, experience_learner]
+reusable_modules: [recap_experience_loop, correction_data_pipeline, policy_improvement_from_failures]
+evidence_level: skimmed
+next_action: map_recovery_loop
 tags: [π*0.6, RECAP, reinforcement learning, corrections, experience, VLA]
 authors: [Physical Intelligence]
 institutions: [Physical Intelligence]
@@ -28,6 +32,11 @@ image_url:
 zotero_key:
 citekey: physicalintelligence2025pistar06
 cites: [2025-pi06-model-card, 2025-pi05-open-world-generalization, 2024-pi0-vla-flow-model]
+extends: [2025-pi06-model-card]
+uses: [2025-pi05-open-world-generalization, 2024-pi0-vla-flow-model]
+enables: []
+complements: []
+contrasts: []
 ---
 
 ## 一句话结论
@@ -57,6 +66,14 @@ RECAP 大体思路是结合示范、专家纠错和机器人自主经验，通�
 ## 对多智能体任务规划模型的启发
 
 多机器人 planner 可以记录失败发生在哪个子任务、哪个机器人、哪个协作边界，再将失败样本反哺给执行策略或能力模型。
+
+## 可复用模块
+
+RECAP experience loop、correction data pipeline、failure recovery policy。适合多机器人系统的持续学习和失败后再规划。
+
+## 证据与风险
+
+证据来自真实世界经验学习方向；风险是公开材料细节有限，且多机器人失败归因更复杂。
 
 ## 开放问题
 

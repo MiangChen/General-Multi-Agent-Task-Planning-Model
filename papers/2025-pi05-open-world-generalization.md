@@ -17,6 +17,10 @@ primary_task_family: long_horizon_execution
 platform: mobile_manipulator
 planning_relevance: 通过高层语义预测和低层动作结合，接近“子任务规划 + 执行”的一体化形式。
 multi_robot_relevance: 对多机器人有启发的是层级设计，但论文主要仍是单机器人家庭环境泛化。
+system_roles: [executor, semantic_planner, foundation_policy]
+reusable_modules: [open_world_vla_training, semantic_subtask_prediction, fast_pretraining_pipeline]
+evidence_level: paper_read
+next_action: model_as_executor_plus_subtasker
 tags: [π0.5, VLA, open-world generalization, long-horizon tasks, semantic subtask prediction]
 authors: [Physical Intelligence, Black, Brown, Driess, Finn, Hausman, Ichter, Levine, Pertsch]
 institutions: [Physical Intelligence]
@@ -27,7 +31,12 @@ project_url: https://www.physicalintelligence.company/download/pi05.pdf
 image_url:
 zotero_key:
 citekey: physicalintelligence2025pi05
-cites: [2025-fast-action-tokenization-vla, 2024-pi0-vla-flow-model, 2023-rt-2-vla]
+cites: [2025-fast-action-tokenization-vla, 2024-pi0-vla-flow-model]
+extends: [2024-pi0-vla-flow-model]
+uses: [2025-fast-action-tokenization-vla]
+enables: []
+complements: []
+contrasts: []
 ---
 
 ## 一句话结论
@@ -57,6 +66,14 @@ VLA 能否在训练环境之外的真实家庭中完成长程灵巧任务，而�
 ## 对多智能体任务规划模型的启发
 
 语义子任务预测可以借鉴到多机器人 planner 中：先预测任务分解，再依据机器人能力、位置和负载分派执行。
+
+## 可复用模块
+
+semantic subtask prediction、open-world VLA training、FAST pretraining + flow expert pipeline。适合做 planner-executor 边界的核心参考。
+
+## 证据与风险
+
+证据强在开放环境泛化；风险是团队级任务分配、通信、冲突消解仍需外部 planner。
 
 ## 开放问题
 

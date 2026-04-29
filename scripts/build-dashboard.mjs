@@ -9,13 +9,6 @@ const dataDir = join(rootDir, "data");
 const viewsDir = join(rootDir, "views");
 const watchMode = process.argv.includes("--watch");
 
-const fieldLabels = {
-  tech_paradigm: "技术范式",
-  primary_technical_layer: "主技术层",
-  primary_task_family: "任务族",
-  platform: "平台",
-};
-
 const valueLabels = {
   vla: "VLA",
   llm_code_policy: "LLM Code Policy",
@@ -81,6 +74,45 @@ const valueLabels = {
   buffer: "缓存",
   build_note: "建 note",
   deep_read: "精读",
+  executor: "执行器",
+  executor_interface: "执行接口",
+  foundation_policy: "基础策略",
+  semantic_grounder: "语义落地器",
+  semantic_planner: "语义规划器",
+  world_simulator: "世界模拟器",
+  planner_critic: "Planner critic",
+  policy_trainer: "策略训练器",
+  reward_designer: "奖励设计器",
+  action_tokenizer: "动作 tokenizer",
+  task_allocator: "任务分配器",
+  scheduler: "调度器",
+  planner_baseline: "规划基线",
+  code_policy_generator: "代码策略生成器",
+  memory_module: "记忆模块",
+  executor_context: "执行上下文",
+  long_horizon_state: "长程状态",
+  recovery_policy: "失败恢复策略",
+  experience_learner: "经验学习器",
+  steerable_policy: "可控策略",
+  video_generator: "视频生成器",
+  paper_read: "已读论文",
+  skimmed: "略读",
+  compare_with_dreamerv3: "对比 DreamerV3",
+  map_to_planner_critic: "映射到 planner critic",
+  link_to_genswarm: "连接 GenSwarm",
+  keep_as_vla_root: "作为 VLA 根节点",
+  define_executor_interface: "定义执行器接口",
+  connect_to_wam_only: "只连接 WAM",
+  keep_as_action_interface: "保留为动作接口",
+  turn_into_baseline: "转为 baseline",
+  model_as_executor_plus_subtasker: "建模为执行器+子任务器",
+  extract_capability_table: "提取能力表",
+  map_recovery_loop: "映射恢复闭环",
+  extract_system_architecture: "提取系统架构",
+  design_team_memory: "设计团队记忆",
+  use_as_executor_target: "作为执行器目标",
+  extend_to_multi_agent_rollout: "扩展多智能体 rollout",
+  relation_audit: "关系审计",
 };
 
 const palette = [
@@ -107,6 +139,133 @@ const domainColors = {
   GNN: "#4b6f96",
   Planning: "#2f80ed",
 };
+
+const relationTypes = {
+  extends: {
+    label: "继承/扩展",
+    short: "extends",
+    color: "#246bfe",
+    description: "后续模型或系统直接建立在前序路线之上。",
+  },
+  uses: {
+    label: "使用/依赖",
+    short: "uses",
+    color: "#00a7c7",
+    description: "当前论文借用了前序工作的模块、表示、训练路线或系统组件。",
+  },
+  enables: {
+    label: "提供模块",
+    short: "enables",
+    color: "#188aa6",
+    description: "前序工作提供了可被当前系统复用的关键模块。",
+  },
+  complements: {
+    label: "互补",
+    short: "complements",
+    color: "#7c67d8",
+    description: "两条路线解决相邻问题，可以组合进同一个系统。",
+  },
+  contrasts: {
+    label: "对比路线",
+    short: "contrasts",
+    color: "#d14d72",
+    description: "两篇论文代表不同建模范式，适合用来比较取舍。",
+  },
+  cites: {
+    label: "引用/背景",
+    short: "cites",
+    color: "#4b6f96",
+    description: "保留 bibliographic citation 或宽泛背景关系。",
+  },
+};
+
+const nextActionHints = {
+  extract_system_architecture: "把论文中的系统结构拆成可复用模块、接口和实验变量。",
+  extend_to_multi_agent_rollout: "把单机器人 world/action rollout 扩展成多机器人联合状态预测。",
+  design_team_memory: "把单体长期记忆改造成团队共享记忆和本地记忆的同步机制。",
+  use_as_executor_target: "抽象 planner-to-executor 接口，定义上下文、约束和失败反馈 schema。",
+  turn_into_baseline: "把论文方法整理成可复现实验基线，服务后续模型对比。",
+  map_to_planner_critic: "把 world model 或 reward 机制映射成 planner critic。",
+  define_executor_interface: "明确高层 planner 如何调用底层 VLA 执行器。",
+  model_as_executor_plus_subtasker: "把论文拆成执行器和语义子任务器两个角色。",
+  extract_capability_table: "提取平台能力、成功率、失败类型和预计耗时。",
+  map_recovery_loop: "把失败样本、纠错和继续学习整理成恢复闭环。",
+  compare_with_dreamerv3: "与 DreamerV3 对比 world model 训练、rollout 和控制接口。",
+  link_to_genswarm: "连接语言规划、多机器人代码策略和任务分配模块。",
+  keep_as_vla_root: "保留为 VLA 路线的根节点和语义 grounding 起点。",
+  connect_to_wam_only: "只保留与 WAM 生成式世界预测相关的强关系。",
+  keep_as_action_interface: "保留为动作表示和高频控制接口方案。",
+  relation_audit: "检查 typed relations 是否方向正确、是否足够强。",
+};
+
+const nextActionOrder = [
+  "extract_system_architecture",
+  "extend_to_multi_agent_rollout",
+  "design_team_memory",
+  "use_as_executor_target",
+  "turn_into_baseline",
+  "map_to_planner_critic",
+  "define_executor_interface",
+  "model_as_executor_plus_subtasker",
+  "extract_capability_table",
+  "map_recovery_loop",
+  "compare_with_dreamerv3",
+  "link_to_genswarm",
+  "keep_as_vla_root",
+  "connect_to_wam_only",
+  "keep_as_action_interface",
+  "relation_audit",
+];
+
+const agentWorkflows = [
+  {
+    name: "Paper Ingest Agent",
+    label: "新增论文",
+    purpose: "把一篇新论文变成结构化 note、typed relations 和可检索数据。",
+    output: "paper note + data/papers.json + dashboard rebuild",
+  },
+  {
+    name: "Relation Audit Agent",
+    label: "关系审计",
+    purpose: "检查每条边是不是方向正确、类型明确、值得保留。",
+    output: "cleaner typed graph + changed edge list",
+  },
+  {
+    name: "Deep Reading Agent",
+    label: "精读升级",
+    purpose: "把 skimmed/read note 升级成能支持系统设计的 deep reading note。",
+    output: "stronger method / limitation / reusable module / evidence sections",
+  },
+  {
+    name: "Gap Finder Agent",
+    label: "问题发现",
+    purpose: "从系统角色和可复用模块里找实验级 research gaps。",
+    output: "5 actionable gaps + supporting papers + experiment idea",
+  },
+  {
+    name: "System Design Mapper Agent",
+    label: "系统映射",
+    purpose: "把论文图谱转成 General Multi-Agent Task Planning Model 架构草图。",
+    output: "modules + interfaces + risks + supporting papers",
+  },
+];
+
+const relationFields = Object.keys(relationTypes).filter((type) => type !== "cites");
+
+const systemRoleOrder = [
+  "semantic_planner",
+  "task_allocator",
+  "world_simulator",
+  "planner_critic",
+  "executor",
+  "executor_interface",
+  "memory_module",
+  "reward_designer",
+  "code_policy_generator",
+  "action_tokenizer",
+  "recovery_policy",
+  "planner_baseline",
+];
 
 function parseValue(raw) {
   const value = raw.trim();
@@ -175,6 +334,30 @@ function asList(value) {
   return [value];
 }
 
+function tokenLabel(value) {
+  return label(value).replaceAll("_", " ");
+}
+
+function buildRelations(meta) {
+  const relations = [];
+  const typedTargets = new Set();
+
+  for (const type of relationFields) {
+    for (const target of asList(meta[type])) {
+      relations.push({ type, target });
+      typedTargets.add(target);
+    }
+  }
+
+  for (const target of asList(meta.cites)) {
+    if (!typedTargets.has(target)) {
+      relations.push({ type: "cites", target });
+    }
+  }
+
+  return relations;
+}
+
 function label(value) {
   return valueLabels[value] ?? value;
 }
@@ -237,6 +420,11 @@ async function readPapers() {
       published_value: monthValue(published),
       domains: asList(meta.domains),
       cites: asList(meta.cites),
+      system_roles: asList(meta.system_roles),
+      reusable_modules: asList(meta.reusable_modules),
+      evidence_level: meta.evidence_level || meta.status || "unknown",
+      next_action: meta.next_action || meta.action || "",
+      relations: buildRelations(meta),
       primary_domain: meta.primary_domain || asList(meta.domains)[0] || label(meta.tech_paradigm),
       file: relative(rootDir, filePath),
       summary: section(body, "一句话结论"),
@@ -246,6 +434,8 @@ async function readPapers() {
       limitation: section(body, "局限"),
       relation: section(body, "和其他论文的关系"),
       planning_insight: section(body, "对多智能体任务规划模型的启发"),
+      reusable_module_text: section(body, "可复用模块"),
+      evidence_risk: section(body, "证据与风险"),
       open_question: section(body, "开放问题"),
     });
   }
@@ -266,14 +456,8 @@ function uniqueValues(papers, field) {
   ].sort((a, b) => label(a).localeCompare(label(b), "zh-CN"));
 }
 
-function countBy(papers, field) {
-  const counts = new Map();
-  for (const paper of papers) {
-    const value = paper[field];
-    if (!value) continue;
-    counts.set(value, (counts.get(value) ?? 0) + 1);
-  }
-  return counts;
+function uniqueList(values) {
+  return [...new Set(values.filter(Boolean).map(String))];
 }
 
 function yearRange(papers) {
@@ -289,10 +473,16 @@ function renderOptions(values) {
     .join("\n");
 }
 
+function renderRoleOptions(values) {
+  return values
+    .map((value) => `<option value="${escapeHtml(value)}">${escapeHtml(tokenLabel(value))}</option>`)
+    .join("\n");
+}
+
 function renderStats(papers) {
   const years = yearRange(papers);
   const highReadiness = papers.filter((paper) => paper.readiness === "high").length;
-  const inScope = papers.filter((paper) => paper.scope === "in_scope").length;
+  const relationCount = papers.reduce((sum, paper) => sum + asList(paper.relations).length, 0);
   return `
     <div class="stats">
       <div class="stat-card">
@@ -304,14 +494,203 @@ function renderStats(papers) {
         <div class="stat-label">年份范围</div>
       </div>
       <div class="stat-card">
-        <div class="stat-value">${inScope}</div>
-        <div class="stat-label">范围内论文</div>
+        <div class="stat-value">${relationCount}</div>
+        <div class="stat-label">Typed relations</div>
       </div>
       <div class="stat-card">
         <div class="stat-value">${highReadiness}</div>
         <div class="stat-label">高优先级</div>
       </div>
     </div>
+  `;
+}
+
+function paperQualityScore(paper) {
+  const checks = [
+    Boolean(paper.summary),
+    Boolean(paper.planning_insight),
+    Boolean(paper.reusable_module_text),
+    Boolean(paper.evidence_risk),
+    asList(paper.system_roles).length > 0,
+    asList(paper.reusable_modules).length > 0,
+    asList(paper.relations).length > 0,
+    paper.status === "read" || paper.action === "deep_read",
+  ];
+  return Math.round((checks.filter(Boolean).length / checks.length) * 100);
+}
+
+function renderQualityBoard(papers) {
+  const total = papers.length || 1;
+  const relationCoverage = papers.filter((paper) => asList(paper.relations).length > 0).length;
+  const roleCoverage = papers.filter((paper) => asList(paper.system_roles).length > 0).length;
+  const moduleCoverage = papers.filter((paper) => asList(paper.reusable_modules).length > 0).length;
+  const evidenceCoverage = papers.filter((paper) => paper.evidence_risk).length;
+  const avgQuality = Math.round(
+    papers.reduce((sum, paper) => sum + paperQualityScore(paper), 0) / total,
+  );
+
+  const metrics = [
+    ["平均 note 质量", `${avgQuality}%`, "summary / roles / modules / evidence / relations"],
+    ["关系覆盖", `${relationCoverage}/${total}`, "至少一条 typed relation"],
+    ["系统角色覆盖", `${roleCoverage}/${total}`, "能放入我们的模型架构"],
+    ["复用模块覆盖", `${moduleCoverage}/${total}`, "可转成设计组件"],
+    ["证据风险覆盖", `${evidenceCoverage}/${total}`, "明确知道证据和风险"],
+  ];
+
+  return `
+    <section class="section compact-section" id="quality">
+      <div class="section-kicker">Index quality</div>
+      <div class="section-head">
+        <div>
+          <h2>索引质量面板</h2>
+          <p>目标不是多收论文，而是让每篇论文都能回答：它在系统里是什么角色、能复用什么、证据强到什么程度、下一步该做什么。</p>
+        </div>
+      </div>
+      <div class="quality-grid">
+        ${metrics
+          .map(
+            ([name, value, hint]) => `
+          <div class="quality-card">
+            <div class="quality-value">${escapeHtml(value)}</div>
+            <div class="quality-name">${escapeHtml(name)}</div>
+            <p>${escapeHtml(hint)}</p>
+          </div>
+        `,
+          )
+          .join("")}
+      </div>
+    </section>
+  `;
+}
+
+function renderRoleBoard(papers) {
+  const roles = uniqueList(papers.flatMap((paper) => asList(paper.system_roles))).sort(
+    (a, b) => {
+      const ai = systemRoleOrder.indexOf(a);
+      const bi = systemRoleOrder.indexOf(b);
+      if (ai !== -1 || bi !== -1) return (ai === -1 ? 999 : ai) - (bi === -1 ? 999 : bi);
+      return tokenLabel(a).localeCompare(tokenLabel(b), "zh-CN");
+    },
+  );
+
+  const cards = roles
+    .map((role) => {
+      const rolePapers = papers.filter((paper) => asList(paper.system_roles).includes(role));
+      const examples = rolePapers
+        .slice(0, 4)
+        .map(
+          (paper) => `
+          <li>
+            <strong>${escapeHtml(paper.short_title)}</strong>
+            <span>${escapeHtml(paper.planning_insight || paper.planning_relevance || "")}</span>
+          </li>
+        `,
+        )
+        .join("");
+
+      return `
+        <article class="role-card">
+          <div class="role-count">${rolePapers.length}</div>
+          <h3>${escapeHtml(tokenLabel(role))}</h3>
+          <ul>${examples}</ul>
+        </article>
+      `;
+    })
+    .join("");
+
+  return `
+    <section class="section compact-section" id="roles">
+      <div class="section-kicker">System roles</div>
+      <div class="section-head">
+        <div>
+          <h2>系统角色地图</h2>
+          <p>把论文映射到我们的模型架构：哪些是 executor，哪些是 world simulator，哪些可以作为 planner critic、memory、task allocator 或 baseline。</p>
+        </div>
+      </div>
+      <div class="role-grid">${cards}</div>
+    </section>
+  `;
+}
+
+function renderReadingQueue(papers) {
+  const actionValues = uniqueList(papers.map((paper) => paper.next_action).filter(Boolean)).sort(
+    (a, b) => {
+      const ai = nextActionOrder.indexOf(a);
+      const bi = nextActionOrder.indexOf(b);
+      if (ai !== -1 || bi !== -1) return (ai === -1 ? 999 : ai) - (bi === -1 ? 999 : bi);
+      return tokenLabel(a).localeCompare(tokenLabel(b), "zh-CN");
+    },
+  );
+
+  const cards = actionValues
+    .map((action) => {
+      const actionPapers = papers
+        .filter((paper) => paper.next_action === action)
+        .sort((a, b) => b.year - a.year || a.short_title.localeCompare(b.short_title));
+      const items = actionPapers
+        .slice(0, 5)
+        .map(
+          (paper) => `
+          <li>
+            <span>${escapeHtml(paper.published)}</span>
+            <strong>${escapeHtml(paper.short_title)}</strong>
+            <em>${escapeHtml(tokenLabel(paper.evidence_level || paper.status))}</em>
+          </li>
+        `,
+        )
+        .join("");
+
+      return `
+        <article class="queue-card">
+          <div class="queue-count">${actionPapers.length}</div>
+          <h3>${escapeHtml(tokenLabel(action))}</h3>
+          <p>${escapeHtml(nextActionHints[action] || "把这组论文转成更明确的系统设计动作。")}</p>
+          <ul>${items}</ul>
+        </article>
+      `;
+    })
+    .join("");
+
+  return `
+    <section class="section compact-section" id="reading">
+      <div class="section-kicker">Reading operations</div>
+      <div class="section-head">
+        <div>
+          <h2>阅读行动队列</h2>
+          <p>这里不是普通待办，而是把每篇论文下一步要产出的研究动作显式化：审关系、提能力表、做 baseline、抽系统架构或扩展多智能体 rollout。</p>
+        </div>
+      </div>
+      <div class="queue-grid">${cards}</div>
+    </section>
+  `;
+}
+
+function renderAgentBoard() {
+  const cards = agentWorkflows
+    .map(
+      (workflow) => `
+        <article class="agent-card">
+          <div class="agent-label">${escapeHtml(workflow.label)}</div>
+          <h3>${escapeHtml(workflow.name)}</h3>
+          <p>${escapeHtml(workflow.purpose)}</p>
+          <div class="agent-output">${escapeHtml(workflow.output)}</div>
+        </article>
+      `,
+    )
+    .join("");
+
+  return `
+    <section class="section compact-section" id="agents">
+      <div class="section-kicker">Agent workflows</div>
+      <div class="section-head">
+        <div>
+          <h2>Agent 工作流</h2>
+          <p>把仓库维护拆成可复制的 agent 任务：新增论文、审计关系、精读升级、发现 gap、映射系统设计。prompt 原文放在仓库根目录。</p>
+        </div>
+        <a class="agent-prompt-link" data-agent-prompts href="AGENT_PROMPTS.md" target="_blank" rel="noreferrer">打开 AGENT_PROMPTS.md</a>
+      </div>
+      <div class="agent-grid">${cards}</div>
+    </section>
   `;
 }
 
@@ -367,17 +746,28 @@ function renderDomainGraph(papers) {
 
   const edges = graphPapers
     .flatMap((paper) =>
-      asList(paper.cites)
-        .filter((targetId) => byId.has(targetId) && positions.has(paper.id) && positions.has(targetId))
-        .map((targetId) => ({ source: paper.id, target: targetId })),
+      asList(paper.relations)
+        .filter((relation) => byId.has(relation.target) && positions.has(paper.id) && positions.has(relation.target))
+        .map((relation) => ({ source: paper.id, target: relation.target, type: relation.type })),
     )
-    .map(({ source, target }) => {
+    .map(({ source, target, type }) => {
       const from = positions.get(source);
       const to = positions.get(target);
       const bend = Math.max(40, Math.abs(from.y - to.y) * 0.28);
       const midY = (from.y + to.y) / 2;
       const d = `M ${from.x} ${from.y} C ${from.x} ${midY - bend}, ${to.x} ${midY + bend}, ${to.x} ${to.y}`;
-      return `<path class="graph-edge" data-edge-source="${escapeHtml(source)}" data-edge-target="${escapeHtml(target)}" d="${d}" marker-end="url(#arrowhead)"></path>`;
+      const relation = relationTypes[type] ?? relationTypes.cites;
+      return `<path class="graph-edge"
+        style="--edge-color:${relation.color}"
+        data-edge-source="${escapeHtml(source)}"
+        data-edge-target="${escapeHtml(target)}"
+        data-edge-type="${escapeHtml(type)}"
+        data-edge-label="${escapeHtml(relation.label)}"
+        data-edge-short="${escapeHtml(relation.short)}"
+        data-edge-description="${escapeHtml(relation.description)}"
+        data-edge-target-title="${escapeHtml(to.paper.short_title)}"
+        d="${d}"
+        marker-end="url(#arrowhead-${escapeHtml(type)})"></path>`;
     })
     .join("\n");
 
@@ -402,92 +792,55 @@ function renderDomainGraph(papers) {
     })
     .join("\n");
 
-  const legend = domainColumns
-    .map((domain) => `<span><i style="--domain:${domainColors[domain]}"></i>${escapeHtml(domain)}</span>`)
-    .join("");
+  const relationMarkers = Object.entries(relationTypes)
+    .map(
+      ([type, relation]) => `
+                <marker id="arrowhead-${escapeHtml(type)}" markerWidth="4.5" markerHeight="4.5" refX="3.5" refY="2.25" orient="auto">
+                  <path d="M 0 0 L 4.5 2.25 L 0 4.5 z" fill="${relation.color}"></path>
+                </marker>`,
+    )
+    .join("\n");
+  const relationFilters = [
+    `<button class="relation-filter is-active" data-relation-filter="all">全部关系</button>`,
+    ...Object.entries(relationTypes).map(
+      ([type, relation]) =>
+        `<button class="relation-filter" style="--rel:${relation.color}" data-relation-filter="${escapeHtml(type)}">${escapeHtml(relation.label)}</button>`,
+    ),
+  ].join("");
 
   return `
     <section class="section" id="domain-graph">
-      <div class="section-kicker">Node-edge timeline</div>
+      <div class="section-kicker">Typed relation graph</div>
       <div class="section-head">
         <div>
           <h2>领域时间关系图</h2>
-          <p>纵向按论文发表年月排序，横向按领域分列。连线表示当前知识库里手工标注的引用或技术脉络关系。</p>
-        </div>
-        <div class="graph-tools">
-          <div class="graph-legend">${legend}</div>
-          <a class="graph-note-button is-disabled" data-open-note target="_blank" rel="noreferrer" aria-disabled="true">选择节点后打开 Note</a>
+          <p>纵向按论文发表年月排序，横向按领域分列。点击节点后，只显示该论文指向父论文或前序工作的关系线。</p>
         </div>
       </div>
-      <div class="graph-frame">
-        <div class="domain-graph" style="--graph-width:${width}px; --graph-height:${height}px">
-          ${columns}
-          ${monthLabels}
-          <svg class="graph-edges" viewBox="0 0 ${width} ${height}" aria-hidden="true">
-            <defs>
-              <marker id="arrowhead" markerWidth="4.5" markerHeight="4.5" refX="3.5" refY="2.25" orient="auto">
-                <path d="M 0 0 L 4.5 2.25 L 0 4.5 z"></path>
-              </marker>
-            </defs>
-            ${edges}
-          </svg>
-          ${nodes}
-        </div>
+      <div class="relation-filterbar" aria-label="关系类型过滤">
+        ${relationFilters}
       </div>
-    </section>
-  `;
-}
-
-function renderTimeline(papers, field) {
-  const years = yearRange(papers);
-  const values = uniqueValues(papers, field);
-  const totals = countBy(papers, field);
-  const colorByValue = new Map(values.map((value, index) => [value, palette[index % palette.length]]));
-
-  const rows = values
-    .map((value) => {
-      const cells = years
-        .map((year) => {
-          const count = papers.filter((paper) => paper.year === year && paper[field] === value).length;
-          if (!count) return `<td></td>`;
-          const size = 28 + Math.min(count, 5) * 7;
-          return `<td><button class="bubble" style="--size:${size}px; --bubble:${colorByValue.get(value)}" data-field="${field}" data-value="${escapeHtml(value)}" data-year="${year}" aria-label="${escapeHtml(label(value))} ${year} ${count} 篇">${count}</button></td>`;
-        })
-        .join("");
-
-      return `
-        <tr>
-          <th>
-            <span class="swatch" style="--swatch:${colorByValue.get(value)}"></span>
-            <span>${escapeHtml(label(value))}</span>
-            <small>${totals.get(value)} 篇</small>
-          </th>
-          ${cells}
-        </tr>
-      `;
-    })
-    .join("\n");
-
-  return `
-    <section class="section" id="${field}">
-      <div class="section-kicker">${escapeHtml(fieldLabels[field])}</div>
-      <div class="section-head">
-        <div>
-          <h2>${escapeHtml(fieldLabels[field])}时间轴</h2>
-          <p>点击气泡可以联动筛选下方论文列表。</p>
+      <a class="graph-note-button is-disabled" data-open-note target="_blank" rel="noreferrer" aria-disabled="true">选择节点后打开 Note</a>
+      <div class="graph-workspace">
+        <div class="graph-frame">
+          <div class="domain-graph" style="--graph-width:${width}px; --graph-height:${height}px">
+            ${columns}
+            ${monthLabels}
+            <svg class="graph-edges" viewBox="0 0 ${width} ${height}" aria-hidden="true">
+              <defs>
+                ${relationMarkers}
+              </defs>
+              ${edges}
+            </svg>
+            ${nodes}
+          </div>
         </div>
-        <button class="icon-button" data-reset>重置</button>
-      </div>
-      <div class="timeline-wrap">
-        <table class="timeline">
-          <thead>
-            <tr>
-              <th>标签</th>
-              ${years.map((year) => `<th>${year}</th>`).join("")}
-            </tr>
-          </thead>
-          <tbody>${rows}</tbody>
-        </table>
+        <aside class="relation-panel" data-relation-panel>
+          <div class="relation-kicker">Relation lens</div>
+          <h3 data-relation-title>选择一篇论文</h3>
+          <p data-relation-summary>点击左侧节点后，这里只解释“当前论文 -> 父论文/前序工作”的 typed relations。</p>
+          <div class="relation-list" data-relation-list></div>
+        </aside>
       </div>
     </section>
   `;
@@ -498,6 +851,13 @@ function renderPapers(papers) {
     .map((paper) => {
       const tags = asList(paper.tags)
         .map((tag) => `<span class="tag">${escapeHtml(tag)}</span>`)
+        .join("");
+      const roles = asList(paper.system_roles)
+        .map((role) => `<span class="tag role-tag">${escapeHtml(tokenLabel(role))}</span>`)
+        .join("");
+      const modules = asList(paper.reusable_modules)
+        .slice(0, 5)
+        .map((module) => `<span class="tag module-tag">${escapeHtml(tokenLabel(module))}</span>`)
         .join("");
       const authors = asList(paper.authors).slice(0, 6).join(", ");
       const institutions = asList(paper.institutions).join(" · ");
@@ -518,6 +878,7 @@ function renderPapers(papers) {
           data-tech_paradigm="${escapeHtml(paper.tech_paradigm)}"
           data-primary_technical_layer="${escapeHtml(paper.primary_technical_layer)}"
           data-primary_task_family="${escapeHtml(paper.primary_task_family)}"
+          data-system_roles="${escapeHtml(asList(paper.system_roles).join(" "))}"
           data-search="${escapeHtml(
             [
               paper.title,
@@ -528,8 +889,12 @@ function renderPapers(papers) {
               paper.contribution,
               paper.published,
               paper.primary_domain,
+              paper.evidence_level,
+              paper.next_action,
               asList(paper.domains).join(" "),
               asList(paper.tags).join(" "),
+              asList(paper.system_roles).join(" "),
+              asList(paper.reusable_modules).join(" "),
               authors,
               institutions,
             ].join(" ").toLowerCase(),
@@ -561,8 +926,13 @@ function renderPapers(papers) {
                 <div><b>局限</b>${markdownToHtml(paper.limitation)}</div>
                 <div><b>关系</b>${markdownToHtml(paper.relation)}</div>
                 <div><b>对多智能体任务规划模型的启发</b>${markdownToHtml(paper.planning_insight)}</div>
+                <div><b>可复用模块</b>${markdownToHtml(paper.reusable_module_text)}</div>
+                <div><b>证据与风险</b>${markdownToHtml(paper.evidence_risk)}</div>
               </div>
             </details>
+            <div class="paper-roles">${roles}</div>
+            <div class="paper-modules">${modules}</div>
+            <div class="paper-next">Evidence: ${escapeHtml(tokenLabel(paper.evidence_level))} · Next: ${escapeHtml(tokenLabel(paper.next_action))}</div>
             <div class="paper-tags">${tags}</div>
             <div class="paper-links">${links}</div>
           </div>
@@ -590,7 +960,9 @@ function renderOpenQuestions(papers) {
 function renderIndex(papers) {
   const techValues = uniqueValues(papers, "tech_paradigm");
   const layerValues = uniqueValues(papers, "primary_technical_layer");
-  const taskValues = uniqueValues(papers, "primary_task_family");
+  const roleValues = uniqueList(papers.flatMap((paper) => asList(paper.system_roles))).sort((a, b) =>
+    tokenLabel(a).localeCompare(tokenLabel(b), "zh-CN"),
+  );
   const years = yearRange(papers);
   const generatedAt = new Date().toLocaleString("zh-CN", {
     timeZone: "Asia/Shanghai",
@@ -731,7 +1103,6 @@ function renderIndex(papers) {
 
     .stat-card,
     .control-panel,
-    .timeline-wrap,
     .paper-card,
     .question-card {
       background: var(--paper);
@@ -774,6 +1145,10 @@ function renderIndex(papers) {
       border-top: 1px solid var(--line);
     }
 
+    .compact-section {
+      padding: 42px 0;
+    }
+
     .section-kicker {
       color: var(--blue);
       font-family: var(--mono);
@@ -803,53 +1178,11 @@ function renderIndex(papers) {
 
     .control-panel {
       display: grid;
-      grid-template-columns: 1.5fr repeat(3, 1fr) auto;
+      grid-template-columns: 1.5fr repeat(4, 1fr) auto;
       gap: 12px;
       padding: 16px;
       margin: 8px 0 28px;
       box-shadow: 0 12px 28px rgba(22, 50, 83, 0.08);
-    }
-
-    .graph-tools {
-      position: sticky;
-      top: 76px;
-      z-index: 7;
-      display: grid;
-      justify-items: end;
-      gap: 8px;
-      padding: 6px;
-      border-radius: 8px;
-      background: rgba(247, 251, 255, 0.72);
-    }
-
-    .graph-legend {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: flex-end;
-      gap: 4px;
-      max-width: 230px;
-    }
-
-    .graph-legend span {
-      display: inline-flex;
-      align-items: center;
-      gap: 3px;
-      min-height: 14px;
-      padding: 0 5px;
-      border: 1px solid var(--soft-line);
-      border-radius: 999px;
-      background: rgba(255, 255, 255, 0.66);
-      color: #405570;
-      font-size: 6px;
-      font-family: var(--mono);
-    }
-
-    .graph-legend i {
-      width: 4px;
-      height: 4px;
-      border-radius: 50%;
-      background: var(--domain);
-      box-shadow: 0 0 6px color-mix(in srgb, var(--domain), transparent 35%);
     }
 
     .graph-note-button {
@@ -893,6 +1226,37 @@ function renderIndex(papers) {
       background: rgba(236, 246, 255, 0.96);
       border-color: rgba(36, 107, 254, 0.58);
       box-shadow: 0 0 0 3px var(--glow);
+    }
+
+    .relation-filterbar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: -8px 0 18px;
+    }
+
+    .relation-filter {
+      width: auto;
+      min-height: 30px;
+      padding: 0 10px;
+      border-color: color-mix(in srgb, var(--rel, var(--blue)), transparent 62%);
+      border-radius: 999px;
+      color: color-mix(in srgb, var(--rel, var(--blue)), #111827 24%);
+      font-family: var(--mono);
+      font-size: 12px;
+    }
+
+    .relation-filter.is-active {
+      background: color-mix(in srgb, var(--rel, var(--blue)), transparent 86%);
+      border-color: color-mix(in srgb, var(--rel, var(--blue)), transparent 28%);
+      box-shadow: 0 0 0 3px color-mix(in srgb, var(--rel, var(--blue)), transparent 86%);
+    }
+
+    .graph-workspace {
+      display: grid;
+      grid-template-columns: max-content minmax(300px, 1fr);
+      gap: 18px;
+      align-items: start;
     }
 
     .graph-frame {
@@ -976,13 +1340,10 @@ function renderIndex(papers) {
 
     .graph-edge {
       fill: none;
-      stroke: rgba(105, 92, 255, 0.34);
+      stroke: var(--edge-color, rgba(105, 92, 255, 0.34));
       stroke-width: 0.75;
+      opacity: 0;
       transition: opacity 0.16s ease, stroke 0.16s ease, stroke-width 0.16s ease;
-    }
-
-    .graph-edges marker path {
-      fill: rgba(105, 92, 255, 0.48);
     }
 
     .graph-node {
@@ -1030,13 +1391,13 @@ function renderIndex(papers) {
     }
 
     .graph-edge.is-active {
-      stroke: rgba(36, 107, 254, 0.78);
+      stroke: var(--edge-color, rgba(36, 107, 254, 0.78));
       stroke-width: 1.3;
       opacity: 1;
     }
 
     .graph-edge.is-dimmed {
-      opacity: 0.12;
+      opacity: 0;
     }
 
     .graph-node strong {
@@ -1057,6 +1418,207 @@ function renderIndex(papers) {
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
+    }
+
+    .relation-panel {
+      position: sticky;
+      top: 84px;
+      min-height: 280px;
+      padding: 18px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.82);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(18px);
+    }
+
+    .relation-kicker {
+      color: var(--blue);
+      font-family: var(--mono);
+      font-size: 12px;
+      margin-bottom: 8px;
+    }
+
+    .relation-panel h3 {
+      font-size: 24px;
+      margin-bottom: 8px;
+    }
+
+    .relation-panel p {
+      margin: 0 0 14px;
+      font-size: 13px;
+    }
+
+    .relation-list {
+      display: grid;
+      gap: 10px;
+    }
+
+    .relation-item {
+      padding: 10px 12px;
+      border: 1px solid var(--soft-line);
+      border-left: 3px solid var(--rel);
+      border-radius: 6px;
+      background: rgba(247, 251, 255, 0.86);
+    }
+
+    .relation-type {
+      display: inline-flex;
+      align-items: center;
+      min-height: 18px;
+      padding: 0 6px;
+      border-radius: 999px;
+      background: color-mix(in srgb, var(--rel), transparent 88%);
+      color: color-mix(in srgb, var(--rel), #111827 30%);
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .relation-target {
+      margin-top: 6px;
+      color: #142033;
+      font-weight: 700;
+    }
+
+    .relation-description {
+      margin-top: 4px;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.45;
+    }
+
+    .quality-grid,
+    .role-grid,
+    .queue-grid,
+    .agent-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 14px;
+    }
+
+    .quality-card,
+    .role-card,
+    .queue-card,
+    .agent-card {
+      padding: 18px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.76);
+      box-shadow: 0 12px 28px rgba(22, 50, 83, 0.08);
+    }
+
+    .quality-value,
+    .role-count,
+    .queue-count {
+      color: var(--blue);
+      font-family: var(--mono);
+      font-size: 28px;
+      font-weight: 800;
+    }
+
+    .quality-name,
+    .role-card h3,
+    .queue-card h3,
+    .agent-card h3 {
+      color: #142033;
+      font-size: 16px;
+      font-weight: 760;
+      margin: 4px 0 8px;
+    }
+
+    .quality-card p,
+    .queue-card p,
+    .agent-card p {
+      margin: 0;
+      font-size: 12px;
+      line-height: 1.45;
+    }
+
+    .role-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    .queue-grid {
+      grid-template-columns: repeat(4, 1fr);
+    }
+
+    .agent-grid {
+      grid-template-columns: repeat(5, 1fr);
+    }
+
+    .role-card ul,
+    .queue-card ul {
+      display: grid;
+      gap: 10px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .queue-card ul {
+      margin-top: 14px;
+    }
+
+    .role-card li,
+    .queue-card li {
+      border-top: 1px solid var(--soft-line);
+      padding-top: 9px;
+    }
+
+    .role-card li strong,
+    .queue-card li strong {
+      display: block;
+      font-size: 13px;
+    }
+
+    .role-card li span,
+    .queue-card li span,
+    .queue-card li em {
+      display: block;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.45;
+    }
+
+    .queue-card li em {
+      font-style: normal;
+      font-family: var(--mono);
+      font-size: 11px;
+    }
+
+    .agent-label,
+    .agent-output,
+    .agent-prompt-link {
+      font-family: var(--mono);
+      font-size: 12px;
+    }
+
+    .agent-label {
+      color: var(--blue);
+      margin-bottom: 10px;
+    }
+
+    .agent-output {
+      margin-top: 14px;
+      padding-top: 10px;
+      border-top: 1px solid var(--soft-line);
+      color: #415a77;
+      line-height: 1.45;
+    }
+
+    .agent-prompt-link {
+      flex: 0 0 auto;
+      min-height: 32px;
+      display: inline-flex;
+      align-items: center;
+      padding: 0 12px;
+      border: 1px solid rgba(36, 107, 254, 0.26);
+      border-radius: 5px;
+      background: rgba(255, 255, 255, 0.74);
+      color: #1f4fd6;
+      text-decoration: none;
+      box-shadow: 0 8px 18px rgba(22, 50, 83, 0.08);
     }
 
     input,
@@ -1093,72 +1655,6 @@ function renderIndex(papers) {
     .icon-button {
       width: auto;
       white-space: nowrap;
-    }
-
-    .timeline-wrap {
-      overflow: auto;
-      box-shadow: 0 14px 35px rgba(22, 50, 83, 0.08);
-    }
-
-    .timeline {
-      width: 100%;
-      border-collapse: collapse;
-      min-width: 820px;
-    }
-
-    .timeline th,
-    .timeline td {
-      border-bottom: 1px solid var(--soft-line);
-      border-right: 1px solid var(--soft-line);
-      padding: 12px;
-      text-align: center;
-    }
-
-    .timeline thead th {
-      background: rgba(236, 246, 255, 0.72);
-      color: #314863;
-      font-family: var(--mono);
-      font-size: 13px;
-    }
-
-    .timeline th:first-child {
-      width: 260px;
-      text-align: left;
-      color: var(--ink);
-      font-weight: 500;
-    }
-
-    .timeline tbody th {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .timeline small {
-      margin-left: auto;
-      color: var(--muted);
-      font-weight: 400;
-    }
-
-    .swatch {
-      display: inline-block;
-      width: 12px;
-      height: 28px;
-      background: var(--swatch);
-      border: 1px solid rgba(255,255,255,0.72);
-      box-shadow: 0 0 14px color-mix(in srgb, var(--swatch), transparent 55%);
-    }
-
-    .bubble {
-      width: var(--size);
-      height: var(--size);
-      min-height: 0;
-      padding: 0;
-      border-radius: 50%;
-      background: var(--bubble);
-      color: white;
-      font-weight: 700;
-      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.42), 0 0 20px color-mix(in srgb, var(--bubble), transparent 62%);
     }
 
     .paper-grid {
@@ -1224,6 +1720,8 @@ function renderIndex(papers) {
     }
 
     .paper-meta,
+    .paper-roles,
+    .paper-modules,
     .paper-tags,
     .paper-links {
       display: flex;
@@ -1244,6 +1742,16 @@ function renderIndex(papers) {
       border-radius: 4px;
       padding: 2px 8px;
       background: rgba(246, 251, 255, 0.86);
+    }
+
+    .role-tag {
+      border-color: rgba(36, 107, 254, 0.34);
+      color: #1f4fd6;
+    }
+
+    .module-tag {
+      border-color: rgba(0, 167, 199, 0.34);
+      color: #0f7894;
     }
 
     .paper-card h3 {
@@ -1292,6 +1800,18 @@ function renderIndex(papers) {
 
     .paper-tags {
       margin-top: 14px;
+    }
+
+    .paper-roles,
+    .paper-modules {
+      margin-top: 10px;
+    }
+
+    .paper-next {
+      margin-top: 10px;
+      color: var(--muted);
+      font-family: var(--mono);
+      font-size: 12px;
     }
 
     .paper-links {
@@ -1375,9 +1895,14 @@ function renderIndex(papers) {
 
       .stats,
       .control-panel,
+      .graph-workspace,
       .paper-card,
       .detail-grid,
-      .question-grid {
+      .question-grid,
+      .quality-grid,
+      .role-grid,
+      .queue-grid,
+      .agent-grid {
         grid-template-columns: 1fr;
       }
 
@@ -1393,9 +1918,9 @@ function renderIndex(papers) {
     <a class="brand" href="#">General Multi-Agent Model</a>
     <nav class="nav">
       <a href="#domain-graph">关系图</a>
-      <a href="#tech_paradigm">技术范式</a>
-      <a href="#primary_technical_layer">主技术层</a>
-      <a href="#primary_task_family">任务族</a>
+      <a href="#roles">系统角色</a>
+      <a href="#reading">阅读队列</a>
+      <a href="#agents">Agent</a>
       <a href="#papers">论文</a>
       <a href="#questions">开放问题</a>
     </nav>
@@ -1404,15 +1929,16 @@ function renderIndex(papers) {
   <main class="page">
     <section class="hero">
       <div class="eyebrow">Obsidian-first paper repository · generated ${escapeHtml(generatedAt)}</div>
-      <h1>通用多智能体任务规划模型时间轴</h1>
-      <p>基于 Markdown note 的结构化 frontmatter 自动生成。当前版本聚焦 VLA、π 系列、World Action Model 和 Dreamer，把它们定位为端到端多智能体任务规划模型里的执行器、世界模拟器或 planner critic。</p>
+      <h1>通用多智能体任务规划模型研究图谱</h1>
+      <p>基于 Markdown note 的 typed relations 自动生成。当前版本聚焦 VLA、π 系列、World Action Model 和 Dreamer，把论文定位为端到端多智能体任务规划模型里的执行器、世界模拟器、planner critic、记忆模块或任务分配器。</p>
       ${renderStats(papers)}
     </section>
 
     ${renderDomainGraph(papers)}
-    ${renderTimeline(papers, "tech_paradigm")}
-    ${renderTimeline(papers, "primary_technical_layer")}
-    ${renderTimeline(papers, "primary_task_family")}
+    ${renderQualityBoard(papers)}
+    ${renderRoleBoard(papers)}
+    ${renderReadingQueue(papers)}
+    ${renderAgentBoard()}
 
     <section class="section" id="papers">
       <div class="section-kicker">Paper index</div>
@@ -1436,6 +1962,10 @@ function renderIndex(papers) {
         <select id="layer-filter">
           <option value="">全部主技术层</option>
           ${renderOptions(layerValues)}
+        </select>
+        <select id="role-filter">
+          <option value="">全部系统角色</option>
+          ${renderRoleOptions(roleValues)}
         </select>
         <button data-reset>重置</button>
       </div>
@@ -1469,6 +1999,7 @@ function renderIndex(papers) {
     const yearFilter = document.querySelector("#year-filter");
     const techFilter = document.querySelector("#tech-filter");
     const layerFilter = document.querySelector("#layer-filter");
+    const roleFilter = document.querySelector("#role-filter");
     const resultCount = document.querySelector("#result-count");
     const emptyState = document.querySelector("#empty-state");
 
@@ -1477,6 +2008,7 @@ function renderIndex(papers) {
       const year = yearFilter.value;
       const tech = techFilter.value;
       const layer = layerFilter.value;
+      const role = roleFilter.value;
       let visible = 0;
 
       for (const card of cards) {
@@ -1484,7 +2016,8 @@ function renderIndex(papers) {
         const matchesYear = !year || card.dataset.year === year;
         const matchesTech = !tech || card.dataset.tech_paradigm === tech;
         const matchesLayer = !layer || card.dataset.primary_technical_layer === layer;
-        const shown = matchesQuery && matchesYear && matchesTech && matchesLayer;
+        const matchesRole = !role || card.dataset.system_roles.split(" ").includes(role);
+        const shown = matchesQuery && matchesYear && matchesTech && matchesLayer && matchesRole;
         card.classList.toggle("is-hidden", !shown);
         if (shown) visible += 1;
       }
@@ -1498,6 +2031,7 @@ function renderIndex(papers) {
       yearFilter.value = "";
       techFilter.value = "";
       layerFilter.value = "";
+      roleFilter.value = "";
       applyFilters();
     }
 
@@ -1505,43 +2039,73 @@ function renderIndex(papers) {
     yearFilter.addEventListener("change", applyFilters);
     techFilter.addEventListener("change", applyFilters);
     layerFilter.addEventListener("change", applyFilters);
+    roleFilter.addEventListener("change", applyFilters);
 
     document.querySelectorAll("[data-reset]").forEach((button) => {
       button.addEventListener("click", resetFilters);
     });
 
-    document.querySelectorAll(".bubble").forEach((button) => {
-      button.addEventListener("click", () => {
-        const field = button.dataset.field;
-        const value = button.dataset.value;
-        const year = button.dataset.year;
-        yearFilter.value = year;
-        if (field === "tech_paradigm") techFilter.value = value;
-        if (field === "primary_technical_layer") layerFilter.value = value;
-        search.value = "";
-        applyFilters();
-        document.querySelector("#papers").scrollIntoView({ behavior: "smooth" });
-      });
-    });
-
     const graphNodes = Array.from(document.querySelectorAll(".graph-node"));
     const graphEdges = Array.from(document.querySelectorAll(".graph-edge"));
+    const relationFilterButtons = Array.from(document.querySelectorAll("[data-relation-filter]"));
     const graphNoteButton = document.querySelector("[data-open-note]");
+    const relationTitle = document.querySelector("[data-relation-title]");
+    const relationSummary = document.querySelector("[data-relation-summary]");
+    const relationList = document.querySelector("[data-relation-list]");
     let selectedGraphNode = null;
+    let selectedGraphNodeId = null;
+    let activeRelationFilter = "all";
 
     function noteUrlFor(path) {
       const prefix = window.location.pathname.endsWith("/views/dashboard.html") ? "../" : "";
       return new URL(prefix + path, window.location.href).href;
     }
 
+    document.querySelectorAll("[data-agent-prompts]").forEach((link) => {
+      link.href = noteUrlFor("AGENT_PROMPTS.md");
+    });
+
+    function updateRelationPanel(node, activeEdges) {
+      if (!relationTitle || !relationSummary || !relationList) return;
+      relationTitle.textContent = node.dataset.nodeTitle;
+      relationSummary.textContent = activeEdges.length
+        ? "当前只显示这篇论文指向父论文或前序工作的关系。可以用上方关系类型过滤。"
+        : "当前过滤条件下没有父论文关系。切回“全部关系”可以检查是否还有其他关系。";
+      relationList.replaceChildren();
+
+      for (const edge of activeEdges) {
+        const item = document.createElement("div");
+        item.className = "relation-item";
+        item.style.setProperty("--rel", edge.style.getPropertyValue("--edge-color") || "#246bfe");
+
+        const type = document.createElement("div");
+        type.className = "relation-type";
+        type.textContent = edge.dataset.edgeLabel + " · " + edge.dataset.edgeShort;
+
+        const target = document.createElement("div");
+        target.className = "relation-target";
+        target.textContent = edge.dataset.edgeTargetTitle;
+
+        const description = document.createElement("div");
+        description.className = "relation-description";
+        description.textContent = edge.dataset.edgeDescription;
+
+        item.append(type, target, description);
+        relationList.append(item);
+      }
+    }
+
     function selectGraphNode(id) {
+      selectedGraphNodeId = id;
       const connected = new Set([id]);
+      const activeEdges = [];
       for (const edge of graphEdges) {
-        if (edge.dataset.edgeSource === id || edge.dataset.edgeTarget === id) {
-          connected.add(edge.dataset.edgeSource);
+        const passesFilter = activeRelationFilter === "all" || edge.dataset.edgeType === activeRelationFilter;
+        if (edge.dataset.edgeSource === id && passesFilter) {
           connected.add(edge.dataset.edgeTarget);
           edge.classList.add("is-active");
           edge.classList.remove("is-dimmed");
+          activeEdges.push(edge);
         } else {
           edge.classList.remove("is-active");
           edge.classList.add("is-dimmed");
@@ -1562,10 +2126,19 @@ function renderIndex(papers) {
         graphNoteButton.setAttribute("aria-disabled", "false");
         graphNoteButton.textContent = "打开 Note · " + selectedGraphNode.dataset.nodeTitle;
       }
+      updateRelationPanel(selectedGraphNode, activeEdges);
     }
 
     graphNodes.forEach((node) => {
       node.addEventListener("click", () => selectGraphNode(node.dataset.nodeId));
+    });
+
+    relationFilterButtons.forEach((button) => {
+      button.addEventListener("click", () => {
+        activeRelationFilter = button.dataset.relationFilter;
+        relationFilterButtons.forEach((item) => item.classList.toggle("is-active", item === button));
+        if (selectedGraphNodeId) selectGraphNode(selectedGraphNodeId);
+      });
     });
 
     document.querySelectorAll(".paper-media img").forEach((img) => {

@@ -17,6 +17,10 @@ primary_task_family: zero_shot_policy
 platform: heterogeneous_robot_data
 planning_relevance: 可作为 planner 的世界 rollout / action feasibility 模型，而不只是末端执行策略。
 multi_robot_relevance: 视频预测和动作联合建模为多机器人协同仿真提供方向，但论文主要验证单机器人真实实验。
+system_roles: [world_simulator, planner_critic, executor]
+reusable_modules: [video_action_world_model, zero_shot_policy_rollout, action_feasibility_prediction]
+evidence_level: paper_read
+next_action: extend_to_multi_agent_rollout
 tags: [World Action Model, DreamZero, video diffusion, zero-shot policy, cross-embodiment]
 authors: [Ye, Ge, Zheng, Gao, Du, Chebotar, Reed, Kautz, Zhu, Fan, Jang]
 institutions: [NVIDIA, University of Texas at Austin, Georgia Tech]
@@ -28,6 +32,11 @@ image_url:
 zotero_key:
 citekey: ye2026world
 cites: [2024-pyramidal-flow-matching-video, 2025-pi05-open-world-generalization, 2024-pi0-vla-flow-model, 2023-rt-2-vla, 2023-dreamerv3-world-models]
+extends: []
+uses: [2024-pyramidal-flow-matching-video, 2023-dreamerv3-world-models]
+enables: []
+complements: []
+contrasts: [2025-pi05-open-world-generalization, 2024-pi0-vla-flow-model, 2023-rt-2-vla]
 ---
 
 ## 一句话结论
@@ -57,6 +66,14 @@ DreamZero 和 Dreamer 都是 world model 思路，但侧重点不同：Dreamer �
 ## 对多智能体任务规划模型的启发
 
 WAM 可以不只做执行器，还可以做 planner 的“行动后果预测器”：给定多个候选子任务分配，预测世界状态变化、冲突风险和可行性。
+
+## 可复用模块
+
+video-action world model、zero-shot policy rollout、action feasibility predictor。适合作为 planner critic 和多机器人联合 rollout 的核心候选。
+
+## 证据与风险
+
+证据强在 zero-shot policy 和视频-动作建模；风险是多主体交互、联合动作空间和通信动作尚未直接验证。
 
 ## 开放问题
 

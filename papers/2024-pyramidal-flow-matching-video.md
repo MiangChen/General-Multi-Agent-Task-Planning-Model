@@ -17,6 +17,10 @@ primary_task_family: video_dynamics_generation
 platform: video_generation_models
 planning_relevance: 为 WAM/DreamZero 一类视频世界预测模型提供高效 flow matching 生成路线。
 multi_robot_relevance: 多机器人 WAM 需要高效预测长时空、多主体交互视频，Pyramidal Flow 是可借鉴的生成骨干。
+system_roles: [world_simulator, video_generator]
+reusable_modules: [pyramidal_flow_matching, efficient_video_generation, future_video_rollout]
+evidence_level: skimmed
+next_action: connect_to_wam_only
 tags: [Pyramidal Flow, flow matching, video generation, world model, diffusion transformer]
 authors: [Jin, Sun, Li, Xu, Jiang, Zhuang, Huang, Song, Mu, Lin]
 institutions: [Peking University, Kuaishou Technology, Beijing University of Posts and Telecommunications]
@@ -28,6 +32,11 @@ image_url:
 zotero_key:
 citekey: jin2024pyramidal
 cites: []
+extends: []
+uses: []
+enables: []
+complements: []
+contrasts: []
 ---
 
 ## 一句话结论
@@ -57,6 +66,14 @@ World Action Models / DreamZero 需要把未来视频和动作关联起来。Pyr
 ## 对多智能体任务规划模型的启发
 
 多机器人 world action model 可能需要预测较长时间范围内的场景演化。分层/多尺度生成可以先预测粗任务进展，再预测局部机器人交互细节。
+
+## 可复用模块
+
+pyramidal flow matching、efficient video rollout、video world backbone。主要作为 WAM 的底层视频生成能力，而不是 planner 本体。
+
+## 证据与风险
+
+证据来自视频生成质量和效率；风险是没有直接验证机器人控制或多机器人任务规划。
 
 ## 开放问题
 

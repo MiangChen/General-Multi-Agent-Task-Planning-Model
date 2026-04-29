@@ -17,6 +17,10 @@ primary_task_family: robust_execution
 platform: multi_embodiment_manipulation
 planning_relevance: 作为部署型通用策略模型，用于评估任务执行成功率和机器人能力边界。
 multi_robot_relevance: 可用于为不同硬件实例提供能力模型，但公开信息不足以支撑严肃多机器人 planner 设计。
+system_roles: [executor, foundation_policy]
+reusable_modules: [deployment_model_card, action_chunk_policy, robot_capability_profile]
+evidence_level: skimmed
+next_action: extract_capability_table
 tags: [π0.6, VLA, deployment, robot foundation model, model card]
 authors: [Physical Intelligence]
 institutions: [Physical Intelligence]
@@ -28,6 +32,11 @@ image_url:
 zotero_key:
 citekey: physicalintelligence2025pi06
 cites: [2025-pi05-open-world-generalization, 2024-pi0-vla-flow-model]
+extends: [2025-pi05-open-world-generalization, 2024-pi0-vla-flow-model]
+uses: []
+enables: []
+complements: []
+contrasts: []
 ---
 
 ## 一句话结论
@@ -57,6 +66,14 @@ cites: [2025-pi05-open-world-generalization, 2024-pi0-vla-flow-model]
 ## 对多智能体任务规划模型的启发
 
 可以把 π0.6 作为“机器人能力模型”的来源：不同平台在不同任务上的成功率、失败类型和恢复能力可以反馈给任务分配器。
+
+## 可复用模块
+
+deployment model card、robot capability profile、action chunk policy。可转成多机器人任务分配器需要的能力和风险先验。
+
+## 证据与风险
+
+证据来自模型卡和部署报告；风险是公开细节有限，需要和实验数据或其他论文互证。
 
 ## 开放问题
 

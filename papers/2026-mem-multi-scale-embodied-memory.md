@@ -17,6 +17,10 @@ primary_task_family: memory_augmented_execution
 platform: long_horizon_manipulation
 planning_relevance: 给 VLA 加入短期视频记忆和长期文本记忆，使执行器能够承接更长时程的任务上下文。
 multi_robot_relevance: 多机器人任务规划需要每个机器人记住局部执行历史，也需要共享团队级任务进度；MEM 提供单机器人长程记忆原型。
+system_roles: [memory_module, executor_context, long_horizon_state]
+reusable_modules: [short_term_video_memory, long_term_language_memory, memory_augmented_policy]
+evidence_level: paper_read
+next_action: design_team_memory
 tags: [MEM, VLA, embodied memory, long-horizon tasks, video memory, language memory]
 authors: [Torne, Pertsch, Walke, Vedder, Nair, Ichter, Ren, Wang, Tang, Stachowicz, Dhabalia, Equi, Vuong, Springenberg, Levine, Finn, Driess]
 institutions: [Physical Intelligence, Stanford, UC Berkeley, MIT]
@@ -28,6 +32,11 @@ image_url:
 zotero_key:
 citekey: torne2026mem
 cites: [2025-pi06-model-card, 2025-pi05-open-world-generalization, 2024-pi0-vla-flow-model]
+extends: [2025-pi06-model-card]
+uses: [2025-pi05-open-world-generalization, 2024-pi0-vla-flow-model]
+enables: []
+complements: []
+contrasts: []
 ---
 
 ## 一句话结论
@@ -57,6 +66,14 @@ MEM 主要是单机器人长程操作记忆，不直接处理团队级共享记�
 ## 对多智能体任务规划模型的启发
 
 多机器人系统应有多层记忆：机器人本地短期记忆、机器人本地任务摘要、团队共享任务进度和全局场景状态。MEM 的视频/文本双记忆结构可以迁移到这个设计。
+
+## 可复用模块
+
+short-term video memory、long-term language memory、memory-augmented policy。可迁移为机器人本地记忆和团队级任务进度摘要。
+
+## 证据与风险
+
+证据强在长程单机器人任务；风险是共享记忆一致性、跨机器人隐私和通信成本未解决。
 
 ## 开放问题
 

@@ -17,6 +17,10 @@ primary_task_family: swarm_policy_generation
 platform: multi_robot_swarm
 planning_relevance: 直接从自然语言生成并部署多机器人代码策略，是多机器人自然语言任务规划的重要系统基线。
 multi_robot_relevance: 论文核心就是真实多机器人系统中的自然语言任务、代码策略生成、仿真验证和自动部署。
+system_roles: [semantic_planner, code_policy_generator, task_allocator, planner_baseline]
+reusable_modules: [language_to_skill_graph, code_policy_generation, deployment_loop]
+evidence_level: paper_read
+next_action: extract_system_architecture
 tags: [GenSwarm, multi-robot, LLM agent, code policy, deployment, skill graph]
 authors: [Ji, Chen, Chen, Zhu, Xu, Groß, Zhou, Cao, Zhao]
 institutions: [Westlake University, Huzhou Institute, University of Groningen, University of Sheffield]
@@ -28,6 +32,11 @@ image_url:
 zotero_key:
 citekey: ji2026genswarm
 cites: []
+extends: []
+uses: []
+enables: []
+complements: [2023-eureka-reward-design-llm, 2025-heterogeneous-mrta-rl]
+contrasts: []
 ---
 
 ## 一句话结论
@@ -57,6 +66,14 @@ Eureka 生成 reward code，GenSwarm 生成 policy code。Heterogeneous MRTA RL 
 ## 对多智能体任务规划模型的启发
 
 GenSwarm 可以作为系统级 baseline：当前端到端多机器人任务规划至少需要语言理解、技能图、任务分配、执行反馈和部署接口。你的方案可以尝试把其中不可微的代码生成和 MILP 部分替换成可学习模块。
+
+## 可复用模块
+
+language-to-skill graph、multi-agent code policy generation、deployment loop。适合作为我们的系统结构 baseline 和 ablation 对象。
+
+## 证据与风险
+
+证据直接来自多机器人系统；风险是代码生成路线可解释但不一定端到端可学习，真实部署约束可能强依赖工程系统。
 
 ## 开放问题
 

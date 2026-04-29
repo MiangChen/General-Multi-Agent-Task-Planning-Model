@@ -17,6 +17,10 @@ primary_task_family:
 platform:
 planning_relevance:
 multi_robot_relevance:
+system_roles: []
+reusable_modules: []
+evidence_level: paper_read
+next_action: relation_audit
 tags: []
 authors: []
 institutions: []
@@ -28,6 +32,11 @@ image_url:
 zotero_key:
 citekey:
 cites: []
+extends: []
+uses: []
+enables: []
+complements: []
+contrasts: []
 ---
 
 ## 一句话结论
@@ -49,6 +58,12 @@ cites: []
 
 
 ## 对多智能体任务规划模型的启发
+
+
+## 可复用模块
+
+
+## 证据与风险
 
 
 ## 开放问题

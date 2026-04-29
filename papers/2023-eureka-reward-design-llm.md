@@ -17,6 +17,10 @@ primary_task_family: reward_shaping
 platform: simulated_control_domains
 planning_relevance: 把自然语言任务目标转成可执行 reward code，为端到端任务规划提供“语言目标到优化信号”的桥。
 multi_robot_relevance: 多机器人任务规划可以借鉴其 reward 生成机制，但需要把协同、等待、冲突和任务依赖编码进奖励。
+system_roles: [reward_designer, planner_critic]
+reusable_modules: [reward_code_generation, evaluator_feedback_loop, task_objective_synthesis]
+evidence_level: paper_read
+next_action: link_to_genswarm
 tags: [Eureka, LLM, reward design, reinforcement learning, reward code]
 authors: [Ma, Liang, Wang, Huang, Bastani, Jayaraman, Zhu, Fan, Anandkumar]
 institutions: [NVIDIA, University of Pennsylvania, Caltech, UT Austin]
@@ -28,6 +32,11 @@ image_url:
 zotero_key:
 citekey: ma2023eureka
 cites: []
+extends: []
+uses: []
+enables: []
+complements: []
+contrasts: []
 ---
 
 ## 一句话结论
@@ -57,6 +66,14 @@ GenSwarm 用 LLM 生成可执行代码策略；Eureka 用 LLM 生成 reward code
 ## 对多智能体任务规划模型的启发
 
 可以让语义理解模块输出 reward 或 critic 参数，用于训练任务分配模块。多机器人场景中，reward 需要同时考虑 makespan、等待时间、路径冲突、能力匹配和失败恢复。
+
+## 可复用模块
+
+reward code generator、evaluator loop、language-to-objective translation。可用于给多机器人任务分配方案生成可执行评分函数。
+
+## 证据与风险
+
+证据来自 reward 生成和 RL 训练闭环；风险是 reward hacking 与环境源码依赖，真实多机器人系统需要安全约束和人工审查。
 
 ## 开放问题
 

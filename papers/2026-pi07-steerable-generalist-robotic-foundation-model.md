@@ -17,6 +17,10 @@ primary_task_family: steerable_long_horizon_execution
 platform: cross_embodiment_manipulation
 planning_relevance: 通过多模态上下文条件控制策略选择，接近 planner 对执行器进行策略参数化调用。
 multi_robot_relevance: 对多机器人很关键的是 prompt/context 可控性：planner 可把角色、策略、子目标和约束编码给不同机器人。
+system_roles: [executor, foundation_policy, steerable_policy]
+reusable_modules: [context_conditioned_policy, steerable_executor_interface, compositional_generalization]
+evidence_level: paper_read
+next_action: use_as_executor_target
 tags: [π0.7, VLA, compositional generalization, steerable policy, cross-embodiment]
 authors: [Physical Intelligence, Ai, Amin, Black, Driess, Finn, Hausman, Ichter, Levine, Pertsch]
 institutions: [Physical Intelligence]
@@ -28,6 +32,11 @@ image_url:
 zotero_key:
 citekey: physicalintelligence2026pi07
 cites: [2026-mem-multi-scale-embodied-memory, 2025-pistar06-recap, 2025-pi06-model-card, 2025-pi05-open-world-generalization, 2024-pi0-vla-flow-model]
+extends: [2026-mem-multi-scale-embodied-memory, 2025-pistar06-recap, 2025-pi06-model-card]
+uses: [2025-pi05-open-world-generalization, 2024-pi0-vla-flow-model]
+enables: []
+complements: []
+contrasts: []
 ---
 
 ## 一句话结论
@@ -57,6 +66,14 @@ cites: [2026-mem-multi-scale-embodied-memory, 2025-pistar06-recap, 2025-pi06-mod
 ## 对多智能体任务规划模型的启发
 
 对你的方向最有价值的是“上下文可控执行器”这个接口：多机器人 planner 可以为不同机器人生成不同上下文，例如角色、目标、路径约束、协作顺序和失败恢复策略。
+
+## 可复用模块
+
+context-conditioned policy、steerable executor interface、compositional generalization setup。适合作为最终 executor 形态的参考目标。
+
+## 证据与风险
+
+证据来自 PI 系列最新路线；风险是仍以直接策略为主，缺少团队规划、显式世界模型和多机器人通信机制。
 
 ## 开放问题
 

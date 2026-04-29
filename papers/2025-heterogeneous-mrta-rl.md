@@ -17,6 +17,10 @@ primary_task_family: heterogeneous_task_allocation
 platform: heterogeneous_multi_robot_systems
 planning_relevance: 直接研究异构多机器人任务分配与调度，是当前仓库里最贴近任务分配模块的论文之一。
 multi_robot_relevance: 核心对象就是异构机器人、任务能力需求、协作等待和 makespan 优化。
+system_roles: [task_allocator, scheduler, planner_baseline]
+reusable_modules: [heterogeneous_agent_task_graph, rl_scheduler, allocation_objective]
+evidence_level: paper_read
+next_action: turn_into_baseline
 tags: [MRTA, heterogeneous robots, reinforcement learning, scheduling, attention, task allocation]
 authors: [Dai, Rai, Chiun, Cao, Sartoretti]
 institutions: [National University of Singapore, IIIT Hyderabad]
@@ -28,6 +32,11 @@ image_url:
 zotero_key:
 citekey: dai2025heterogeneous
 cites: []
+extends: []
+uses: []
+enables: []
+complements: []
+contrasts: []
 ---
 
 ## 一句话结论
@@ -57,6 +66,14 @@ GenSwarm 更关注自然语言到多机器人代码策略的自动生成；本�
 ## 对多智能体任务规划模型的启发
 
 你的系统可以把任务分解和任务分配分成两层：LLM/VLM 负责把目标转为结构化任务图，GNN/Transformer/RL 模块负责在 agent-task 图上做可优化分配。
+
+## 可复用模块
+
+heterogeneous agent-task graph、RL scheduler、allocation objective。适合作为多智能体任务规划模型的 baseline 和监督信号来源。
+
+## 证据与风险
+
+证据直接来自多机器人任务分配；风险是语义任务理解和低层执行器接口较弱，需要和 VLA/WAM 结合。
 
 ## 开放问题
 

@@ -17,6 +17,10 @@ primary_task_family: generalist_robot_control
 platform: multi_embodiment_manipulation
 planning_relevance: 可作为从语言子任务到连续动作片段的通用执行器。
 multi_robot_relevance: 多机器人侧重点不在模型本身，而在如何给不同机器人分派可由 π0 执行的子任务。
+system_roles: [executor, foundation_policy]
+reusable_modules: [flow_action_expert, action_chunking, multi_embodiment_policy]
+evidence_level: paper_read
+next_action: define_executor_interface
 tags: [π0, VLA, flow matching, action chunks, robot foundation model]
 authors: [Black, Brown, Driess, Finn, Hausman, Ichter, Levine, Pertsch]
 institutions: [Physical Intelligence]
@@ -28,6 +32,11 @@ image_url:
 zotero_key:
 citekey: black2024pi0
 cites: [2023-rt-2-vla]
+extends: [2023-rt-2-vla]
+uses: []
+enables: []
+complements: []
+contrasts: []
 ---
 
 ## 一句话结论
@@ -57,6 +66,14 @@ cites: [2023-rt-2-vla]
 ## 对多智能体任务规划模型的启发
 
 可以把 π0 视为“技能执行模型”，让上层 multi-agent planner 输出语言或子目标，再由不同机器人实例调用策略执行。
+
+## 可复用模块
+
+flow action expert、action chunk interface、cross-embodiment policy backbone。适合作为多机器人系统的低层执行器抽象。
+
+## 证据与风险
+
+证据来自多平台操作任务；风险是 planner 仍需自行处理任务分解、能力约束和机器人间冲突。
 
 ## 开放问题
 

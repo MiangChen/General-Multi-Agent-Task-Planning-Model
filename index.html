@@ -132,7 +132,6 @@
 
     .stat-card,
     .control-panel,
-    .timeline-wrap,
     .paper-card,
     .question-card {
       background: var(--paper);
@@ -175,6 +174,10 @@
       border-top: 1px solid var(--line);
     }
 
+    .compact-section {
+      padding: 42px 0;
+    }
+
     .section-kicker {
       color: var(--blue);
       font-family: var(--mono);
@@ -204,53 +207,11 @@
 
     .control-panel {
       display: grid;
-      grid-template-columns: 1.5fr repeat(3, 1fr) auto;
+      grid-template-columns: 1.5fr repeat(4, 1fr) auto;
       gap: 12px;
       padding: 16px;
       margin: 8px 0 28px;
       box-shadow: 0 12px 28px rgba(22, 50, 83, 0.08);
-    }
-
-    .graph-tools {
-      position: sticky;
-      top: 76px;
-      z-index: 7;
-      display: grid;
-      justify-items: end;
-      gap: 8px;
-      padding: 6px;
-      border-radius: 8px;
-      background: rgba(247, 251, 255, 0.72);
-    }
-
-    .graph-legend {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: flex-end;
-      gap: 4px;
-      max-width: 230px;
-    }
-
-    .graph-legend span {
-      display: inline-flex;
-      align-items: center;
-      gap: 3px;
-      min-height: 14px;
-      padding: 0 5px;
-      border: 1px solid var(--soft-line);
-      border-radius: 999px;
-      background: rgba(255, 255, 255, 0.66);
-      color: #405570;
-      font-size: 6px;
-      font-family: var(--mono);
-    }
-
-    .graph-legend i {
-      width: 4px;
-      height: 4px;
-      border-radius: 50%;
-      background: var(--domain);
-      box-shadow: 0 0 6px color-mix(in srgb, var(--domain), transparent 35%);
     }
 
     .graph-note-button {
@@ -294,6 +255,37 @@
       background: rgba(236, 246, 255, 0.96);
       border-color: rgba(36, 107, 254, 0.58);
       box-shadow: 0 0 0 3px var(--glow);
+    }
+
+    .relation-filterbar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: -8px 0 18px;
+    }
+
+    .relation-filter {
+      width: auto;
+      min-height: 30px;
+      padding: 0 10px;
+      border-color: color-mix(in srgb, var(--rel, var(--blue)), transparent 62%);
+      border-radius: 999px;
+      color: color-mix(in srgb, var(--rel, var(--blue)), #111827 24%);
+      font-family: var(--mono);
+      font-size: 12px;
+    }
+
+    .relation-filter.is-active {
+      background: color-mix(in srgb, var(--rel, var(--blue)), transparent 86%);
+      border-color: color-mix(in srgb, var(--rel, var(--blue)), transparent 28%);
+      box-shadow: 0 0 0 3px color-mix(in srgb, var(--rel, var(--blue)), transparent 86%);
+    }
+
+    .graph-workspace {
+      display: grid;
+      grid-template-columns: max-content minmax(300px, 1fr);
+      gap: 18px;
+      align-items: start;
     }
 
     .graph-frame {
@@ -377,13 +369,10 @@
 
     .graph-edge {
       fill: none;
-      stroke: rgba(105, 92, 255, 0.34);
+      stroke: var(--edge-color, rgba(105, 92, 255, 0.34));
       stroke-width: 0.75;
+      opacity: 0;
       transition: opacity 0.16s ease, stroke 0.16s ease, stroke-width 0.16s ease;
-    }
-
-    .graph-edges marker path {
-      fill: rgba(105, 92, 255, 0.48);
     }
 
     .graph-node {
@@ -431,13 +420,13 @@
     }
 
     .graph-edge.is-active {
-      stroke: rgba(36, 107, 254, 0.78);
+      stroke: var(--edge-color, rgba(36, 107, 254, 0.78));
       stroke-width: 1.3;
       opacity: 1;
     }
 
     .graph-edge.is-dimmed {
-      opacity: 0.12;
+      opacity: 0;
     }
 
     .graph-node strong {
@@ -458,6 +447,207 @@
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
+    }
+
+    .relation-panel {
+      position: sticky;
+      top: 84px;
+      min-height: 280px;
+      padding: 18px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.82);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(18px);
+    }
+
+    .relation-kicker {
+      color: var(--blue);
+      font-family: var(--mono);
+      font-size: 12px;
+      margin-bottom: 8px;
+    }
+
+    .relation-panel h3 {
+      font-size: 24px;
+      margin-bottom: 8px;
+    }
+
+    .relation-panel p {
+      margin: 0 0 14px;
+      font-size: 13px;
+    }
+
+    .relation-list {
+      display: grid;
+      gap: 10px;
+    }
+
+    .relation-item {
+      padding: 10px 12px;
+      border: 1px solid var(--soft-line);
+      border-left: 3px solid var(--rel);
+      border-radius: 6px;
+      background: rgba(247, 251, 255, 0.86);
+    }
+
+    .relation-type {
+      display: inline-flex;
+      align-items: center;
+      min-height: 18px;
+      padding: 0 6px;
+      border-radius: 999px;
+      background: color-mix(in srgb, var(--rel), transparent 88%);
+      color: color-mix(in srgb, var(--rel), #111827 30%);
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .relation-target {
+      margin-top: 6px;
+      color: #142033;
+      font-weight: 700;
+    }
+
+    .relation-description {
+      margin-top: 4px;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.45;
+    }
+
+    .quality-grid,
+    .role-grid,
+    .queue-grid,
+    .agent-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 14px;
+    }
+
+    .quality-card,
+    .role-card,
+    .queue-card,
+    .agent-card {
+      padding: 18px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.76);
+      box-shadow: 0 12px 28px rgba(22, 50, 83, 0.08);
+    }
+
+    .quality-value,
+    .role-count,
+    .queue-count {
+      color: var(--blue);
+      font-family: var(--mono);
+      font-size: 28px;
+      font-weight: 800;
+    }
+
+    .quality-name,
+    .role-card h3,
+    .queue-card h3,
+    .agent-card h3 {
+      color: #142033;
+      font-size: 16px;
+      font-weight: 760;
+      margin: 4px 0 8px;
+    }
+
+    .quality-card p,
+    .queue-card p,
+    .agent-card p {
+      margin: 0;
+      font-size: 12px;
+      line-height: 1.45;
+    }
+
+    .role-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    .queue-grid {
+      grid-template-columns: repeat(4, 1fr);
+    }
+
+    .agent-grid {
+      grid-template-columns: repeat(5, 1fr);
+    }
+
+    .role-card ul,
+    .queue-card ul {
+      display: grid;
+      gap: 10px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .queue-card ul {
+      margin-top: 14px;
+    }
+
+    .role-card li,
+    .queue-card li {
+      border-top: 1px solid var(--soft-line);
+      padding-top: 9px;
+    }
+
+    .role-card li strong,
+    .queue-card li strong {
+      display: block;
+      font-size: 13px;
+    }
+
+    .role-card li span,
+    .queue-card li span,
+    .queue-card li em {
+      display: block;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.45;
+    }
+
+    .queue-card li em {
+      font-style: normal;
+      font-family: var(--mono);
+      font-size: 11px;
+    }
+
+    .agent-label,
+    .agent-output,
+    .agent-prompt-link {
+      font-family: var(--mono);
+      font-size: 12px;
+    }
+
+    .agent-label {
+      color: var(--blue);
+      margin-bottom: 10px;
+    }
+
+    .agent-output {
+      margin-top: 14px;
+      padding-top: 10px;
+      border-top: 1px solid var(--soft-line);
+      color: #415a77;
+      line-height: 1.45;
+    }
+
+    .agent-prompt-link {
+      flex: 0 0 auto;
+      min-height: 32px;
+      display: inline-flex;
+      align-items: center;
+      padding: 0 12px;
+      border: 1px solid rgba(36, 107, 254, 0.26);
+      border-radius: 5px;
+      background: rgba(255, 255, 255, 0.74);
+      color: #1f4fd6;
+      text-decoration: none;
+      box-shadow: 0 8px 18px rgba(22, 50, 83, 0.08);
     }
 
     input,
@@ -494,72 +684,6 @@
     .icon-button {
       width: auto;
       white-space: nowrap;
-    }
-
-    .timeline-wrap {
-      overflow: auto;
-      box-shadow: 0 14px 35px rgba(22, 50, 83, 0.08);
-    }
-
-    .timeline {
-      width: 100%;
-      border-collapse: collapse;
-      min-width: 820px;
-    }
-
-    .timeline th,
-    .timeline td {
-      border-bottom: 1px solid var(--soft-line);
-      border-right: 1px solid var(--soft-line);
-      padding: 12px;
-      text-align: center;
-    }
-
-    .timeline thead th {
-      background: rgba(236, 246, 255, 0.72);
-      color: #314863;
-      font-family: var(--mono);
-      font-size: 13px;
-    }
-
-    .timeline th:first-child {
-      width: 260px;
-      text-align: left;
-      color: var(--ink);
-      font-weight: 500;
-    }
-
-    .timeline tbody th {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .timeline small {
-      margin-left: auto;
-      color: var(--muted);
-      font-weight: 400;
-    }
-
-    .swatch {
-      display: inline-block;
-      width: 12px;
-      height: 28px;
-      background: var(--swatch);
-      border: 1px solid rgba(255,255,255,0.72);
-      box-shadow: 0 0 14px color-mix(in srgb, var(--swatch), transparent 55%);
-    }
-
-    .bubble {
-      width: var(--size);
-      height: var(--size);
-      min-height: 0;
-      padding: 0;
-      border-radius: 50%;
-      background: var(--bubble);
-      color: white;
-      font-weight: 700;
-      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.42), 0 0 20px color-mix(in srgb, var(--bubble), transparent 62%);
     }
 
     .paper-grid {
@@ -625,6 +749,8 @@
     }
 
     .paper-meta,
+    .paper-roles,
+    .paper-modules,
     .paper-tags,
     .paper-links {
       display: flex;
@@ -645,6 +771,16 @@
       border-radius: 4px;
       padding: 2px 8px;
       background: rgba(246, 251, 255, 0.86);
+    }
+
+    .role-tag {
+      border-color: rgba(36, 107, 254, 0.34);
+      color: #1f4fd6;
+    }
+
+    .module-tag {
+      border-color: rgba(0, 167, 199, 0.34);
+      color: #0f7894;
     }
 
     .paper-card h3 {
@@ -693,6 +829,18 @@
 
     .paper-tags {
       margin-top: 14px;
+    }
+
+    .paper-roles,
+    .paper-modules {
+      margin-top: 10px;
+    }
+
+    .paper-next {
+      margin-top: 10px;
+      color: var(--muted);
+      font-family: var(--mono);
+      font-size: 12px;
     }
 
     .paper-links {
@@ -776,9 +924,14 @@
 
       .stats,
       .control-panel,
+      .graph-workspace,
       .paper-card,
       .detail-grid,
-      .question-grid {
+      .question-grid,
+      .quality-grid,
+      .role-grid,
+      .queue-grid,
+      .agent-grid {
         grid-template-columns: 1fr;
       }
 
@@ -794,9 +947,9 @@
     <a class="brand" href="#">General Multi-Agent Model</a>
     <nav class="nav">
       <a href="#domain-graph">关系图</a>
-      <a href="#tech_paradigm">技术范式</a>
-      <a href="#primary_technical_layer">主技术层</a>
-      <a href="#primary_task_family">任务族</a>
+      <a href="#roles">系统角色</a>
+      <a href="#reading">阅读队列</a>
+      <a href="#agents">Agent</a>
       <a href="#papers">论文</a>
       <a href="#questions">开放问题</a>
     </nav>
@@ -804,9 +957,9 @@
 
   <main class="page">
     <section class="hero">
-      <div class="eyebrow">Obsidian-first paper repository · generated 2026/4/29 11:24:13</div>
-      <h1>通用多智能体任务规划模型时间轴</h1>
-      <p>基于 Markdown note 的结构化 frontmatter 自动生成。当前版本聚焦 VLA、π 系列、World Action Model 和 Dreamer，把它们定位为端到端多智能体任务规划模型里的执行器、世界模拟器或 planner critic。</p>
+      <div class="eyebrow">Obsidian-first paper repository · generated 2026/4/29 13:07:26</div>
+      <h1>通用多智能体任务规划模型研究图谱</h1>
+      <p>基于 Markdown note 的 typed relations 自动生成。当前版本聚焦 VLA、π 系列、World Action Model 和 Dreamer，把论文定位为端到端多智能体任务规划模型里的执行器、世界模拟器、planner critic、记忆模块或任务分配器。</p>
       
     <div class="stats">
       <div class="stat-card">
@@ -818,8 +971,8 @@
         <div class="stat-label">年份范围</div>
       </div>
       <div class="stat-card">
-        <div class="stat-value">15</div>
-        <div class="stat-label">范围内论文</div>
+        <div class="stat-value">25</div>
+        <div class="stat-label">Typed relations</div>
       </div>
       <div class="stat-card">
         <div class="stat-value">11</div>
@@ -831,20 +984,21 @@
 
     
     <section class="section" id="domain-graph">
-      <div class="section-kicker">Node-edge timeline</div>
+      <div class="section-kicker">Typed relation graph</div>
       <div class="section-head">
         <div>
           <h2>领域时间关系图</h2>
-          <p>纵向按论文发表年月排序，横向按领域分列。连线表示当前知识库里手工标注的引用或技术脉络关系。</p>
-        </div>
-        <div class="graph-tools">
-          <div class="graph-legend"><span><i style="--domain:#246bfe"></i>LLM</span><span><i style="--domain:#00a7c7"></i>VLA</span><span><i style="--domain:#6a7dff"></i>World Model</span><span><i style="--domain:#7c67d8"></i>World Action Model</span><span><i style="--domain:#188aa6"></i>RL</span><span><i style="--domain:#4b6f96"></i>GNN</span><span><i style="--domain:#2f80ed"></i>Planning</span></div>
-          <a class="graph-note-button is-disabled" data-open-note target="_blank" rel="noreferrer" aria-disabled="true">选择节点后打开 Note</a>
+          <p>纵向按论文发表年月排序，横向按领域分列。点击节点后，只显示该论文指向父论文或前序工作的关系线。</p>
         </div>
       </div>
-      <div class="graph-frame">
-        <div class="domain-graph" style="--graph-width:852px; --graph-height:896px">
-          
+      <div class="relation-filterbar" aria-label="关系类型过滤">
+        <button class="relation-filter is-active" data-relation-filter="all">全部关系</button><button class="relation-filter" style="--rel:#246bfe" data-relation-filter="extends">继承/扩展</button><button class="relation-filter" style="--rel:#00a7c7" data-relation-filter="uses">使用/依赖</button><button class="relation-filter" style="--rel:#188aa6" data-relation-filter="enables">提供模块</button><button class="relation-filter" style="--rel:#7c67d8" data-relation-filter="complements">互补</button><button class="relation-filter" style="--rel:#d14d72" data-relation-filter="contrasts">对比路线</button><button class="relation-filter" style="--rel:#4b6f96" data-relation-filter="cites">引用/背景</button>
+      </div>
+      <a class="graph-note-button is-disabled" data-open-note target="_blank" rel="noreferrer" aria-disabled="true">选择节点后打开 Note</a>
+      <div class="graph-workspace">
+        <div class="graph-frame">
+          <div class="domain-graph" style="--graph-width:852px; --graph-height:896px">
+            
         <div class="graph-column" style="--x:56px; --w:108px; --domain:#246bfe">
           <span>LLM</span>
         </div>
@@ -879,7 +1033,7 @@
           <span>Planning</span>
         </div>
       
-          <div class="graph-month" style="--y:48px">2022-06</div>
+            <div class="graph-month" style="--y:48px">2022-06</div>
 <div class="graph-month" style="--y:167px">2023-01</div>
 <div class="graph-month" style="--y:269px">2023-07</div>
 <div class="graph-month" style="--y:320px">2023-10</div>
@@ -892,39 +1046,310 @@
 <div class="graph-month" style="--y:796px">2026-02</div>
 <div class="graph-month" style="--y:813px">2026-03</div>
 <div class="graph-month" style="--y:830px">2026-04</div>
-          <svg class="graph-edges" viewBox="0 0 852 896" aria-hidden="true">
-            <defs>
-              <marker id="arrowhead" markerWidth="4.5" markerHeight="4.5" refX="3.5" refY="2.25" orient="auto">
-                <path d="M 0 0 L 4.5 2.25 L 0 4.5 z"></path>
-              </marker>
-            </defs>
-            <path class="graph-edge" data-edge-source="2023-dreamerv3-world-models" data-edge-target="2023-daydreamer-world-models-for-physical-robot-learning" d="M 326 167 C 326 67.5, 326 147.5, 326 48" marker-end="url(#arrowhead)"></path>
-<path class="graph-edge" data-edge-source="2024-pi0-vla-flow-model" data-edge-target="2023-rt-2-vla" d="M 218 524 C 218 325.1, 218 467.9, 218 269" marker-end="url(#arrowhead)"></path>
-<path class="graph-edge" data-edge-source="2025-fast-action-tokenization-vla" data-edge-target="2024-pi0-vla-flow-model" d="M 218 575 C 218 509.5, 218 589.5, 218 524" marker-end="url(#arrowhead)"></path>
-<path class="graph-edge" data-edge-source="2025-fast-action-tokenization-vla" data-edge-target="2023-rt-2-vla" d="M 218 575 C 218 336.32, 218 507.68, 218 269" marker-end="url(#arrowhead)"></path>
-<path class="graph-edge" data-edge-source="2025-pi05-open-world-generalization" data-edge-target="2025-fast-action-tokenization-vla" d="M 218 626 C 218 560.5, 218 640.5, 218 575" marker-end="url(#arrowhead)"></path>
-<path class="graph-edge" data-edge-source="2025-pi05-open-world-generalization" data-edge-target="2024-pi0-vla-flow-model" d="M 218 626 C 218 535, 218 615, 218 524" marker-end="url(#arrowhead)"></path>
-<path class="graph-edge" data-edge-source="2025-pi05-open-world-generalization" data-edge-target="2023-rt-2-vla" d="M 218 626 C 218 347.53999999999996, 218 547.46, 218 269" marker-end="url(#arrowhead)"></path>
-<path class="graph-edge" data-edge-source="2025-pistar06-recap" data-edge-target="2025-pi06-model-card" d="M 542 745 C 542 705, 218 785, 218 745" marker-end="url(#arrowhead)"></path>
-<path class="graph-edge" data-edge-source="2025-pistar06-recap" data-edge-target="2025-pi05-open-world-generalization" d="M 542 745 C 542 645.5, 218 725.5, 218 626" marker-end="url(#arrowhead)"></path>
-<path class="graph-edge" data-edge-source="2025-pistar06-recap" data-edge-target="2024-pi0-vla-flow-model" d="M 542 745 C 542 572.62, 218 696.38, 218 524" marker-end="url(#arrowhead)"></path>
-<path class="graph-edge" data-edge-source="2025-pi06-model-card" data-edge-target="2025-pi05-open-world-generalization" d="M 218 745 C 218 645.5, 218 725.5, 218 626" marker-end="url(#arrowhead)"></path>
-<path class="graph-edge" data-edge-source="2025-pi06-model-card" data-edge-target="2024-pi0-vla-flow-model" d="M 218 745 C 218 572.62, 218 696.38, 218 524" marker-end="url(#arrowhead)"></path>
-<path class="graph-edge" data-edge-source="2026-world-action-models-zero-shot-policies" data-edge-target="2024-pyramidal-flow-matching-video" d="M 434 796 C 434 583.84, 434 736.16, 434 524" marker-end="url(#arrowhead)"></path>
-<path class="graph-edge" data-edge-source="2026-world-action-models-zero-shot-policies" data-edge-target="2025-pi05-open-world-generalization" d="M 434 796 C 434 663.4, 218 758.6, 218 626" marker-end="url(#arrowhead)"></path>
-<path class="graph-edge" data-edge-source="2026-world-action-models-zero-shot-policies" data-edge-target="2024-pi0-vla-flow-model" d="M 434 796 C 434 583.84, 218 736.16, 218 524" marker-end="url(#arrowhead)"></path>
-<path class="graph-edge" data-edge-source="2026-world-action-models-zero-shot-policies" data-edge-target="2023-rt-2-vla" d="M 434 796 C 434 384.94, 218 680.06, 218 269" marker-end="url(#arrowhead)"></path>
-<path class="graph-edge" data-edge-source="2026-world-action-models-zero-shot-policies" data-edge-target="2023-dreamerv3-world-models" d="M 434 796 C 434 305.38, 326 657.62, 326 167" marker-end="url(#arrowhead)"></path>
-<path class="graph-edge" data-edge-source="2026-mem-multi-scale-embodied-memory" data-edge-target="2025-pi06-model-card" d="M 218 813 C 218 739, 218 819, 218 745" marker-end="url(#arrowhead)"></path>
-<path class="graph-edge" data-edge-source="2026-mem-multi-scale-embodied-memory" data-edge-target="2025-pi05-open-world-generalization" d="M 218 813 C 218 667.14, 218 771.86, 218 626" marker-end="url(#arrowhead)"></path>
-<path class="graph-edge" data-edge-source="2026-mem-multi-scale-embodied-memory" data-edge-target="2024-pi0-vla-flow-model" d="M 218 813 C 218 587.58, 218 749.42, 218 524" marker-end="url(#arrowhead)"></path>
-<path class="graph-edge" data-edge-source="2026-pi07-steerable-generalist-robotic-foundation-model" data-edge-target="2026-mem-multi-scale-embodied-memory" d="M 230 830 C 230 781.5, 218 861.5, 218 813" marker-end="url(#arrowhead)"></path>
-<path class="graph-edge" data-edge-source="2026-pi07-steerable-generalist-robotic-foundation-model" data-edge-target="2025-pistar06-recap" d="M 230 830 C 230 747.5, 542 827.5, 542 745" marker-end="url(#arrowhead)"></path>
-<path class="graph-edge" data-edge-source="2026-pi07-steerable-generalist-robotic-foundation-model" data-edge-target="2025-pi06-model-card" d="M 230 830 C 230 747.5, 218 827.5, 218 745" marker-end="url(#arrowhead)"></path>
-<path class="graph-edge" data-edge-source="2026-pi07-steerable-generalist-robotic-foundation-model" data-edge-target="2025-pi05-open-world-generalization" d="M 230 830 C 230 670.88, 218 785.12, 218 626" marker-end="url(#arrowhead)"></path>
-<path class="graph-edge" data-edge-source="2026-pi07-steerable-generalist-robotic-foundation-model" data-edge-target="2024-pi0-vla-flow-model" d="M 230 830 C 230 591.3199999999999, 218 762.6800000000001, 218 524" marker-end="url(#arrowhead)"></path>
-          </svg>
-          
+            <svg class="graph-edges" viewBox="0 0 852 896" aria-hidden="true">
+              <defs>
+                
+                <marker id="arrowhead-extends" markerWidth="4.5" markerHeight="4.5" refX="3.5" refY="2.25" orient="auto">
+                  <path d="M 0 0 L 4.5 2.25 L 0 4.5 z" fill="#246bfe"></path>
+                </marker>
+
+                <marker id="arrowhead-uses" markerWidth="4.5" markerHeight="4.5" refX="3.5" refY="2.25" orient="auto">
+                  <path d="M 0 0 L 4.5 2.25 L 0 4.5 z" fill="#00a7c7"></path>
+                </marker>
+
+                <marker id="arrowhead-enables" markerWidth="4.5" markerHeight="4.5" refX="3.5" refY="2.25" orient="auto">
+                  <path d="M 0 0 L 4.5 2.25 L 0 4.5 z" fill="#188aa6"></path>
+                </marker>
+
+                <marker id="arrowhead-complements" markerWidth="4.5" markerHeight="4.5" refX="3.5" refY="2.25" orient="auto">
+                  <path d="M 0 0 L 4.5 2.25 L 0 4.5 z" fill="#7c67d8"></path>
+                </marker>
+
+                <marker id="arrowhead-contrasts" markerWidth="4.5" markerHeight="4.5" refX="3.5" refY="2.25" orient="auto">
+                  <path d="M 0 0 L 4.5 2.25 L 0 4.5 z" fill="#d14d72"></path>
+                </marker>
+
+                <marker id="arrowhead-cites" markerWidth="4.5" markerHeight="4.5" refX="3.5" refY="2.25" orient="auto">
+                  <path d="M 0 0 L 4.5 2.25 L 0 4.5 z" fill="#4b6f96"></path>
+                </marker>
+              </defs>
+              <path class="graph-edge"
+        style="--edge-color:#4b6f96"
+        data-edge-source="2023-dreamerv3-world-models"
+        data-edge-target="2023-daydreamer-world-models-for-physical-robot-learning"
+        data-edge-type="cites"
+        data-edge-label="引用/背景"
+        data-edge-short="cites"
+        data-edge-description="保留 bibliographic citation 或宽泛背景关系。"
+        data-edge-target-title="DayDreamer"
+        d="M 326 167 C 326 67.5, 326 147.5, 326 48"
+        marker-end="url(#arrowhead-cites)"></path>
+<path class="graph-edge"
+        style="--edge-color:#246bfe"
+        data-edge-source="2024-pi0-vla-flow-model"
+        data-edge-target="2023-rt-2-vla"
+        data-edge-type="extends"
+        data-edge-label="继承/扩展"
+        data-edge-short="extends"
+        data-edge-description="后续模型或系统直接建立在前序路线之上。"
+        data-edge-target-title="RT-2"
+        d="M 218 524 C 218 325.1, 218 467.9, 218 269"
+        marker-end="url(#arrowhead-extends)"></path>
+<path class="graph-edge"
+        style="--edge-color:#7c67d8"
+        data-edge-source="2025-fast-action-tokenization-vla"
+        data-edge-target="2024-pi0-vla-flow-model"
+        data-edge-type="complements"
+        data-edge-label="互补"
+        data-edge-short="complements"
+        data-edge-description="两条路线解决相邻问题，可以组合进同一个系统。"
+        data-edge-target-title="π0"
+        d="M 218 575 C 218 509.5, 218 589.5, 218 524"
+        marker-end="url(#arrowhead-complements)"></path>
+<path class="graph-edge"
+        style="--edge-color:#246bfe"
+        data-edge-source="2025-pi05-open-world-generalization"
+        data-edge-target="2024-pi0-vla-flow-model"
+        data-edge-type="extends"
+        data-edge-label="继承/扩展"
+        data-edge-short="extends"
+        data-edge-description="后续模型或系统直接建立在前序路线之上。"
+        data-edge-target-title="π0"
+        d="M 218 626 C 218 535, 218 615, 218 524"
+        marker-end="url(#arrowhead-extends)"></path>
+<path class="graph-edge"
+        style="--edge-color:#00a7c7"
+        data-edge-source="2025-pi05-open-world-generalization"
+        data-edge-target="2025-fast-action-tokenization-vla"
+        data-edge-type="uses"
+        data-edge-label="使用/依赖"
+        data-edge-short="uses"
+        data-edge-description="当前论文借用了前序工作的模块、表示、训练路线或系统组件。"
+        data-edge-target-title="FAST"
+        d="M 218 626 C 218 560.5, 218 640.5, 218 575"
+        marker-end="url(#arrowhead-uses)"></path>
+<path class="graph-edge"
+        style="--edge-color:#246bfe"
+        data-edge-source="2025-pistar06-recap"
+        data-edge-target="2025-pi06-model-card"
+        data-edge-type="extends"
+        data-edge-label="继承/扩展"
+        data-edge-short="extends"
+        data-edge-description="后续模型或系统直接建立在前序路线之上。"
+        data-edge-target-title="π0.6"
+        d="M 542 745 C 542 705, 218 785, 218 745"
+        marker-end="url(#arrowhead-extends)"></path>
+<path class="graph-edge"
+        style="--edge-color:#00a7c7"
+        data-edge-source="2025-pistar06-recap"
+        data-edge-target="2025-pi05-open-world-generalization"
+        data-edge-type="uses"
+        data-edge-label="使用/依赖"
+        data-edge-short="uses"
+        data-edge-description="当前论文借用了前序工作的模块、表示、训练路线或系统组件。"
+        data-edge-target-title="π0.5"
+        d="M 542 745 C 542 645.5, 218 725.5, 218 626"
+        marker-end="url(#arrowhead-uses)"></path>
+<path class="graph-edge"
+        style="--edge-color:#00a7c7"
+        data-edge-source="2025-pistar06-recap"
+        data-edge-target="2024-pi0-vla-flow-model"
+        data-edge-type="uses"
+        data-edge-label="使用/依赖"
+        data-edge-short="uses"
+        data-edge-description="当前论文借用了前序工作的模块、表示、训练路线或系统组件。"
+        data-edge-target-title="π0"
+        d="M 542 745 C 542 572.62, 218 696.38, 218 524"
+        marker-end="url(#arrowhead-uses)"></path>
+<path class="graph-edge"
+        style="--edge-color:#246bfe"
+        data-edge-source="2025-pi06-model-card"
+        data-edge-target="2025-pi05-open-world-generalization"
+        data-edge-type="extends"
+        data-edge-label="继承/扩展"
+        data-edge-short="extends"
+        data-edge-description="后续模型或系统直接建立在前序路线之上。"
+        data-edge-target-title="π0.5"
+        d="M 218 745 C 218 645.5, 218 725.5, 218 626"
+        marker-end="url(#arrowhead-extends)"></path>
+<path class="graph-edge"
+        style="--edge-color:#246bfe"
+        data-edge-source="2025-pi06-model-card"
+        data-edge-target="2024-pi0-vla-flow-model"
+        data-edge-type="extends"
+        data-edge-label="继承/扩展"
+        data-edge-short="extends"
+        data-edge-description="后续模型或系统直接建立在前序路线之上。"
+        data-edge-target-title="π0"
+        d="M 218 745 C 218 572.62, 218 696.38, 218 524"
+        marker-end="url(#arrowhead-extends)"></path>
+<path class="graph-edge"
+        style="--edge-color:#7c67d8"
+        data-edge-source="2026-genswarm-multi-robot-code-policy"
+        data-edge-target="2023-eureka-reward-design-llm"
+        data-edge-type="complements"
+        data-edge-label="互补"
+        data-edge-short="complements"
+        data-edge-description="两条路线解决相邻问题，可以组合进同一个系统。"
+        data-edge-target-title="Eureka"
+        d="M 110 779 C 110 420.98, 542 678.02, 542 320"
+        marker-end="url(#arrowhead-complements)"></path>
+<path class="graph-edge"
+        style="--edge-color:#7c67d8"
+        data-edge-source="2026-genswarm-multi-robot-code-policy"
+        data-edge-target="2025-heterogeneous-mrta-rl"
+        data-edge-type="complements"
+        data-edge-label="互补"
+        data-edge-short="complements"
+        data-edge-description="两条路线解决相邻问题，可以组合进同一个系统。"
+        data-edge-target-title="Heterogeneous MRTA RL"
+        d="M 110 779 C 110 646.4, 650 741.6, 650 609"
+        marker-end="url(#arrowhead-complements)"></path>
+<path class="graph-edge"
+        style="--edge-color:#00a7c7"
+        data-edge-source="2026-world-action-models-zero-shot-policies"
+        data-edge-target="2024-pyramidal-flow-matching-video"
+        data-edge-type="uses"
+        data-edge-label="使用/依赖"
+        data-edge-short="uses"
+        data-edge-description="当前论文借用了前序工作的模块、表示、训练路线或系统组件。"
+        data-edge-target-title="Pyramidal Flow"
+        d="M 434 796 C 434 583.84, 434 736.16, 434 524"
+        marker-end="url(#arrowhead-uses)"></path>
+<path class="graph-edge"
+        style="--edge-color:#00a7c7"
+        data-edge-source="2026-world-action-models-zero-shot-policies"
+        data-edge-target="2023-dreamerv3-world-models"
+        data-edge-type="uses"
+        data-edge-label="使用/依赖"
+        data-edge-short="uses"
+        data-edge-description="当前论文借用了前序工作的模块、表示、训练路线或系统组件。"
+        data-edge-target-title="DreamerV3"
+        d="M 434 796 C 434 305.38, 326 657.62, 326 167"
+        marker-end="url(#arrowhead-uses)"></path>
+<path class="graph-edge"
+        style="--edge-color:#d14d72"
+        data-edge-source="2026-world-action-models-zero-shot-policies"
+        data-edge-target="2025-pi05-open-world-generalization"
+        data-edge-type="contrasts"
+        data-edge-label="对比路线"
+        data-edge-short="contrasts"
+        data-edge-description="两篇论文代表不同建模范式，适合用来比较取舍。"
+        data-edge-target-title="π0.5"
+        d="M 434 796 C 434 663.4, 218 758.6, 218 626"
+        marker-end="url(#arrowhead-contrasts)"></path>
+<path class="graph-edge"
+        style="--edge-color:#d14d72"
+        data-edge-source="2026-world-action-models-zero-shot-policies"
+        data-edge-target="2024-pi0-vla-flow-model"
+        data-edge-type="contrasts"
+        data-edge-label="对比路线"
+        data-edge-short="contrasts"
+        data-edge-description="两篇论文代表不同建模范式，适合用来比较取舍。"
+        data-edge-target-title="π0"
+        d="M 434 796 C 434 583.84, 218 736.16, 218 524"
+        marker-end="url(#arrowhead-contrasts)"></path>
+<path class="graph-edge"
+        style="--edge-color:#d14d72"
+        data-edge-source="2026-world-action-models-zero-shot-policies"
+        data-edge-target="2023-rt-2-vla"
+        data-edge-type="contrasts"
+        data-edge-label="对比路线"
+        data-edge-short="contrasts"
+        data-edge-description="两篇论文代表不同建模范式，适合用来比较取舍。"
+        data-edge-target-title="RT-2"
+        d="M 434 796 C 434 384.94, 218 680.06, 218 269"
+        marker-end="url(#arrowhead-contrasts)"></path>
+<path class="graph-edge"
+        style="--edge-color:#246bfe"
+        data-edge-source="2026-mem-multi-scale-embodied-memory"
+        data-edge-target="2025-pi06-model-card"
+        data-edge-type="extends"
+        data-edge-label="继承/扩展"
+        data-edge-short="extends"
+        data-edge-description="后续模型或系统直接建立在前序路线之上。"
+        data-edge-target-title="π0.6"
+        d="M 218 813 C 218 739, 218 819, 218 745"
+        marker-end="url(#arrowhead-extends)"></path>
+<path class="graph-edge"
+        style="--edge-color:#00a7c7"
+        data-edge-source="2026-mem-multi-scale-embodied-memory"
+        data-edge-target="2025-pi05-open-world-generalization"
+        data-edge-type="uses"
+        data-edge-label="使用/依赖"
+        data-edge-short="uses"
+        data-edge-description="当前论文借用了前序工作的模块、表示、训练路线或系统组件。"
+        data-edge-target-title="π0.5"
+        d="M 218 813 C 218 667.14, 218 771.86, 218 626"
+        marker-end="url(#arrowhead-uses)"></path>
+<path class="graph-edge"
+        style="--edge-color:#00a7c7"
+        data-edge-source="2026-mem-multi-scale-embodied-memory"
+        data-edge-target="2024-pi0-vla-flow-model"
+        data-edge-type="uses"
+        data-edge-label="使用/依赖"
+        data-edge-short="uses"
+        data-edge-description="当前论文借用了前序工作的模块、表示、训练路线或系统组件。"
+        data-edge-target-title="π0"
+        d="M 218 813 C 218 587.58, 218 749.42, 218 524"
+        marker-end="url(#arrowhead-uses)"></path>
+<path class="graph-edge"
+        style="--edge-color:#246bfe"
+        data-edge-source="2026-pi07-steerable-generalist-robotic-foundation-model"
+        data-edge-target="2026-mem-multi-scale-embodied-memory"
+        data-edge-type="extends"
+        data-edge-label="继承/扩展"
+        data-edge-short="extends"
+        data-edge-description="后续模型或系统直接建立在前序路线之上。"
+        data-edge-target-title="MEM"
+        d="M 230 830 C 230 781.5, 218 861.5, 218 813"
+        marker-end="url(#arrowhead-extends)"></path>
+<path class="graph-edge"
+        style="--edge-color:#246bfe"
+        data-edge-source="2026-pi07-steerable-generalist-robotic-foundation-model"
+        data-edge-target="2025-pistar06-recap"
+        data-edge-type="extends"
+        data-edge-label="继承/扩展"
+        data-edge-short="extends"
+        data-edge-description="后续模型或系统直接建立在前序路线之上。"
+        data-edge-target-title="π*0.6 / RECAP"
+        d="M 230 830 C 230 747.5, 542 827.5, 542 745"
+        marker-end="url(#arrowhead-extends)"></path>
+<path class="graph-edge"
+        style="--edge-color:#246bfe"
+        data-edge-source="2026-pi07-steerable-generalist-robotic-foundation-model"
+        data-edge-target="2025-pi06-model-card"
+        data-edge-type="extends"
+        data-edge-label="继承/扩展"
+        data-edge-short="extends"
+        data-edge-description="后续模型或系统直接建立在前序路线之上。"
+        data-edge-target-title="π0.6"
+        d="M 230 830 C 230 747.5, 218 827.5, 218 745"
+        marker-end="url(#arrowhead-extends)"></path>
+<path class="graph-edge"
+        style="--edge-color:#00a7c7"
+        data-edge-source="2026-pi07-steerable-generalist-robotic-foundation-model"
+        data-edge-target="2025-pi05-open-world-generalization"
+        data-edge-type="uses"
+        data-edge-label="使用/依赖"
+        data-edge-short="uses"
+        data-edge-description="当前论文借用了前序工作的模块、表示、训练路线或系统组件。"
+        data-edge-target-title="π0.5"
+        d="M 230 830 C 230 670.88, 218 785.12, 218 626"
+        marker-end="url(#arrowhead-uses)"></path>
+<path class="graph-edge"
+        style="--edge-color:#00a7c7"
+        data-edge-source="2026-pi07-steerable-generalist-robotic-foundation-model"
+        data-edge-target="2024-pi0-vla-flow-model"
+        data-edge-type="uses"
+        data-edge-label="使用/依赖"
+        data-edge-short="uses"
+        data-edge-description="当前论文借用了前序工作的模块、表示、训练路线或系统组件。"
+        data-edge-target-title="π0"
+        d="M 230 830 C 230 591.3199999999999, 218 762.6800000000001, 218 524"
+        marker-end="url(#arrowhead-uses)"></path>
+            </svg>
+            
         <button class="graph-node"
           style="--x:326px; --y:48px; --node:#6a7dff"
           data-node-id="2023-daydreamer-world-models-for-physical-robot-learning"
@@ -1104,463 +1529,631 @@
           <em>LLM · Planning</em>
         </button>
       
+          </div>
         </div>
+        <aside class="relation-panel" data-relation-panel>
+          <div class="relation-kicker">Relation lens</div>
+          <h3 data-relation-title>选择一篇论文</h3>
+          <p data-relation-summary>点击左侧节点后，这里只解释“当前论文 -> 父论文/前序工作”的 typed relations。</p>
+          <div class="relation-list" data-relation-list></div>
+        </aside>
       </div>
     </section>
   
     
-    <section class="section" id="tech_paradigm">
-      <div class="section-kicker">技术范式</div>
+    <section class="section compact-section" id="quality">
+      <div class="section-kicker">Index quality</div>
       <div class="section-head">
         <div>
-          <h2>技术范式时间轴</h2>
-          <p>点击气泡可以联动筛选下方论文列表。</p>
+          <h2>索引质量面板</h2>
+          <p>目标不是多收论文，而是让每篇论文都能回答：它在系统里是什么角色、能复用什么、证据强到什么程度、下一步该做什么。</p>
         </div>
-        <button class="icon-button" data-reset>重置</button>
       </div>
-      <div class="timeline-wrap">
-        <table class="timeline">
-          <thead>
-            <tr>
-              <th>标签</th>
-              <th>2022</th><th>2023</th><th>2024</th><th>2025</th><th>2026</th>
-            </tr>
-          </thead>
-          <tbody>
-        <tr>
-          <th>
-            <span class="swatch" style="--swatch:#246bfe"></span>
-            <span>LLM Code Policy</span>
-            <small>1 篇</small>
-          </th>
-          <td></td><td></td><td></td><td></td><td><button class="bubble" style="--size:35px; --bubble:#246bfe" data-field="tech_paradigm" data-value="llm_code_policy" data-year="2026" aria-label="LLM Code Policy 2026 1 篇">1</button></td>
-        </tr>
-      
-
-        <tr>
-          <th>
-            <span class="swatch" style="--swatch:#00a7c7"></span>
-            <span>LLM Reward Design</span>
-            <small>1 篇</small>
-          </th>
-          <td></td><td><button class="bubble" style="--size:35px; --bubble:#00a7c7" data-field="tech_paradigm" data-value="llm_reward_design" data-year="2023" aria-label="LLM Reward Design 2023 1 篇">1</button></td><td></td><td></td><td></td>
-        </tr>
-      
-
-        <tr>
-          <th>
-            <span class="swatch" style="--swatch:#6a7dff"></span>
-            <span>Multi-Robot Allocation RL</span>
-            <small>1 篇</small>
-          </th>
-          <td></td><td></td><td></td><td><button class="bubble" style="--size:35px; --bubble:#6a7dff" data-field="tech_paradigm" data-value="multi_robot_allocation_rl" data-year="2025" aria-label="Multi-Robot Allocation RL 2025 1 篇">1</button></td><td></td>
-        </tr>
-      
-
-        <tr>
-          <th>
-            <span class="swatch" style="--swatch:#3a92d8"></span>
-            <span>Video Flow Model</span>
-            <small>1 篇</small>
-          </th>
-          <td></td><td></td><td><button class="bubble" style="--size:35px; --bubble:#3a92d8" data-field="tech_paradigm" data-value="video_flow_model" data-year="2024" aria-label="Video Flow Model 2024 1 篇">1</button></td><td></td><td></td>
-        </tr>
-      
-
-        <tr>
-          <th>
-            <span class="swatch" style="--swatch:#7c67d8"></span>
-            <span>VLA</span>
-            <small>6 篇</small>
-          </th>
-          <td></td><td><button class="bubble" style="--size:35px; --bubble:#7c67d8" data-field="tech_paradigm" data-value="vla" data-year="2023" aria-label="VLA 2023 1 篇">1</button></td><td></td><td><button class="bubble" style="--size:49px; --bubble:#7c67d8" data-field="tech_paradigm" data-value="vla" data-year="2025" aria-label="VLA 2025 3 篇">3</button></td><td><button class="bubble" style="--size:42px; --bubble:#7c67d8" data-field="tech_paradigm" data-value="vla" data-year="2026" aria-label="VLA 2026 2 篇">2</button></td>
-        </tr>
-      
-
-        <tr>
-          <th>
-            <span class="swatch" style="--swatch:#188aa6"></span>
-            <span>VLA + RL</span>
-            <small>1 篇</small>
-          </th>
-          <td></td><td></td><td></td><td><button class="bubble" style="--size:35px; --bubble:#188aa6" data-field="tech_paradigm" data-value="vla_rl" data-year="2025" aria-label="VLA + RL 2025 1 篇">1</button></td><td></td>
-        </tr>
-      
-
-        <tr>
-          <th>
-            <span class="swatch" style="--swatch:#4b6f96"></span>
-            <span>VLA Flow Policy</span>
-            <small>1 篇</small>
-          </th>
-          <td></td><td></td><td><button class="bubble" style="--size:35px; --bubble:#4b6f96" data-field="tech_paradigm" data-value="vla_flow_policy" data-year="2024" aria-label="VLA Flow Policy 2024 1 篇">1</button></td><td></td><td></td>
-        </tr>
-      
-
-        <tr>
-          <th>
-            <span class="swatch" style="--swatch:#2f80ed"></span>
-            <span>World Action Model</span>
-            <small>1 篇</small>
-          </th>
-          <td></td><td></td><td></td><td></td><td><button class="bubble" style="--size:35px; --bubble:#2f80ed" data-field="tech_paradigm" data-value="world_action_model" data-year="2026" aria-label="World Action Model 2026 1 篇">1</button></td>
-        </tr>
-      
-
-        <tr>
-          <th>
-            <span class="swatch" style="--swatch:#4a56b8"></span>
-            <span>World Model RL</span>
-            <small>2 篇</small>
-          </th>
-          <td><button class="bubble" style="--size:35px; --bubble:#4a56b8" data-field="tech_paradigm" data-value="world_model_rl" data-year="2022" aria-label="World Model RL 2022 1 篇">1</button></td><td><button class="bubble" style="--size:35px; --bubble:#4a56b8" data-field="tech_paradigm" data-value="world_model_rl" data-year="2023" aria-label="World Model RL 2023 1 篇">1</button></td><td></td><td></td><td></td>
-        </tr>
-      </tbody>
-        </table>
+      <div class="quality-grid">
+        
+          <div class="quality-card">
+            <div class="quality-value">92%</div>
+            <div class="quality-name">平均 note 质量</div>
+            <p>summary / roles / modules / evidence / relations</p>
+          </div>
+        
+          <div class="quality-card">
+            <div class="quality-value">10/15</div>
+            <div class="quality-name">关系覆盖</div>
+            <p>至少一条 typed relation</p>
+          </div>
+        
+          <div class="quality-card">
+            <div class="quality-value">15/15</div>
+            <div class="quality-name">系统角色覆盖</div>
+            <p>能放入我们的模型架构</p>
+          </div>
+        
+          <div class="quality-card">
+            <div class="quality-value">15/15</div>
+            <div class="quality-name">复用模块覆盖</div>
+            <p>可转成设计组件</p>
+          </div>
+        
+          <div class="quality-card">
+            <div class="quality-value">15/15</div>
+            <div class="quality-name">证据风险覆盖</div>
+            <p>明确知道证据和风险</p>
+          </div>
+        
       </div>
     </section>
   
     
-    <section class="section" id="primary_technical_layer">
-      <div class="section-kicker">主技术层</div>
+    <section class="section compact-section" id="roles">
+      <div class="section-kicker">System roles</div>
       <div class="section-head">
         <div>
-          <h2>主技术层时间轴</h2>
-          <p>点击气泡可以联动筛选下方论文列表。</p>
+          <h2>系统角色地图</h2>
+          <p>把论文映射到我们的模型架构：哪些是 executor，哪些是 world simulator，哪些可以作为 planner critic、memory、task allocator 或 baseline。</p>
         </div>
-        <button class="icon-button" data-reset>重置</button>
       </div>
-      <div class="timeline-wrap">
-        <table class="timeline">
-          <thead>
-            <tr>
-              <th>标签</th>
-              <th>2022</th><th>2023</th><th>2024</th><th>2025</th><th>2026</th>
-            </tr>
-          </thead>
-          <tbody>
-        <tr>
-          <th>
-            <span class="swatch" style="--swatch:#246bfe"></span>
-            <span>部署泛化</span>
-            <small>1 篇</small>
-          </th>
-          <td></td><td></td><td></td><td><button class="bubble" style="--size:35px; --bubble:#246bfe" data-field="primary_technical_layer" data-value="deployment_generalization" data-year="2025" aria-label="部署泛化 2025 1 篇">1</button></td><td></td>
-        </tr>
+      <div class="role-grid">
+        <article class="role-card">
+          <div class="role-count">2</div>
+          <h3>语义规划器</h3>
+          <ul>
+          <li>
+            <strong>π0.5</strong>
+            <span>语义子任务预测可以借鉴到多机器人 planner 中：先预测任务分解，再依据机器人能力、位置和负载分派执行。</span>
+          </li>
+        
+          <li>
+            <strong>GenSwarm</strong>
+            <span>GenSwarm 可以作为系统级 baseline：当前端到端多机器人任务规划至少需要语言理解、技能图、任务分配、执行反馈和部署接口。你的方案可以尝试把其中不可微的代码生成和 MILP 部分替换成可学习模块。</span>
+          </li>
+        </ul>
+        </article>
       
-
-        <tr>
-          <th>
-            <span class="swatch" style="--swatch:#00a7c7"></span>
-            <span>策略改进</span>
-            <small>1 篇</small>
-          </th>
-          <td></td><td></td><td></td><td><button class="bubble" style="--size:35px; --bubble:#00a7c7" data-field="primary_technical_layer" data-value="policy_improvement" data-year="2025" aria-label="策略改进 2025 1 篇">1</button></td><td></td>
-        </tr>
+        <article class="role-card">
+          <div class="role-count">2</div>
+          <h3>任务分配器</h3>
+          <ul>
+          <li>
+            <strong>Heterogeneous MRTA RL</strong>
+            <span>你的系统可以把任务分解和任务分配分成两层：LLM/VLM 负责把目标转为结构化任务图，GNN/Transformer/RL 模块负责在 agent-task 图上做可优化分配。</span>
+          </li>
+        
+          <li>
+            <strong>GenSwarm</strong>
+            <span>GenSwarm 可以作为系统级 baseline：当前端到端多机器人任务规划至少需要语言理解、技能图、任务分配、执行反馈和部署接口。你的方案可以尝试把其中不可微的代码生成和 MILP 部分替换成可学习模块。</span>
+          </li>
+        </ul>
+        </article>
       
-
-        <tr>
-          <th>
-            <span class="swatch" style="--swatch:#6a7dff"></span>
-            <span>代码策略生成</span>
-            <small>1 篇</small>
-          </th>
-          <td></td><td></td><td></td><td></td><td><button class="bubble" style="--size:35px; --bubble:#6a7dff" data-field="primary_technical_layer" data-value="code_policy_generation" data-year="2026" aria-label="代码策略生成 2026 1 篇">1</button></td>
-        </tr>
+        <article class="role-card">
+          <div class="role-count">4</div>
+          <h3>世界模拟器</h3>
+          <ul>
+          <li>
+            <strong>DayDreamer</strong>
+            <span>多机器人系统可以让每个机器人维护自己的局部 world model，同时把执行经验汇总到共享能力库，服务于后续任务分配。</span>
+          </li>
+        
+          <li>
+            <strong>DreamerV3</strong>
+            <span>对多机器人 planner 来说，Dreamer 的价值是“可学习的任务级 transition model”：可以用来评估分配方案的长期后果，而不只是贪心分配当前任务。Minecraft 技术树式任务也提示，多机器人任务可以被建模为长程状态推进和资源转换过程。</span>
+          </li>
+        
+          <li>
+            <strong>Pyramidal Flow</strong>
+            <span>多机器人 world action model 可能需要预测较长时间范围内的场景演化。分层/多尺度生成可以先预测粗任务进展，再预测局部机器人交互细节。</span>
+          </li>
+        
+          <li>
+            <strong>DreamZero / WAM</strong>
+            <span>WAM 可以不只做执行器，还可以做 planner 的“行动后果预测器”：给定多个候选子任务分配，预测世界状态变化、冲突风险和可行性。</span>
+          </li>
+        </ul>
+        </article>
       
-
-        <tr>
-          <th>
-            <span class="swatch" style="--swatch:#3a92d8"></span>
-            <span>动态预测</span>
-            <small>1 篇</small>
-          </th>
-          <td></td><td></td><td></td><td></td><td><button class="bubble" style="--size:35px; --bubble:#3a92d8" data-field="primary_technical_layer" data-value="dynamics_prediction" data-year="2026" aria-label="动态预测 2026 1 篇">1</button></td>
-        </tr>
+        <article class="role-card">
+          <div class="role-count">3</div>
+          <h3>Planner critic</h3>
+          <ul>
+          <li>
+            <strong>DreamerV3</strong>
+            <span>对多机器人 planner 来说，Dreamer 的价值是“可学习的任务级 transition model”：可以用来评估分配方案的长期后果，而不只是贪心分配当前任务。Minecraft 技术树式任务也提示，多机器人任务可以被建模为长程状态推进和资源转换过程。</span>
+          </li>
+        
+          <li>
+            <strong>Eureka</strong>
+            <span>可以让语义理解模块输出 reward 或 critic 参数，用于训练任务分配模块。多机器人场景中，reward 需要同时考虑 makespan、等待时间、路径冲突、能力匹配和失败恢复。</span>
+          </li>
+        
+          <li>
+            <strong>DreamZero / WAM</strong>
+            <span>WAM 可以不只做执行器，还可以做 planner 的“行动后果预测器”：给定多个候选子任务分配，预测世界状态变化、冲突风险和可行性。</span>
+          </li>
+        </ul>
+        </article>
       
-
-        <tr>
-          <th>
-            <span class="swatch" style="--swatch:#7c67d8"></span>
-            <span>动作表示</span>
-            <small>1 篇</small>
-          </th>
-          <td></td><td></td><td><button class="bubble" style="--size:35px; --bubble:#7c67d8" data-field="primary_technical_layer" data-value="action_representation" data-year="2024" aria-label="动作表示 2024 1 篇">1</button></td><td></td><td></td>
-        </tr>
+        <article class="role-card">
+          <div class="role-count">7</div>
+          <h3>执行器</h3>
+          <ul>
+          <li>
+            <strong>RT-2</strong>
+            <span>RT-2 更适合放在系统底层：每个机器人接收局部语言子任务并执行。多机器人系统还需要上层 planner 处理任务分解、机器人能力建模、通信和失败恢复。</span>
+          </li>
+        
+          <li>
+            <strong>π0</strong>
+            <span>可以把 π0 视为“技能执行模型”，让上层 multi-agent planner 输出语言或子目标，再由不同机器人实例调用策略执行。</span>
+          </li>
+        
+          <li>
+            <strong>π0.5</strong>
+            <span>语义子任务预测可以借鉴到多机器人 planner 中：先预测任务分解，再依据机器人能力、位置和负载分派执行。</span>
+          </li>
+        
+          <li>
+            <strong>π*0.6 / RECAP</strong>
+            <span>多机器人 planner 可以记录失败发生在哪个子任务、哪个机器人、哪个协作边界，再将失败样本反哺给执行策略或能力模型。</span>
+          </li>
+        </ul>
+        </article>
       
-
-        <tr>
-          <th>
-            <span class="swatch" style="--swatch:#188aa6"></span>
-            <span>分布式任务分配</span>
-            <small>1 篇</small>
-          </th>
-          <td></td><td></td><td></td><td><button class="bubble" style="--size:35px; --bubble:#188aa6" data-field="primary_technical_layer" data-value="decentralized_task_allocation" data-year="2025" aria-label="分布式任务分配 2025 1 篇">1</button></td><td></td>
-        </tr>
+        <article class="role-card">
+          <div class="role-count">1</div>
+          <h3>执行接口</h3>
+          <ul>
+          <li>
+            <strong>FAST</strong>
+            <span>如果多机器人 planner 需要训练统一执行器，动作 tokenizer 的效率会影响数据规模、推理速度和跨平台泛化。FAST 提醒我们动作接口设计本身就是模型能力的一部分。</span>
+          </li>
+        </ul>
+        </article>
       
-
-        <tr>
-          <th>
-            <span class="swatch" style="--swatch:#4b6f96"></span>
-            <span>高效动作 token 化</span>
-            <small>1 篇</small>
-          </th>
-          <td></td><td></td><td></td><td><button class="bubble" style="--size:35px; --bubble:#4b6f96" data-field="primary_technical_layer" data-value="efficient_action_tokenization" data-year="2025" aria-label="高效动作 token 化 2025 1 篇">1</button></td><td></td>
-        </tr>
+        <article class="role-card">
+          <div class="role-count">1</div>
+          <h3>记忆模块</h3>
+          <ul>
+          <li>
+            <strong>MEM</strong>
+            <span>多机器人系统应有多层记忆：机器人本地短期记忆、机器人本地任务摘要、团队共享任务进度和全局场景状态。MEM 的视频/文本双记忆结构可以迁移到这个设计。</span>
+          </li>
+        </ul>
+        </article>
       
-
-        <tr>
-          <th>
-            <span class="swatch" style="--swatch:#2f80ed"></span>
-            <span>奖励函数设计</span>
-            <small>1 篇</small>
-          </th>
-          <td></td><td><button class="bubble" style="--size:35px; --bubble:#2f80ed" data-field="primary_technical_layer" data-value="reward_design" data-year="2023" aria-label="奖励函数设计 2023 1 篇">1</button></td><td></td><td></td><td></td>
-        </tr>
+        <article class="role-card">
+          <div class="role-count">1</div>
+          <h3>奖励设计器</h3>
+          <ul>
+          <li>
+            <strong>Eureka</strong>
+            <span>可以让语义理解模块输出 reward 或 critic 参数，用于训练任务分配模块。多机器人场景中，reward 需要同时考虑 makespan、等待时间、路径冲突、能力匹配和失败恢复。</span>
+          </li>
+        </ul>
+        </article>
       
-
-        <tr>
-          <th>
-            <span class="swatch" style="--swatch:#4a56b8"></span>
-            <span>开放世界泛化</span>
-            <small>1 篇</small>
-          </th>
-          <td></td><td></td><td></td><td><button class="bubble" style="--size:35px; --bubble:#4a56b8" data-field="primary_technical_layer" data-value="open_world_generalization" data-year="2025" aria-label="开放世界泛化 2025 1 篇">1</button></td><td></td>
-        </tr>
+        <article class="role-card">
+          <div class="role-count">1</div>
+          <h3>代码策略生成器</h3>
+          <ul>
+          <li>
+            <strong>GenSwarm</strong>
+            <span>GenSwarm 可以作为系统级 baseline：当前端到端多机器人任务规划至少需要语言理解、技能图、任务分配、执行反馈和部署接口。你的方案可以尝试把其中不可微的代码生成和 MILP 部分替换成可学习模块。</span>
+          </li>
+        </ul>
+        </article>
       
-
-        <tr>
-          <th>
-            <span class="swatch" style="--swatch:#0f7894"></span>
-            <span>视频生成</span>
-            <small>1 篇</small>
-          </th>
-          <td></td><td></td><td><button class="bubble" style="--size:35px; --bubble:#0f7894" data-field="primary_technical_layer" data-value="video_generation" data-year="2024" aria-label="视频生成 2024 1 篇">1</button></td><td></td><td></td>
-        </tr>
+        <article class="role-card">
+          <div class="role-count">1</div>
+          <h3>动作 tokenizer</h3>
+          <ul>
+          <li>
+            <strong>FAST</strong>
+            <span>如果多机器人 planner 需要训练统一执行器，动作 tokenizer 的效率会影响数据规模、推理速度和跨平台泛化。FAST 提醒我们动作接口设计本身就是模型能力的一部分。</span>
+          </li>
+        </ul>
+        </article>
       
-
-        <tr>
-          <th>
-            <span class="swatch" style="--swatch:#246bfe"></span>
-            <span>想象规划</span>
-            <small>1 篇</small>
-          </th>
-          <td></td><td><button class="bubble" style="--size:35px; --bubble:#246bfe" data-field="primary_technical_layer" data-value="imagination_planning" data-year="2023" aria-label="想象规划 2023 1 篇">1</button></td><td></td><td></td><td></td>
-        </tr>
+        <article class="role-card">
+          <div class="role-count">1</div>
+          <h3>失败恢复策略</h3>
+          <ul>
+          <li>
+            <strong>π*0.6 / RECAP</strong>
+            <span>多机器人 planner 可以记录失败发生在哪个子任务、哪个机器人、哪个协作边界，再将失败样本反哺给执行策略或能力模型。</span>
+          </li>
+        </ul>
+        </article>
       
-
-        <tr>
-          <th>
-            <span class="swatch" style="--swatch:#00a7c7"></span>
-            <span>语义落地</span>
-            <small>1 篇</small>
-          </th>
-          <td></td><td><button class="bubble" style="--size:35px; --bubble:#00a7c7" data-field="primary_technical_layer" data-value="semantic_grounding" data-year="2023" aria-label="语义落地 2023 1 篇">1</button></td><td></td><td></td><td></td>
-        </tr>
+        <article class="role-card">
+          <div class="role-count">2</div>
+          <h3>规划基线</h3>
+          <ul>
+          <li>
+            <strong>Heterogeneous MRTA RL</strong>
+            <span>你的系统可以把任务分解和任务分配分成两层：LLM/VLM 负责把目标转为结构化任务图，GNN/Transformer/RL 模块负责在 agent-task 图上做可优化分配。</span>
+          </li>
+        
+          <li>
+            <strong>GenSwarm</strong>
+            <span>GenSwarm 可以作为系统级 baseline：当前端到端多机器人任务规划至少需要语言理解、技能图、任务分配、执行反馈和部署接口。你的方案可以尝试把其中不可微的代码生成和 MILP 部分替换成可学习模块。</span>
+          </li>
+        </ul>
+        </article>
       
-
-        <tr>
-          <th>
-            <span class="swatch" style="--swatch:#6a7dff"></span>
-            <span>长程记忆</span>
-            <small>1 篇</small>
-          </th>
-          <td></td><td></td><td></td><td></td><td><button class="bubble" style="--size:35px; --bubble:#6a7dff" data-field="primary_technical_layer" data-value="long_horizon_memory" data-year="2026" aria-label="长程记忆 2026 1 篇">1</button></td>
-        </tr>
+        <article class="role-card">
+          <div class="role-count">2</div>
+          <h3>策略训练器</h3>
+          <ul>
+          <li>
+            <strong>DayDreamer</strong>
+            <span>多机器人系统可以让每个机器人维护自己的局部 world model，同时把执行经验汇总到共享能力库，服务于后续任务分配。</span>
+          </li>
+        
+          <li>
+            <strong>DreamerV3</strong>
+            <span>对多机器人 planner 来说，Dreamer 的价值是“可学习的任务级 transition model”：可以用来评估分配方案的长期后果，而不只是贪心分配当前任务。Minecraft 技术树式任务也提示，多机器人任务可以被建模为长程状态推进和资源转换过程。</span>
+          </li>
+        </ul>
+        </article>
       
-
-        <tr>
-          <th>
-            <span class="swatch" style="--swatch:#3a92d8"></span>
-            <span>真实机器人学习</span>
-            <small>1 篇</small>
-          </th>
-          <td><button class="bubble" style="--size:35px; --bubble:#3a92d8" data-field="primary_technical_layer" data-value="embodied_learning" data-year="2022" aria-label="真实机器人学习 2022 1 篇">1</button></td><td></td><td></td><td></td><td></td>
-        </tr>
+        <article class="role-card">
+          <div class="role-count">1</div>
+          <h3>调度器</h3>
+          <ul>
+          <li>
+            <strong>Heterogeneous MRTA RL</strong>
+            <span>你的系统可以把任务分解和任务分配分成两层：LLM/VLM 负责把目标转为结构化任务图，GNN/Transformer/RL 模块负责在 agent-task 图上做可优化分配。</span>
+          </li>
+        </ul>
+        </article>
       
-
-        <tr>
-          <th>
-            <span class="swatch" style="--swatch:#7c67d8"></span>
-            <span>组合泛化</span>
-            <small>1 篇</small>
-          </th>
-          <td></td><td></td><td></td><td></td><td><button class="bubble" style="--size:35px; --bubble:#7c67d8" data-field="primary_technical_layer" data-value="compositional_generalization" data-year="2026" aria-label="组合泛化 2026 1 篇">1</button></td>
-        </tr>
-      </tbody>
-        </table>
+        <article class="role-card">
+          <div class="role-count">4</div>
+          <h3>基础策略</h3>
+          <ul>
+          <li>
+            <strong>π0</strong>
+            <span>可以把 π0 视为“技能执行模型”，让上层 multi-agent planner 输出语言或子目标，再由不同机器人实例调用策略执行。</span>
+          </li>
+        
+          <li>
+            <strong>π0.5</strong>
+            <span>语义子任务预测可以借鉴到多机器人 planner 中：先预测任务分解，再依据机器人能力、位置和负载分派执行。</span>
+          </li>
+        
+          <li>
+            <strong>π0.6</strong>
+            <span>可以把 π0.6 作为“机器人能力模型”的来源：不同平台在不同任务上的成功率、失败类型和恢复能力可以反馈给任务分配器。</span>
+          </li>
+        
+          <li>
+            <strong>π0.7</strong>
+            <span>对你的方向最有价值的是“上下文可控执行器”这个接口：多机器人 planner 可以为不同机器人生成不同上下文，例如角色、目标、路径约束、协作顺序和失败恢复策略。</span>
+          </li>
+        </ul>
+        </article>
+      
+        <article class="role-card">
+          <div class="role-count">1</div>
+          <h3>经验学习器</h3>
+          <ul>
+          <li>
+            <strong>π*0.6 / RECAP</strong>
+            <span>多机器人 planner 可以记录失败发生在哪个子任务、哪个机器人、哪个协作边界，再将失败样本反哺给执行策略或能力模型。</span>
+          </li>
+        </ul>
+        </article>
+      
+        <article class="role-card">
+          <div class="role-count">1</div>
+          <h3>可控策略</h3>
+          <ul>
+          <li>
+            <strong>π0.7</strong>
+            <span>对你的方向最有价值的是“上下文可控执行器”这个接口：多机器人 planner 可以为不同机器人生成不同上下文，例如角色、目标、路径约束、协作顺序和失败恢复策略。</span>
+          </li>
+        </ul>
+        </article>
+      
+        <article class="role-card">
+          <div class="role-count">1</div>
+          <h3>视频生成器</h3>
+          <ul>
+          <li>
+            <strong>Pyramidal Flow</strong>
+            <span>多机器人 world action model 可能需要预测较长时间范围内的场景演化。分层/多尺度生成可以先预测粗任务进展，再预测局部机器人交互细节。</span>
+          </li>
+        </ul>
+        </article>
+      
+        <article class="role-card">
+          <div class="role-count">1</div>
+          <h3>语义落地器</h3>
+          <ul>
+          <li>
+            <strong>RT-2</strong>
+            <span>RT-2 更适合放在系统底层：每个机器人接收局部语言子任务并执行。多机器人系统还需要上层 planner 处理任务分解、机器人能力建模、通信和失败恢复。</span>
+          </li>
+        </ul>
+        </article>
+      
+        <article class="role-card">
+          <div class="role-count">1</div>
+          <h3>长程状态</h3>
+          <ul>
+          <li>
+            <strong>MEM</strong>
+            <span>多机器人系统应有多层记忆：机器人本地短期记忆、机器人本地任务摘要、团队共享任务进度和全局场景状态。MEM 的视频/文本双记忆结构可以迁移到这个设计。</span>
+          </li>
+        </ul>
+        </article>
+      
+        <article class="role-card">
+          <div class="role-count">1</div>
+          <h3>执行上下文</h3>
+          <ul>
+          <li>
+            <strong>MEM</strong>
+            <span>多机器人系统应有多层记忆：机器人本地短期记忆、机器人本地任务摘要、团队共享任务进度和全局场景状态。MEM 的视频/文本双记忆结构可以迁移到这个设计。</span>
+          </li>
+        </ul>
+        </article>
       </div>
     </section>
   
     
-    <section class="section" id="primary_task_family">
-      <div class="section-kicker">任务族</div>
+    <section class="section compact-section" id="reading">
+      <div class="section-kicker">Reading operations</div>
       <div class="section-head">
         <div>
-          <h2>任务族时间轴</h2>
-          <p>点击气泡可以联动筛选下方论文列表。</p>
+          <h2>阅读行动队列</h2>
+          <p>这里不是普通待办，而是把每篇论文下一步要产出的研究动作显式化：审关系、提能力表、做 baseline、抽系统架构或扩展多智能体 rollout。</p>
         </div>
-        <button class="icon-button" data-reset>重置</button>
       </div>
-      <div class="timeline-wrap">
-        <table class="timeline">
-          <thead>
-            <tr>
-              <th>标签</th>
-              <th>2022</th><th>2023</th><th>2024</th><th>2025</th><th>2026</th>
-            </tr>
-          </thead>
-          <tbody>
-        <tr>
-          <th>
-            <span class="swatch" style="--swatch:#246bfe"></span>
-            <span>高频控制</span>
-            <small>1 篇</small>
-          </th>
-          <td></td><td></td><td></td><td><button class="bubble" style="--size:35px; --bubble:#246bfe" data-field="primary_task_family" data-value="high_frequency_control" data-year="2025" aria-label="高频控制 2025 1 篇">1</button></td><td></td>
-        </tr>
+      <div class="queue-grid">
+        <article class="queue-card">
+          <div class="queue-count">1</div>
+          <h3>提取系统架构</h3>
+          <p>把论文中的系统结构拆成可复用模块、接口和实验变量。</p>
+          <ul>
+          <li>
+            <span>2026-01</span>
+            <strong>GenSwarm</strong>
+            <em>已读论文</em>
+          </li>
+        </ul>
+        </article>
       
-
-        <tr>
-          <th>
-            <span class="swatch" style="--swatch:#00a7c7"></span>
-            <span>集群策略生成</span>
-            <small>1 篇</small>
-          </th>
-          <td></td><td></td><td></td><td></td><td><button class="bubble" style="--size:35px; --bubble:#00a7c7" data-field="primary_task_family" data-value="swarm_policy_generation" data-year="2026" aria-label="集群策略生成 2026 1 篇">1</button></td>
-        </tr>
+        <article class="queue-card">
+          <div class="queue-count">1</div>
+          <h3>扩展多智能体 rollout</h3>
+          <p>把单机器人 world/action rollout 扩展成多机器人联合状态预测。</p>
+          <ul>
+          <li>
+            <span>2026-02</span>
+            <strong>DreamZero / WAM</strong>
+            <em>已读论文</em>
+          </li>
+        </ul>
+        </article>
       
-
-        <tr>
-          <th>
-            <span class="swatch" style="--swatch:#6a7dff"></span>
-            <span>记忆增强执行</span>
-            <small>1 篇</small>
-          </th>
-          <td></td><td></td><td></td><td></td><td><button class="bubble" style="--size:35px; --bubble:#6a7dff" data-field="primary_task_family" data-value="memory_augmented_execution" data-year="2026" aria-label="记忆增强执行 2026 1 篇">1</button></td>
-        </tr>
+        <article class="queue-card">
+          <div class="queue-count">1</div>
+          <h3>设计团队记忆</h3>
+          <p>把单体长期记忆改造成团队共享记忆和本地记忆的同步机制。</p>
+          <ul>
+          <li>
+            <span>2026-03</span>
+            <strong>MEM</strong>
+            <em>已读论文</em>
+          </li>
+        </ul>
+        </article>
       
-
-        <tr>
-          <th>
-            <span class="swatch" style="--swatch:#3a92d8"></span>
-            <span>奖励塑形</span>
-            <small>1 篇</small>
-          </th>
-          <td></td><td><button class="bubble" style="--size:35px; --bubble:#3a92d8" data-field="primary_task_family" data-value="reward_shaping" data-year="2023" aria-label="奖励塑形 2023 1 篇">1</button></td><td></td><td></td><td></td>
-        </tr>
+        <article class="queue-card">
+          <div class="queue-count">1</div>
+          <h3>作为执行器目标</h3>
+          <p>抽象 planner-to-executor 接口，定义上下文、约束和失败反馈 schema。</p>
+          <ul>
+          <li>
+            <span>2026-04</span>
+            <strong>π0.7</strong>
+            <em>已读论文</em>
+          </li>
+        </ul>
+        </article>
       
-
-        <tr>
-          <th>
-            <span class="swatch" style="--swatch:#7c67d8"></span>
-            <span>经验驱动恢复</span>
-            <small>1 篇</small>
-          </th>
-          <td></td><td></td><td></td><td><button class="bubble" style="--size:35px; --bubble:#7c67d8" data-field="primary_task_family" data-value="experience_driven_recovery" data-year="2025" aria-label="经验驱动恢复 2025 1 篇">1</button></td><td></td>
-        </tr>
+        <article class="queue-card">
+          <div class="queue-count">1</div>
+          <h3>转为 baseline</h3>
+          <p>把论文方法整理成可复现实验基线，服务后续模型对比。</p>
+          <ul>
+          <li>
+            <span>2025-03</span>
+            <strong>Heterogeneous MRTA RL</strong>
+            <em>已读论文</em>
+          </li>
+        </ul>
+        </article>
       
-
-        <tr>
-          <th>
-            <span class="swatch" style="--swatch:#188aa6"></span>
-            <span>可控长程执行</span>
-            <small>1 篇</small>
-          </th>
-          <td></td><td></td><td></td><td></td><td><button class="bubble" style="--size:35px; --bubble:#188aa6" data-field="primary_task_family" data-value="steerable_long_horizon_execution" data-year="2026" aria-label="可控长程执行 2026 1 篇">1</button></td>
-        </tr>
+        <article class="queue-card">
+          <div class="queue-count">1</div>
+          <h3>映射到 planner critic</h3>
+          <p>把 world model 或 reward 机制映射成 planner critic。</p>
+          <ul>
+          <li>
+            <span>2023-01</span>
+            <strong>DreamerV3</strong>
+            <em>已读论文</em>
+          </li>
+        </ul>
+        </article>
       
-
-        <tr>
-          <th>
-            <span class="swatch" style="--swatch:#4b6f96"></span>
-            <span>零样本策略</span>
-            <small>1 篇</small>
-          </th>
-          <td></td><td></td><td></td><td></td><td><button class="bubble" style="--size:35px; --bubble:#4b6f96" data-field="primary_task_family" data-value="zero_shot_policy" data-year="2026" aria-label="零样本策略 2026 1 篇">1</button></td>
-        </tr>
+        <article class="queue-card">
+          <div class="queue-count">1</div>
+          <h3>定义执行器接口</h3>
+          <p>明确高层 planner 如何调用底层 VLA 执行器。</p>
+          <ul>
+          <li>
+            <span>2024-10</span>
+            <strong>π0</strong>
+            <em>已读论文</em>
+          </li>
+        </ul>
+        </article>
       
-
-        <tr>
-          <th>
-            <span class="swatch" style="--swatch:#2f80ed"></span>
-            <span>鲁棒执行</span>
-            <small>1 篇</small>
-          </th>
-          <td></td><td></td><td></td><td><button class="bubble" style="--size:35px; --bubble:#2f80ed" data-field="primary_task_family" data-value="robust_execution" data-year="2025" aria-label="鲁棒执行 2025 1 篇">1</button></td><td></td>
-        </tr>
+        <article class="queue-card">
+          <div class="queue-count">1</div>
+          <h3>建模为执行器+子任务器</h3>
+          <p>把论文拆成执行器和语义子任务器两个角色。</p>
+          <ul>
+          <li>
+            <span>2025-04</span>
+            <strong>π0.5</strong>
+            <em>已读论文</em>
+          </li>
+        </ul>
+        </article>
       
-
-        <tr>
-          <th>
-            <span class="swatch" style="--swatch:#4a56b8"></span>
-            <span>潜在世界模型控制</span>
-            <small>1 篇</small>
-          </th>
-          <td></td><td><button class="bubble" style="--size:35px; --bubble:#4a56b8" data-field="primary_task_family" data-value="latent_world_model_control" data-year="2023" aria-label="潜在世界模型控制 2023 1 篇">1</button></td><td></td><td></td><td></td>
-        </tr>
+        <article class="queue-card">
+          <div class="queue-count">1</div>
+          <h3>提取能力表</h3>
+          <p>提取平台能力、成功率、失败类型和预计耗时。</p>
+          <ul>
+          <li>
+            <span>2025-11</span>
+            <strong>π0.6</strong>
+            <em>略读</em>
+          </li>
+        </ul>
+        </article>
       
-
-        <tr>
-          <th>
-            <span class="swatch" style="--swatch:#0f7894"></span>
-            <span>视频动态生成</span>
-            <small>1 篇</small>
-          </th>
-          <td></td><td></td><td><button class="bubble" style="--size:35px; --bubble:#0f7894" data-field="primary_task_family" data-value="video_dynamics_generation" data-year="2024" aria-label="视频动态生成 2024 1 篇">1</button></td><td></td><td></td>
-        </tr>
+        <article class="queue-card">
+          <div class="queue-count">1</div>
+          <h3>映射恢复闭环</h3>
+          <p>把失败样本、纠错和继续学习整理成恢复闭环。</p>
+          <ul>
+          <li>
+            <span>2025-11</span>
+            <strong>π*0.6 / RECAP</strong>
+            <em>略读</em>
+          </li>
+        </ul>
+        </article>
       
-
-        <tr>
-          <th>
-            <span class="swatch" style="--swatch:#246bfe"></span>
-            <span>通用机器人控制</span>
-            <small>1 篇</small>
-          </th>
-          <td></td><td></td><td><button class="bubble" style="--size:35px; --bubble:#246bfe" data-field="primary_task_family" data-value="generalist_robot_control" data-year="2024" aria-label="通用机器人控制 2024 1 篇">1</button></td><td></td><td></td>
-        </tr>
+        <article class="queue-card">
+          <div class="queue-count">1</div>
+          <h3>对比 DreamerV3</h3>
+          <p>与 DreamerV3 对比 world model 训练、rollout 和控制接口。</p>
+          <ul>
+          <li>
+            <span>2022-06</span>
+            <strong>DayDreamer</strong>
+            <em>已读论文</em>
+          </li>
+        </ul>
+        </article>
       
-
-        <tr>
-          <th>
-            <span class="swatch" style="--swatch:#00a7c7"></span>
-            <span>异构任务分配</span>
-            <small>1 篇</small>
-          </th>
-          <td></td><td></td><td></td><td><button class="bubble" style="--size:35px; --bubble:#00a7c7" data-field="primary_task_family" data-value="heterogeneous_task_allocation" data-year="2025" aria-label="异构任务分配 2025 1 篇">1</button></td><td></td>
-        </tr>
+        <article class="queue-card">
+          <div class="queue-count">1</div>
+          <h3>连接 GenSwarm</h3>
+          <p>连接语言规划、多机器人代码策略和任务分配模块。</p>
+          <ul>
+          <li>
+            <span>2023-10</span>
+            <strong>Eureka</strong>
+            <em>已读论文</em>
+          </li>
+        </ul>
+        </article>
       
-
-        <tr>
-          <th>
-            <span class="swatch" style="--swatch:#6a7dff"></span>
-            <span>语言条件执行</span>
-            <small>1 篇</small>
-          </th>
-          <td></td><td><button class="bubble" style="--size:35px; --bubble:#6a7dff" data-field="primary_task_family" data-value="language_conditioned_execution" data-year="2023" aria-label="语言条件执行 2023 1 篇">1</button></td><td></td><td></td><td></td>
-        </tr>
+        <article class="queue-card">
+          <div class="queue-count">1</div>
+          <h3>作为 VLA 根节点</h3>
+          <p>保留为 VLA 路线的根节点和语义 grounding 起点。</p>
+          <ul>
+          <li>
+            <span>2023-07</span>
+            <strong>RT-2</strong>
+            <em>已读论文</em>
+          </li>
+        </ul>
+        </article>
       
-
-        <tr>
-          <th>
-            <span class="swatch" style="--swatch:#3a92d8"></span>
-            <span>长程执行</span>
-            <small>1 篇</small>
-          </th>
-          <td></td><td></td><td></td><td><button class="bubble" style="--size:35px; --bubble:#3a92d8" data-field="primary_task_family" data-value="long_horizon_execution" data-year="2025" aria-label="长程执行 2025 1 篇">1</button></td><td></td>
-        </tr>
+        <article class="queue-card">
+          <div class="queue-count">1</div>
+          <h3>只连接 WAM</h3>
+          <p>只保留与 WAM 生成式世界预测相关的强关系。</p>
+          <ul>
+          <li>
+            <span>2024-10</span>
+            <strong>Pyramidal Flow</strong>
+            <em>略读</em>
+          </li>
+        </ul>
+        </article>
       
-
-        <tr>
-          <th>
-            <span class="swatch" style="--swatch:#7c67d8"></span>
-            <span>真实机器人学习</span>
-            <small>1 篇</small>
-          </th>
-          <td><button class="bubble" style="--size:35px; --bubble:#7c67d8" data-field="primary_task_family" data-value="real_robot_learning" data-year="2022" aria-label="真实机器人学习 2022 1 篇">1</button></td><td></td><td></td><td></td><td></td>
-        </tr>
-      </tbody>
-        </table>
+        <article class="queue-card">
+          <div class="queue-count">1</div>
+          <h3>保留为动作接口</h3>
+          <p>保留为动作表示和高频控制接口方案。</p>
+          <ul>
+          <li>
+            <span>2025-01</span>
+            <strong>FAST</strong>
+            <em>已读论文</em>
+          </li>
+        </ul>
+        </article>
+      </div>
+    </section>
+  
+    
+    <section class="section compact-section" id="agents">
+      <div class="section-kicker">Agent workflows</div>
+      <div class="section-head">
+        <div>
+          <h2>Agent 工作流</h2>
+          <p>把仓库维护拆成可复制的 agent 任务：新增论文、审计关系、精读升级、发现 gap、映射系统设计。prompt 原文放在仓库根目录。</p>
+        </div>
+        <a class="agent-prompt-link" data-agent-prompts href="AGENT_PROMPTS.md" target="_blank" rel="noreferrer">打开 AGENT_PROMPTS.md</a>
+      </div>
+      <div class="agent-grid">
+        <article class="agent-card">
+          <div class="agent-label">新增论文</div>
+          <h3>Paper Ingest Agent</h3>
+          <p>把一篇新论文变成结构化 note、typed relations 和可检索数据。</p>
+          <div class="agent-output">paper note + data/papers.json + dashboard rebuild</div>
+        </article>
+      
+        <article class="agent-card">
+          <div class="agent-label">关系审计</div>
+          <h3>Relation Audit Agent</h3>
+          <p>检查每条边是不是方向正确、类型明确、值得保留。</p>
+          <div class="agent-output">cleaner typed graph + changed edge list</div>
+        </article>
+      
+        <article class="agent-card">
+          <div class="agent-label">精读升级</div>
+          <h3>Deep Reading Agent</h3>
+          <p>把 skimmed/read note 升级成能支持系统设计的 deep reading note。</p>
+          <div class="agent-output">stronger method / limitation / reusable module / evidence sections</div>
+        </article>
+      
+        <article class="agent-card">
+          <div class="agent-label">问题发现</div>
+          <h3>Gap Finder Agent</h3>
+          <p>从系统角色和可复用模块里找实验级 research gaps。</p>
+          <div class="agent-output">5 actionable gaps + supporting papers + experiment idea</div>
+        </article>
+      
+        <article class="agent-card">
+          <div class="agent-label">系统映射</div>
+          <h3>System Design Mapper Agent</h3>
+          <p>把论文图谱转成 General Multi-Agent Task Planning Model 架构草图。</p>
+          <div class="agent-output">modules + interfaces + risks + supporting papers</div>
+        </article>
       </div>
     </section>
   
@@ -1610,6 +2203,30 @@
 <option value="embodied_learning">真实机器人学习</option>
 <option value="compositional_generalization">组合泛化</option>
         </select>
+        <select id="role-filter">
+          <option value="">全部系统角色</option>
+          <option value="policy_trainer">策略训练器</option>
+<option value="code_policy_generator">代码策略生成器</option>
+<option value="scheduler">调度器</option>
+<option value="action_tokenizer">动作 tokenizer</option>
+<option value="planner_baseline">规划基线</option>
+<option value="foundation_policy">基础策略</option>
+<option value="memory_module">记忆模块</option>
+<option value="reward_designer">奖励设计器</option>
+<option value="experience_learner">经验学习器</option>
+<option value="steerable_policy">可控策略</option>
+<option value="task_allocator">任务分配器</option>
+<option value="recovery_policy">失败恢复策略</option>
+<option value="world_simulator">世界模拟器</option>
+<option value="video_generator">视频生成器</option>
+<option value="semantic_planner">语义规划器</option>
+<option value="semantic_grounder">语义落地器</option>
+<option value="long_horizon_state">长程状态</option>
+<option value="executor_interface">执行接口</option>
+<option value="executor">执行器</option>
+<option value="executor_context">执行上下文</option>
+<option value="planner_critic">Planner critic</option>
+        </select>
         <button data-reset>重置</button>
       </div>
       <div class="empty-state" id="empty-state">没有匹配的论文。</div>
@@ -1621,7 +2238,8 @@
           data-tech_paradigm="world_model_rl"
           data-primary_technical_layer="embodied_learning"
           data-primary_task_family="real_robot_learning"
-          data-search="daydreamer: world models for physical robot learning daydreamer corl 2022 / pmlr 2023 daydreamer 把 dreamer 式 world model 学习带到真实机器人，强调从少量真实交互中学习行为。 论文基于 dreamer，在真实机器人上学习潜在世界模型，并通过模型预测训练策略。 它连接了 dreamerv3 的通用 world model 思路和真实机器人学习，为后续部署型 world model 提供早期证据。 2022-06 world model world model rl daydreamer dreamer world model physical robot learning sample efficiency wu, escontrela, hafner, abbeel, goldberg uc berkeley">
+          data-system_roles="world_simulator policy_trainer"
+          data-search="daydreamer: world models for physical robot learning daydreamer corl 2022 / pmlr 2023 daydreamer 把 dreamer 式 world model 学习带到真实机器人，强调从少量真实交互中学习行为。 论文基于 dreamer，在真实机器人上学习潜在世界模型，并通过模型预测训练策略。 它连接了 dreamerv3 的通用 world model 思路和真实机器人学习，为后续部署型 world model 提供早期证据。 2022-06 world model paper_read compare_with_dreamerv3 world model rl daydreamer dreamer world model physical robot learning sample efficiency world_simulator policy_trainer latent_world_model real_robot_online_learning imagination_rollout wu, escontrela, hafner, abbeel, goldberg uc berkeley">
           <div class="paper-media">
             <div class="paper-placeholder">DayDreamer</div>
             <span>2022-06</span>
@@ -1645,8 +2263,13 @@
                 <div><b>局限</b><p>任务规模和复杂度仍远小于真实多机器人任务规划。论文不处理语言指令、任务分配或多主体通信。</p></div>
                 <div><b>关系</b><p>DayDreamer 是 Dreamer 到机器人现实交互的桥。π*0.6 也强调从真实经验中改进，但采用的是 VLA + correction/RL 的路线。</p></div>
                 <div><b>对多智能体任务规划模型的启发</b><p>多机器人系统可以让每个机器人维护自己的局部 world model，同时把执行经验汇总到共享能力库，服务于后续任务分配。</p></div>
+                <div><b>可复用模块</b><p>latent world model、online adaptation loop、imagination rollout。适合迁移到“任务分配方案的短期后果预测”和“失败后快速再规划”。</p></div>
+                <div><b>证据与风险</b><p>证据来自真实机器人在线学习，但任务规模和多主体交互都有限。迁移到多机器人时，最大的风险是联合状态维度和通信延迟。</p></div>
               </div>
             </details>
+            <div class="paper-roles"><span class="tag role-tag">世界模拟器</span><span class="tag role-tag">策略训练器</span></div>
+            <div class="paper-modules"><span class="tag module-tag">latent world model</span><span class="tag module-tag">real robot online learning</span><span class="tag module-tag">imagination rollout</span></div>
+            <div class="paper-next">Evidence: 已读论文 · Next: 对比 DreamerV3</div>
             <div class="paper-tags"><span class="tag">DayDreamer</span><span class="tag">Dreamer</span><span class="tag">world model</span><span class="tag">physical robot learning</span><span class="tag">sample efficiency</span></div>
             <div class="paper-links"><a href="https://proceedings.mlr.press/v205/wu23c.html" target="_blank" rel="noreferrer">论文</a><a href="https://sites.google.com/view/daydreamer-robot-learning/" target="_blank" rel="noreferrer">项目页</a></div>
           </div>
@@ -1659,7 +2282,8 @@
           data-tech_paradigm="world_model_rl"
           data-primary_technical_layer="imagination_planning"
           data-primary_task_family="latent_world_model_control"
-          data-search="mastering diverse control tasks through world models dreamerv3 arxiv 2023 / nature 2025 dreamerv3 是 world model rl 的重要基线：先学环境模型，再在想象轨迹中优化行为，并在 nature 版本中展示了跨多控制域和 minecraft 长程任务的泛化能力。 dreamer 学习潜在状态空间中的世界模型，用该模型预测未来并在 imagined trajectories 上训练 actor-critic。nature 版本强调同一套算法在固定超参数下覆盖连续控制、离散控制、视觉输入、低维输入和 minecraft 等多种环境。 它证明 world model 可以成为通用控制算法的核心，而不只是辅助模拟器；其中 minecraft 结果说明 world model 可以支撑长时程、稀疏奖励、多步骤技术树式任务。 2023-01 world model world model rl dreamerv3 world model model-based rl latent imagination reinforcement learning minecraft hafner, pasukonis, ba, lillicrap google deepmind">
+          data-system_roles="world_simulator planner_critic policy_trainer"
+          data-search="mastering diverse control tasks through world models dreamerv3 arxiv 2023 / nature 2025 dreamerv3 是 world model rl 的重要基线：先学环境模型，再在想象轨迹中优化行为，并在 nature 版本中展示了跨多控制域和 minecraft 长程任务的泛化能力。 dreamer 学习潜在状态空间中的世界模型，用该模型预测未来并在 imagined trajectories 上训练 actor-critic。nature 版本强调同一套算法在固定超参数下覆盖连续控制、离散控制、视觉输入、低维输入和 minecraft 等多种环境。 它证明 world model 可以成为通用控制算法的核心，而不只是辅助模拟器；其中 minecraft 结果说明 world model 可以支撑长时程、稀疏奖励、多步骤技术树式任务。 2023-01 world model paper_read map_to_planner_critic world model rl dreamerv3 world model model-based rl latent imagination reinforcement learning minecraft world_simulator planner_critic policy_trainer latent_world_model imagination_rollout long_horizon_value_learning hafner, pasukonis, ba, lillicrap google deepmind">
           <div class="paper-media">
             <div class="paper-placeholder">DreamerV3</div>
             <span>2023-01</span>
@@ -1683,8 +2307,13 @@
                 <div><b>局限</b><p>DreamerV3 的核心评测不针对语言任务，也不直接解决机器人多智能体协同。它能做强控制学习，但还没有处理自然语言任务分解、异构机器人能力约束、通信和联合调度。</p></div>
                 <div><b>关系</b><p>DayDreamer 把 Dreamer 类方法带到真实机器人在线学习；DreamZero 则借视频扩散模型把 world model 推向 zero-shot policy。对你的路线来说，DreamerV3 / Nature 版本是“world model 可以做长程控制推演”的核心证据。</p></div>
                 <div><b>对多智能体任务规划模型的启发</b><p>对多机器人 planner 来说，Dreamer 的价值是“可学习的任务级 transition model”：可以用来评估分配方案的长期后果，而不只是贪心分配当前任务。Minecraft 技术树式任务也提示，多机器人任务可以被建模为长程状态推进和资源转换过程。</p></div>
+                <div><b>可复用模块</b><p>latent transition model、imagination rollout、value model。可作为上层 planner 的 critic，用来评估任务分配、重规划和长期资源转换。</p></div>
+                <div><b>证据与风险</b><p>证据强在跨领域 benchmark 和长程控制；风险在于多机器人场景需要显式建模 agent identity、通信动作和局部观测。</p></div>
               </div>
             </details>
+            <div class="paper-roles"><span class="tag role-tag">世界模拟器</span><span class="tag role-tag">Planner critic</span><span class="tag role-tag">策略训练器</span></div>
+            <div class="paper-modules"><span class="tag module-tag">latent world model</span><span class="tag module-tag">imagination rollout</span><span class="tag module-tag">long horizon value learning</span></div>
+            <div class="paper-next">Evidence: 已读论文 · Next: 映射到 planner critic</div>
             <div class="paper-tags"><span class="tag">DreamerV3</span><span class="tag">world model</span><span class="tag">model-based RL</span><span class="tag">latent imagination</span><span class="tag">reinforcement learning</span><span class="tag">Minecraft</span></div>
             <div class="paper-links"><a href="https://www.nature.com/articles/s41586-025-08744-2" target="_blank" rel="noreferrer">论文</a><a href="https://danijar.com/project/dreamerv3/" target="_blank" rel="noreferrer">项目页</a><a href="https://doi.org/10.1038/s41586-025-08744-2" target="_blank" rel="noreferrer">DOI</a></div>
           </div>
@@ -1697,7 +2326,8 @@
           data-tech_paradigm="vla"
           data-primary_technical_layer="semantic_grounding"
           data-primary_task_family="language_conditioned_execution"
-          data-search="rt-2: vision-language-action models transfer web knowledge to robotic control rt-2 arxiv / google deepmind rt-2 把 vlm 的互联网语义知识和机器人轨迹数据共同训练到同一个 token 输出空间里，是 vla 路线的关键起点。 论文将机器人动作离散化为文本 token，把视觉问答、网页视觉语言任务和机器人轨迹放在同一训练格式中共同微调。 rt-2 证明了 vla 可以获得一定的语义泛化和简单推理能力，例如识别未在机器人数据中出现过的对象属性或指令关系。 2023-07 vla llm vla vla rt-2 vision-language-action semantic reasoning robot control brohan, brown, driess, finn, hausman, ichter google deepmind">
+          data-system_roles="executor semantic_grounder"
+          data-search="rt-2: vision-language-action models transfer web knowledge to robotic control rt-2 arxiv / google deepmind rt-2 把 vlm 的互联网语义知识和机器人轨迹数据共同训练到同一个 token 输出空间里，是 vla 路线的关键起点。 论文将机器人动作离散化为文本 token，把视觉问答、网页视觉语言任务和机器人轨迹放在同一训练格式中共同微调。 rt-2 证明了 vla 可以获得一定的语义泛化和简单推理能力，例如识别未在机器人数据中出现过的对象属性或指令关系。 2023-07 vla paper_read keep_as_vla_root llm vla vla rt-2 vision-language-action semantic reasoning robot control executor semantic_grounder vla_executor language_conditioned_policy semantic_action_grounding brohan, brown, driess, finn, hausman, ichter google deepmind">
           <div class="paper-media">
             <div class="paper-placeholder">RT-2</div>
             <span>2023-07</span>
@@ -1721,8 +2351,13 @@
                 <div><b>局限</b><p>它主要解决单机器人短程操作的语言到动作映射。任务级规划、长时程状态记忆、多机器人资源冲突和协同约束并不是论文核心。</p></div>
                 <div><b>关系</b><p>π0 系列延续 VLA 思路，但把动作输出从离散 token 扩展到更适合连续控制的 flow/action chunk。World Action Model 则尝试从“语义泛化”推进到“物理运动泛化”。</p></div>
                 <div><b>对多智能体任务规划模型的启发</b><p>RT-2 更适合放在系统底层：每个机器人接收局部语言子任务并执行。多机器人系统还需要上层 planner 处理任务分解、机器人能力建模、通信和失败恢复。</p></div>
+                <div><b>可复用模块</b><p>language-conditioned executor、semantic grounding interface、VLA baseline。适合定义“planner 输出语言子任务 -&gt; 本地机器人执行”的接口。</p></div>
+                <div><b>证据与风险</b><p>证据强在语义泛化；风险是长程任务、动态环境和多机器人协调能力不足，不能作为完整 planner。</p></div>
               </div>
             </details>
+            <div class="paper-roles"><span class="tag role-tag">执行器</span><span class="tag role-tag">语义落地器</span></div>
+            <div class="paper-modules"><span class="tag module-tag">vla executor</span><span class="tag module-tag">language conditioned policy</span><span class="tag module-tag">semantic action grounding</span></div>
+            <div class="paper-next">Evidence: 已读论文 · Next: 作为 VLA 根节点</div>
             <div class="paper-tags"><span class="tag">VLA</span><span class="tag">RT-2</span><span class="tag">vision-language-action</span><span class="tag">semantic reasoning</span><span class="tag">robot control</span></div>
             <div class="paper-links"><a href="https://arxiv.org/abs/2307.15818" target="_blank" rel="noreferrer">论文</a><a href="https://robotics-transformer2.github.io/" target="_blank" rel="noreferrer">项目页</a><a href="https://doi.org/10.48550/arXiv.2307.15818" target="_blank" rel="noreferrer">DOI</a></div>
           </div>
@@ -1735,7 +2370,8 @@
           data-tech_paradigm="llm_reward_design"
           data-primary_technical_layer="reward_design"
           data-primary_task_family="reward_shaping"
-          data-search="eureka: human-level reward design via coding large language models eureka iclr 2024 / arxiv eureka 用 llm 生成和迭代 reward code，再让 rl 在这些奖励函数下学习技能，是“语言理解 + 优化学习”的典型组合。 eureka 把环境源码和任务描述提供给 llm，让模型生成 reward 函数代码；随后用 rl 训练策略，并把训练表现反馈给 llm 迭代改进 reward。 它证明 llm 不只可以做 symbolic planner，还可以参与优化环节，把自然语言目标转成可训练的 reward signal。 2023-10 rl llm rl planning eureka llm reward design reinforcement learning reward code ma, liang, wang, huang, bastani, jayaraman nvidia · university of pennsylvania · caltech · ut austin">
+          data-system_roles="reward_designer planner_critic"
+          data-search="eureka: human-level reward design via coding large language models eureka iclr 2024 / arxiv eureka 用 llm 生成和迭代 reward code，再让 rl 在这些奖励函数下学习技能，是“语言理解 + 优化学习”的典型组合。 eureka 把环境源码和任务描述提供给 llm，让模型生成 reward 函数代码；随后用 rl 训练策略，并把训练表现反馈给 llm 迭代改进 reward。 它证明 llm 不只可以做 symbolic planner，还可以参与优化环节，把自然语言目标转成可训练的 reward signal。 2023-10 rl paper_read link_to_genswarm llm rl planning eureka llm reward design reinforcement learning reward code reward_designer planner_critic reward_code_generation evaluator_feedback_loop task_objective_synthesis ma, liang, wang, huang, bastani, jayaraman nvidia · university of pennsylvania · caltech · ut austin">
           <div class="paper-media">
             <div class="paper-placeholder">Eureka</div>
             <span>2023-10</span>
@@ -1759,8 +2395,13 @@
                 <div><b>局限</b><p>LLM 生成 reward 的步骤本身不可微，不能直接作为端到端模型的一部分参与梯度更新。多机器人任务中的协同失败归因也比单体技能 reward 更复杂。</p></div>
                 <div><b>关系</b><p>GenSwarm 用 LLM 生成可执行代码策略；Eureka 用 LLM 生成 reward code。两者都把 LLM 放在“可执行结构生成器”的位置，而不是直接作为低层策略。</p></div>
                 <div><b>对多智能体任务规划模型的启发</b><p>可以让语义理解模块输出 reward 或 critic 参数，用于训练任务分配模块。多机器人场景中，reward 需要同时考虑 makespan、等待时间、路径冲突、能力匹配和失败恢复。</p></div>
+                <div><b>可复用模块</b><p>reward code generator、evaluator loop、language-to-objective translation。可用于给多机器人任务分配方案生成可执行评分函数。</p></div>
+                <div><b>证据与风险</b><p>证据来自 reward 生成和 RL 训练闭环；风险是 reward hacking 与环境源码依赖，真实多机器人系统需要安全约束和人工审查。</p></div>
               </div>
             </details>
+            <div class="paper-roles"><span class="tag role-tag">奖励设计器</span><span class="tag role-tag">Planner critic</span></div>
+            <div class="paper-modules"><span class="tag module-tag">reward code generation</span><span class="tag module-tag">evaluator feedback loop</span><span class="tag module-tag">task objective synthesis</span></div>
+            <div class="paper-next">Evidence: 已读论文 · Next: 连接 GenSwarm</div>
             <div class="paper-tags"><span class="tag">Eureka</span><span class="tag">LLM</span><span class="tag">reward design</span><span class="tag">reinforcement learning</span><span class="tag">reward code</span></div>
             <div class="paper-links"><a href="https://arxiv.org/abs/2310.12931" target="_blank" rel="noreferrer">论文</a><a href="https://eureka-research.github.io/" target="_blank" rel="noreferrer">项目页</a><a href="https://doi.org/10.48550/arXiv.2310.12931" target="_blank" rel="noreferrer">DOI</a></div>
           </div>
@@ -1773,7 +2414,8 @@
           data-tech_paradigm="video_flow_model"
           data-primary_technical_layer="video_generation"
           data-primary_task_family="video_dynamics_generation"
-          data-search="pyramidal flow matching for efficient video generative modeling pyramidal flow iclr 2025 / arxiv pyramidal flow matching 用多尺度金字塔式 flow matching 降低视频生成训练成本，是 wam 做未来视频预测时可借鉴的底层生成技术。 论文把 denoising / flow 轨迹重解释为多个 pyramid stage，低分辨率阶段先建模粗动态，最终阶段再处理完整分辨率，并用统一 dit 端到端优化。 它给出了高效视频 flow matching 的实现范式，对 dreamzero 这类需要未来视频 rollout 的 world action model 有基础支撑价值。 2024-10 world action model world action model world model pyramidal flow flow matching video generation world model diffusion transformer jin, sun, li, xu, jiang, zhuang peking university · kuaishou technology · beijing university of posts and telecommunications">
+          data-system_roles="world_simulator video_generator"
+          data-search="pyramidal flow matching for efficient video generative modeling pyramidal flow iclr 2025 / arxiv pyramidal flow matching 用多尺度金字塔式 flow matching 降低视频生成训练成本，是 wam 做未来视频预测时可借鉴的底层生成技术。 论文把 denoising / flow 轨迹重解释为多个 pyramid stage，低分辨率阶段先建模粗动态，最终阶段再处理完整分辨率，并用统一 dit 端到端优化。 它给出了高效视频 flow matching 的实现范式，对 dreamzero 这类需要未来视频 rollout 的 world action model 有基础支撑价值。 2024-10 world action model skimmed connect_to_wam_only world action model world model pyramidal flow flow matching video generation world model diffusion transformer world_simulator video_generator pyramidal_flow_matching efficient_video_generation future_video_rollout jin, sun, li, xu, jiang, zhuang peking university · kuaishou technology · beijing university of posts and telecommunications">
           <div class="paper-media">
             <div class="paper-placeholder">Pyramidal Flow</div>
             <span>2024-10</span>
@@ -1797,8 +2439,13 @@
                 <div><b>局限</b><p>它本身不是机器人策略论文，也不直接建模 action。要进入机器人任务规划，还需要把视频预测与机器人状态、动作和任务约束对齐。</p></div>
                 <div><b>关系</b><p>World Action Models / DreamZero 需要把未来视频和动作关联起来。Pyramidal Flow 更偏视频生成骨干，是 WAM 的底层技能树之一。</p></div>
                 <div><b>对多智能体任务规划模型的启发</b><p>多机器人 world action model 可能需要预测较长时间范围内的场景演化。分层/多尺度生成可以先预测粗任务进展，再预测局部机器人交互细节。</p></div>
+                <div><b>可复用模块</b><p>pyramidal flow matching、efficient video rollout、video world backbone。主要作为 WAM 的底层视频生成能力，而不是 planner 本体。</p></div>
+                <div><b>证据与风险</b><p>证据来自视频生成质量和效率；风险是没有直接验证机器人控制或多机器人任务规划。</p></div>
               </div>
             </details>
+            <div class="paper-roles"><span class="tag role-tag">世界模拟器</span><span class="tag role-tag">视频生成器</span></div>
+            <div class="paper-modules"><span class="tag module-tag">pyramidal flow matching</span><span class="tag module-tag">efficient video generation</span><span class="tag module-tag">future video rollout</span></div>
+            <div class="paper-next">Evidence: 略读 · Next: 只连接 WAM</div>
             <div class="paper-tags"><span class="tag">Pyramidal Flow</span><span class="tag">flow matching</span><span class="tag">video generation</span><span class="tag">world model</span><span class="tag">diffusion transformer</span></div>
             <div class="paper-links"><a href="https://arxiv.org/abs/2410.05954" target="_blank" rel="noreferrer">论文</a><a href="https://pyramid-flow.github.io/" target="_blank" rel="noreferrer">项目页</a><a href="https://doi.org/10.48550/arXiv.2410.05954" target="_blank" rel="noreferrer">DOI</a></div>
           </div>
@@ -1811,7 +2458,8 @@
           data-tech_paradigm="vla_flow_policy"
           data-primary_technical_layer="action_representation"
           data-primary_task_family="generalist_robot_control"
-          data-search="π0: a vision-language-action flow model for general robot control π0 rss 2025 π0 的核心是把预训练 vlm 和 flow matching 动作头结合起来，面向跨平台、长程、灵巧操作学习连续动作策略。 模型在预训练视觉语言骨干上添加 flow matching 动作生成结构，训练数据覆盖单臂、双臂和移动操作平台。 相比 rt-2 的动作 token 化，π0 更重视连续动作分布和高频控制接口，适合复杂真实操作任务。 2024-10 vla llm vla π0 vla flow matching action chunks robot foundation model black, brown, driess, finn, hausman, ichter physical intelligence">
+          data-system_roles="executor foundation_policy"
+          data-search="π0: a vision-language-action flow model for general robot control π0 rss 2025 π0 的核心是把预训练 vlm 和 flow matching 动作头结合起来，面向跨平台、长程、灵巧操作学习连续动作策略。 模型在预训练视觉语言骨干上添加 flow matching 动作生成结构，训练数据覆盖单臂、双臂和移动操作平台。 相比 rt-2 的动作 token 化，π0 更重视连续动作分布和高频控制接口，适合复杂真实操作任务。 2024-10 vla paper_read define_executor_interface llm vla π0 vla flow matching action chunks robot foundation model executor foundation_policy flow_action_expert action_chunking multi_embodiment_policy black, brown, driess, finn, hausman, ichter physical intelligence">
           <div class="paper-media">
             <div class="paper-placeholder">π0</div>
             <span>2024-10</span>
@@ -1835,8 +2483,13 @@
                 <div><b>局限</b><p>论文重点仍是机器人操作执行，不是任务规划算法。它不直接处理多机器人之间的任务分配、队形、通信、协商或冲突消解。</p></div>
                 <div><b>关系</b><p>π0 是 π0.5、π0.6、π0.7 的基础。π0.5 强化开放环境泛化，π0.6 和 π*0.6 强调部署与经验学习，π0.7 强调可控上下文和组合泛化。</p></div>
                 <div><b>对多智能体任务规划模型的启发</b><p>可以把 π0 视为“技能执行模型”，让上层 multi-agent planner 输出语言或子目标，再由不同机器人实例调用策略执行。</p></div>
+                <div><b>可复用模块</b><p>flow action expert、action chunk interface、cross-embodiment policy backbone。适合作为多机器人系统的低层执行器抽象。</p></div>
+                <div><b>证据与风险</b><p>证据来自多平台操作任务；风险是 planner 仍需自行处理任务分解、能力约束和机器人间冲突。</p></div>
               </div>
             </details>
+            <div class="paper-roles"><span class="tag role-tag">执行器</span><span class="tag role-tag">基础策略</span></div>
+            <div class="paper-modules"><span class="tag module-tag">flow action expert</span><span class="tag module-tag">action chunking</span><span class="tag module-tag">multi embodiment policy</span></div>
+            <div class="paper-next">Evidence: 已读论文 · Next: 定义执行器接口</div>
             <div class="paper-tags"><span class="tag">π0</span><span class="tag">VLA</span><span class="tag">flow matching</span><span class="tag">action chunks</span><span class="tag">robot foundation model</span></div>
             <div class="paper-links"><a href="https://arxiv.org/abs/2410.24164" target="_blank" rel="noreferrer">论文</a><a href="https://physicalintelligence.company/blog/pi0" target="_blank" rel="noreferrer">项目页</a><a href="https://doi.org/10.48550/arXiv.2410.24164" target="_blank" rel="noreferrer">DOI</a></div>
           </div>
@@ -1849,7 +2502,8 @@
           data-tech_paradigm="vla"
           data-primary_technical_layer="efficient_action_tokenization"
           data-primary_task_family="high_frequency_control"
-          data-search="fast: efficient action tokenization for vision-language-action models fast arxiv / physical intelligence fast 用频域压缩方式对机器人动作序列做 tokenization，让自回归 vla 能更好处理高频、灵巧、连续控制数据。 fast 使用离散余弦变换压缩动作时间序列，把连续高频动作转换为更紧凑的频域 token，并发布 fast+ 通用动作 tokenizer。 它补上了 π0.5 中 pre-train 阶段的重要动作表示基础：先让 vlm 通过离散动作 token 学习大规模机器人数据，再在后训练阶段接入连续动作专家。 2025-01 vla vla fast fast+ vla action tokenization discrete cosine transform high-frequency control pertsch, stachowicz, ichter, driess, nair, vuong physical intelligence · uc berkeley · stanford">
+          data-system_roles="action_tokenizer executor_interface"
+          data-search="fast: efficient action tokenization for vision-language-action models fast arxiv / physical intelligence fast 用频域压缩方式对机器人动作序列做 tokenization，让自回归 vla 能更好处理高频、灵巧、连续控制数据。 fast 使用离散余弦变换压缩动作时间序列，把连续高频动作转换为更紧凑的频域 token，并发布 fast+ 通用动作 tokenizer。 它补上了 π0.5 中 pre-train 阶段的重要动作表示基础：先让 vlm 通过离散动作 token 学习大规模机器人数据，再在后训练阶段接入连续动作专家。 2025-01 vla paper_read keep_as_action_interface vla fast fast+ vla action tokenization discrete cosine transform high-frequency control action_tokenizer executor_interface dct_action_tokenizer fast_plus_tokenizer high_frequency_action_compression pertsch, stachowicz, ichter, driess, nair, vuong physical intelligence · uc berkeley · stanford">
           <div class="paper-media">
             <div class="paper-placeholder">FAST</div>
             <span>2025-01</span>
@@ -1873,8 +2527,13 @@
                 <div><b>局限</b><p>FAST 主要优化动作编码和训练效率，不负责高层任务分解、长期记忆或多机器人协作。</p></div>
                 <div><b>关系</b><p>相对 RT-2 的直接动作 token 化，FAST 更关注高频连续动作的压缩。π0.5 可被理解为 FAST 式离散动作预训练和 π0 式 flow action expert 的组合。</p></div>
                 <div><b>对多智能体任务规划模型的启发</b><p>如果多机器人 planner 需要训练统一执行器，动作 tokenizer 的效率会影响数据规模、推理速度和跨平台泛化。FAST 提醒我们动作接口设计本身就是模型能力的一部分。</p></div>
+                <div><b>可复用模块</b><p>DCT action tokenizer、FAST+ tokenizer、high-frequency action compression。适合定义 planner 到 executor 之间的动作表示边界。</p></div>
+                <div><b>证据与风险</b><p>证据集中在动作表示效率；风险是它不解决任务分解、记忆、协作或世界预测。</p></div>
               </div>
             </details>
+            <div class="paper-roles"><span class="tag role-tag">动作 tokenizer</span><span class="tag role-tag">执行接口</span></div>
+            <div class="paper-modules"><span class="tag module-tag">dct action tokenizer</span><span class="tag module-tag">fast plus tokenizer</span><span class="tag module-tag">high frequency action compression</span></div>
+            <div class="paper-next">Evidence: 已读论文 · Next: 保留为动作接口</div>
             <div class="paper-tags"><span class="tag">FAST</span><span class="tag">FAST+</span><span class="tag">VLA</span><span class="tag">action tokenization</span><span class="tag">discrete cosine transform</span><span class="tag">high-frequency control</span></div>
             <div class="paper-links"><a href="https://arxiv.org/abs/2501.09747" target="_blank" rel="noreferrer">论文</a><a href="https://pi.website/research/fast" target="_blank" rel="noreferrer">项目页</a><a href="https://doi.org/10.48550/arXiv.2501.09747" target="_blank" rel="noreferrer">DOI</a></div>
           </div>
@@ -1887,7 +2546,8 @@
           data-tech_paradigm="multi_robot_allocation_rl"
           data-primary_technical_layer="decentralized_task_allocation"
           data-primary_task_family="heterogeneous_task_allocation"
-          data-search="heterogeneous multi-robot task allocation and scheduling via reinforcement learning heterogeneous mrta rl ieee robotics and automation letters 2025 这篇论文用 rl 学习异构多机器人任务分配和调度策略，让机器人根据任务能力需求动态组队，并减少等待和总完成时间。 论文采用全局观测、分布式决策的 rl 框架，用 agent encoder、task encoder 和 cross encoder 学习 agent-agent、task-task、agent-task 关系，再由 decoder 输出任务选择策略。 它把多机器人任务分配从集中式 milp/启发式方法推进到可快速反应的学习型策略，并显式考虑协作任务中的等待问题。 2025-03 gnn gnn rl planning mrta heterogeneous robots reinforcement learning scheduling attention task allocation dai, rai, chiun, cao, sartoretti national university of singapore · iiit hyderabad">
+          data-system_roles="task_allocator scheduler planner_baseline"
+          data-search="heterogeneous multi-robot task allocation and scheduling via reinforcement learning heterogeneous mrta rl ieee robotics and automation letters 2025 这篇论文用 rl 学习异构多机器人任务分配和调度策略，让机器人根据任务能力需求动态组队，并减少等待和总完成时间。 论文采用全局观测、分布式决策的 rl 框架，用 agent encoder、task encoder 和 cross encoder 学习 agent-agent、task-task、agent-task 关系，再由 decoder 输出任务选择策略。 它把多机器人任务分配从集中式 milp/启发式方法推进到可快速反应的学习型策略，并显式考虑协作任务中的等待问题。 2025-03 gnn paper_read turn_into_baseline gnn rl planning mrta heterogeneous robots reinforcement learning scheduling attention task allocation task_allocator scheduler planner_baseline heterogeneous_agent_task_graph rl_scheduler allocation_objective dai, rai, chiun, cao, sartoretti national university of singapore · iiit hyderabad">
           <div class="paper-media">
             <div class="paper-placeholder">Heterogeneous MRTA RL</div>
             <span>2025-03</span>
@@ -1911,8 +2571,13 @@
                 <div><b>局限</b><p>论文主要处理已经给定的原子任务集合，不负责从自然语言目标中自动分解任务。它也不直接处理 VLA/WAM 执行器的不确定性反馈。</p></div>
                 <div><b>关系</b><p>GenSwarm 更关注自然语言到多机器人代码策略的自动生成；本论文更关注给定任务后的异构机器人分配和调度。两者对应 planner 的不同层。</p></div>
                 <div><b>对多智能体任务规划模型的启发</b><p>你的系统可以把任务分解和任务分配分成两层：LLM/VLM 负责把目标转为结构化任务图，GNN/Transformer/RL 模块负责在 agent-task 图上做可优化分配。</p></div>
+                <div><b>可复用模块</b><p>heterogeneous agent-task graph、RL scheduler、allocation objective。适合作为多智能体任务规划模型的 baseline 和监督信号来源。</p></div>
+                <div><b>证据与风险</b><p>证据直接来自多机器人任务分配；风险是语义任务理解和低层执行器接口较弱，需要和 VLA/WAM 结合。</p></div>
               </div>
             </details>
+            <div class="paper-roles"><span class="tag role-tag">任务分配器</span><span class="tag role-tag">调度器</span><span class="tag role-tag">规划基线</span></div>
+            <div class="paper-modules"><span class="tag module-tag">heterogeneous agent task graph</span><span class="tag module-tag">rl scheduler</span><span class="tag module-tag">allocation objective</span></div>
+            <div class="paper-next">Evidence: 已读论文 · Next: 转为 baseline</div>
             <div class="paper-tags"><span class="tag">MRTA</span><span class="tag">heterogeneous robots</span><span class="tag">reinforcement learning</span><span class="tag">scheduling</span><span class="tag">attention</span><span class="tag">task allocation</span></div>
             <div class="paper-links"><a href="https://ieeexplore.ieee.org/document/10854527" target="_blank" rel="noreferrer">论文</a><a href="https://www.marmotlab.org/publications/73-RAL2025-HetMRTA.pdf" target="_blank" rel="noreferrer">项目页</a><a href="https://doi.org/10.1109/LRA.2025.3534682" target="_blank" rel="noreferrer">DOI</a></div>
           </div>
@@ -1925,7 +2590,8 @@
           data-tech_paradigm="vla"
           data-primary_technical_layer="open_world_generalization"
           data-primary_task_family="long_horizon_execution"
-          data-search="π0.5: a vision-language-action model with open-world generalization π0.5 arxiv / physical intelligence π0.5 关注开放世界泛化，把多任务、网页数据、目标检测、语义子任务预测和 fast/π0 训练路线合并到 vla 训练中。 模型使用异构任务 co-training，并混合图像观察、语言命令、对象检测、语义子任务预测和低层动作数据。 π0.5 明确把“高层语义子任务预测”和“低层动作生成”放在一个系统里，展示了 vla 从短程操作向长程任务的推进。 2025-04 vla llm vla planning π0.5 vla open-world generalization long-horizon tasks semantic subtask prediction physical intelligence, black, brown, driess, finn, hausman physical intelligence">
+          data-system_roles="executor semantic_planner foundation_policy"
+          data-search="π0.5: a vision-language-action model with open-world generalization π0.5 arxiv / physical intelligence π0.5 关注开放世界泛化，把多任务、网页数据、目标检测、语义子任务预测和 fast/π0 训练路线合并到 vla 训练中。 模型使用异构任务 co-training，并混合图像观察、语言命令、对象检测、语义子任务预测和低层动作数据。 π0.5 明确把“高层语义子任务预测”和“低层动作生成”放在一个系统里，展示了 vla 从短程操作向长程任务的推进。 2025-04 vla paper_read model_as_executor_plus_subtasker llm vla planning π0.5 vla open-world generalization long-horizon tasks semantic subtask prediction executor semantic_planner foundation_policy open_world_vla_training semantic_subtask_prediction fast_pretraining_pipeline physical intelligence, black, brown, driess, finn, hausman physical intelligence">
           <div class="paper-media">
             <div class="paper-placeholder">π0.5</div>
             <span>2025-04</span>
@@ -1949,8 +2615,13 @@
                 <div><b>局限</b><p>泛化主要是新环境、新物体和家庭任务层面的泛化，还不是多机器人协同层面的泛化。</p></div>
                 <div><b>关系</b><p>π0.5 是 π0 的开放世界扩展，并借鉴 FAST 式动作 tokenization 来提升大规模预训练效率。π0.7 后续用更丰富的上下文条件让模型可被更精细地 steer，减少多策略数据混合造成的平均化问题。</p></div>
                 <div><b>对多智能体任务规划模型的启发</b><p>语义子任务预测可以借鉴到多机器人 planner 中：先预测任务分解，再依据机器人能力、位置和负载分派执行。</p></div>
+                <div><b>可复用模块</b><p>semantic subtask prediction、open-world VLA training、FAST pretraining + flow expert pipeline。适合做 planner-executor 边界的核心参考。</p></div>
+                <div><b>证据与风险</b><p>证据强在开放环境泛化；风险是团队级任务分配、通信、冲突消解仍需外部 planner。</p></div>
               </div>
             </details>
+            <div class="paper-roles"><span class="tag role-tag">执行器</span><span class="tag role-tag">语义规划器</span><span class="tag role-tag">基础策略</span></div>
+            <div class="paper-modules"><span class="tag module-tag">open world vla training</span><span class="tag module-tag">semantic subtask prediction</span><span class="tag module-tag">fast pretraining pipeline</span></div>
+            <div class="paper-next">Evidence: 已读论文 · Next: 建模为执行器+子任务器</div>
             <div class="paper-tags"><span class="tag">π0.5</span><span class="tag">VLA</span><span class="tag">open-world generalization</span><span class="tag">long-horizon tasks</span><span class="tag">semantic subtask prediction</span></div>
             <div class="paper-links"><a href="https://arxiv.org/abs/2504.16054" target="_blank" rel="noreferrer">论文</a><a href="https://www.physicalintelligence.company/download/pi05.pdf" target="_blank" rel="noreferrer">项目页</a><a href="https://doi.org/10.48550/arXiv.2504.16054" target="_blank" rel="noreferrer">DOI</a></div>
           </div>
@@ -1963,7 +2634,8 @@
           data-tech_paradigm="vla_rl"
           data-primary_technical_layer="policy_improvement"
           data-primary_task_family="experience_driven_recovery"
-          data-search="π*0.6: a vla that learns from experience π*0.6 / recap technical report / physical intelligence π*0.6 的重点不是再做一个 vla，而是让 vla 从真实执行失败、人工纠错和自主经验中继续改进。 recap 大体思路是结合示范、专家纠错和机器人自主经验，通过价值函数和 advantage-conditioned policy 把坏轨迹中的有用信息也纳入训练。 它把“部署后学习”推到 vla 路线中央：机器人不只是执行预训练策略，也应从失败中收集针对性数据。 2025-11 rl vla rl π*0.6 recap reinforcement learning corrections experience vla physical intelligence physical intelligence">
+          data-system_roles="executor recovery_policy experience_learner"
+          data-search="π*0.6: a vla that learns from experience π*0.6 / recap technical report / physical intelligence π*0.6 的重点不是再做一个 vla，而是让 vla 从真实执行失败、人工纠错和自主经验中继续改进。 recap 大体思路是结合示范、专家纠错和机器人自主经验，通过价值函数和 advantage-conditioned policy 把坏轨迹中的有用信息也纳入训练。 它把“部署后学习”推到 vla 路线中央：机器人不只是执行预训练策略，也应从失败中收集针对性数据。 2025-11 rl skimmed map_recovery_loop vla rl π*0.6 recap reinforcement learning corrections experience vla executor recovery_policy experience_learner recap_experience_loop correction_data_pipeline policy_improvement_from_failures physical intelligence physical intelligence">
           <div class="paper-media">
             <div class="paper-placeholder">π*0.6 / RECAP</div>
             <span>2025-11</span>
@@ -1987,8 +2659,13 @@
                 <div><b>局限</b><p>公开材料主要集中于单体机器人任务吞吐和成功率。多机器人场景中的信用分配、协同失败归因和共享经验池仍未解决。</p></div>
                 <div><b>关系</b><p>π*0.6 是 π0.6 的经验学习扩展，和 Dreamer 的“通过模型想象改进策略”形成互补：一个更偏真实世界纠错数据，一个更偏学习世界模型和想象 rollout。</p></div>
                 <div><b>对多智能体任务规划模型的启发</b><p>多机器人 planner 可以记录失败发生在哪个子任务、哪个机器人、哪个协作边界，再将失败样本反哺给执行策略或能力模型。</p></div>
+                <div><b>可复用模块</b><p>RECAP experience loop、correction data pipeline、failure recovery policy。适合多机器人系统的持续学习和失败后再规划。</p></div>
+                <div><b>证据与风险</b><p>证据来自真实世界经验学习方向；风险是公开材料细节有限，且多机器人失败归因更复杂。</p></div>
               </div>
             </details>
+            <div class="paper-roles"><span class="tag role-tag">执行器</span><span class="tag role-tag">失败恢复策略</span><span class="tag role-tag">经验学习器</span></div>
+            <div class="paper-modules"><span class="tag module-tag">recap experience loop</span><span class="tag module-tag">correction data pipeline</span><span class="tag module-tag">policy improvement from failures</span></div>
+            <div class="paper-next">Evidence: 略读 · Next: 映射恢复闭环</div>
             <div class="paper-tags"><span class="tag">π*0.6</span><span class="tag">RECAP</span><span class="tag">reinforcement learning</span><span class="tag">corrections</span><span class="tag">experience</span><span class="tag">VLA</span></div>
             <div class="paper-links"><a href="https://www.physicalintelligence.company/download/pistar06.pdf" target="_blank" rel="noreferrer">论文</a><a href="https://physicalintelligence.company/" target="_blank" rel="noreferrer">项目页</a></div>
           </div>
@@ -2001,7 +2678,8 @@
           data-tech_paradigm="vla"
           data-primary_technical_layer="deployment_generalization"
           data-primary_task_family="robust_execution"
-          data-search="π0.6 model card π0.6 model card / physical intelligence π0.6 是 π0.5 后续的部署型模型迭代，保留高层子任务预测和低层动作生成的层级设计，并改进骨干、提示和训练数据。 公开材料显示 π0.6 继续采用层级 vla 架构，生成 action chunks，并结合改进后的 vlm backbone、prompt 设计和训练数据。 π0.6 对你的知识库的价值在于承接 π0.5 与 π*0.6：它是后续真实世界经验学习和部署报告的基础模型。 2025-11 vla vla planning π0.6 vla deployment robot foundation model model card physical intelligence physical intelligence">
+          data-system_roles="executor foundation_policy"
+          data-search="π0.6 model card π0.6 model card / physical intelligence π0.6 是 π0.5 后续的部署型模型迭代，保留高层子任务预测和低层动作生成的层级设计，并改进骨干、提示和训练数据。 公开材料显示 π0.6 继续采用层级 vla 架构，生成 action chunks，并结合改进后的 vlm backbone、prompt 设计和训练数据。 π0.6 对你的知识库的价值在于承接 π0.5 与 π*0.6：它是后续真实世界经验学习和部署报告的基础模型。 2025-11 vla skimmed extract_capability_table vla planning π0.6 vla deployment robot foundation model model card executor foundation_policy deployment_model_card action_chunk_policy robot_capability_profile physical intelligence physical intelligence">
           <div class="paper-media">
             <div class="paper-placeholder">π0.6</div>
             <span>2025-11</span>
@@ -2025,8 +2703,13 @@
                 <div><b>局限</b><p>它更像模型卡和技术更新，不是完整论文。需要谨慎标注证据等级，避免把营销材料当成 peer-reviewed 结论。</p></div>
                 <div><b>关系</b><p>π*0.6 在 π0.6 基础上通过 RECAP 加入经验、纠错和强化学习式改进；π0.7 进一步强调上下文条件和组合泛化。</p></div>
                 <div><b>对多智能体任务规划模型的启发</b><p>可以把 π0.6 作为“机器人能力模型”的来源：不同平台在不同任务上的成功率、失败类型和恢复能力可以反馈给任务分配器。</p></div>
+                <div><b>可复用模块</b><p>deployment model card、robot capability profile、action chunk policy。可转成多机器人任务分配器需要的能力和风险先验。</p></div>
+                <div><b>证据与风险</b><p>证据来自模型卡和部署报告；风险是公开细节有限，需要和实验数据或其他论文互证。</p></div>
               </div>
             </details>
+            <div class="paper-roles"><span class="tag role-tag">执行器</span><span class="tag role-tag">基础策略</span></div>
+            <div class="paper-modules"><span class="tag module-tag">deployment model card</span><span class="tag module-tag">action chunk policy</span><span class="tag module-tag">robot capability profile</span></div>
+            <div class="paper-next">Evidence: 略读 · Next: 提取能力表</div>
             <div class="paper-tags"><span class="tag">π0.6</span><span class="tag">VLA</span><span class="tag">deployment</span><span class="tag">robot foundation model</span><span class="tag">model card</span></div>
             <div class="paper-links"><a href="https://website.pi-asset.com/pi06star/PI06_model_card.pdf" target="_blank" rel="noreferrer">论文</a><a href="https://physicalintelligence.company/" target="_blank" rel="noreferrer">项目页</a></div>
           </div>
@@ -2039,7 +2722,8 @@
           data-tech_paradigm="llm_code_policy"
           data-primary_technical_layer="code_policy_generation"
           data-primary_task_family="swarm_policy_generation"
-          data-search="genswarm: scalable multi-robot code-policy generation and deployment via language models genswarm npj robotics 2026 genswarm 用多 llm agent 把自然语言任务转成多机器人代码策略，并自动部署到仿真和真实机器人，是“自然语言到多机器人执行”的强相关系统。 系统分为任务分析、代码生成、代码部署与改进三部分。llm agent 先抽取约束和技能，再生成 skill graph 与 python skill 函数，随后通过仿真/vlm反馈和人类反馈迭代，并用自动化软件栈部署到真实机器人。 genswarm 把 llm code policy 从单机器人/玩具环境推进到多机器人真实部署，强调 zero-shot 任务生成、全流程自动化和本地可执行代码策略。 2026-01 llm llm planning genswarm multi-robot llm agent code policy deployment skill graph ji, chen, chen, zhu, xu, groß westlake university · huzhou institute · university of groningen · university of sheffield">
+          data-system_roles="semantic_planner code_policy_generator task_allocator planner_baseline"
+          data-search="genswarm: scalable multi-robot code-policy generation and deployment via language models genswarm npj robotics 2026 genswarm 用多 llm agent 把自然语言任务转成多机器人代码策略，并自动部署到仿真和真实机器人，是“自然语言到多机器人执行”的强相关系统。 系统分为任务分析、代码生成、代码部署与改进三部分。llm agent 先抽取约束和技能，再生成 skill graph 与 python skill 函数，随后通过仿真/vlm反馈和人类反馈迭代，并用自动化软件栈部署到真实机器人。 genswarm 把 llm code policy 从单机器人/玩具环境推进到多机器人真实部署，强调 zero-shot 任务生成、全流程自动化和本地可执行代码策略。 2026-01 llm paper_read extract_system_architecture llm planning genswarm multi-robot llm agent code policy deployment skill graph semantic_planner code_policy_generator task_allocator planner_baseline language_to_skill_graph code_policy_generation deployment_loop ji, chen, chen, zhu, xu, groß westlake university · huzhou institute · university of groningen · university of sheffield">
           <div class="paper-media">
             <div class="paper-placeholder">GenSwarm</div>
             <span>2026-01</span>
@@ -2063,8 +2747,13 @@
                 <div><b>局限</b><p>它生成的是白盒代码策略，通用性和可解释性强，但最优性、持续学习和端到端可微训练不足。论文也主要面向移动集群任务，不覆盖复杂 VLA 操作能力。</p></div>
                 <div><b>关系</b><p>Eureka 生成 reward code，GenSwarm 生成 policy code。Heterogeneous MRTA RL 关注可学习任务分配；GenSwarm 更关注把自然语言目标转成可部署多机器人行为。</p></div>
                 <div><b>对多智能体任务规划模型的启发</b><p>GenSwarm 可以作为系统级 baseline：当前端到端多机器人任务规划至少需要语言理解、技能图、任务分配、执行反馈和部署接口。你的方案可以尝试把其中不可微的代码生成和 MILP 部分替换成可学习模块。</p></div>
+                <div><b>可复用模块</b><p>language-to-skill graph、multi-agent code policy generation、deployment loop。适合作为我们的系统结构 baseline 和 ablation 对象。</p></div>
+                <div><b>证据与风险</b><p>证据直接来自多机器人系统；风险是代码生成路线可解释但不一定端到端可学习，真实部署约束可能强依赖工程系统。</p></div>
               </div>
             </details>
+            <div class="paper-roles"><span class="tag role-tag">语义规划器</span><span class="tag role-tag">代码策略生成器</span><span class="tag role-tag">任务分配器</span><span class="tag role-tag">规划基线</span></div>
+            <div class="paper-modules"><span class="tag module-tag">language to skill graph</span><span class="tag module-tag">代码策略生成</span><span class="tag module-tag">deployment loop</span></div>
+            <div class="paper-next">Evidence: 已读论文 · Next: 提取系统架构</div>
             <div class="paper-tags"><span class="tag">GenSwarm</span><span class="tag">multi-robot</span><span class="tag">LLM agent</span><span class="tag">code policy</span><span class="tag">deployment</span><span class="tag">skill graph</span></div>
             <div class="paper-links"><a href="https://www.nature.com/articles/s44182-025-00065-w" target="_blank" rel="noreferrer">论文</a><a href="https://github.com/wenkangji/GenSwarm" target="_blank" rel="noreferrer">项目页</a><a href="https://doi.org/10.1038/s44182-025-00065-w" target="_blank" rel="noreferrer">DOI</a></div>
           </div>
@@ -2077,7 +2766,8 @@
           data-tech_paradigm="world_action_model"
           data-primary_technical_layer="dynamics_prediction"
           data-primary_task_family="zero_shot_policy"
-          data-search="world action models are zero-shot policies dreamzero / wam arxiv world action model 的关键转向是：不只从视觉语言直接输出动作，而是联合预测未来视频世界状态和动作，用世界演化本身支持零样本策略。 dreamzero 基于预训练视频扩散/生成骨干，联合建模视频和动作，并做系统优化，使大规模视频生成模型能以约 7hz 做实时闭环控制。 论文报告相比当时 vla 在新任务和新环境上有显著泛化提升，并展示视频-only 演示和少量新具身数据下的跨具身迁移。 2026-02 world action model world action model vla world model world action model dreamzero video diffusion zero-shot policy cross-embodiment ye, ge, zheng, gao, du, chebotar nvidia · university of texas at austin · georgia tech">
+          data-system_roles="world_simulator planner_critic executor"
+          data-search="world action models are zero-shot policies dreamzero / wam arxiv world action model 的关键转向是：不只从视觉语言直接输出动作，而是联合预测未来视频世界状态和动作，用世界演化本身支持零样本策略。 dreamzero 基于预训练视频扩散/生成骨干，联合建模视频和动作，并做系统优化，使大规模视频生成模型能以约 7hz 做实时闭环控制。 论文报告相比当时 vla 在新任务和新环境上有显著泛化提升，并展示视频-only 演示和少量新具身数据下的跨具身迁移。 2026-02 world action model paper_read extend_to_multi_agent_rollout world action model vla world model world action model dreamzero video diffusion zero-shot policy cross-embodiment world_simulator planner_critic executor video_action_world_model zero_shot_policy_rollout action_feasibility_prediction ye, ge, zheng, gao, du, chebotar nvidia · university of texas at austin · georgia tech">
           <div class="paper-media">
             <div class="paper-placeholder">DreamZero / WAM</div>
             <span>2026-02</span>
@@ -2101,8 +2791,13 @@
                 <div><b>局限</b><p>WAM 当前仍主要面向机器人操作策略。对于多机器人，关键挑战会变成多主体状态预测、交互建模、通信动作和联合任务奖励。</p></div>
                 <div><b>关系</b><p>DreamZero 和 Dreamer 都是 world model 思路，但侧重点不同：Dreamer 在 latent world model 中用 RL 学行为，DreamZero 借视频生成模型和动作联合预测直接成为策略。Pyramidal Flow 是其视频生成和 flow matching 技术背景之一。</p></div>
                 <div><b>对多智能体任务规划模型的启发</b><p>WAM 可以不只做执行器，还可以做 planner 的“行动后果预测器”：给定多个候选子任务分配，预测世界状态变化、冲突风险和可行性。</p></div>
+                <div><b>可复用模块</b><p>video-action world model、zero-shot policy rollout、action feasibility predictor。适合作为 planner critic 和多机器人联合 rollout 的核心候选。</p></div>
+                <div><b>证据与风险</b><p>证据强在 zero-shot policy 和视频-动作建模；风险是多主体交互、联合动作空间和通信动作尚未直接验证。</p></div>
               </div>
             </details>
+            <div class="paper-roles"><span class="tag role-tag">世界模拟器</span><span class="tag role-tag">Planner critic</span><span class="tag role-tag">执行器</span></div>
+            <div class="paper-modules"><span class="tag module-tag">video action world model</span><span class="tag module-tag">zero shot policy rollout</span><span class="tag module-tag">action feasibility prediction</span></div>
+            <div class="paper-next">Evidence: 已读论文 · Next: 扩展多智能体 rollout</div>
             <div class="paper-tags"><span class="tag">World Action Model</span><span class="tag">DreamZero</span><span class="tag">video diffusion</span><span class="tag">zero-shot policy</span><span class="tag">cross-embodiment</span></div>
             <div class="paper-links"><a href="https://arxiv.org/abs/2602.15922" target="_blank" rel="noreferrer">论文</a><a href="https://dreamzero0.github.io/" target="_blank" rel="noreferrer">项目页</a><a href="https://doi.org/10.48550/arXiv.2602.15922" target="_blank" rel="noreferrer">DOI</a></div>
           </div>
@@ -2115,7 +2810,8 @@
           data-tech_paradigm="vla"
           data-primary_technical_layer="long_horizon_memory"
           data-primary_task_family="memory_augmented_execution"
-          data-search="mem: multi-scale embodied memory for vision language action models mem arxiv / physical intelligence mem 给 vla 加入多尺度记忆：短期用视频编码处理遮挡和近期动作，长期用文本摘要记住任务进展，从而支持十几分钟级长程操作。 mem 结合短期视频记忆和长期语言记忆。短期视频 encoder 保留近期视觉动态，长期文本 memory 压缩高层语义事件，并把这些记忆接入 π0.6 类 vla 策略。 它把 vla 从“当前观察 + 指令 -&gt; 动作”推进到“历史事件 + 当前观察 + 指令 -&gt; 动作”，是 π0.7 长程能力的重要基础。 2026-03 vla vla planning mem vla embodied memory long-horizon tasks video memory language memory torne, pertsch, walke, vedder, nair, ichter physical intelligence · stanford · uc berkeley · mit">
+          data-system_roles="memory_module executor_context long_horizon_state"
+          data-search="mem: multi-scale embodied memory for vision language action models mem arxiv / physical intelligence mem 给 vla 加入多尺度记忆：短期用视频编码处理遮挡和近期动作，长期用文本摘要记住任务进展，从而支持十几分钟级长程操作。 mem 结合短期视频记忆和长期语言记忆。短期视频 encoder 保留近期视觉动态，长期文本 memory 压缩高层语义事件，并把这些记忆接入 π0.6 类 vla 策略。 它把 vla 从“当前观察 + 指令 -&gt; 动作”推进到“历史事件 + 当前观察 + 指令 -&gt; 动作”，是 π0.7 长程能力的重要基础。 2026-03 vla paper_read design_team_memory vla planning mem vla embodied memory long-horizon tasks video memory language memory memory_module executor_context long_horizon_state short_term_video_memory long_term_language_memory memory_augmented_policy torne, pertsch, walke, vedder, nair, ichter physical intelligence · stanford · uc berkeley · mit">
           <div class="paper-media">
             <div class="paper-placeholder">MEM</div>
             <span>2026-03</span>
@@ -2139,8 +2835,13 @@
                 <div><b>局限</b><p>MEM 主要是单机器人长程操作记忆，不直接处理团队级共享记忆、多机器人通信、任务分配或协作状态一致性。</p></div>
                 <div><b>关系</b><p>π0.7 可以理解为在 π0、π0.6/MEM 和 world model 等模块基础上的进一步整合。MEM 补的是 VLA 的长程上下文能力。</p></div>
                 <div><b>对多智能体任务规划模型的启发</b><p>多机器人系统应有多层记忆：机器人本地短期记忆、机器人本地任务摘要、团队共享任务进度和全局场景状态。MEM 的视频/文本双记忆结构可以迁移到这个设计。</p></div>
+                <div><b>可复用模块</b><p>short-term video memory、long-term language memory、memory-augmented policy。可迁移为机器人本地记忆和团队级任务进度摘要。</p></div>
+                <div><b>证据与风险</b><p>证据强在长程单机器人任务；风险是共享记忆一致性、跨机器人隐私和通信成本未解决。</p></div>
               </div>
             </details>
+            <div class="paper-roles"><span class="tag role-tag">记忆模块</span><span class="tag role-tag">执行上下文</span><span class="tag role-tag">长程状态</span></div>
+            <div class="paper-modules"><span class="tag module-tag">short term video memory</span><span class="tag module-tag">long term language memory</span><span class="tag module-tag">memory augmented policy</span></div>
+            <div class="paper-next">Evidence: 已读论文 · Next: 设计团队记忆</div>
             <div class="paper-tags"><span class="tag">MEM</span><span class="tag">VLA</span><span class="tag">embodied memory</span><span class="tag">long-horizon tasks</span><span class="tag">video memory</span><span class="tag">language memory</span></div>
             <div class="paper-links"><a href="https://arxiv.org/abs/2603.03596" target="_blank" rel="noreferrer">论文</a><a href="https://pi.website/research/memory" target="_blank" rel="noreferrer">项目页</a><a href="https://doi.org/10.48550/arXiv.2603.03596" target="_blank" rel="noreferrer">DOI</a></div>
           </div>
@@ -2153,7 +2854,8 @@
           data-tech_paradigm="vla"
           data-primary_technical_layer="compositional_generalization"
           data-primary_task_family="steerable_long_horizon_execution"
-          data-search="π0.7: a steerable generalist robotic foundation model with emergent capabilities π0.7 arxiv / physical intelligence π0.7 把 pi 系列推进到“可 steer 的通用机器人基础模型”，重点是用更丰富的上下文条件支持组合泛化和策略选择。 论文使用 diverse context conditioning：不仅给语言命令，还给任务表现元数据、策略信息、子目标图像和记忆相关上下文等多模态条件。 π0.7 显示出更强的开箱表现、跨具身零样本泛化和多阶段任务能力，是目前 pi 系列中最接近“可由 planner 调用”的策略模型。 2026-04 vla llm vla planning π0.7 vla compositional generalization steerable policy cross-embodiment physical intelligence, ai, amin, black, driess, finn physical intelligence">
+          data-system_roles="executor foundation_policy steerable_policy"
+          data-search="π0.7: a steerable generalist robotic foundation model with emergent capabilities π0.7 arxiv / physical intelligence π0.7 把 pi 系列推进到“可 steer 的通用机器人基础模型”，重点是用更丰富的上下文条件支持组合泛化和策略选择。 论文使用 diverse context conditioning：不仅给语言命令，还给任务表现元数据、策略信息、子目标图像和记忆相关上下文等多模态条件。 π0.7 显示出更强的开箱表现、跨具身零样本泛化和多阶段任务能力，是目前 pi 系列中最接近“可由 planner 调用”的策略模型。 2026-04 vla paper_read use_as_executor_target llm vla planning π0.7 vla compositional generalization steerable policy cross-embodiment executor foundation_policy steerable_policy context_conditioned_policy steerable_executor_interface compositional_generalization physical intelligence, ai, amin, black, driess, finn physical intelligence">
           <div class="paper-media">
             <div class="paper-placeholder">π0.7</div>
             <span>2026-04</span>
@@ -2177,8 +2879,13 @@
                 <div><b>局限</b><p>论文展示的是通用机器人策略能力，不等于完整任务规划系统。多机器人中的协同、任务竞价、路径冲突和通信延迟仍需外部系统处理。</p></div>
                 <div><b>关系</b><p>相对 π0.5 的开放世界泛化、π*0.6 的经验学习和 MEM 的长程记忆，π0.7 更强调上下文条件对策略行为的可控性。它和 WAM 的区别在于：π0.7 仍偏直接策略，WAM 偏预测世界状态和动作。</p></div>
                 <div><b>对多智能体任务规划模型的启发</b><p>对你的方向最有价值的是“上下文可控执行器”这个接口：多机器人 planner 可以为不同机器人生成不同上下文，例如角色、目标、路径约束、协作顺序和失败恢复策略。</p></div>
+                <div><b>可复用模块</b><p>context-conditioned policy、steerable executor interface、compositional generalization setup。适合作为最终 executor 形态的参考目标。</p></div>
+                <div><b>证据与风险</b><p>证据来自 PI 系列最新路线；风险是仍以直接策略为主，缺少团队规划、显式世界模型和多机器人通信机制。</p></div>
               </div>
             </details>
+            <div class="paper-roles"><span class="tag role-tag">执行器</span><span class="tag role-tag">基础策略</span><span class="tag role-tag">可控策略</span></div>
+            <div class="paper-modules"><span class="tag module-tag">context conditioned policy</span><span class="tag module-tag">steerable executor interface</span><span class="tag module-tag">组合泛化</span></div>
+            <div class="paper-next">Evidence: 已读论文 · Next: 作为执行器目标</div>
             <div class="paper-tags"><span class="tag">π0.7</span><span class="tag">VLA</span><span class="tag">compositional generalization</span><span class="tag">steerable policy</span><span class="tag">cross-embodiment</span></div>
             <div class="paper-links"><a href="https://arxiv.org/abs/2604.15483" target="_blank" rel="noreferrer">论文</a><a href="https://physicalintelligence.company/" target="_blank" rel="noreferrer">项目页</a><a href="https://doi.org/10.48550/arXiv.2604.15483" target="_blank" rel="noreferrer">DOI</a></div>
           </div>
@@ -2315,6 +3022,7 @@
     const yearFilter = document.querySelector("#year-filter");
     const techFilter = document.querySelector("#tech-filter");
     const layerFilter = document.querySelector("#layer-filter");
+    const roleFilter = document.querySelector("#role-filter");
     const resultCount = document.querySelector("#result-count");
     const emptyState = document.querySelector("#empty-state");
 
@@ -2323,6 +3031,7 @@
       const year = yearFilter.value;
       const tech = techFilter.value;
       const layer = layerFilter.value;
+      const role = roleFilter.value;
       let visible = 0;
 
       for (const card of cards) {
@@ -2330,7 +3039,8 @@
         const matchesYear = !year || card.dataset.year === year;
         const matchesTech = !tech || card.dataset.tech_paradigm === tech;
         const matchesLayer = !layer || card.dataset.primary_technical_layer === layer;
-        const shown = matchesQuery && matchesYear && matchesTech && matchesLayer;
+        const matchesRole = !role || card.dataset.system_roles.split(" ").includes(role);
+        const shown = matchesQuery && matchesYear && matchesTech && matchesLayer && matchesRole;
         card.classList.toggle("is-hidden", !shown);
         if (shown) visible += 1;
       }
@@ -2344,6 +3054,7 @@
       yearFilter.value = "";
       techFilter.value = "";
       layerFilter.value = "";
+      roleFilter.value = "";
       applyFilters();
     }
 
@@ -2351,43 +3062,73 @@
     yearFilter.addEventListener("change", applyFilters);
     techFilter.addEventListener("change", applyFilters);
     layerFilter.addEventListener("change", applyFilters);
+    roleFilter.addEventListener("change", applyFilters);
 
     document.querySelectorAll("[data-reset]").forEach((button) => {
       button.addEventListener("click", resetFilters);
     });
 
-    document.querySelectorAll(".bubble").forEach((button) => {
-      button.addEventListener("click", () => {
-        const field = button.dataset.field;
-        const value = button.dataset.value;
-        const year = button.dataset.year;
-        yearFilter.value = year;
-        if (field === "tech_paradigm") techFilter.value = value;
-        if (field === "primary_technical_layer") layerFilter.value = value;
-        search.value = "";
-        applyFilters();
-        document.querySelector("#papers").scrollIntoView({ behavior: "smooth" });
-      });
-    });
-
     const graphNodes = Array.from(document.querySelectorAll(".graph-node"));
     const graphEdges = Array.from(document.querySelectorAll(".graph-edge"));
+    const relationFilterButtons = Array.from(document.querySelectorAll("[data-relation-filter]"));
     const graphNoteButton = document.querySelector("[data-open-note]");
+    const relationTitle = document.querySelector("[data-relation-title]");
+    const relationSummary = document.querySelector("[data-relation-summary]");
+    const relationList = document.querySelector("[data-relation-list]");
     let selectedGraphNode = null;
+    let selectedGraphNodeId = null;
+    let activeRelationFilter = "all";
 
     function noteUrlFor(path) {
       const prefix = window.location.pathname.endsWith("/views/dashboard.html") ? "../" : "";
       return new URL(prefix + path, window.location.href).href;
     }
 
+    document.querySelectorAll("[data-agent-prompts]").forEach((link) => {
+      link.href = noteUrlFor("AGENT_PROMPTS.md");
+    });
+
+    function updateRelationPanel(node, activeEdges) {
+      if (!relationTitle || !relationSummary || !relationList) return;
+      relationTitle.textContent = node.dataset.nodeTitle;
+      relationSummary.textContent = activeEdges.length
+        ? "当前只显示这篇论文指向父论文或前序工作的关系。可以用上方关系类型过滤。"
+        : "当前过滤条件下没有父论文关系。切回“全部关系”可以检查是否还有其他关系。";
+      relationList.replaceChildren();
+
+      for (const edge of activeEdges) {
+        const item = document.createElement("div");
+        item.className = "relation-item";
+        item.style.setProperty("--rel", edge.style.getPropertyValue("--edge-color") || "#246bfe");
+
+        const type = document.createElement("div");
+        type.className = "relation-type";
+        type.textContent = edge.dataset.edgeLabel + " · " + edge.dataset.edgeShort;
+
+        const target = document.createElement("div");
+        target.className = "relation-target";
+        target.textContent = edge.dataset.edgeTargetTitle;
+
+        const description = document.createElement("div");
+        description.className = "relation-description";
+        description.textContent = edge.dataset.edgeDescription;
+
+        item.append(type, target, description);
+        relationList.append(item);
+      }
+    }
+
     function selectGraphNode(id) {
+      selectedGraphNodeId = id;
       const connected = new Set([id]);
+      const activeEdges = [];
       for (const edge of graphEdges) {
-        if (edge.dataset.edgeSource === id || edge.dataset.edgeTarget === id) {
-          connected.add(edge.dataset.edgeSource);
+        const passesFilter = activeRelationFilter === "all" || edge.dataset.edgeType === activeRelationFilter;
+        if (edge.dataset.edgeSource === id && passesFilter) {
           connected.add(edge.dataset.edgeTarget);
           edge.classList.add("is-active");
           edge.classList.remove("is-dimmed");
+          activeEdges.push(edge);
         } else {
           edge.classList.remove("is-active");
           edge.classList.add("is-dimmed");
@@ -2408,10 +3149,19 @@
         graphNoteButton.setAttribute("aria-disabled", "false");
         graphNoteButton.textContent = "打开 Note · " + selectedGraphNode.dataset.nodeTitle;
       }
+      updateRelationPanel(selectedGraphNode, activeEdges);
     }
 
     graphNodes.forEach((node) => {
       node.addEventListener("click", () => selectGraphNode(node.dataset.nodeId));
+    });
+
+    relationFilterButtons.forEach((button) => {
+      button.addEventListener("click", () => {
+        activeRelationFilter = button.dataset.relationFilter;
+        relationFilterButtons.forEach((item) => item.classList.toggle("is-active", item === button));
+        if (selectedGraphNodeId) selectGraphNode(selectedGraphNodeId);
+      });
     });
 
     document.querySelectorAll(".paper-media img").forEach((img) => {
