@@ -1,0 +1,56 @@
+{
+  "note": "当前节奏：前两周全员读论文，目标是形成路线判断、论文索引标准和研究问题；暂时不安排复现任务。GenSwarm 已经做过，不再作为当前甘特图任务。",
+  "roster": [
+    "陈明阳",
+    "季文康",
+    "朱国宾",
+    "聂凌超",
+    "俞奇",
+    "时迎豪"
+  ],
+  "members": [
+    {
+      "name": "陈明阳",
+      "role": "总工程：研究问题、技术路线、仓库架构与团队节奏",
+      "color": "#246bfe"
+    }
+  ],
+  "tasks": [
+    {
+      "owner": "陈明阳",
+      "title": "前两周全员读论文",
+      "workstream": "Reading sprint",
+      "deliverable": "VLA / Diffusion / WAM / World Model / Swarm overview 读书判断",
+      "start": "2026-05-01",
+      "end": "2026-05-14",
+      "status": "active"
+    },
+    {
+      "owner": "陈明阳",
+      "title": "No.1 仓库标准与索引规范",
+      "workstream": "Repository standard",
+      "deliverable": "论文 note 标准、关系图规则、证据等级规则",
+      "start": "2026-05-05",
+      "end": "2026-05-14",
+      "status": "active"
+    },
+    {
+      "owner": "陈明阳",
+      "title": "总工程架构草案",
+      "workstream": "System architecture",
+      "deliverable": "general multi-agent model 模块图与数据流",
+      "start": "2026-05-15",
+      "end": "2026-05-22",
+      "status": "planned"
+    },
+    {
+      "owner": "陈明阳",
+      "title": "研究问题与实验路线收敛",
+      "workstream": "Research direction",
+      "deliverable": "问题定义、核心假设、后续实验优先级",
+      "start": "2026-05-23",
+      "end": "2026-06-05",
+      "status": "planned"
+    }
+  ]
+}

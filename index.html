@@ -214,49 +214,6 @@
       box-shadow: 0 12px 28px rgba(22, 50, 83, 0.08);
     }
 
-    .graph-note-button {
-      position: fixed;
-      right: 22px;
-      bottom: 22px;
-      z-index: 40;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 28px;
-      min-width: 178px;
-      max-width: min(320px, calc(100vw - 44px));
-      padding: 0 10px;
-      border-color: rgba(36, 107, 254, 0.34);
-      border-radius: 5px;
-      background: rgba(255, 255, 255, 0.82);
-      color: #1f4fd6;
-      font-family: var(--mono);
-      font-size: 11px;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      box-shadow: 0 8px 18px rgba(22, 50, 83, 0.08);
-      text-decoration: none;
-      transition: opacity 0.16s ease, transform 0.16s ease, background 0.16s ease, box-shadow 0.16s ease;
-    }
-
-    .graph-note-button.is-disabled {
-      cursor: default;
-      opacity: 0;
-      color: #64748b;
-      border-color: var(--soft-line);
-      box-shadow: none;
-      transform: translateY(8px);
-      pointer-events: none;
-    }
-
-    .graph-note-button:not(.is-disabled):hover {
-      transform: translateY(-1px);
-      background: rgba(236, 246, 255, 0.96);
-      border-color: rgba(36, 107, 254, 0.58);
-      box-shadow: 0 0 0 3px var(--glow);
-    }
-
     .relation-filterbar {
       display: flex;
       flex-wrap: wrap;
@@ -525,6 +482,74 @@
       font-size: 13px;
     }
 
+    .relation-actions {
+      margin: 0 0 12px;
+    }
+
+    .relation-note-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      width: 100%;
+      min-height: 50px;
+      padding: 0 14px;
+      border: 1px solid rgba(36, 107, 254, 0.48);
+      border-radius: 8px;
+      background: linear-gradient(135deg, rgba(36, 107, 254, 0.96), rgba(0, 167, 199, 0.86));
+      color: white;
+      font-family: var(--mono);
+      font-size: 12px;
+      font-weight: 700;
+      text-decoration: none;
+      box-shadow: 0 12px 30px rgba(36, 107, 254, 0.22);
+    }
+
+    .relation-note-link span {
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .relation-note-link strong {
+      flex: 0 0 auto;
+      display: inline-flex;
+      align-items: center;
+      min-height: 24px;
+      padding: 0 8px;
+      border: 1px solid rgba(255, 255, 255, 0.36);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.16);
+      font-size: 10px;
+      letter-spacing: 0;
+    }
+
+    .relation-note-link.is-disabled {
+      color: #64748b;
+      border-color: var(--soft-line);
+      background: rgba(247, 251, 255, 0.68);
+      box-shadow: none;
+      pointer-events: none;
+    }
+
+    .relation-note-link.is-disabled strong {
+      color: #64748b;
+      border-color: rgba(100, 116, 139, 0.2);
+      background: rgba(100, 116, 139, 0.06);
+    }
+
+    .relation-note-link:not(.is-disabled):hover {
+      transform: translateY(-1px);
+      box-shadow: 0 0 0 3px var(--glow), 0 14px 34px rgba(36, 107, 254, 0.25);
+    }
+
+    .relation-target[href]:hover {
+      border-color: rgba(36, 107, 254, 0.58);
+      color: #1f4fd6;
+      box-shadow: 0 0 0 3px var(--glow);
+    }
+
     .relation-list {
       display: grid;
       gap: 10px;
@@ -552,9 +577,17 @@
     }
 
     .relation-target {
+      display: inline-flex;
+      align-items: center;
+      width: fit-content;
+      max-width: 100%;
       margin-top: 6px;
+      padding: 2px 5px;
+      border: 1px solid transparent;
+      border-radius: 5px;
       color: #142033;
       font-weight: 700;
+      text-decoration: none;
     }
 
     .relation-description {
@@ -568,7 +601,8 @@
     .role-grid,
     .queue-grid,
     .agent-grid,
-    .benchmark-grid {
+    .benchmark-grid,
+    .team-gantt-board {
       display: grid;
       gap: 14px;
     }
@@ -812,6 +846,222 @@
       color: #1f4fd6;
     }
 
+    .team-range,
+    .team-summary span {
+      display: inline-flex;
+      align-items: center;
+      min-height: 30px;
+      padding: 0 10px;
+      border: 1px solid rgba(36, 107, 254, 0.22);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.76);
+      color: #24466f;
+      font-family: var(--mono);
+      font-size: 12px;
+      box-shadow: 0 8px 18px rgba(22, 50, 83, 0.07);
+    }
+
+    .team-summary {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: -6px 0 14px;
+    }
+
+    .team-roster {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 0 0 14px;
+    }
+
+    .team-roster span {
+      display: inline-flex;
+      align-items: center;
+      min-height: 26px;
+      padding: 0 9px;
+      border: 1px solid rgba(74, 112, 154, 0.22);
+      border-radius: 999px;
+      background: rgba(247, 251, 255, 0.72);
+      color: #24466f;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .member-gantt {
+      border: 1px solid color-mix(in srgb, var(--member), transparent 62%);
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.82);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      backdrop-filter: blur(18px);
+    }
+
+    .member-gantt-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      padding: 14px 16px;
+      border-bottom: 1px solid color-mix(in srgb, var(--member), transparent 76%);
+      background: linear-gradient(90deg, color-mix(in srgb, var(--member), transparent 88%), rgba(255,255,255,0.66));
+    }
+
+    .member-gantt-head h3 {
+      color: #142033;
+      font-size: 20px;
+    }
+
+    .member-gantt-head p {
+      margin: 3px 0 0;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .member-gantt-head span {
+      color: color-mix(in srgb, var(--member), #0f172a 22%);
+      font-family: var(--mono);
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .gantt-grid {
+      display: grid;
+      grid-template-columns: minmax(180px, 240px) minmax(0, 1fr);
+    }
+
+    .gantt-axis-label,
+    .gantt-axis,
+    .gantt-task-label,
+    .gantt-track {
+      border-bottom: 1px solid rgba(133, 163, 196, 0.22);
+    }
+
+    .gantt-axis-label {
+      min-height: 34px;
+      padding: 8px 14px;
+      color: var(--muted);
+      font-family: var(--mono);
+      font-size: 11px;
+      background: rgba(247, 251, 255, 0.78);
+    }
+
+    .gantt-axis {
+      position: relative;
+      min-width: 0;
+      min-height: 34px;
+      background:
+        linear-gradient(90deg, rgba(36, 107, 254, 0.06) 1px, transparent 1px),
+        rgba(247, 251, 255, 0.56);
+      background-size: 64px 100%;
+    }
+
+    .gantt-tick {
+      position: absolute;
+      left: var(--x);
+      top: 0;
+      bottom: 0;
+      transform: translateX(-1px);
+      color: #64748b;
+      font-family: var(--mono);
+      font-size: 10px;
+    }
+
+    .gantt-tick i {
+      display: block;
+      width: 1px;
+      height: 100%;
+      background: rgba(74, 112, 154, 0.26);
+    }
+
+    .gantt-tick b {
+      position: absolute;
+      top: 7px;
+      left: 5px;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    .gantt-row {
+      display: contents;
+    }
+
+    .gantt-task-label {
+      min-height: 48px;
+      padding: 9px 14px;
+      background: rgba(255, 255, 255, 0.62);
+    }
+
+    .gantt-task-label strong {
+      display: block;
+      color: #142033;
+      font-size: 13px;
+      line-height: 1.22;
+    }
+
+    .gantt-task-label span {
+      display: block;
+      margin-top: 3px;
+      color: var(--muted);
+      font-size: 11px;
+      line-height: 1.25;
+    }
+
+    .gantt-track {
+      position: relative;
+      min-width: 0;
+      min-height: 48px;
+      background:
+        linear-gradient(90deg, rgba(36, 107, 254, 0.045) 1px, transparent 1px),
+        rgba(255, 255, 255, 0.5);
+      background-size: 64px 100%;
+    }
+
+    .gantt-bar {
+      position: absolute;
+      left: var(--left);
+      top: 9px;
+      width: max(42px, var(--width));
+      max-width: calc(100% - var(--left));
+      height: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      padding: 0 9px;
+      border: 1px solid color-mix(in srgb, var(--member), transparent 26%);
+      border-radius: 5px;
+      background: linear-gradient(90deg, color-mix(in srgb, var(--member), transparent 10%), color-mix(in srgb, var(--member), transparent 42%));
+      color: white;
+      box-shadow: 0 8px 18px color-mix(in srgb, var(--member), transparent 72%);
+      overflow: hidden;
+    }
+
+    .gantt-bar span {
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .gantt-bar em {
+      flex: 0 0 auto;
+      font-family: var(--mono);
+      font-size: 10px;
+      font-style: normal;
+      opacity: 0.9;
+    }
+
+    .gantt-bar.status-active {
+      box-shadow: 0 0 0 2px color-mix(in srgb, var(--member), transparent 78%), 0 10px 22px color-mix(in srgb, var(--member), transparent 68%);
+    }
+
+    .gantt-bar.status-review {
+      background: linear-gradient(90deg, #4b6f96, #6a7dff);
+    }
+
     input,
     select,
     button {
@@ -834,13 +1084,6 @@
       background: rgba(236, 246, 255, 0.96);
       border-color: rgba(36, 107, 254, 0.58);
       box-shadow: 0 0 0 3px var(--glow);
-    }
-
-    .graph-note-button.is-disabled:hover {
-      transform: none;
-      background: rgba(255, 255, 255, 0.82);
-      border-color: var(--soft-line);
-      box-shadow: none;
     }
 
     .icon-button {
@@ -1103,6 +1346,25 @@
         border-bottom: 1px solid var(--line);
       }
 
+      .gantt-grid {
+        grid-template-columns: minmax(128px, 34%) minmax(0, 1fr);
+      }
+
+      .gantt-axis-label,
+      .gantt-task-label {
+        padding-left: 10px;
+        padding-right: 10px;
+      }
+
+      .gantt-bar {
+        height: 28px;
+        padding: 0 6px;
+      }
+
+      .gantt-bar em {
+        display: none;
+      }
+
       .paper-media {
         border-right: 0;
         border-bottom: 1px solid var(--line);
@@ -1116,6 +1378,7 @@
     <nav class="nav">
       <a href="#domain-graph">关系图</a>
       <a href="#benchmarks">榜单</a>
+      <a href="#team">团队</a>
       <a href="#roles">系统角色</a>
       <a href="#reading">阅读队列</a>
       <a href="#agents">Agent</a>
@@ -1126,13 +1389,13 @@
 
   <main class="page">
     <section class="hero">
-      <div class="eyebrow">Obsidian-first paper repository · generated 2026/5/1 15:28:06</div>
+      <div class="eyebrow">Obsidian-first paper repository · generated 2026/5/1 17:39:05</div>
       <h1>通用多智能体任务规划模型研究图谱</h1>
       <p>基于 Markdown note 的 typed relations 自动生成。当前版本聚焦 VLA、π 系列、World Action Model 和 Dreamer，把论文定位为端到端多智能体任务规划模型里的执行器、世界模拟器、planner critic、记忆模块或任务分配器。</p>
 
     <div class="stats">
       <div class="stat-card">
-        <div class="stat-value">20</div>
+        <div class="stat-value">21</div>
         <div class="stat-label">论文总数</div>
       </div>
       <div class="stat-card">
@@ -1140,11 +1403,11 @@
         <div class="stat-label">年份范围</div>
       </div>
       <div class="stat-card">
-        <div class="stat-value">40</div>
+        <div class="stat-value">42</div>
         <div class="stat-label">Typed relations</div>
       </div>
       <div class="stat-card">
-        <div class="stat-value">16</div>
+        <div class="stat-value">17</div>
         <div class="stat-label">高优先级</div>
       </div>
     </div>
@@ -1163,10 +1426,9 @@
       <div class="relation-filterbar" aria-label="关系类型过滤">
         <button class="relation-filter is-active" data-relation-filter="all">全部关系</button><button class="relation-filter" style="--rel:#246bfe" data-relation-filter="extends">继承/扩展</button><button class="relation-filter" style="--rel:#00a7c7" data-relation-filter="uses">使用/依赖</button><button class="relation-filter" style="--rel:#188aa6" data-relation-filter="enables">提供模块</button><button class="relation-filter" style="--rel:#7c67d8" data-relation-filter="complements">互补</button><button class="relation-filter" style="--rel:#d14d72" data-relation-filter="contrasts">对比路线</button><button class="relation-filter" style="--rel:#4b6f96" data-relation-filter="cites">引用/背景</button>
       </div>
-      <a class="graph-note-button is-disabled" data-open-note target="_blank" rel="noreferrer" aria-disabled="true">选择节点后打开 Note</a>
       <div class="graph-workspace">
         <div class="graph-frame">
-          <div class="domain-graph" style="--graph-width:1050px; --graph-height:1006px; --node-width:86px; --node-height:28px">
+          <div class="domain-graph" style="--graph-width:1050px; --graph-height:1062px; --node-width:86px; --node-height:28px">
 
         <div class="graph-column" style="--x:56px; --w:106px; --domain:#64748b">
           <span>Overview / Foundation</span>
@@ -1221,11 +1483,12 @@
 <div class="graph-month" style="--y:490px">2025-01</div>
 <div class="graph-month" style="--y:550px">2025-03</div>
 <div class="graph-month" style="--y:608px">2025-04</div>
-<div class="graph-month" style="--y:678px">2025-11</div>
-<div class="graph-month" style="--y:754px">2026-01</div>
-<div class="graph-month" style="--y:812px">2026-02</div>
-<div class="graph-month" style="--y:870px">2026-03</div>
-<div class="graph-month" style="--y:928px">2026-04</div>
+<div class="graph-month" style="--y:668px">2025-06</div>
+<div class="graph-month" style="--y:734px">2025-11</div>
+<div class="graph-month" style="--y:810px">2026-01</div>
+<div class="graph-month" style="--y:868px">2026-02</div>
+<div class="graph-month" style="--y:926px">2026-03</div>
+<div class="graph-month" style="--y:984px">2026-04</div>
             <div class="graph-gap" style="--y:91px"><span>跳过 6m</span></div>
 
 <div class="graph-gap" style="--y:226px"><span>跳过 3m</span></div>
@@ -1234,12 +1497,13 @@
 
 
 
-<div class="graph-gap" style="--y:643px"><span>跳过 6m</span></div>
+
+<div class="graph-gap" style="--y:701px"><span>跳过 4m</span></div>
 
 
 
 
-            <svg class="graph-edges" viewBox="0 0 1050 1006" aria-hidden="true">
+            <svg class="graph-edges" viewBox="0 0 1050 1062" aria-hidden="true">
               <defs>
 
                 <marker id="arrowhead-extends" markerWidth="4.5" markerHeight="4.5" refX="3.5" refY="2.25" orient="auto">
@@ -1266,8 +1530,8 @@
                   <path d="M 0 0 L 4.5 2.25 L 0 4.5 z" fill="#4b6f96"></path>
                 </marker>
               </defs>
-              <line class="graph-time-tether" x1="639" y1="870" x2="639" y2="852.5"></line>
-<line class="graph-time-tether" x1="639" y1="870" x2="639" y2="887.5"></line>
+              <line class="graph-time-tether" x1="639" y1="926" x2="639" y2="908.5"></line>
+<line class="graph-time-tether" x1="639" y1="926" x2="639" y2="943.5"></line>
               <path class="graph-edge"
         style="--edge-color:#4b6f96"
         data-edge-source="2023-dreamerv3-world-models"
@@ -1277,6 +1541,7 @@
         data-edge-short="cites"
         data-edge-description="保留 bibliographic citation 或宽泛背景关系。"
         data-edge-target-title="DayDreamer"
+        data-edge-target-note="notes/2023-daydreamer-world-models-for-physical-robot-learning.html"
         d="M 584 134 C 618 134, 618 48, 584 48"
         marker-end="url(#arrowhead-cites)"></path>
 <path class="graph-edge"
@@ -1288,6 +1553,7 @@
         data-edge-short="enables"
         data-edge-description="前序工作提供了可被当前系统复用的关键模块。"
         data-edge-target-title="π0"
+        data-edge-target-note="notes/2024-pi0-vla-flow-model.html"
         d="M 382 194 C 374 194, 374 412, 366 412"
         marker-end="url(#arrowhead-enables)"></path>
 <path class="graph-edge"
@@ -1299,7 +1565,8 @@
         data-edge-short="enables"
         data-edge-description="前序工作提供了可被当前系统复用的关键模块。"
         data-edge-target-title="DreamZero / WAM"
-        d="M 472 194 C 533 194, 533 812, 594 812"
+        data-edge-target-note="notes/2026-world-action-models-zero-shot-policies.html"
+        d="M 472 194 C 533 194, 533 868, 594 868"
         marker-end="url(#arrowhead-enables)"></path>
 <path class="graph-edge"
         style="--edge-color:#188aa6"
@@ -1310,7 +1577,8 @@
         data-edge-short="enables"
         data-edge-description="前序工作提供了可被当前系统复用的关键模块。"
         data-edge-target-title="Fast-WAM"
-        d="M 472 194 C 533 194, 533 852.5, 594 852.5"
+        data-edge-target-note="notes/2026-fast-wam-test-time-future-imagination.html"
+        d="M 472 194 C 533 194, 533 908.5, 594 908.5"
         marker-end="url(#arrowhead-enables)"></path>
 <path class="graph-edge"
         style="--edge-color:#7c67d8"
@@ -1321,6 +1589,7 @@
         data-edge-short="complements"
         data-edge-description="两条路线解决相邻问题，可以组合进同一个系统。"
         data-edge-target-title="DreamerV3"
+        data-edge-target-note="notes/2023-dreamerv3-world-models.html"
         d="M 472 194 C 480 194, 480 134, 488 134"
         marker-end="url(#arrowhead-complements)"></path>
 <path class="graph-edge"
@@ -1332,6 +1601,7 @@
         data-edge-short="contrasts"
         data-edge-description="两篇论文代表不同建模范式，适合用来比较取舍。"
         data-edge-target-title="RT-2"
+        data-edge-target-note="notes/2023-rt-2-vla.html"
         d="M 382 194 C 374 194, 374 258, 366 258"
         marker-end="url(#arrowhead-contrasts)"></path>
 <path class="graph-edge"
@@ -1343,6 +1613,7 @@
         data-edge-short="extends"
         data-edge-description="后续模型或系统直接建立在前序路线之上。"
         data-edge-target-title="RT-2"
+        data-edge-target-note="notes/2023-rt-2-vla.html"
         d="M 372 412 C 406 412, 406 258, 372 258"
         marker-end="url(#arrowhead-extends)"></path>
 <path class="graph-edge"
@@ -1354,6 +1625,7 @@
         data-edge-short="complements"
         data-edge-description="两条路线解决相邻问题，可以组合进同一个系统。"
         data-edge-target-title="π0"
+        data-edge-target-note="notes/2024-pi0-vla-flow-model.html"
         d="M 372 490 C 406 490, 406 412, 372 412"
         marker-end="url(#arrowhead-complements)"></path>
 <path class="graph-edge"
@@ -1365,6 +1637,7 @@
         data-edge-short="extends"
         data-edge-description="后续模型或系统直接建立在前序路线之上。"
         data-edge-target-title="π0"
+        data-edge-target-note="notes/2024-pi0-vla-flow-model.html"
         d="M 372 608 C 406 608, 406 412, 372 412"
         marker-end="url(#arrowhead-extends)"></path>
 <path class="graph-edge"
@@ -1376,8 +1649,33 @@
         data-edge-short="uses"
         data-edge-description="当前论文借用了前序工作的模块、表示、训练路线或系统组件。"
         data-edge-target-title="FAST"
+        data-edge-target-note="notes/2025-fast-action-tokenization-vla.html"
         d="M 372 608 C 406 608, 406 490, 372 490"
         marker-end="url(#arrowhead-uses)"></path>
+<path class="graph-edge"
+        style="--edge-color:#7c67d8"
+        data-edge-source="2025-gmatann-heterogeneous-task-allocation"
+        data-edge-target="2025-heterogeneous-mrta-rl"
+        data-edge-type="complements"
+        data-edge-label="互补"
+        data-edge-short="complements"
+        data-edge-description="两条路线解决相邻问题，可以组合进同一个系统。"
+        data-edge-target-title="Heterogeneous MRTA RL"
+        data-edge-target-note="notes/2025-heterogeneous-mrta-rl.html"
+        d="M 902 668 C 936 668, 936 550, 902 550"
+        marker-end="url(#arrowhead-complements)"></path>
+<path class="graph-edge"
+        style="--edge-color:#7c67d8"
+        data-edge-source="2025-gmatann-heterogeneous-task-allocation"
+        data-edge-target="2026-genswarm-multi-robot-code-policy"
+        data-edge-type="complements"
+        data-edge-label="互补"
+        data-edge-short="complements"
+        data-edge-description="两条路线解决相邻问题，可以组合进同一个系统。"
+        data-edge-target-title="GenSwarm"
+        data-edge-target-note="notes/2026-genswarm-multi-robot-code-policy.html"
+        d="M 806 668 C 533 668, 533 810, 260 810"
+        marker-end="url(#arrowhead-complements)"></path>
 <path class="graph-edge"
         style="--edge-color:#246bfe"
         data-edge-source="2025-pistar06-recap"
@@ -1387,7 +1685,8 @@
         data-edge-short="extends"
         data-edge-description="后续模型或系统直接建立在前序路线之上。"
         data-edge-target-title="π0.6"
-        d="M 700 678 C 533 678, 533 678, 366 678"
+        data-edge-target-note="notes/2025-pi06-model-card.html"
+        d="M 700 734 C 533 734, 533 734, 366 734"
         marker-end="url(#arrowhead-extends)"></path>
 <path class="graph-edge"
         style="--edge-color:#00a7c7"
@@ -1398,7 +1697,8 @@
         data-edge-short="uses"
         data-edge-description="当前论文借用了前序工作的模块、表示、训练路线或系统组件。"
         data-edge-target-title="π0.5"
-        d="M 700 678 C 533 678, 533 608, 366 608"
+        data-edge-target-note="notes/2025-pi05-open-world-generalization.html"
+        d="M 700 734 C 533 734, 533 608, 366 608"
         marker-end="url(#arrowhead-uses)"></path>
 <path class="graph-edge"
         style="--edge-color:#00a7c7"
@@ -1409,7 +1709,8 @@
         data-edge-short="uses"
         data-edge-description="当前论文借用了前序工作的模块、表示、训练路线或系统组件。"
         data-edge-target-title="π0"
-        d="M 700 678 C 533 678, 533 412, 366 412"
+        data-edge-target-note="notes/2024-pi0-vla-flow-model.html"
+        d="M 700 734 C 533 734, 533 412, 366 412"
         marker-end="url(#arrowhead-uses)"></path>
 <path class="graph-edge"
         style="--edge-color:#246bfe"
@@ -1420,7 +1721,8 @@
         data-edge-short="extends"
         data-edge-description="后续模型或系统直接建立在前序路线之上。"
         data-edge-target-title="π0.5"
-        d="M 372 678 C 406 678, 406 608, 372 608"
+        data-edge-target-note="notes/2025-pi05-open-world-generalization.html"
+        d="M 372 734 C 406 734, 406 608, 372 608"
         marker-end="url(#arrowhead-extends)"></path>
 <path class="graph-edge"
         style="--edge-color:#246bfe"
@@ -1431,7 +1733,8 @@
         data-edge-short="extends"
         data-edge-description="后续模型或系统直接建立在前序路线之上。"
         data-edge-target-title="π0"
-        d="M 372 678 C 406 678, 406 412, 372 412"
+        data-edge-target-note="notes/2024-pi0-vla-flow-model.html"
+        d="M 372 734 C 406 734, 406 412, 372 412"
         marker-end="url(#arrowhead-extends)"></path>
 <path class="graph-edge"
         style="--edge-color:#7c67d8"
@@ -1442,7 +1745,8 @@
         data-edge-short="complements"
         data-edge-description="两条路线解决相邻问题，可以组合进同一个系统。"
         data-edge-target-title="Eureka"
-        d="M 260 754 C 480 754, 480 320, 700 320"
+        data-edge-target-note="notes/2023-eureka-reward-design-llm.html"
+        d="M 260 810 C 480 810, 480 320, 700 320"
         marker-end="url(#arrowhead-complements)"></path>
 <path class="graph-edge"
         style="--edge-color:#7c67d8"
@@ -1453,7 +1757,8 @@
         data-edge-short="complements"
         data-edge-description="两条路线解决相邻问题，可以组合进同一个系统。"
         data-edge-target-title="Heterogeneous MRTA RL"
-        d="M 260 754 C 533 754, 533 550, 806 550"
+        data-edge-target-note="notes/2025-heterogeneous-mrta-rl.html"
+        d="M 260 810 C 533 810, 533 550, 806 550"
         marker-end="url(#arrowhead-complements)"></path>
 <path class="graph-edge"
         style="--edge-color:#d14d72"
@@ -1464,7 +1769,8 @@
         data-edge-short="contrasts"
         data-edge-description="两篇论文代表不同建模范式，适合用来比较取舍。"
         data-edge-target-title="FAST"
-        d="M 372 812 C 406 812, 406 490, 372 490"
+        data-edge-target-note="notes/2025-fast-action-tokenization-vla.html"
+        d="M 372 868 C 406 868, 406 490, 372 490"
         marker-end="url(#arrowhead-contrasts)"></path>
 <path class="graph-edge"
         style="--edge-color:#d14d72"
@@ -1475,7 +1781,8 @@
         data-edge-short="contrasts"
         data-edge-description="两篇论文代表不同建模范式，适合用来比较取舍。"
         data-edge-target-title="π0"
-        d="M 372 812 C 406 812, 406 412, 372 412"
+        data-edge-target-note="notes/2024-pi0-vla-flow-model.html"
+        d="M 372 868 C 406 868, 406 412, 372 412"
         marker-end="url(#arrowhead-contrasts)"></path>
 <path class="graph-edge"
         style="--edge-color:#d14d72"
@@ -1486,7 +1793,8 @@
         data-edge-short="contrasts"
         data-edge-description="两篇论文代表不同建模范式，适合用来比较取舍。"
         data-edge-target-title="π0.5"
-        d="M 372 812 C 406 812, 406 608, 372 608"
+        data-edge-target-note="notes/2025-pi05-open-world-generalization.html"
+        d="M 372 868 C 406 868, 406 608, 372 608"
         marker-end="url(#arrowhead-contrasts)"></path>
 <path class="graph-edge"
         style="--edge-color:#00a7c7"
@@ -1497,7 +1805,8 @@
         data-edge-short="uses"
         data-edge-description="当前论文借用了前序工作的模块、表示、训练路线或系统组件。"
         data-edge-target-title="Pyramidal Flow"
-        d="M 690 812 C 724 812, 724 412, 690 412"
+        data-edge-target-note="notes/2024-pyramidal-flow-matching-video.html"
+        d="M 690 868 C 724 868, 724 412, 690 412"
         marker-end="url(#arrowhead-uses)"></path>
 <path class="graph-edge"
         style="--edge-color:#00a7c7"
@@ -1508,7 +1817,8 @@
         data-edge-short="uses"
         data-edge-description="当前论文借用了前序工作的模块、表示、训练路线或系统组件。"
         data-edge-target-title="DreamerV3"
-        d="M 594 812 C 586 812, 586 134, 578 134"
+        data-edge-target-note="notes/2023-dreamerv3-world-models.html"
+        d="M 594 868 C 586 868, 586 134, 578 134"
         marker-end="url(#arrowhead-uses)"></path>
 <path class="graph-edge"
         style="--edge-color:#d14d72"
@@ -1519,7 +1829,8 @@
         data-edge-short="contrasts"
         data-edge-description="两篇论文代表不同建模范式，适合用来比较取舍。"
         data-edge-target-title="π0.5"
-        d="M 594 812 C 480 812, 480 608, 366 608"
+        data-edge-target-note="notes/2025-pi05-open-world-generalization.html"
+        d="M 594 868 C 480 868, 480 608, 366 608"
         marker-end="url(#arrowhead-contrasts)"></path>
 <path class="graph-edge"
         style="--edge-color:#d14d72"
@@ -1530,7 +1841,8 @@
         data-edge-short="contrasts"
         data-edge-description="两篇论文代表不同建模范式，适合用来比较取舍。"
         data-edge-target-title="π0"
-        d="M 594 812 C 480 812, 480 412, 366 412"
+        data-edge-target-note="notes/2024-pi0-vla-flow-model.html"
+        d="M 594 868 C 480 868, 480 412, 366 412"
         marker-end="url(#arrowhead-contrasts)"></path>
 <path class="graph-edge"
         style="--edge-color:#d14d72"
@@ -1541,7 +1853,8 @@
         data-edge-short="contrasts"
         data-edge-description="两篇论文代表不同建模范式，适合用来比较取舍。"
         data-edge-target-title="RT-2"
-        d="M 594 812 C 480 812, 480 258, 366 258"
+        data-edge-target-note="notes/2023-rt-2-vla.html"
+        d="M 594 868 C 480 868, 480 258, 366 258"
         marker-end="url(#arrowhead-contrasts)"></path>
 <path class="graph-edge"
         style="--edge-color:#246bfe"
@@ -1552,7 +1865,8 @@
         data-edge-short="extends"
         data-edge-description="后续模型或系统直接建立在前序路线之上。"
         data-edge-target-title="π0.6"
-        d="M 372 870 C 406 870, 406 678, 372 678"
+        data-edge-target-note="notes/2025-pi06-model-card.html"
+        d="M 372 926 C 406 926, 406 734, 372 734"
         marker-end="url(#arrowhead-extends)"></path>
 <path class="graph-edge"
         style="--edge-color:#00a7c7"
@@ -1563,7 +1877,8 @@
         data-edge-short="uses"
         data-edge-description="当前论文借用了前序工作的模块、表示、训练路线或系统组件。"
         data-edge-target-title="π0.5"
-        d="M 372 870 C 406 870, 406 608, 372 608"
+        data-edge-target-note="notes/2025-pi05-open-world-generalization.html"
+        d="M 372 926 C 406 926, 406 608, 372 608"
         marker-end="url(#arrowhead-uses)"></path>
 <path class="graph-edge"
         style="--edge-color:#00a7c7"
@@ -1574,7 +1889,8 @@
         data-edge-short="uses"
         data-edge-description="当前论文借用了前序工作的模块、表示、训练路线或系统组件。"
         data-edge-target-title="π0"
-        d="M 372 870 C 406 870, 406 412, 372 412"
+        data-edge-target-note="notes/2024-pi0-vla-flow-model.html"
+        d="M 372 926 C 406 926, 406 412, 372 412"
         marker-end="url(#arrowhead-uses)"></path>
 <path class="graph-edge"
         style="--edge-color:#d14d72"
@@ -1585,7 +1901,8 @@
         data-edge-short="contrasts"
         data-edge-description="两篇论文代表不同建模范式，适合用来比较取舍。"
         data-edge-target-title="DreamZero / WAM"
-        d="M 690 852.5 C 724 852.5, 724 812, 690 812"
+        data-edge-target-note="notes/2026-world-action-models-zero-shot-policies.html"
+        d="M 690 908.5 C 724 908.5, 724 868, 690 868"
         marker-end="url(#arrowhead-contrasts)"></path>
 <path class="graph-edge"
         style="--edge-color:#d14d72"
@@ -1596,7 +1913,8 @@
         data-edge-short="contrasts"
         data-edge-description="两篇论文代表不同建模范式，适合用来比较取舍。"
         data-edge-target-title="π0"
-        d="M 594 852.5 C 480 852.5, 480 412, 366 412"
+        data-edge-target-note="notes/2024-pi0-vla-flow-model.html"
+        d="M 594 908.5 C 480 908.5, 480 412, 366 412"
         marker-end="url(#arrowhead-contrasts)"></path>
 <path class="graph-edge"
         style="--edge-color:#d14d72"
@@ -1607,7 +1925,8 @@
         data-edge-short="contrasts"
         data-edge-description="两篇论文代表不同建模范式，适合用来比较取舍。"
         data-edge-target-title="π0.5"
-        d="M 594 852.5 C 480 852.5, 480 608, 366 608"
+        data-edge-target-note="notes/2025-pi05-open-world-generalization.html"
+        d="M 594 908.5 C 480 908.5, 480 608, 366 608"
         marker-end="url(#arrowhead-contrasts)"></path>
 <path class="graph-edge"
         style="--edge-color:#7c67d8"
@@ -1618,7 +1937,8 @@
         data-edge-short="complements"
         data-edge-description="两条路线解决相邻问题，可以组合进同一个系统。"
         data-edge-target-title="DreamZero / WAM"
-        d="M 690 887.5 C 724 887.5, 724 812, 690 812"
+        data-edge-target-note="notes/2026-world-action-models-zero-shot-policies.html"
+        d="M 690 943.5 C 724 943.5, 724 868, 690 868"
         marker-end="url(#arrowhead-complements)"></path>
 <path class="graph-edge"
         style="--edge-color:#7c67d8"
@@ -1629,7 +1949,8 @@
         data-edge-short="complements"
         data-edge-description="两条路线解决相邻问题，可以组合进同一个系统。"
         data-edge-target-title="DreamerV3"
-        d="M 594 887.5 C 586 887.5, 586 134, 578 134"
+        data-edge-target-note="notes/2023-dreamerv3-world-models.html"
+        d="M 594 943.5 C 586 943.5, 586 134, 578 134"
         marker-end="url(#arrowhead-complements)"></path>
 <path class="graph-edge"
         style="--edge-color:#d14d72"
@@ -1640,7 +1961,8 @@
         data-edge-short="contrasts"
         data-edge-description="两篇论文代表不同建模范式，适合用来比较取舍。"
         data-edge-target-title="Fast-WAM"
-        d="M 690 887.5 C 724 887.5, 724 852.5, 690 852.5"
+        data-edge-target-note="notes/2026-fast-wam-test-time-future-imagination.html"
+        d="M 690 943.5 C 724 943.5, 724 908.5, 690 908.5"
         marker-end="url(#arrowhead-contrasts)"></path>
 <path class="graph-edge"
         style="--edge-color:#4b6f96"
@@ -1651,7 +1973,8 @@
         data-edge-short="cites"
         data-edge-description="保留 bibliographic citation 或宽泛背景关系。"
         data-edge-target-title="GenSwarm"
-        d="M 154 928 C 162 928, 162 754, 170 754"
+        data-edge-target-note="notes/2026-genswarm-multi-robot-code-policy.html"
+        d="M 154 984 C 162 984, 162 810, 170 810"
         marker-end="url(#arrowhead-cites)"></path>
 <path class="graph-edge"
         style="--edge-color:#246bfe"
@@ -1662,7 +1985,8 @@
         data-edge-short="extends"
         data-edge-description="后续模型或系统直接建立在前序路线之上。"
         data-edge-target-title="MEM"
-        d="M 372 928 C 406 928, 406 870, 372 870"
+        data-edge-target-note="notes/2026-mem-multi-scale-embodied-memory.html"
+        d="M 372 984 C 406 984, 406 926, 372 926"
         marker-end="url(#arrowhead-extends)"></path>
 <path class="graph-edge"
         style="--edge-color:#246bfe"
@@ -1673,7 +1997,8 @@
         data-edge-short="extends"
         data-edge-description="后续模型或系统直接建立在前序路线之上。"
         data-edge-target-title="π*0.6 / RECAP"
-        d="M 366 928 C 533 928, 533 678, 700 678"
+        data-edge-target-note="notes/2025-pistar06-recap.html"
+        d="M 366 984 C 533 984, 533 734, 700 734"
         marker-end="url(#arrowhead-extends)"></path>
 <path class="graph-edge"
         style="--edge-color:#246bfe"
@@ -1684,7 +2009,8 @@
         data-edge-short="extends"
         data-edge-description="后续模型或系统直接建立在前序路线之上。"
         data-edge-target-title="π0.6"
-        d="M 372 928 C 406 928, 406 678, 372 678"
+        data-edge-target-note="notes/2025-pi06-model-card.html"
+        d="M 372 984 C 406 984, 406 734, 372 734"
         marker-end="url(#arrowhead-extends)"></path>
 <path class="graph-edge"
         style="--edge-color:#00a7c7"
@@ -1695,7 +2021,8 @@
         data-edge-short="uses"
         data-edge-description="当前论文借用了前序工作的模块、表示、训练路线或系统组件。"
         data-edge-target-title="π0.5"
-        d="M 372 928 C 406 928, 406 608, 372 608"
+        data-edge-target-note="notes/2025-pi05-open-world-generalization.html"
+        d="M 372 984 C 406 984, 406 608, 372 608"
         marker-end="url(#arrowhead-uses)"></path>
 <path class="graph-edge"
         style="--edge-color:#00a7c7"
@@ -1706,7 +2033,8 @@
         data-edge-short="uses"
         data-edge-description="当前论文借用了前序工作的模块、表示、训练路线或系统组件。"
         data-edge-target-title="π0"
-        d="M 372 928 C 406 928, 406 412, 372 412"
+        data-edge-target-note="notes/2024-pi0-vla-flow-model.html"
+        d="M 372 984 C 406 984, 406 412, 372 412"
         marker-end="url(#arrowhead-uses)"></path>
             </svg>
 
@@ -1831,7 +2159,19 @@
 
 
         <button class="graph-node"
-          style="--x:745px; --y:678px; --node:#188aa6"
+          style="--x:851px; --y:668px; --node:#4b6f96"
+          data-node-id="2025-gmatann-heterogeneous-task-allocation"
+          data-node-title="GMATANN"
+          data-note-path="notes/2025-gmatann-heterogeneous-task-allocation.html"
+          aria-label="GMATANN 2025-06">
+          <strong>GMATANN</strong>
+          <span>GNN</span>
+          <em>Planning · RL</em>
+        </button>
+
+
+        <button class="graph-node"
+          style="--x:745px; --y:734px; --node:#188aa6"
           data-node-id="2025-pistar06-recap"
           data-node-title="π*0.6 / RECAP"
           data-note-path="notes/2025-pistar06-recap.html"
@@ -1843,7 +2183,7 @@
 
 
         <button class="graph-node"
-          style="--x:321px; --y:678px; --node:#00a7c7"
+          style="--x:321px; --y:734px; --node:#00a7c7"
           data-node-id="2025-pi06-model-card"
           data-node-title="π0.6"
           data-note-path="notes/2025-pi06-model-card.html"
@@ -1855,7 +2195,7 @@
 
 
         <button class="graph-node"
-          style="--x:215px; --y:754px; --node:#246bfe"
+          style="--x:215px; --y:810px; --node:#246bfe"
           data-node-id="2026-genswarm-multi-robot-code-policy"
           data-node-title="GenSwarm"
           data-note-path="notes/2026-genswarm-multi-robot-code-policy.html"
@@ -1867,7 +2207,7 @@
 
 
         <button class="graph-node"
-          style="--x:321px; --y:812px; --node:#00a7c7"
+          style="--x:321px; --y:868px; --node:#00a7c7"
           data-node-id="2026-lap-language-action-pretraining"
           data-node-title="LAP-3B"
           data-note-path="notes/2026-lap-language-action-pretraining.html"
@@ -1879,7 +2219,7 @@
 
 
         <button class="graph-node"
-          style="--x:639px; --y:812px; --node:#7c67d8"
+          style="--x:639px; --y:868px; --node:#7c67d8"
           data-node-id="2026-world-action-models-zero-shot-policies"
           data-node-title="DreamZero / WAM"
           data-note-path="notes/2026-world-action-models-zero-shot-policies.html"
@@ -1891,7 +2231,7 @@
 
 
         <button class="graph-node"
-          style="--x:321px; --y:870px; --node:#00a7c7"
+          style="--x:321px; --y:926px; --node:#00a7c7"
           data-node-id="2026-mem-multi-scale-embodied-memory"
           data-node-title="MEM"
           data-note-path="notes/2026-mem-multi-scale-embodied-memory.html"
@@ -1903,7 +2243,7 @@
 
 
         <button class="graph-node"
-          style="--x:639px; --y:852.5px; --node:#7c67d8"
+          style="--x:639px; --y:908.5px; --node:#7c67d8"
           data-node-id="2026-fast-wam-test-time-future-imagination"
           data-node-title="Fast-WAM"
           data-note-path="notes/2026-fast-wam-test-time-future-imagination.html"
@@ -1915,7 +2255,7 @@
 
 
         <button class="graph-node"
-          style="--x:639px; --y:887.5px; --node:#7c67d8"
+          style="--x:639px; --y:943.5px; --node:#7c67d8"
           data-node-id="2026-psibot-from-human-skill-to-robotic-mastery"
           data-node-title="Psi-R2 / Psi-W0"
           data-note-path="notes/2026-psibot-from-human-skill-to-robotic-mastery.html"
@@ -1927,7 +2267,7 @@
 
 
         <button class="graph-node"
-          style="--x:109px; --y:928px; --node:#64748b"
+          style="--x:109px; --y:984px; --node:#64748b"
           data-node-id="2026-foundation-models-robot-swarms"
           data-node-title="FM Swarms Viewpoint"
           data-note-path="notes/2026-foundation-models-robot-swarms.html"
@@ -1939,7 +2279,7 @@
 
 
         <button class="graph-node"
-          style="--x:321px; --y:928px; --node:#00a7c7"
+          style="--x:321px; --y:984px; --node:#00a7c7"
           data-node-id="2026-pi07-steerable-generalist-robotic-foundation-model"
           data-node-title="π0.7"
           data-note-path="notes/2026-pi07-steerable-generalist-robotic-foundation-model.html"
@@ -1954,6 +2294,12 @@
         <aside class="relation-panel" data-relation-panel>
           <div class="relation-kicker">Relation lens</div>
           <h3 data-relation-title>选择一篇论文</h3>
+          <div class="relation-actions">
+            <a class="relation-note-link is-disabled" data-open-note target="_blank" rel="noreferrer" aria-disabled="true">
+              <span>选择节点后打开当前 Note</span>
+              <strong>Open</strong>
+            </a>
+          </div>
           <p data-relation-summary>点击左侧节点后，这里只解释“当前论文 -> 关联论文/前序工作”的 typed relations。</p>
           <div class="relation-list" data-relation-list></div>
         </aside>
@@ -1992,6 +2338,129 @@
     </section>
 
 
+    <section class="section compact-section" id="team">
+      <div class="section-kicker">Team execution plan</div>
+      <div class="section-head">
+        <div>
+          <h2>团队甘特图</h2>
+          <p>当前节奏：前两周全员读论文，目标是形成路线判断、论文索引标准和研究问题；暂时不安排复现任务。GenSwarm 已经做过，不再作为当前甘特图任务。 数据源是 <code>team/roadmap.json</code>，后续改排期只需要更新结构化任务。</p>
+        </div>
+        <div class="team-range">2026-05-01 -&gt; 2026-06-05</div>
+      </div>
+      <div class="team-summary">
+        <span>6 人团队</span>
+        <span>1 人当前排期</span>
+        <span>4 个任务</span>
+        <span>36 天窗口</span>
+      </div>
+
+      <div class="team-roster">
+        <span>陈明阳</span><span>季文康</span><span>朱国宾</span><span>聂凌超</span><span>俞奇</span><span>时迎豪</span>
+      </div>
+
+      <div class="team-gantt-board">
+        <article class="member-gantt" style="--member:#246bfe">
+          <div class="member-gantt-head">
+            <div>
+              <h3>陈明阳</h3>
+              <p>总工程：研究问题、技术路线、仓库架构与团队节奏</p>
+            </div>
+            <span>4 个任务</span>
+          </div>
+          <div class="gantt-grid">
+            <div class="gantt-axis-label">任务</div>
+            <div class="gantt-axis">
+        <span class="gantt-tick" style="--x:0%">
+          <i></i><b>05/01</b>
+        </span>
+
+        <span class="gantt-tick" style="--x:19.444444444444446%">
+          <i></i><b>05/08</b>
+        </span>
+
+        <span class="gantt-tick" style="--x:38.88888888888889%">
+          <i></i><b>05/15</b>
+        </span>
+
+        <span class="gantt-tick" style="--x:58.333333333333336%">
+          <i></i><b>05/22</b>
+        </span>
+
+        <span class="gantt-tick" style="--x:77.77777777777779%">
+          <i></i><b>05/29</b>
+        </span>
+
+        <span class="gantt-tick" style="--x:97.22222222222221%">
+          <i></i><b>06/05</b>
+        </span>
+      </div>
+
+            <div class="gantt-row">
+              <div class="gantt-task-label">
+                <strong>前两周全员读论文</strong>
+                <span>VLA / Diffusion / WAM / World Model / Swarm overview 读书判断</span>
+              </div>
+              <div class="gantt-track">
+                <div class="gantt-bar status-active"
+                  style="--left:0%; --width:38.88888888888889%"
+                  title="前两周全员读论文 · 2026-05-01 - 2026-05-14">
+                  <span>前两周全员读论文</span>
+                  <em>05/01-05/14</em>
+                </div>
+              </div>
+            </div>
+
+            <div class="gantt-row">
+              <div class="gantt-task-label">
+                <strong>No.1 仓库标准与索引规范</strong>
+                <span>论文 note 标准、关系图规则、证据等级规则</span>
+              </div>
+              <div class="gantt-track">
+                <div class="gantt-bar status-active"
+                  style="--left:11.11111111111111%; --width:27.77777777777778%"
+                  title="No.1 仓库标准与索引规范 · 2026-05-05 - 2026-05-14">
+                  <span>No.1 仓库标准与索引规范</span>
+                  <em>05/05-05/14</em>
+                </div>
+              </div>
+            </div>
+
+            <div class="gantt-row">
+              <div class="gantt-task-label">
+                <strong>总工程架构草案</strong>
+                <span>general multi-agent model 模块图与数据流</span>
+              </div>
+              <div class="gantt-track">
+                <div class="gantt-bar status-planned"
+                  style="--left:38.88888888888889%; --width:22.22222222222222%"
+                  title="总工程架构草案 · 2026-05-15 - 2026-05-22">
+                  <span>总工程架构草案</span>
+                  <em>05/15-05/22</em>
+                </div>
+              </div>
+            </div>
+
+            <div class="gantt-row">
+              <div class="gantt-task-label">
+                <strong>研究问题与实验路线收敛</strong>
+                <span>问题定义、核心假设、后续实验优先级</span>
+              </div>
+              <div class="gantt-track">
+                <div class="gantt-bar status-planned"
+                  style="--left:61.111111111111114%; --width:38.88888888888889%"
+                  title="研究问题与实验路线收敛 · 2026-05-23 - 2026-06-05">
+                  <span>研究问题与实验路线收敛</span>
+                  <em>05/23-06/05</em>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </article>
+      </div>
+    </section>
+
+
     <section class="section compact-section" id="quality">
       <div class="section-kicker">Index quality</div>
       <div class="section-head">
@@ -2009,25 +2478,25 @@
           </div>
 
           <div class="quality-card">
-            <div class="quality-value">15/20</div>
+            <div class="quality-value">16/21</div>
             <div class="quality-name">关系覆盖</div>
             <p>至少一条 typed relation</p>
           </div>
 
           <div class="quality-card">
-            <div class="quality-value">20/20</div>
+            <div class="quality-value">21/21</div>
             <div class="quality-name">系统角色覆盖</div>
             <p>能放入我们的模型架构</p>
           </div>
 
           <div class="quality-card">
-            <div class="quality-value">20/20</div>
+            <div class="quality-value">21/21</div>
             <div class="quality-name">复用模块覆盖</div>
             <p>可转成设计组件</p>
           </div>
 
           <div class="quality-card">
-            <div class="quality-value">20/20</div>
+            <div class="quality-value">20/21</div>
             <div class="quality-name">证据风险覆盖</div>
             <p>明确知道证据和风险</p>
           </div>
@@ -2074,12 +2543,23 @@
         </article>
 
         <article class="role-card">
-          <div class="role-count">3</div>
+          <div class="role-count">4</div>
           <h3>任务分配器</h3>
           <ul>
           <li>
             <strong>Heterogeneous MRTA RL</strong>
             <span>你的系统可以把任务分解和任务分配分成两层：LLM/VLM 负责把目标转为结构化任务图，GNN/Transformer/RL 模块负责在 agent-task 图上做可优化分配。</span>
+          </li>
+
+          <li>
+            <strong>GMATANN</strong>
+            <span>如果我们要做端到端模型，不应该只把多个机器人拼成一个长 prompt。更好的结构是显式维护一个 heterogeneous graph：
+
+- robot node：能力、位置、负载、可用技能、当前状态。
+- task node：需求、优先级、空间位置、时间窗口、依赖关系。
+- edge feature：距离、技能匹配度、风险、通信成本、WAM 预测成功率。
+
+然后让 GNN/Graph Transformer 输出 assignment logits，再交给 planner 或 executor 执行。</span>
           </li>
 
           <li>
@@ -2378,12 +2858,23 @@
         </article>
 
         <article class="role-card">
-          <div class="role-count">2</div>
+          <div class="role-count">3</div>
           <h3>规划基线</h3>
           <ul>
           <li>
             <strong>Heterogeneous MRTA RL</strong>
             <span>你的系统可以把任务分解和任务分配分成两层：LLM/VLM 负责把目标转为结构化任务图，GNN/Transformer/RL 模块负责在 agent-task 图上做可优化分配。</span>
+          </li>
+
+          <li>
+            <strong>GMATANN</strong>
+            <span>如果我们要做端到端模型，不应该只把多个机器人拼成一个长 prompt。更好的结构是显式维护一个 heterogeneous graph：
+
+- robot node：能力、位置、负载、可用技能、当前状态。
+- task node：需求、优先级、空间位置、时间窗口、依赖关系。
+- edge feature：距离、技能匹配度、风险、通信成本、WAM 预测成功率。
+
+然后让 GNN/Graph Transformer 输出 assignment logits，再交给 planner 或 executor 执行。</span>
           </li>
 
           <li>
@@ -2484,6 +2975,23 @@
           <li>
             <strong>Pyramidal Flow</strong>
             <span>多机器人 world action model 可能需要预测较长时间范围内的场景演化。分层/多尺度生成可以先预测粗任务进展，再预测局部机器人交互细节。</span>
+          </li>
+        </ul>
+        </article>
+
+        <article class="role-card">
+          <div class="role-count">1</div>
+          <h3>图编码器</h3>
+          <ul>
+          <li>
+            <strong>GMATANN</strong>
+            <span>如果我们要做端到端模型，不应该只把多个机器人拼成一个长 prompt。更好的结构是显式维护一个 heterogeneous graph：
+
+- robot node：能力、位置、负载、可用技能、当前状态。
+- task node：需求、优先级、空间位置、时间窗口、依赖关系。
+- edge feature：距离、技能匹配度、风险、通信成本、WAM 预测成功率。
+
+然后让 GNN/Graph Transformer 输出 assignment logits，再交给 planner 或 executor 执行。</span>
           </li>
         </ul>
         </article>
@@ -2799,6 +3307,19 @@
           </li>
         </ul>
         </article>
+
+        <article class="queue-card">
+          <div class="queue-count">1</div>
+          <h3>抽取图分配设计</h3>
+          <p>把这组论文转成更明确的系统设计动作。</p>
+          <ul>
+          <li>
+            <span>2025-06</span>
+            <strong>GMATANN</strong>
+            <em>已读论文</em>
+          </li>
+        </ul>
+        </article>
       </div>
     </section>
 
@@ -2858,7 +3379,7 @@
           <h2>论文列表</h2>
           <p>搜索会匹配标题、摘要、作者、机构、方法和标签。</p>
         </div>
-        <div id="result-count">20 篇</div>
+        <div id="result-count">21 篇</div>
       </div>
       <div class="control-panel">
         <input id="search" type="search" placeholder="搜索论文、作者、方法或标签">
@@ -2869,6 +3390,7 @@
         <select id="tech-filter">
           <option value="">全部技术范式</option>
           <option value="foundation_swarm_overview">Foundation Swarm Overview</option>
+<option value="graph_assignment_network">Graph Assignment Network</option>
 <option value="llm_code_policy">LLM Code Policy</option>
 <option value="llm_reward_design">LLM Reward Design</option>
 <option value="multi_robot_allocation_rl">Multi-Robot Allocation RL</option>
@@ -2894,6 +3416,7 @@
 <option value="open_world_generalization">开放世界泛化</option>
 <option value="human_to_robot_world_action_model">人类到机器人 WAM</option>
 <option value="video_generation">视频生成</option>
+<option value="graph_based_task_allocation">图任务分配</option>
 <option value="imagination_planning">想象规划</option>
 <option value="language_action_representation">语言动作表示</option>
 <option value="semantic_grounding">语义落地</option>
@@ -2924,6 +3447,7 @@
 <option value="world_simulator">世界模拟器</option>
 <option value="video_generator">视频生成器</option>
 <option value="data_curator">数据治理器</option>
+<option value="graph_encoder">图编码器</option>
 <option value="semantic_planner">语义规划器</option>
 <option value="semantic_grounder">语义落地器</option>
 <option value="long_horizon_state">长程状态</option>
@@ -3396,6 +3920,65 @@
             <div class="paper-next">Evidence: 已读论文 · Next: 建模为执行器+子任务器</div>
             <div class="paper-tags"><span class="tag">π0.5</span><span class="tag">VLA</span><span class="tag">open-world generalization</span><span class="tag">long-horizon tasks</span><span class="tag">semantic subtask prediction</span></div>
             <div class="paper-links"><a href="notes/2025-pi05-open-world-generalization.html" data-note-link="notes/2025-pi05-open-world-generalization.html" target="_blank" rel="noreferrer">Note</a><a href="https://arxiv.org/abs/2504.16054" target="_blank" rel="noreferrer">论文</a><a href="https://www.physicalintelligence.company/download/pi05.pdf" target="_blank" rel="noreferrer">项目页</a><a href="https://doi.org/10.48550/arXiv.2504.16054" target="_blank" rel="noreferrer">DOI</a></div>
+          </div>
+        </article>
+
+
+        <article class="paper-card"
+          data-paper-card
+          data-year="2025"
+          data-tech_paradigm="graph_assignment_network"
+          data-primary_technical_layer="graph_based_task_allocation"
+          data-primary_task_family="heterogeneous_task_allocation"
+          data-system_roles="task_allocator graph_encoder planner_baseline"
+          data-search="heterogeneous multi-agent task allocation based on graph-based convolutional assignment neural network gmatann ieee internet of things journal 2025 gmatann 把异构多智能体任务分配写成一个 task-agent graph，在图上用 attention 学习“哪个 agent 更适合哪个 task”，是多机器人任务规划里很适合拿来补 allocation 模块的一篇 gnn 论文。 论文提出 graph multi-agent task allocation neural network，也就是 gmatann。
+
+核心建模方式是：
+
+1. 把 agent 和 task 都作为图节点。
+2. 用边表示 agent 和 task 之间的候选匹配、能力需求关系或关联强度。
+3. 用图注意力机制在图上传递信息，让模型学习哪些 agent-task 连接更关键。
+4. 输出任务分配结果，把合适的 task 分给合适的 agent。
+
+这个思路的关键不是“gnn 很复杂”，而是它把 task allocation 从一个表格匹配问题，改成了一个结构化图推理问题。  2025-06 gnn paper_read extract_graph_assignment_design gnn planning rl gnn mrta heterogeneous agents task allocation graph attention assignment network task_allocator graph_encoder planner_baseline task_agent_graph graph_attention_assignment heterogeneous_capability_matching ziyuan ma, huajun gong, jun xiong, xinhua wang university of science and technology beijing">
+          <div class="paper-media">
+            <div class="paper-placeholder">GMATANN</div>
+            <span>2025-06</span>
+          </div>
+          <div class="paper-main">
+            <div class="paper-meta">
+              <strong>IEEE Internet of Things Journal 2025</strong>
+              <span>Graph Assignment Network</span>
+              <span>图任务分配</span>
+              <span>高优先级</span>
+            </div>
+            <h3>GMATANN</h3>
+            <div class="paper-title">Heterogeneous Multi-Agent Task Allocation Based on Graph-Based Convolutional Assignment Neural Network</div>
+            <div class="paper-authors">Ziyuan Ma, Huajun Gong, Jun Xiong, Xinhua Wang · University of Science and Technology Beijing</div>
+            <div class="paper-summary"><p>GMATANN 把异构多智能体任务分配写成一个 task-agent graph，在图上用 attention 学习“哪个 agent 更适合哪个 task”，是多机器人任务规划里很适合拿来补 allocation 模块的一篇 GNN 论文。</p></div>
+            <details>
+              <summary>研究理解</summary>
+              <div class="detail-grid">
+                <div><b>研究问题</b><p>复杂多智能体系统里，agent 能力不同，task 需求不同，任务之间还可能有结构关系。传统启发式或普通神经网络容易把这个问题看成扁平的向量分类，难以表达 agent-task 之间的依赖和匹配关系。</p>
+<p>论文的问题可以概括为：如何在异构 agent 和异构 task 之间学习一个可泛化的分配函数。</p></div>
+                <div><b>方法</b><p>论文提出 Graph Multi-Agent Task Allocation Neural Network，也就是 GMATANN。</p>
+<p>核心建模方式是：</p>
+<ol><li>把 agent 和 task 都作为图节点。</li><li>用边表示 agent 和 task 之间的候选匹配、能力需求关系或关联强度。</li><li>用图注意力机制在图上传递信息，让模型学习哪些 agent-task 连接更关键。</li><li>输出任务分配结果，把合适的 task 分给合适的 agent。</li></ol>
+<p>这个思路的关键不是“GNN 很复杂”，而是它把 task allocation 从一个表格匹配问题，改成了一个结构化图推理问题。</p></div>
+                <div><b>局限</b><p>这类方法通常依赖结构化任务输入，不解决自然语言任务分解，也不直接处理低层执行失败。它需要和 LLM task decomposition、VLA/WAM executor、world model feedback 结合，才能变成完整的多机器人任务规划系统。</p></div>
+                <div><b>关系</b></div>
+                <div><b>对多智能体任务规划模型的启发</b><p>如果我们要做端到端模型，不应该只把多个机器人拼成一个长 prompt。更好的结构是显式维护一个 heterogeneous graph：</p>
+<ul><li>robot node：能力、位置、负载、可用技能、当前状态。</li><li>task node：需求、优先级、空间位置、时间窗口、依赖关系。</li><li>edge feature：距离、技能匹配度、风险、通信成本、WAM 预测成功率。</li></ul>
+<p>然后让 GNN/Graph Transformer 输出 assignment logits，再交给 planner 或 executor 执行。</p></div>
+                <div><b>可复用模块</b><p>task-agent graph、graph attention assignment、heterogeneous capability matching。后续可以抽成我们系统中的 allocation head 或 planner critic 的输入结构。</p></div>
+                <div><b>证据与风险</b></div>
+              </div>
+            </details>
+            <div class="paper-roles"><span class="tag role-tag">任务分配器</span><span class="tag role-tag">图编码器</span><span class="tag role-tag">规划基线</span></div>
+            <div class="paper-modules"><span class="tag module-tag">任务-agent 图</span><span class="tag module-tag">图注意力分配</span><span class="tag module-tag">异构能力匹配</span></div>
+            <div class="paper-next">Evidence: 已读论文 · Next: 抽取图分配设计</div>
+            <div class="paper-tags"><span class="tag">GNN</span><span class="tag">MRTA</span><span class="tag">heterogeneous agents</span><span class="tag">task allocation</span><span class="tag">graph attention</span><span class="tag">assignment network</span></div>
+            <div class="paper-links"><a href="notes/2025-gmatann-heterogeneous-task-allocation.html" data-note-link="notes/2025-gmatann-heterogeneous-task-allocation.html" target="_blank" rel="noreferrer">Note</a><a href="https://ieeexplore.ieee.org/document/10856273" target="_blank" rel="noreferrer">论文</a><a href="https://doi.org/10.1109/JIOT.2025.3535641" target="_blank" rel="noreferrer">DOI</a></div>
           </div>
         </article>
 
@@ -3991,6 +4574,13 @@ psi-w0 则是动作条件世界模型。它输入图像、语言和动作轨迹�
 
 
       <div class="question-card">
+        <div class="question-meta">2025 · GMATANN</div>
+        <h3>图任务分配</h3>
+        <p>如何把 WAM 预测出来的执行成功率、未来状态风险、通信约束和机器人实时状态都变成 graph edge feature，让 GNN 分配器不只是按能力分任务，而是按“未来执行可行性”分任务。</p>
+      </div>
+
+
+      <div class="question-card">
         <div class="question-meta">2025 · π*0.6 / RECAP</div>
         <h3>策略改进</h3>
         <p>多机器人任务失败通常不是单个动作失败，而是调度、同步或通信失败。如何把这类系统级失败转成可训练的 advantage 或 reward。</p>
@@ -4122,7 +4712,7 @@ psi-w0 则是动作条件世界模型。它输入图像、语言和动作轨迹�
     const graphNodes = Array.from(document.querySelectorAll(".graph-node"));
     const graphEdges = Array.from(document.querySelectorAll(".graph-edge"));
     const relationFilterButtons = Array.from(document.querySelectorAll("[data-relation-filter]"));
-    const graphNoteButton = document.querySelector("[data-open-note]");
+    const graphNoteButtons = Array.from(document.querySelectorAll("[data-open-note]"));
     const relationTitle = document.querySelector("[data-relation-title]");
     const relationSummary = document.querySelector("[data-relation-summary]");
     const relationList = document.querySelector("[data-relation-list]");
@@ -4160,9 +4750,15 @@ psi-w0 则是动作条件世界模型。它输入图像、语言和动作轨迹�
         type.className = "relation-type";
         type.textContent = edge.dataset.edgeLabel + " · " + edge.dataset.edgeShort;
 
-        const target = document.createElement("div");
+        const target = document.createElement(edge.dataset.edgeTargetNote ? "a" : "div");
         target.className = "relation-target";
         target.textContent = edge.dataset.edgeTargetTitle;
+        if (edge.dataset.edgeTargetNote) {
+          target.href = noteUrlFor(edge.dataset.edgeTargetNote);
+          target.target = "_blank";
+          target.rel = "noreferrer";
+          target.title = "打开关联论文 Note";
+        }
 
         const description = document.createElement("div");
         description.className = "relation-description";
@@ -4173,7 +4769,36 @@ psi-w0 则是动作条件世界模型。它输入图像、语言和动作轨迹�
       }
     }
 
+    function resetGraphSelection() {
+      selectedGraphNode = null;
+      selectedGraphNodeId = null;
+      graphEdges.forEach((edge) => {
+        edge.classList.remove("is-active", "is-dimmed");
+      });
+      graphNodes.forEach((node) => {
+        node.classList.remove("is-active", "is-related", "is-dimmed");
+      });
+      graphNoteButtons.forEach((noteButton) => {
+        noteButton.removeAttribute("href");
+        noteButton.classList.add("is-disabled");
+        noteButton.setAttribute("aria-disabled", "true");
+        const label = noteButton.querySelector("span");
+        if (label) {
+          label.textContent = "选择节点后打开当前 Note";
+        } else {
+          noteButton.textContent = "选择节点后打开当前 Note";
+        }
+      });
+      if (relationTitle) relationTitle.textContent = "选择一篇论文";
+      if (relationSummary) relationSummary.textContent = "点击左侧节点后，这里只解释“当前论文 -> 关联论文/前序工作”的 typed relations。";
+      if (relationList) relationList.replaceChildren();
+    }
+
     function selectGraphNode(id) {
+      if (selectedGraphNodeId === id) {
+        resetGraphSelection();
+        return;
+      }
       selectedGraphNodeId = id;
       const connected = new Set([id]);
       const activeEdges = [];
@@ -4199,17 +4824,28 @@ psi-w0 则是动作条件世界模型。它输入图像、语言和动作轨迹�
         if (isActive) selectedGraphNode = node;
       }
 
-      if (graphNoteButton && selectedGraphNode) {
-        graphNoteButton.href = noteUrlFor(selectedGraphNode.dataset.notePath);
-        graphNoteButton.classList.remove("is-disabled");
-        graphNoteButton.setAttribute("aria-disabled", "false");
-        graphNoteButton.textContent = "打开 Note · " + selectedGraphNode.dataset.nodeTitle;
+      if (selectedGraphNode) {
+        for (const noteButton of graphNoteButtons) {
+          noteButton.href = noteUrlFor(selectedGraphNode.dataset.notePath);
+          noteButton.classList.remove("is-disabled");
+          noteButton.setAttribute("aria-disabled", "false");
+          const label = noteButton.querySelector("span");
+          if (label) {
+            label.textContent = "打开 Note · " + selectedGraphNode.dataset.nodeTitle;
+          } else {
+            noteButton.textContent = "打开 Note · " + selectedGraphNode.dataset.nodeTitle;
+          }
+        }
       }
       updateRelationPanel(selectedGraphNode, activeEdges);
     }
 
     graphNodes.forEach((node) => {
       node.addEventListener("click", () => selectGraphNode(node.dataset.nodeId));
+    });
+
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape" && selectedGraphNodeId) resetGraphSelection();
     });
 
     relationFilterButtons.forEach((button) => {

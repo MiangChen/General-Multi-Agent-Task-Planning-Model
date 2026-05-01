@@ -8,6 +8,7 @@ const papersDir = join(rootDir, "papers");
 const dataDir = join(rootDir, "data");
 const viewsDir = join(rootDir, "views");
 const notesDir = join(rootDir, "notes");
+const teamRoadmapPath = join(rootDir, "team", "roadmap.json");
 const watchMode = process.argv.includes("--watch");
 
 const valueLabels = {
@@ -24,6 +25,7 @@ const valueLabels = {
   world_model_rl: "World Model RL",
   video_flow_model: "Video Flow Model",
   multi_robot_allocation_rl: "Multi-Robot Allocation RL",
+  graph_assignment_network: "Graph Assignment Network",
   semantic_grounding: "语义落地",
   action_representation: "动作表示",
   action_diffusion_policy: "动作扩散策略",
@@ -34,6 +36,7 @@ const valueLabels = {
   efficient_action_tokenization: "高效动作 token 化",
   long_horizon_memory: "长程记忆",
   video_generation: "视频生成",
+  graph_based_task_allocation: "图任务分配",
   decentralized_task_allocation: "分布式任务分配",
   open_world_generalization: "开放世界泛化",
   deployment_generalization: "部署泛化",
@@ -52,6 +55,7 @@ const valueLabels = {
   memory_augmented_execution: "记忆增强执行",
   video_dynamics_generation: "视频动态生成",
   heterogeneous_task_allocation: "异构任务分配",
+  heterogeneous_multi_agent_systems: "异构多智能体系统",
   generalist_robot_control: "通用机器人控制",
   long_horizon_execution: "长程执行",
   robust_execution: "鲁棒执行",
@@ -100,6 +104,7 @@ const valueLabels = {
   reward_designer: "奖励设计器",
   action_tokenizer: "动作 tokenizer",
   task_allocator: "任务分配器",
+  graph_encoder: "图编码器",
   scheduler: "调度器",
   planner_baseline: "规划基线",
   code_policy_generator: "代码策略生成器",
@@ -178,6 +183,10 @@ const valueLabels = {
   micro_macro_validation: "微观-宏观验证",
   prompt_api_controller_bridge: "Prompt-API 控制桥",
   rag_swarm_memory: "RAG 集群记忆",
+  task_agent_graph: "任务-agent 图",
+  graph_attention_assignment: "图注意力分配",
+  heterogeneous_capability_matching: "异构能力匹配",
+  extract_graph_assignment_design: "抽取图分配设计",
 };
 
 const palette = [
@@ -559,6 +568,20 @@ function monthValue(month) {
   return year * 12 + (value || 1) - 1;
 }
 
+function dateValue(date) {
+  const [year, month, day] = String(date).split("-").map(Number);
+  return Math.floor(Date.UTC(year, (month || 1) - 1, day || 1) / 86400000);
+}
+
+function dateFromValue(value) {
+  return new Date(value * 86400000).toISOString().slice(0, 10);
+}
+
+function shortDate(date) {
+  const [, month, day] = String(date).split("-");
+  return `${month}/${day}`;
+}
+
 async function readPapers() {
   const entries = await readdir(papersDir, { withFileTypes: true });
   const files = entries
@@ -604,6 +627,20 @@ async function readPapers() {
   return papers.sort(
     (a, b) => a.published_value - b.published_value || a.short_title.localeCompare(b.short_title),
   );
+}
+
+async function readTeamRoadmap() {
+  if (!existsSync(teamRoadmapPath)) {
+    return { members: [], tasks: [] };
+  }
+  const raw = await readFile(teamRoadmapPath, "utf8");
+  const roadmap = JSON.parse(raw);
+  return {
+    note: String(roadmap.note || ""),
+    roster: asList(roadmap.roster),
+    members: asList(roadmap.members),
+    tasks: asList(roadmap.tasks),
+  };
 }
 
 function uniqueValues(papers, field) {
@@ -895,6 +932,115 @@ function renderBenchmarkBoard() {
   `;
 }
 
+function renderTeamRoadmap(roadmap) {
+  const members = asList(roadmap.members);
+  const tasks = asList(roadmap.tasks);
+  if (!members.length || !tasks.length) return "";
+  const roster = asList(roadmap.roster);
+  const teamNote = String(roadmap.note || "");
+
+  const start = Math.min(...tasks.map((task) => dateValue(task.start)));
+  const end = Math.max(...tasks.map((task) => dateValue(task.end)));
+  const totalDays = Math.max(1, end - start + 1);
+  const ticks = [];
+  for (let day = start; day <= end; day += 7) {
+    ticks.push({
+      label: shortDate(dateFromValue(day)),
+      left: ((day - start) / totalDays) * 100,
+    });
+  }
+  if (ticks.at(-1)?.label !== shortDate(dateFromValue(end))) {
+    ticks.push({ label: shortDate(dateFromValue(end)), left: 100 });
+  }
+
+  const tickHtml = ticks
+    .map(
+      (tick) => `
+        <span class="gantt-tick" style="--x:${tick.left}%">
+          <i></i><b>${escapeHtml(tick.label)}</b>
+        </span>
+      `,
+    )
+    .join("");
+
+  const memberCards = members
+    .map((member) => {
+      const memberTasks = tasks
+        .filter((task) => task.owner === member.name)
+        .sort((a, b) => dateValue(a.start) - dateValue(b.start));
+      const rows = memberTasks
+        .map((task) => {
+          const taskStart = dateValue(task.start);
+          const taskEnd = dateValue(task.end);
+          const left = ((taskStart - start) / totalDays) * 100;
+          const width = ((taskEnd - taskStart + 1) / totalDays) * 100;
+          return `
+            <div class="gantt-row">
+              <div class="gantt-task-label">
+                <strong>${escapeHtml(task.title)}</strong>
+                <span>${escapeHtml(task.deliverable || task.workstream || "")}</span>
+              </div>
+              <div class="gantt-track">
+                <div class="gantt-bar status-${escapeHtml(task.status || "planned")}"
+                  style="--left:${left}%; --width:${width}%"
+                  title="${escapeHtml(`${task.title} · ${task.start} - ${task.end}`)}">
+                  <span>${escapeHtml(task.title)}</span>
+                  <em>${escapeHtml(`${shortDate(task.start)}-${shortDate(task.end)}`)}</em>
+                </div>
+              </div>
+            </div>
+          `;
+        })
+        .join("");
+
+      return `
+        <article class="member-gantt" style="--member:${escapeHtml(member.color || "#246bfe")}">
+          <div class="member-gantt-head">
+            <div>
+              <h3>${escapeHtml(member.name)}</h3>
+              <p>${escapeHtml(member.role || "")}</p>
+            </div>
+            <span>${memberTasks.length} 个任务</span>
+          </div>
+          <div class="gantt-grid">
+            <div class="gantt-axis-label">任务</div>
+            <div class="gantt-axis">${tickHtml}</div>
+            ${rows}
+          </div>
+        </article>
+      `;
+    })
+    .join("");
+  const rosterHtml = roster.length
+    ? `
+      <div class="team-roster">
+        ${roster.map((name) => `<span>${escapeHtml(name)}</span>`).join("")}
+      </div>
+    `
+    : "";
+
+  return `
+    <section class="section compact-section" id="team">
+      <div class="section-kicker">Team execution plan</div>
+      <div class="section-head">
+        <div>
+          <h2>团队甘特图</h2>
+          <p>${escapeHtml(teamNote || "把 No.1 论文仓库拆成具体负责人、日期和交付物。")} 数据源是 <code>team/roadmap.json</code>，后续改排期只需要更新结构化任务。</p>
+        </div>
+        <div class="team-range">${escapeHtml(`${dateFromValue(start)} -> ${dateFromValue(end)}`)}</div>
+      </div>
+      <div class="team-summary">
+        <span>${roster.length || members.length} 人团队</span>
+        <span>${members.length} 人当前排期</span>
+        <span>${tasks.length} 个任务</span>
+        <span>${totalDays} 天窗口</span>
+      </div>
+      ${rosterHtml}
+      <div class="team-gantt-board">${memberCards}</div>
+    </section>
+  `;
+}
+
 function sameMonthNodeOffset(index, count, step) {
   return (index - (count - 1) / 2) * step;
 }
@@ -1061,6 +1207,7 @@ function renderDomainGraph(papers) {
         data-edge-short="${escapeHtml(relation.short)}"
         data-edge-description="${escapeHtml(relation.description)}"
         data-edge-target-title="${escapeHtml(to.paper.short_title)}"
+        data-edge-target-note="${escapeHtml(to.paper.note_html)}"
         d="${d}"
         marker-end="url(#arrowhead-${escapeHtml(type)})"></path>`;
     })
@@ -1127,7 +1274,6 @@ function renderDomainGraph(papers) {
       <div class="relation-filterbar" aria-label="关系类型过滤">
         ${relationFilters}
       </div>
-      <a class="graph-note-button is-disabled" data-open-note target="_blank" rel="noreferrer" aria-disabled="true">选择节点后打开 Note</a>
       <div class="graph-workspace">
         <div class="graph-frame">
           <div class="domain-graph" style="--graph-width:${width}px; --graph-height:${height}px; --node-width:${nodeWidth}px; --node-height:${nodeHeight}px">
@@ -1147,6 +1293,12 @@ function renderDomainGraph(papers) {
         <aside class="relation-panel" data-relation-panel>
           <div class="relation-kicker">Relation lens</div>
           <h3 data-relation-title>选择一篇论文</h3>
+          <div class="relation-actions">
+            <a class="relation-note-link is-disabled" data-open-note target="_blank" rel="noreferrer" aria-disabled="true">
+              <span>选择节点后打开当前 Note</span>
+              <strong>Open</strong>
+            </a>
+          </div>
           <p data-relation-summary>点击左侧节点后，这里只解释“当前论文 -> 关联论文/前序工作”的 typed relations。</p>
           <div class="relation-list" data-relation-list></div>
         </aside>
@@ -1362,10 +1514,6 @@ function renderNotePage(paper, papers) {
   const rolePills = renderNotePills(paper.system_roles, "note-pill role-pill");
   const modulePills = renderNotePills(paper.reusable_modules, "note-pill module-pill");
   const tagPills = renderNotePills(paper.tags, "note-pill");
-  const generatedAt = new Date().toLocaleString("zh-CN", {
-    timeZone: "Asia/Shanghai",
-    hour12: false,
-  });
 
   return `<!doctype html>
 <html lang="zh-CN">
@@ -1883,14 +2031,14 @@ function renderNotePage(paper, papers) {
     </section>
 
     <footer class="note-footer">
-      Generated from ${escapeHtml(paper.file)} at ${escapeHtml(generatedAt)}.
+      Generated from ${escapeHtml(paper.file)}.
     </footer>
   </main>
 </body>
 </html>`;
 }
 
-function renderIndex(papers) {
+function renderIndex(papers, teamRoadmap) {
   const techValues = uniqueValues(papers, "tech_paradigm");
   const layerValues = uniqueValues(papers, "primary_technical_layer");
   const roleValues = uniqueList(papers.flatMap((paper) => asList(paper.system_roles))).sort((a, b) =>
@@ -2116,49 +2264,6 @@ function renderIndex(papers) {
       padding: 16px;
       margin: 8px 0 28px;
       box-shadow: 0 12px 28px rgba(22, 50, 83, 0.08);
-    }
-
-    .graph-note-button {
-      position: fixed;
-      right: 22px;
-      bottom: 22px;
-      z-index: 40;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 28px;
-      min-width: 178px;
-      max-width: min(320px, calc(100vw - 44px));
-      padding: 0 10px;
-      border-color: rgba(36, 107, 254, 0.34);
-      border-radius: 5px;
-      background: rgba(255, 255, 255, 0.82);
-      color: #1f4fd6;
-      font-family: var(--mono);
-      font-size: 11px;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      box-shadow: 0 8px 18px rgba(22, 50, 83, 0.08);
-      text-decoration: none;
-      transition: opacity 0.16s ease, transform 0.16s ease, background 0.16s ease, box-shadow 0.16s ease;
-    }
-
-    .graph-note-button.is-disabled {
-      cursor: default;
-      opacity: 0;
-      color: #64748b;
-      border-color: var(--soft-line);
-      box-shadow: none;
-      transform: translateY(8px);
-      pointer-events: none;
-    }
-
-    .graph-note-button:not(.is-disabled):hover {
-      transform: translateY(-1px);
-      background: rgba(236, 246, 255, 0.96);
-      border-color: rgba(36, 107, 254, 0.58);
-      box-shadow: 0 0 0 3px var(--glow);
     }
 
     .relation-filterbar {
@@ -2429,6 +2534,74 @@ function renderIndex(papers) {
       font-size: 13px;
     }
 
+    .relation-actions {
+      margin: 0 0 12px;
+    }
+
+    .relation-note-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      width: 100%;
+      min-height: 50px;
+      padding: 0 14px;
+      border: 1px solid rgba(36, 107, 254, 0.48);
+      border-radius: 8px;
+      background: linear-gradient(135deg, rgba(36, 107, 254, 0.96), rgba(0, 167, 199, 0.86));
+      color: white;
+      font-family: var(--mono);
+      font-size: 12px;
+      font-weight: 700;
+      text-decoration: none;
+      box-shadow: 0 12px 30px rgba(36, 107, 254, 0.22);
+    }
+
+    .relation-note-link span {
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .relation-note-link strong {
+      flex: 0 0 auto;
+      display: inline-flex;
+      align-items: center;
+      min-height: 24px;
+      padding: 0 8px;
+      border: 1px solid rgba(255, 255, 255, 0.36);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.16);
+      font-size: 10px;
+      letter-spacing: 0;
+    }
+
+    .relation-note-link.is-disabled {
+      color: #64748b;
+      border-color: var(--soft-line);
+      background: rgba(247, 251, 255, 0.68);
+      box-shadow: none;
+      pointer-events: none;
+    }
+
+    .relation-note-link.is-disabled strong {
+      color: #64748b;
+      border-color: rgba(100, 116, 139, 0.2);
+      background: rgba(100, 116, 139, 0.06);
+    }
+
+    .relation-note-link:not(.is-disabled):hover {
+      transform: translateY(-1px);
+      box-shadow: 0 0 0 3px var(--glow), 0 14px 34px rgba(36, 107, 254, 0.25);
+    }
+
+    .relation-target[href]:hover {
+      border-color: rgba(36, 107, 254, 0.58);
+      color: #1f4fd6;
+      box-shadow: 0 0 0 3px var(--glow);
+    }
+
     .relation-list {
       display: grid;
       gap: 10px;
@@ -2456,9 +2629,17 @@ function renderIndex(papers) {
     }
 
     .relation-target {
+      display: inline-flex;
+      align-items: center;
+      width: fit-content;
+      max-width: 100%;
       margin-top: 6px;
+      padding: 2px 5px;
+      border: 1px solid transparent;
+      border-radius: 5px;
       color: #142033;
       font-weight: 700;
+      text-decoration: none;
     }
 
     .relation-description {
@@ -2472,7 +2653,8 @@ function renderIndex(papers) {
     .role-grid,
     .queue-grid,
     .agent-grid,
-    .benchmark-grid {
+    .benchmark-grid,
+    .team-gantt-board {
       display: grid;
       gap: 14px;
     }
@@ -2716,6 +2898,222 @@ function renderIndex(papers) {
       color: #1f4fd6;
     }
 
+    .team-range,
+    .team-summary span {
+      display: inline-flex;
+      align-items: center;
+      min-height: 30px;
+      padding: 0 10px;
+      border: 1px solid rgba(36, 107, 254, 0.22);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.76);
+      color: #24466f;
+      font-family: var(--mono);
+      font-size: 12px;
+      box-shadow: 0 8px 18px rgba(22, 50, 83, 0.07);
+    }
+
+    .team-summary {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: -6px 0 14px;
+    }
+
+    .team-roster {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 0 0 14px;
+    }
+
+    .team-roster span {
+      display: inline-flex;
+      align-items: center;
+      min-height: 26px;
+      padding: 0 9px;
+      border: 1px solid rgba(74, 112, 154, 0.22);
+      border-radius: 999px;
+      background: rgba(247, 251, 255, 0.72);
+      color: #24466f;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .member-gantt {
+      border: 1px solid color-mix(in srgb, var(--member), transparent 62%);
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.82);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      backdrop-filter: blur(18px);
+    }
+
+    .member-gantt-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      padding: 14px 16px;
+      border-bottom: 1px solid color-mix(in srgb, var(--member), transparent 76%);
+      background: linear-gradient(90deg, color-mix(in srgb, var(--member), transparent 88%), rgba(255,255,255,0.66));
+    }
+
+    .member-gantt-head h3 {
+      color: #142033;
+      font-size: 20px;
+    }
+
+    .member-gantt-head p {
+      margin: 3px 0 0;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .member-gantt-head span {
+      color: color-mix(in srgb, var(--member), #0f172a 22%);
+      font-family: var(--mono);
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .gantt-grid {
+      display: grid;
+      grid-template-columns: minmax(180px, 240px) minmax(0, 1fr);
+    }
+
+    .gantt-axis-label,
+    .gantt-axis,
+    .gantt-task-label,
+    .gantt-track {
+      border-bottom: 1px solid rgba(133, 163, 196, 0.22);
+    }
+
+    .gantt-axis-label {
+      min-height: 34px;
+      padding: 8px 14px;
+      color: var(--muted);
+      font-family: var(--mono);
+      font-size: 11px;
+      background: rgba(247, 251, 255, 0.78);
+    }
+
+    .gantt-axis {
+      position: relative;
+      min-width: 0;
+      min-height: 34px;
+      background:
+        linear-gradient(90deg, rgba(36, 107, 254, 0.06) 1px, transparent 1px),
+        rgba(247, 251, 255, 0.56);
+      background-size: 64px 100%;
+    }
+
+    .gantt-tick {
+      position: absolute;
+      left: var(--x);
+      top: 0;
+      bottom: 0;
+      transform: translateX(-1px);
+      color: #64748b;
+      font-family: var(--mono);
+      font-size: 10px;
+    }
+
+    .gantt-tick i {
+      display: block;
+      width: 1px;
+      height: 100%;
+      background: rgba(74, 112, 154, 0.26);
+    }
+
+    .gantt-tick b {
+      position: absolute;
+      top: 7px;
+      left: 5px;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    .gantt-row {
+      display: contents;
+    }
+
+    .gantt-task-label {
+      min-height: 48px;
+      padding: 9px 14px;
+      background: rgba(255, 255, 255, 0.62);
+    }
+
+    .gantt-task-label strong {
+      display: block;
+      color: #142033;
+      font-size: 13px;
+      line-height: 1.22;
+    }
+
+    .gantt-task-label span {
+      display: block;
+      margin-top: 3px;
+      color: var(--muted);
+      font-size: 11px;
+      line-height: 1.25;
+    }
+
+    .gantt-track {
+      position: relative;
+      min-width: 0;
+      min-height: 48px;
+      background:
+        linear-gradient(90deg, rgba(36, 107, 254, 0.045) 1px, transparent 1px),
+        rgba(255, 255, 255, 0.5);
+      background-size: 64px 100%;
+    }
+
+    .gantt-bar {
+      position: absolute;
+      left: var(--left);
+      top: 9px;
+      width: max(42px, var(--width));
+      max-width: calc(100% - var(--left));
+      height: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      padding: 0 9px;
+      border: 1px solid color-mix(in srgb, var(--member), transparent 26%);
+      border-radius: 5px;
+      background: linear-gradient(90deg, color-mix(in srgb, var(--member), transparent 10%), color-mix(in srgb, var(--member), transparent 42%));
+      color: white;
+      box-shadow: 0 8px 18px color-mix(in srgb, var(--member), transparent 72%);
+      overflow: hidden;
+    }
+
+    .gantt-bar span {
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .gantt-bar em {
+      flex: 0 0 auto;
+      font-family: var(--mono);
+      font-size: 10px;
+      font-style: normal;
+      opacity: 0.9;
+    }
+
+    .gantt-bar.status-active {
+      box-shadow: 0 0 0 2px color-mix(in srgb, var(--member), transparent 78%), 0 10px 22px color-mix(in srgb, var(--member), transparent 68%);
+    }
+
+    .gantt-bar.status-review {
+      background: linear-gradient(90deg, #4b6f96, #6a7dff);
+    }
+
     input,
     select,
     button {
@@ -2738,13 +3136,6 @@ function renderIndex(papers) {
       background: rgba(236, 246, 255, 0.96);
       border-color: rgba(36, 107, 254, 0.58);
       box-shadow: 0 0 0 3px var(--glow);
-    }
-
-    .graph-note-button.is-disabled:hover {
-      transform: none;
-      background: rgba(255, 255, 255, 0.82);
-      border-color: var(--soft-line);
-      box-shadow: none;
     }
 
     .icon-button {
@@ -3007,6 +3398,25 @@ function renderIndex(papers) {
         border-bottom: 1px solid var(--line);
       }
 
+      .gantt-grid {
+        grid-template-columns: minmax(128px, 34%) minmax(0, 1fr);
+      }
+
+      .gantt-axis-label,
+      .gantt-task-label {
+        padding-left: 10px;
+        padding-right: 10px;
+      }
+
+      .gantt-bar {
+        height: 28px;
+        padding: 0 6px;
+      }
+
+      .gantt-bar em {
+        display: none;
+      }
+
       .paper-media {
         border-right: 0;
         border-bottom: 1px solid var(--line);
@@ -3020,6 +3430,7 @@ function renderIndex(papers) {
     <nav class="nav">
       <a href="#domain-graph">关系图</a>
       <a href="#benchmarks">榜单</a>
+      <a href="#team">团队</a>
       <a href="#roles">系统角色</a>
       <a href="#reading">阅读队列</a>
       <a href="#agents">Agent</a>
@@ -3038,6 +3449,7 @@ function renderIndex(papers) {
 
     ${renderDomainGraph(papers)}
     ${renderBenchmarkBoard()}
+    ${renderTeamRoadmap(teamRoadmap)}
     ${renderQualityBoard(papers)}
     ${renderRoleBoard(papers)}
     ${renderReadingQueue(papers)}
@@ -3151,7 +3563,7 @@ function renderIndex(papers) {
     const graphNodes = Array.from(document.querySelectorAll(".graph-node"));
     const graphEdges = Array.from(document.querySelectorAll(".graph-edge"));
     const relationFilterButtons = Array.from(document.querySelectorAll("[data-relation-filter]"));
-    const graphNoteButton = document.querySelector("[data-open-note]");
+    const graphNoteButtons = Array.from(document.querySelectorAll("[data-open-note]"));
     const relationTitle = document.querySelector("[data-relation-title]");
     const relationSummary = document.querySelector("[data-relation-summary]");
     const relationList = document.querySelector("[data-relation-list]");
@@ -3189,9 +3601,15 @@ function renderIndex(papers) {
         type.className = "relation-type";
         type.textContent = edge.dataset.edgeLabel + " · " + edge.dataset.edgeShort;
 
-        const target = document.createElement("div");
+        const target = document.createElement(edge.dataset.edgeTargetNote ? "a" : "div");
         target.className = "relation-target";
         target.textContent = edge.dataset.edgeTargetTitle;
+        if (edge.dataset.edgeTargetNote) {
+          target.href = noteUrlFor(edge.dataset.edgeTargetNote);
+          target.target = "_blank";
+          target.rel = "noreferrer";
+          target.title = "打开关联论文 Note";
+        }
 
         const description = document.createElement("div");
         description.className = "relation-description";
@@ -3202,7 +3620,36 @@ function renderIndex(papers) {
       }
     }
 
+    function resetGraphSelection() {
+      selectedGraphNode = null;
+      selectedGraphNodeId = null;
+      graphEdges.forEach((edge) => {
+        edge.classList.remove("is-active", "is-dimmed");
+      });
+      graphNodes.forEach((node) => {
+        node.classList.remove("is-active", "is-related", "is-dimmed");
+      });
+      graphNoteButtons.forEach((noteButton) => {
+        noteButton.removeAttribute("href");
+        noteButton.classList.add("is-disabled");
+        noteButton.setAttribute("aria-disabled", "true");
+        const label = noteButton.querySelector("span");
+        if (label) {
+          label.textContent = "选择节点后打开当前 Note";
+        } else {
+          noteButton.textContent = "选择节点后打开当前 Note";
+        }
+      });
+      if (relationTitle) relationTitle.textContent = "选择一篇论文";
+      if (relationSummary) relationSummary.textContent = "点击左侧节点后，这里只解释“当前论文 -> 关联论文/前序工作”的 typed relations。";
+      if (relationList) relationList.replaceChildren();
+    }
+
     function selectGraphNode(id) {
+      if (selectedGraphNodeId === id) {
+        resetGraphSelection();
+        return;
+      }
       selectedGraphNodeId = id;
       const connected = new Set([id]);
       const activeEdges = [];
@@ -3228,17 +3675,28 @@ function renderIndex(papers) {
         if (isActive) selectedGraphNode = node;
       }
 
-      if (graphNoteButton && selectedGraphNode) {
-        graphNoteButton.href = noteUrlFor(selectedGraphNode.dataset.notePath);
-        graphNoteButton.classList.remove("is-disabled");
-        graphNoteButton.setAttribute("aria-disabled", "false");
-        graphNoteButton.textContent = "打开 Note · " + selectedGraphNode.dataset.nodeTitle;
+      if (selectedGraphNode) {
+        for (const noteButton of graphNoteButtons) {
+          noteButton.href = noteUrlFor(selectedGraphNode.dataset.notePath);
+          noteButton.classList.remove("is-disabled");
+          noteButton.setAttribute("aria-disabled", "false");
+          const label = noteButton.querySelector("span");
+          if (label) {
+            label.textContent = "打开 Note · " + selectedGraphNode.dataset.nodeTitle;
+          } else {
+            noteButton.textContent = "打开 Note · " + selectedGraphNode.dataset.nodeTitle;
+          }
+        }
       }
       updateRelationPanel(selectedGraphNode, activeEdges);
     }
 
     graphNodes.forEach((node) => {
       node.addEventListener("click", () => selectGraphNode(node.dataset.nodeId));
+    });
+
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape" && selectedGraphNodeId) resetGraphSelection();
     });
 
     relationFilterButtons.forEach((button) => {
@@ -3268,7 +3726,8 @@ async function build() {
   await mkdir(notesDir, { recursive: true });
 
   const papers = await readPapers();
-  const dashboardHtml = stripTrailingWhitespace(renderIndex(papers));
+  const teamRoadmap = await readTeamRoadmap();
+  const dashboardHtml = stripTrailingWhitespace(renderIndex(papers, teamRoadmap));
   await writeFile(join(dataDir, "papers.json"), `${JSON.stringify(papers, null, 2)}\n`, "utf8");
   await writeFile(join(rootDir, "index.html"), dashboardHtml, "utf8");
   await writeFile(join(viewsDir, "dashboard.html"), dashboardHtml, "utf8");

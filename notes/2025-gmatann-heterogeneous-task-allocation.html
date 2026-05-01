@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>π0 · Paper Note</title>
+  <title>GMATANN · Paper Note</title>
   <style>
     :root {
       --bg: #eef4fb;
@@ -433,15 +433,15 @@
   <main class="note-shell" id="top">
     <section class="note-hero">
       <div class="hero-main">
-        <div class="note-kicker">2024-10 · RSS 2025 · VLA Flow Policy</div>
-        <h1>π0</h1>
-        <div class="full-title">π0: A Vision-Language-Action Flow Model for General Robot Control</div>
-        <div class="note-summary"><p>π0 的核心是把预训练 VLM 和 flow matching 动作头结合起来，面向跨平台、长程、灵巧操作学习连续动作策略。</p></div>
+        <div class="note-kicker">2025-06 · IEEE Internet of Things Journal 2025 · Graph Assignment Network</div>
+        <h1>GMATANN</h1>
+        <div class="full-title">Heterogeneous Multi-Agent Task Allocation Based on Graph-Based Convolutional Assignment Neural Network</div>
+        <div class="note-summary"><p>GMATANN 把异构多智能体任务分配写成一个 task-agent graph，在图上用 attention 学习“哪个 agent 更适合哪个 task”，是多机器人任务规划里很适合拿来补 allocation 模块的一篇 GNN 论文。</p></div>
       </div>
       <aside class="hero-side">
         <div class="metric-grid">
           <div class="metric">
-            <div class="metric-value">2024</div>
+            <div class="metric-value">2025</div>
             <div class="metric-label">Year</div>
           </div>
           <div class="metric">
@@ -453,19 +453,19 @@
             <div class="metric-label">Evidence</div>
           </div>
           <div class="metric">
-            <div class="metric-value">1</div>
+            <div class="metric-value">2</div>
             <div class="metric-label">Relations</div>
           </div>
         </div>
         <div>
           <div class="note-section-kicker">Authors</div>
-          <div>Black, Brown, Driess, Finn, Hausman, Ichter, Levine, Pertsch</div>
+          <div>Ziyuan Ma, Huajun Gong, Jun Xiong, Xinhua Wang</div>
         </div>
         <div>
           <div class="note-section-kicker">Institutions</div>
-          <div>Physical Intelligence</div>
+          <div>University of Science and Technology Beijing</div>
         </div>
-        <div class="note-link-row"><a href="https://arxiv.org/abs/2410.24164" target="_blank" rel="noreferrer">Paper</a><a href="https://physicalintelligence.company/blog/pi0" target="_blank" rel="noreferrer">Project</a><a href="https://doi.org/10.48550/arXiv.2410.24164" target="_blank" rel="noreferrer">DOI</a><a href="https://arxiv.org/abs/2410.24164" target="_blank" rel="noreferrer">arXiv</a><a href="../papers/2024-pi0-vla-flow-model.md" target="_blank" rel="noreferrer">Markdown source</a></div>
+        <div class="note-link-row"><a href="https://ieeexplore.ieee.org/document/10856273" target="_blank" rel="noreferrer">Paper</a><a href="https://doi.org/10.1109/JIOT.2025.3535641" target="_blank" rel="noreferrer">DOI</a><a href="../papers/2025-gmatann-heterogeneous-task-allocation.md" target="_blank" rel="noreferrer">Markdown source</a></div>
       </aside>
     </section>
 
@@ -474,45 +474,41 @@
 
     <section class="note-section impact">
       <div class="note-section-kicker">For Our Model</div>
-      <div class="note-section-body"><p>可以把 π0 视为“技能执行模型”，让上层 multi-agent planner 输出语言或子目标，再由不同机器人实例调用策略执行。</p></div>
+      <div class="note-section-body"><p>如果我们要做端到端模型，不应该只把多个机器人拼成一个长 prompt。更好的结构是显式维护一个 heterogeneous graph：</p>
+<ul><li>robot node：能力、位置、负载、可用技能、当前状态。</li><li>task node：需求、优先级、空间位置、时间窗口、依赖关系。</li><li>edge feature：距离、技能匹配度、风险、通信成本、WAM 预测成功率。</li></ul>
+<p>然后让 GNN/Graph Transformer 输出 assignment logits，再交给 planner 或 executor 执行。</p></div>
     </section>
 
 
     <section class="note-section ">
       <div class="note-section-kicker">Research Question</div>
-      <div class="note-section-body"><p>通用机器人策略如何同时继承互联网语义知识，并在多种机器人平台和复杂真实任务上输出稳定动作。</p></div>
+      <div class="note-section-body"><p>复杂多智能体系统里，agent 能力不同，task 需求不同，任务之间还可能有结构关系。传统启发式或普通神经网络容易把这个问题看成扁平的向量分类，难以表达 agent-task 之间的依赖和匹配关系。</p>
+<p>论文的问题可以概括为：如何在异构 agent 和异构 task 之间学习一个可泛化的分配函数。</p></div>
     </section>
 
 
     <section class="note-section ">
       <div class="note-section-kicker">Method</div>
-      <div class="note-section-body"><p>模型在预训练视觉语言骨干上添加 flow matching 动作生成结构，训练数据覆盖单臂、双臂和移动操作平台。</p></div>
+      <div class="note-section-body"><p>论文提出 Graph Multi-Agent Task Allocation Neural Network，也就是 GMATANN。</p>
+<p>核心建模方式是：</p>
+<ol><li>把 agent 和 task 都作为图节点。</li><li>用边表示 agent 和 task 之间的候选匹配、能力需求关系或关联强度。</li><li>用图注意力机制在图上传递信息，让模型学习哪些 agent-task 连接更关键。</li><li>输出任务分配结果，把合适的 task 分给合适的 agent。</li></ol>
+<p>这个思路的关键不是“GNN 很复杂”，而是它把 task allocation 从一个表格匹配问题，改成了一个结构化图推理问题。</p></div>
     </section>
 
-
-    <section class="note-section ">
-      <div class="note-section-kicker">Key Contributions</div>
-      <div class="note-section-body"><p>相比 RT-2 的动作 token 化，π0 更重视连续动作分布和高频控制接口，适合复杂真实操作任务。</p></div>
-    </section>
 
 
 
     <section class="note-section risk">
       <div class="note-section-kicker">Limitations</div>
-      <div class="note-section-body"><p>论文重点仍是机器人操作执行，不是任务规划算法。它不直接处理多机器人之间的任务分配、队形、通信、协商或冲突消解。</p></div>
+      <div class="note-section-body"><p>这类方法通常依赖结构化任务输入，不解决自然语言任务分解，也不直接处理低层执行失败。它需要和 LLM task decomposition、VLA/WAM executor、world model feedback 结合，才能变成完整的多机器人任务规划系统。</p></div>
     </section>
 
 
     <section class="note-section ">
       <div class="note-section-kicker">Reusable Modules</div>
-      <div class="note-section-body"><p>flow action expert、action chunk interface、cross-embodiment policy backbone。适合作为多机器人系统的低层执行器抽象。</p></div>
+      <div class="note-section-body"><p>task-agent graph、graph attention assignment、heterogeneous capability matching。后续可以抽成我们系统中的 allocation head 或 planner critic 的输入结构。</p></div>
     </section>
 
-
-    <section class="note-section risk">
-      <div class="note-section-kicker">Evidence &amp; Risk</div>
-      <div class="note-section-body"><p>证据来自多平台操作任务；风险是 planner 仍需自行处理任务分解、能力约束和机器人间冲突。</p></div>
-    </section>
 
         <div id="relations">
     <section class="note-section relation-section">
@@ -521,79 +517,29 @@
         <div>
           <h3>当前论文 -> 关联论文 / 前序工作</h3>
           <div class="relation-chip-grid">
-            <a class="relation-chip" style="--rel:#246bfe" href="../notes/2023-rt-2-vla.html">
-              <span>继承/扩展</span>
-              <strong>RT-2</strong>
+            <a class="relation-chip" style="--rel:#7c67d8" href="../notes/2025-heterogeneous-mrta-rl.html">
+              <span>互补</span>
+              <strong>Heterogeneous MRTA RL</strong>
+            </a>
+
+            <a class="relation-chip" style="--rel:#7c67d8" href="../notes/2026-genswarm-multi-robot-code-policy.html">
+              <span>互补</span>
+              <strong>GenSwarm</strong>
             </a>
           </div>
         </div>
         <div>
           <h3>下游论文 -> 当前论文</h3>
-          <div class="relation-chip-grid">
-            <a class="relation-chip incoming" style="--rel:#188aa6" href="../notes/2023-diffusion-policy-action-diffusion.html">
-              <span>提供模块</span>
-              <strong>Diffusion Policy</strong>
-            </a>
-
-            <a class="relation-chip incoming" style="--rel:#7c67d8" href="../notes/2025-fast-action-tokenization-vla.html">
-              <span>互补</span>
-              <strong>FAST</strong>
-            </a>
-
-            <a class="relation-chip incoming" style="--rel:#246bfe" href="../notes/2025-pi05-open-world-generalization.html">
-              <span>继承/扩展</span>
-              <strong>π0.5</strong>
-            </a>
-
-            <a class="relation-chip incoming" style="--rel:#00a7c7" href="../notes/2025-pistar06-recap.html">
-              <span>使用/依赖</span>
-              <strong>π*0.6 / RECAP</strong>
-            </a>
-
-            <a class="relation-chip incoming" style="--rel:#246bfe" href="../notes/2025-pi06-model-card.html">
-              <span>继承/扩展</span>
-              <strong>π0.6</strong>
-            </a>
-
-            <a class="relation-chip incoming" style="--rel:#d14d72" href="../notes/2026-world-action-models-zero-shot-policies.html">
-              <span>对比路线</span>
-              <strong>DreamZero / WAM</strong>
-            </a>
-
-            <a class="relation-chip incoming" style="--rel:#d14d72" href="../notes/2026-lap-language-action-pretraining.html">
-              <span>对比路线</span>
-              <strong>LAP-3B</strong>
-            </a>
-
-            <a class="relation-chip incoming" style="--rel:#d14d72" href="../notes/2026-fast-wam-test-time-future-imagination.html">
-              <span>对比路线</span>
-              <strong>Fast-WAM</strong>
-            </a>
-
-            <a class="relation-chip incoming" style="--rel:#00a7c7" href="../notes/2026-mem-multi-scale-embodied-memory.html">
-              <span>使用/依赖</span>
-              <strong>MEM</strong>
-            </a>
-
-            <a class="relation-chip incoming" style="--rel:#00a7c7" href="../notes/2026-pi07-steerable-generalist-robotic-foundation-model.html">
-              <span>使用/依赖</span>
-              <strong>π0.7</strong>
-            </a>
-          </div>
+          <div class="relation-chip-grid"><div class="relation-empty">暂时没有下游论文连接到这篇。</div></div>
         </div>
       </div>
     </section>
   </div>
 
-    <section class="note-section ">
-      <div class="note-section-kicker">Relation Notes</div>
-      <div class="note-section-body"><p>π0 是 π0.5、π0.6、π0.7 的基础。π0.5 强化开放环境泛化，π0.6 和 π*0.6 强调部署与经验学习，π0.7 强调可控上下文和组合泛化。</p></div>
-    </section>
-
         <div id="open-question">
     <section class="note-section impact">
       <div class="note-section-kicker">Open Question</div>
-      <div class="note-section-body"><p>多机器人 planner 应该把 π0 的能力建模成离散技能库，还是建模成带不确定性的连续可行动作模型。</p></div>
+      <div class="note-section-body"><p>如何把 WAM 预测出来的执行成功率、未来状态风险、通信约束和机器人实时状态都变成 graph edge feature，让 GNN 分配器不只是按能力分任务，而是按“未来执行可行性”分任务。</p></div>
     </section>
   </div>
       </article>
@@ -601,19 +547,19 @@
       <aside class="note-aside">
         <section class="note-aside-panel">
           <h2>System Roles</h2>
-          <div class="pill-row"><span class="note-pill role-pill">执行器</span><span class="note-pill role-pill">基础策略</span></div>
+          <div class="pill-row"><span class="note-pill role-pill">任务分配器</span><span class="note-pill role-pill">图编码器</span><span class="note-pill role-pill">规划基线</span></div>
         </section>
         <section class="note-aside-panel">
           <h2>Reusable Modules</h2>
-          <div class="pill-row"><span class="note-pill module-pill">flow action expert</span><span class="note-pill module-pill">action chunking</span><span class="note-pill module-pill">multi embodiment policy</span></div>
+          <div class="pill-row"><span class="note-pill module-pill">任务-agent 图</span><span class="note-pill module-pill">图注意力分配</span><span class="note-pill module-pill">异构能力匹配</span></div>
         </section>
         <section class="note-aside-panel">
           <h2>Next Action</h2>
-          <div class="note-pill role-pill">定义执行器接口</div>
+          <div class="note-pill role-pill">抽取图分配设计</div>
         </section>
         <section class="note-aside-panel">
           <h2>Tags</h2>
-          <div class="pill-row"><span class="note-pill">π0</span><span class="note-pill">VLA</span><span class="note-pill">flow matching</span><span class="note-pill">action chunks</span><span class="note-pill">robot foundation model</span></div>
+          <div class="pill-row"><span class="note-pill">GNN</span><span class="note-pill">MRTA</span><span class="note-pill">heterogeneous agents</span><span class="note-pill">task allocation</span><span class="note-pill">graph attention</span><span class="note-pill">assignment network</span></div>
         </section>
         <section class="note-aside-panel">
           <h2>Reading Map</h2>
@@ -628,7 +574,7 @@
     </section>
 
     <footer class="note-footer">
-      Generated from papers/2024-pi0-vla-flow-model.md.
+      Generated from papers/2025-gmatann-heterogeneous-task-allocation.md.
     </footer>
   </main>
 </body>

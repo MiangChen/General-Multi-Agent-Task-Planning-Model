@@ -912,6 +912,99 @@
     "open_question": "如果一个任务需要多个机器人协同完成，语义子任务预测应由中央模型统一产生，还是由每个机器人局部产生再协商合并。"
   },
   {
+    "id": "2025-gmatann-heterogeneous-task-allocation",
+    "title": "Heterogeneous Multi-Agent Task Allocation Based on Graph-Based Convolutional Assignment Neural Network",
+    "short_title": "GMATANN",
+    "year": 2025,
+    "published": "2025-06",
+    "venue": "IEEE Internet of Things Journal 2025",
+    "status": "unread",
+    "scope": "in_scope",
+    "readiness": "high",
+    "action": "deep_read",
+    "tech_paradigm": "graph_assignment_network",
+    "primary_domain": "GNN",
+    "domains": [
+      "GNN",
+      "Planning",
+      "RL"
+    ],
+    "primary_technical_layer": "graph_based_task_allocation",
+    "primary_task_family": "heterogeneous_task_allocation",
+    "platform": "heterogeneous_multi_agent_systems",
+    "planning_relevance": "它把异构多智能体任务分配显式建成 task-agent graph，并用图注意力学习任务和 agent 之间的匹配关系，是多机器人 planner 中 allocation head 的直接候选。",
+    "multi_robot_relevance": "核心问题就是不同能力 agent 和不同需求 task 的匹配，适合补足 VLA/WAM 之外的多机器人横向能力。",
+    "system_roles": [
+      "task_allocator",
+      "graph_encoder",
+      "planner_baseline"
+    ],
+    "reusable_modules": [
+      "task_agent_graph",
+      "graph_attention_assignment",
+      "heterogeneous_capability_matching"
+    ],
+    "evidence_level": "paper_read",
+    "next_action": "extract_graph_assignment_design",
+    "tags": [
+      "GNN",
+      "MRTA",
+      "heterogeneous agents",
+      "task allocation",
+      "graph attention",
+      "assignment network"
+    ],
+    "authors": [
+      "Ziyuan Ma",
+      "Huajun Gong",
+      "Jun Xiong",
+      "Xinhua Wang"
+    ],
+    "institutions": [
+      "University of Science and Technology Beijing"
+    ],
+    "doi": "10.1109/JIOT.2025.3535641",
+    "arxiv": "",
+    "url": "https://ieeexplore.ieee.org/document/10856273",
+    "project_url": "",
+    "image_url": "",
+    "zotero_key": "",
+    "citekey": "ma2025gmatann",
+    "cites": [],
+    "extends": [],
+    "uses": [],
+    "enables": [],
+    "complements": [
+      "2025-heterogeneous-mrta-rl",
+      "2026-genswarm-multi-robot-code-policy"
+    ],
+    "contrasts": [],
+    "published_value": 24305,
+    "relations": [
+      {
+        "type": "complements",
+        "target": "2025-heterogeneous-mrta-rl"
+      },
+      {
+        "type": "complements",
+        "target": "2026-genswarm-multi-robot-code-policy"
+      }
+    ],
+    "file": "papers/2025-gmatann-heterogeneous-task-allocation.md",
+    "note_html": "notes/2025-gmatann-heterogeneous-task-allocation.html",
+    "summary": "GMATANN 把异构多智能体任务分配写成一个 task-agent graph，在图上用 attention 学习“哪个 agent 更适合哪个 task”，是多机器人任务规划里很适合拿来补 allocation 模块的一篇 GNN 论文。",
+    "research_question": "复杂多智能体系统里，agent 能力不同，task 需求不同，任务之间还可能有结构关系。传统启发式或普通神经网络容易把这个问题看成扁平的向量分类，难以表达 agent-task 之间的依赖和匹配关系。\n\n论文的问题可以概括为：如何在异构 agent 和异构 task 之间学习一个可泛化的分配函数。",
+    "method": "论文提出 Graph Multi-Agent Task Allocation Neural Network，也就是 GMATANN。\n\n核心建模方式是：\n\n1. 把 agent 和 task 都作为图节点。\n2. 用边表示 agent 和 task 之间的候选匹配、能力需求关系或关联强度。\n3. 用图注意力机制在图上传递信息，让模型学习哪些 agent-task 连接更关键。\n4. 输出任务分配结果，把合适的 task 分给合适的 agent。\n\n这个思路的关键不是“GNN 很复杂”，而是它把 task allocation 从一个表格匹配问题，改成了一个结构化图推理问题。",
+    "contribution": "",
+    "reading_highlights": "",
+    "limitation": "这类方法通常依赖结构化任务输入，不解决自然语言任务分解，也不直接处理低层执行失败。它需要和 LLM task decomposition、VLA/WAM executor、world model feedback 结合，才能变成完整的多机器人任务规划系统。",
+    "relation": "",
+    "planning_insight": "如果我们要做端到端模型，不应该只把多个机器人拼成一个长 prompt。更好的结构是显式维护一个 heterogeneous graph：\n\n- robot node：能力、位置、负载、可用技能、当前状态。\n- task node：需求、优先级、空间位置、时间窗口、依赖关系。\n- edge feature：距离、技能匹配度、风险、通信成本、WAM 预测成功率。\n\n然后让 GNN/Graph Transformer 输出 assignment logits，再交给 planner 或 executor 执行。",
+    "reusable_module_text": "task-agent graph、graph attention assignment、heterogeneous capability matching。后续可以抽成我们系统中的 allocation head 或 planner critic 的输入结构。",
+    "evidence_risk": "",
+    "open_question": "如何把 WAM 预测出来的执行成功率、未来状态风险、通信约束和机器人实时状态都变成 graph edge feature，让 GNN 分配器不只是按能力分任务，而是按“未来执行可行性”分任务。"
+  },
+  {
     "id": "2025-pistar06-recap",
     "title": "π*0.6: a VLA That Learns From Experience",
     "short_title": "π*0.6 / RECAP",
