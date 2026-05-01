@@ -11,6 +11,7 @@ tags: [MRTA, multi-robot, task allocation, scheduling, GNN, RL]
 
 ## 关键论文
 
+- [[2026-foundation-models-robot-swarms]]
 - [[2026-genswarm-multi-robot-code-policy]]
 - [[2025-heterogeneous-mrta-rl]]
 

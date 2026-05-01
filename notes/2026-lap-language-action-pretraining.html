@@ -1,0 +1,603 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>LAP-3B · Paper Note</title>
+  <style>
+    :root {
+      --bg: #eef4fb;
+      --paper: rgba(255, 255, 255, 0.82);
+      --paper-strong: rgba(255, 255, 255, 0.94);
+      --ink: #111827;
+      --muted: #61748d;
+      --line: rgba(74, 112, 154, 0.34);
+      --soft-line: rgba(133, 163, 196, 0.24);
+      --blue: #246bfe;
+      --cyan: #00a7c7;
+      --purple: #6a7dff;
+      --shadow: 0 18px 45px rgba(22, 50, 83, 0.12);
+      --sans: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      font-family: var(--sans);
+      line-height: 1.72;
+      background:
+        radial-gradient(circle at 16% 12%, rgba(36, 107, 254, 0.14), transparent 28rem),
+        radial-gradient(circle at 88% 16%, rgba(0, 167, 199, 0.16), transparent 26rem),
+        linear-gradient(var(--soft-line) 1px, transparent 1px),
+        linear-gradient(90deg, var(--soft-line) 1px, transparent 1px),
+        var(--bg);
+      background-size: auto, auto, 32px 32px, 32px 32px, auto;
+    }
+
+    a { color: inherit; }
+
+    .note-topbar {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      padding: 13px 28px;
+      border-bottom: 1px solid var(--soft-line);
+      background: rgba(248, 251, 255, 0.86);
+      backdrop-filter: blur(18px);
+      box-shadow: 0 14px 35px rgba(31, 76, 128, 0.08);
+    }
+
+    .note-brand,
+    .note-nav a,
+    .note-kicker,
+    .note-section-kicker,
+    .metric-label,
+    .note-pill,
+    .relation-chip span {
+      font-family: var(--mono);
+    }
+
+    .note-brand {
+      color: var(--blue);
+      font-weight: 800;
+      text-decoration: none;
+    }
+
+    .note-nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .note-nav a {
+      text-decoration: none;
+    }
+
+    .note-nav a:hover {
+      color: var(--blue);
+    }
+
+    .note-shell {
+      width: min(1500px, calc(100% - 48px));
+      margin: 0 auto;
+      padding: 38px 0 70px;
+    }
+
+    .note-hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1.6fr) 360px;
+      gap: 24px;
+      align-items: stretch;
+      margin-bottom: 24px;
+    }
+
+    .hero-main,
+    .hero-side,
+    .note-section,
+    .note-aside-panel {
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: var(--paper);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(18px);
+    }
+
+    .hero-main {
+      padding: 34px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .hero-main::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-top: 2px solid rgba(36, 107, 254, 0.42);
+      background: linear-gradient(135deg, rgba(36, 107, 254, 0.08), transparent 42%);
+      pointer-events: none;
+    }
+
+    .note-kicker {
+      position: relative;
+      color: var(--blue);
+      font-size: 12px;
+      margin-bottom: 14px;
+    }
+
+    h1, h2, h3 {
+      margin: 0;
+      line-height: 1.14;
+    }
+
+    h1 {
+      position: relative;
+      max-width: 980px;
+      color: #0f172a;
+      font-size: 56px;
+      font-weight: 820;
+    }
+
+    .full-title {
+      position: relative;
+      max-width: 940px;
+      margin-top: 14px;
+      color: var(--muted);
+      font-size: 18px;
+    }
+
+    .note-summary {
+      position: relative;
+      max-width: 980px;
+      margin-top: 28px;
+      padding-left: 18px;
+      border-left: 3px solid var(--blue);
+      font-size: 22px;
+      color: #16233a;
+    }
+
+    .note-summary p {
+      margin: 0;
+    }
+
+    .hero-side {
+      display: grid;
+      gap: 14px;
+      padding: 22px;
+    }
+
+    .metric-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+    }
+
+    .metric {
+      min-height: 84px;
+      padding: 14px;
+      border: 1px solid var(--soft-line);
+      border-radius: 8px;
+      background: rgba(247, 251, 255, 0.76);
+    }
+
+    .metric-value {
+      color: var(--blue);
+      font-size: 22px;
+      font-weight: 800;
+    }
+
+    .metric-label {
+      color: var(--muted);
+      font-size: 11px;
+    }
+
+    .note-link-row,
+    .pill-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .note-link-row a {
+      min-height: 30px;
+      display: inline-flex;
+      align-items: center;
+      padding: 0 10px;
+      border: 1px solid rgba(36, 107, 254, 0.28);
+      border-radius: 5px;
+      background: linear-gradient(135deg, #1e63ff, #0aa3c2);
+      color: #fff;
+      text-decoration: none;
+      font-size: 13px;
+      box-shadow: 0 10px 22px rgba(36, 107, 254, 0.16);
+    }
+
+    .note-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 320px;
+      gap: 24px;
+      align-items: start;
+    }
+
+    .note-main {
+      display: grid;
+      gap: 16px;
+    }
+
+    .note-section {
+      padding: 24px;
+      background: var(--paper-strong);
+    }
+
+    .note-section.impact {
+      border-color: rgba(36, 107, 254, 0.44);
+      background:
+        linear-gradient(135deg, rgba(36, 107, 254, 0.08), rgba(0, 167, 199, 0.05)),
+        var(--paper-strong);
+    }
+
+    .note-section.risk {
+      border-color: rgba(209, 77, 114, 0.26);
+    }
+
+    .note-section-kicker {
+      color: var(--blue);
+      font-size: 12px;
+      margin-bottom: 10px;
+    }
+
+    .note-section-body {
+      color: #172033;
+      font-size: 16px;
+    }
+
+    .note-section-body p,
+    .note-section-body ul,
+    .note-section-body ol {
+      margin: 0 0 12px;
+    }
+
+    .note-section-body :last-child {
+      margin-bottom: 0;
+    }
+
+    .note-section-body ul,
+    .note-section-body ol {
+      padding-left: 22px;
+    }
+
+    .note-section-body li {
+      margin: 7px 0;
+    }
+
+    code {
+      padding: 1px 5px;
+      border: 1px solid var(--soft-line);
+      border-radius: 4px;
+      background: rgba(236, 246, 255, 0.82);
+      font-family: var(--mono);
+      font-size: 0.92em;
+    }
+
+    .note-aside {
+      position: sticky;
+      top: 82px;
+      display: grid;
+      gap: 14px;
+    }
+
+    .note-aside-panel {
+      padding: 18px;
+    }
+
+    .note-aside-panel h2 {
+      margin-bottom: 12px;
+      font-size: 18px;
+    }
+
+    .note-pill {
+      display: inline-flex;
+      align-items: center;
+      min-height: 25px;
+      padding: 0 8px;
+      border: 1px solid var(--soft-line);
+      border-radius: 999px;
+      background: rgba(247, 251, 255, 0.84);
+      color: #415a77;
+      font-size: 11px;
+    }
+
+    .role-pill {
+      border-color: rgba(36, 107, 254, 0.32);
+      color: #1f4fd6;
+    }
+
+    .module-pill {
+      border-color: rgba(0, 167, 199, 0.32);
+      color: #0f7894;
+    }
+
+    .relation-columns {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+    }
+
+    .relation-columns h3 {
+      margin-bottom: 10px;
+      font-size: 16px;
+    }
+
+    .relation-chip-grid {
+      display: grid;
+      gap: 8px;
+    }
+
+    .relation-chip {
+      display: grid;
+      gap: 3px;
+      padding: 10px 12px;
+      border: 1px solid var(--soft-line);
+      border-left: 3px solid var(--rel);
+      border-radius: 6px;
+      background: rgba(247, 251, 255, 0.86);
+      text-decoration: none;
+    }
+
+    .relation-chip span {
+      color: color-mix(in srgb, var(--rel), #111827 30%);
+      font-size: 11px;
+      font-weight: 800;
+    }
+
+    .relation-chip strong {
+      color: #142033;
+      font-size: 14px;
+    }
+
+    .relation-empty {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .toc-list {
+      display: grid;
+      gap: 8px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      font-size: 13px;
+    }
+
+    .toc-list a {
+      color: var(--muted);
+      text-decoration: none;
+    }
+
+    .toc-list a:hover {
+      color: var(--blue);
+    }
+
+    .note-footer {
+      padding: 34px 0 0;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    @media (max-width: 980px) {
+      .note-topbar {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .note-shell {
+        width: min(100% - 28px, 760px);
+      }
+
+      .note-hero,
+      .note-layout,
+      .relation-columns {
+        grid-template-columns: 1fr;
+      }
+
+      h1 {
+        font-size: 40px;
+      }
+
+      .note-aside {
+        position: static;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="note-topbar">
+    <a class="note-brand" href="../index.html#domain-graph">General Multi-Agent Model</a>
+    <nav class="note-nav">
+      <a href="../index.html#domain-graph">关系图</a>
+      <a href="../index.html#roles">系统角色</a>
+      <a href="../index.html#papers">论文索引</a>
+      <a href="#relations">关系</a>
+      <a href="#open-question">开放问题</a>
+    </nav>
+  </header>
+
+  <main class="note-shell" id="top">
+    <section class="note-hero">
+      <div class="hero-main">
+        <div class="note-kicker">2026-02 · arXiv · VLA</div>
+        <h1>LAP-3B</h1>
+        <div class="full-title">LAP: Language-Action Pre-Training Enables Zero-shot Cross-Embodiment Transfer</div>
+        <div class="note-summary"><p>LAP 的核心是把机器人低层连续动作块转换成自然语言动作，让 VLM 像生成文本一样生成动作命令；它不是新增一个复杂 action head，而是把 action supervision 对齐到 VLM 原本擅长的离散语言输出空间，从而提升零样本跨具身迁移。</p></div>
+      </div>
+      <aside class="hero-side">
+        <div class="metric-grid">
+          <div class="metric">
+            <div class="metric-value">2026</div>
+            <div class="metric-label">Year</div>
+          </div>
+          <div class="metric">
+            <div class="metric-value">高</div>
+            <div class="metric-label">Readiness</div>
+          </div>
+          <div class="metric">
+            <div class="metric-value">已读论文</div>
+            <div class="metric-label">Evidence</div>
+          </div>
+          <div class="metric">
+            <div class="metric-value">3</div>
+            <div class="metric-label">Relations</div>
+          </div>
+        </div>
+        <div>
+          <div class="note-section-kicker">Authors</div>
+          <div>Lihan Zha, Asher J. Hancock, Mingtong Zhang, Tenny Yin, Yixuan Huang, Dhruv Shah, Allen Z. Ren, Anirudha Majumdar</div>
+        </div>
+        <div>
+          <div class="note-section-kicker">Institutions</div>
+          <div>Princeton University · Physical Intelligence</div>
+        </div>
+        <div class="note-link-row"><a href="https://arxiv.org/abs/2602.10556" target="_blank" rel="noreferrer">Paper</a><a href="https://lap-vla.github.io/" target="_blank" rel="noreferrer">Project</a><a href="https://github.com/lihzha/lap" target="_blank" rel="noreferrer">Code</a><a href="https://doi.org/10.48550/arXiv.2602.10556" target="_blank" rel="noreferrer">DOI</a><a href="https://arxiv.org/abs/2602.10556" target="_blank" rel="noreferrer">arXiv</a><a href="../papers/2026-lap-language-action-pretraining.md" target="_blank" rel="noreferrer">Markdown source</a></div>
+      </aside>
+    </section>
+
+    <section class="note-layout">
+      <article class="note-main">
+
+    <section class="note-section impact">
+      <div class="note-section-kicker">For Our Model</div>
+      <div class="note-section-body"><p>LAP 对我们的仓库很重要，因为多机器人任务规划需要一个比连续控制更高层、比自然语言子任务更低层的接口。语言动作可以成为中间层：高层 planner 输出子任务和约束，执行器输出或校验 <code>move forward 5 cm; close gripper</code> 这类短程动作命令，再由各机器人本地控制器执行。</p>
+<p>更进一步，多机器人系统可以把语言动作扩展成带主体和约束的协议，例如 <code>robot_1 move left 10 cm while robot_2 hold object; wait until gripper closed</code>。这条路线比纯连续动作更容易审计和通信，但要达到 No.1 水准，需要建立语言动作到真实物理效果的误差模型。</p></div>
+    </section>
+
+
+    <section class="note-section ">
+      <div class="note-section-kicker">Research Question</div>
+      <div class="note-section-body"><p>现有 VLA 即使做了多具身预训练，动作表示仍然容易和训练时的机器人身体强耦合。π0 / π0.5 通过 flow action expert 或异构数据提升泛化，但在新机器人身体上仍可能需要适配。LAP 追问：如果把连续控制动作先翻译成自然语言动作，VLM 是否能学到更 embodiment-agnostic 的控制表示？</p></div>
+    </section>
+
+
+    <section class="note-section ">
+      <div class="note-section-kicker">Method</div>
+      <div class="note-section-body"><p>LAP 设计了一个格式化的自然语言动作表示。给定从时间 t 到 t+H 的 action chunk，脚本会统计这段时间内末端执行器的累计平移、累计旋转和夹爪变化，然后生成类似 <code>move forward 5 cm; close gripper</code> 的离散文本动作。</p>
+<p>训练时，模型输入视觉观察和任务语言，输出语言动作。公式 1 的目标可以理解为标准语言建模交叉熵：让 VLM 生成的语言动作 token 对齐到脚本从真实连续动作块自动写出的语言动作。公式 2 则定义了语言动作的格式，把一个动作块的空间位移、旋转和夹爪状态写成可读、可学习、可跨具身共享的文本。</p>
+<p>这个设计和 FAST 的宏观思路相似：二者都不希望 VLM 直接处理极短时间尺度的连续控制细节，而是把一段时间内的动作块压缩成更适合 VLM 学习的离散表示。差异在于 FAST 用频域 token 压缩连续动作，LAP 用自然语言句子表达动作意图和粗粒度运动。</p></div>
+    </section>
+
+
+    <section class="note-section ">
+      <div class="note-section-kicker">Key Contributions</div>
+      <div class="note-section-body"><ul><li>提出 Language-Action Pre-training：把低层机器人动作直接表示成自然语言，避免学习专门 tokenizer 或新增复杂 action head。</li><li>用脚本自动把连续 action chunk 转换成语言动作，降低人工标注成本。</li><li>通过 CE 训练让 VLM 直接输出语言动作，使动作预测和 VQA 共享同一种文本输出空间。</li><li>展示 LAP-3B 在未见过机器人具身上的零样本迁移能力，项目页报告平均成功率超过 50%，约为最强 prior VLA baseline 的 2 倍。</li><li>主要对比对象包括 π0、π0.5-DROID、π0.5-replicated 和 X-VLA，重点证明语言动作监督能改善跨具身表示。</li></ul></div>
+    </section>
+
+
+    <section class="note-section ">
+      <div class="note-section-kicker">Reading Highlights</div>
+      <div class="note-section-body"><ol><li>LAP 的关键不是“动作变成文本”这个表面形式，而是把动作学习放回 VLM 原本的语言建模分布中。</li><li>语言动作是一种可读的 action abstraction：上层 planner 可以检查、修改或组合它，比连续 action chunk 更适合作为系统接口。</li><li>它和 FAST 是动作表示问题的两种答案：FAST 更偏高频压缩效率，LAP 更偏跨具身语义对齐和可解释接口。</li><li>对多机器人来说，语言动作可能成为不同机器人之间共享的中间动作协议，但还需要验证它能否表达协同、避让、等待和同步动作。</li></ol></div>
+    </section>
+
+
+    <section class="note-section risk">
+      <div class="note-section-kicker">Limitations</div>
+      <div class="note-section-body"><p>语言动作牺牲了一部分连续控制精度，最后仍需要底层控制器把文本动作落成机器人可执行轨迹。它适合表达一段时间内的粗粒度末端运动，但未必足够表达高频灵巧操作、接触动力学、双臂同步或多机器人联合动作约束。</p></div>
+    </section>
+
+
+    <section class="note-section ">
+      <div class="note-section-kicker">Reusable Modules</div>
+      <div class="note-section-body"><p>language-action pretraining、action chunk to text converter、natural language action schema、CE language-action supervision、VQA/action co-training、zero-shot cross-embodiment evaluation。适合加入 planner-to-executor interface 和 cross-embodiment executor abstraction。</p></div>
+    </section>
+
+
+    <section class="note-section risk">
+      <div class="note-section-kicker">Evidence &amp; Risk</div>
+      <div class="note-section-body"><p>证据来自 LAP 官方项目页和 arXiv：LAP-3B 在 YAM、Kinova、Custom Franka、DROID 等平台上展示零样本跨具身迁移，并对比 π0、π0.5-DROID、π0.5-replicated、X-VLA。风险是语言动作格式可能过于粗粒度；在精细接触、动态避障、多机器人同步和长期任务中，需要额外的低层控制与失败恢复机制。</p></div>
+    </section>
+
+        <div id="relations">
+    <section class="note-section relation-section">
+      <div class="note-section-kicker">Typed Relations</div>
+      <div class="relation-columns">
+        <div>
+          <h3>当前论文 -> 关联论文 / 前序工作</h3>
+          <div class="relation-chip-grid">
+            <a class="relation-chip" style="--rel:#d14d72" href="../notes/2025-fast-action-tokenization-vla.html">
+              <span>对比路线</span>
+              <strong>FAST</strong>
+            </a>
+
+            <a class="relation-chip" style="--rel:#d14d72" href="../notes/2024-pi0-vla-flow-model.html">
+              <span>对比路线</span>
+              <strong>π0</strong>
+            </a>
+
+            <a class="relation-chip" style="--rel:#d14d72" href="../notes/2025-pi05-open-world-generalization.html">
+              <span>对比路线</span>
+              <strong>π0.5</strong>
+            </a>
+          </div>
+        </div>
+        <div>
+          <h3>下游论文 -> 当前论文</h3>
+          <div class="relation-chip-grid"><div class="relation-empty">暂时没有下游论文连接到这篇。</div></div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+    <section class="note-section ">
+      <div class="note-section-kicker">Relation Notes</div>
+      <div class="note-section-body"><p>LAP 的主要对比对象是 π0、π0.5 和 FAST。π0 / π0.5 代表 VLM 加连续动作专家或异构开放世界训练的路线，FAST 和 LAP 则都在回答“如何把一段 action chunk 变成更适合 VLM 学习的离散表示”。区别在于 FAST 用频域信号压缩 action chunk，LAP 用格式化语言动作压缩 action chunk；二者的共同目标都是把 VLM 的决策时间尺度从低层瞬时动作提升到更长一段动作块，因此这里应以对比关系为主。</p></div>
+    </section>
+
+        <div id="open-question">
+    <section class="note-section impact">
+      <div class="note-section-kicker">Open Question</div>
+      <div class="note-section-body"><p>语言动作能否成为多机器人通用动作协议？如果可以，协议里应该包含哪些字段：机器人 id、参考坐标系、位移/旋转、持续时间、同步条件、资源占用、失败检测和安全约束？</p></div>
+    </section>
+  </div>
+      </article>
+
+      <aside class="note-aside">
+        <section class="note-aside-panel">
+          <h2>System Roles</h2>
+          <div class="pill-row"><span class="note-pill role-pill">执行器</span><span class="note-pill role-pill">执行接口</span><span class="note-pill role-pill">基础策略</span><span class="note-pill role-pill">语义落地器</span></div>
+        </section>
+        <section class="note-aside-panel">
+          <h2>Reusable Modules</h2>
+          <div class="pill-row"><span class="note-pill module-pill">语言动作预训练</span><span class="note-pill module-pill">自然语言动作格式</span><span class="note-pill module-pill">动作块转文本脚本</span><span class="note-pill module-pill">CE 语言动作监督</span><span class="note-pill module-pill">VQA 与动作共训练</span><span class="note-pill module-pill">零样本跨具身迁移</span></div>
+        </section>
+        <section class="note-aside-panel">
+          <h2>Next Action</h2>
+          <div class="note-pill role-pill">比较语言动作接口</div>
+        </section>
+        <section class="note-aside-panel">
+          <h2>Tags</h2>
+          <div class="pill-row"><span class="note-pill">LAP</span><span class="note-pill">LAP-3B</span><span class="note-pill">VLA</span><span class="note-pill">language action</span><span class="note-pill">cross-embodiment transfer</span><span class="note-pill">discrete action representation</span></div>
+        </section>
+        <section class="note-aside-panel">
+          <h2>Reading Map</h2>
+          <ul class="toc-list">
+            <li><a href="#top">Summary</a></li>
+            <li><a href="#relations">Typed relations</a></li>
+            <li><a href="#open-question">Open question</a></li>
+            <li><a href="../index.html#domain-graph">Back to graph</a></li>
+          </ul>
+        </section>
+      </aside>
+    </section>
+
+    <footer class="note-footer">
+      Generated from papers/2026-lap-language-action-pretraining.md at 2026/5/1 15:28:06.
+    </footer>
+  </main>
+</body>
+</html>

@@ -1,0 +1,613 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Fast-WAM · Paper Note</title>
+  <style>
+    :root {
+      --bg: #eef4fb;
+      --paper: rgba(255, 255, 255, 0.82);
+      --paper-strong: rgba(255, 255, 255, 0.94);
+      --ink: #111827;
+      --muted: #61748d;
+      --line: rgba(74, 112, 154, 0.34);
+      --soft-line: rgba(133, 163, 196, 0.24);
+      --blue: #246bfe;
+      --cyan: #00a7c7;
+      --purple: #6a7dff;
+      --shadow: 0 18px 45px rgba(22, 50, 83, 0.12);
+      --sans: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      font-family: var(--sans);
+      line-height: 1.72;
+      background:
+        radial-gradient(circle at 16% 12%, rgba(36, 107, 254, 0.14), transparent 28rem),
+        radial-gradient(circle at 88% 16%, rgba(0, 167, 199, 0.16), transparent 26rem),
+        linear-gradient(var(--soft-line) 1px, transparent 1px),
+        linear-gradient(90deg, var(--soft-line) 1px, transparent 1px),
+        var(--bg);
+      background-size: auto, auto, 32px 32px, 32px 32px, auto;
+    }
+
+    a { color: inherit; }
+
+    .note-topbar {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      padding: 13px 28px;
+      border-bottom: 1px solid var(--soft-line);
+      background: rgba(248, 251, 255, 0.86);
+      backdrop-filter: blur(18px);
+      box-shadow: 0 14px 35px rgba(31, 76, 128, 0.08);
+    }
+
+    .note-brand,
+    .note-nav a,
+    .note-kicker,
+    .note-section-kicker,
+    .metric-label,
+    .note-pill,
+    .relation-chip span {
+      font-family: var(--mono);
+    }
+
+    .note-brand {
+      color: var(--blue);
+      font-weight: 800;
+      text-decoration: none;
+    }
+
+    .note-nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .note-nav a {
+      text-decoration: none;
+    }
+
+    .note-nav a:hover {
+      color: var(--blue);
+    }
+
+    .note-shell {
+      width: min(1500px, calc(100% - 48px));
+      margin: 0 auto;
+      padding: 38px 0 70px;
+    }
+
+    .note-hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1.6fr) 360px;
+      gap: 24px;
+      align-items: stretch;
+      margin-bottom: 24px;
+    }
+
+    .hero-main,
+    .hero-side,
+    .note-section,
+    .note-aside-panel {
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: var(--paper);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(18px);
+    }
+
+    .hero-main {
+      padding: 34px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .hero-main::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-top: 2px solid rgba(36, 107, 254, 0.42);
+      background: linear-gradient(135deg, rgba(36, 107, 254, 0.08), transparent 42%);
+      pointer-events: none;
+    }
+
+    .note-kicker {
+      position: relative;
+      color: var(--blue);
+      font-size: 12px;
+      margin-bottom: 14px;
+    }
+
+    h1, h2, h3 {
+      margin: 0;
+      line-height: 1.14;
+    }
+
+    h1 {
+      position: relative;
+      max-width: 980px;
+      color: #0f172a;
+      font-size: 56px;
+      font-weight: 820;
+    }
+
+    .full-title {
+      position: relative;
+      max-width: 940px;
+      margin-top: 14px;
+      color: var(--muted);
+      font-size: 18px;
+    }
+
+    .note-summary {
+      position: relative;
+      max-width: 980px;
+      margin-top: 28px;
+      padding-left: 18px;
+      border-left: 3px solid var(--blue);
+      font-size: 22px;
+      color: #16233a;
+    }
+
+    .note-summary p {
+      margin: 0;
+    }
+
+    .hero-side {
+      display: grid;
+      gap: 14px;
+      padding: 22px;
+    }
+
+    .metric-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+    }
+
+    .metric {
+      min-height: 84px;
+      padding: 14px;
+      border: 1px solid var(--soft-line);
+      border-radius: 8px;
+      background: rgba(247, 251, 255, 0.76);
+    }
+
+    .metric-value {
+      color: var(--blue);
+      font-size: 22px;
+      font-weight: 800;
+    }
+
+    .metric-label {
+      color: var(--muted);
+      font-size: 11px;
+    }
+
+    .note-link-row,
+    .pill-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .note-link-row a {
+      min-height: 30px;
+      display: inline-flex;
+      align-items: center;
+      padding: 0 10px;
+      border: 1px solid rgba(36, 107, 254, 0.28);
+      border-radius: 5px;
+      background: linear-gradient(135deg, #1e63ff, #0aa3c2);
+      color: #fff;
+      text-decoration: none;
+      font-size: 13px;
+      box-shadow: 0 10px 22px rgba(36, 107, 254, 0.16);
+    }
+
+    .note-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 320px;
+      gap: 24px;
+      align-items: start;
+    }
+
+    .note-main {
+      display: grid;
+      gap: 16px;
+    }
+
+    .note-section {
+      padding: 24px;
+      background: var(--paper-strong);
+    }
+
+    .note-section.impact {
+      border-color: rgba(36, 107, 254, 0.44);
+      background:
+        linear-gradient(135deg, rgba(36, 107, 254, 0.08), rgba(0, 167, 199, 0.05)),
+        var(--paper-strong);
+    }
+
+    .note-section.risk {
+      border-color: rgba(209, 77, 114, 0.26);
+    }
+
+    .note-section-kicker {
+      color: var(--blue);
+      font-size: 12px;
+      margin-bottom: 10px;
+    }
+
+    .note-section-body {
+      color: #172033;
+      font-size: 16px;
+    }
+
+    .note-section-body p,
+    .note-section-body ul,
+    .note-section-body ol {
+      margin: 0 0 12px;
+    }
+
+    .note-section-body :last-child {
+      margin-bottom: 0;
+    }
+
+    .note-section-body ul,
+    .note-section-body ol {
+      padding-left: 22px;
+    }
+
+    .note-section-body li {
+      margin: 7px 0;
+    }
+
+    code {
+      padding: 1px 5px;
+      border: 1px solid var(--soft-line);
+      border-radius: 4px;
+      background: rgba(236, 246, 255, 0.82);
+      font-family: var(--mono);
+      font-size: 0.92em;
+    }
+
+    .note-aside {
+      position: sticky;
+      top: 82px;
+      display: grid;
+      gap: 14px;
+    }
+
+    .note-aside-panel {
+      padding: 18px;
+    }
+
+    .note-aside-panel h2 {
+      margin-bottom: 12px;
+      font-size: 18px;
+    }
+
+    .note-pill {
+      display: inline-flex;
+      align-items: center;
+      min-height: 25px;
+      padding: 0 8px;
+      border: 1px solid var(--soft-line);
+      border-radius: 999px;
+      background: rgba(247, 251, 255, 0.84);
+      color: #415a77;
+      font-size: 11px;
+    }
+
+    .role-pill {
+      border-color: rgba(36, 107, 254, 0.32);
+      color: #1f4fd6;
+    }
+
+    .module-pill {
+      border-color: rgba(0, 167, 199, 0.32);
+      color: #0f7894;
+    }
+
+    .relation-columns {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+    }
+
+    .relation-columns h3 {
+      margin-bottom: 10px;
+      font-size: 16px;
+    }
+
+    .relation-chip-grid {
+      display: grid;
+      gap: 8px;
+    }
+
+    .relation-chip {
+      display: grid;
+      gap: 3px;
+      padding: 10px 12px;
+      border: 1px solid var(--soft-line);
+      border-left: 3px solid var(--rel);
+      border-radius: 6px;
+      background: rgba(247, 251, 255, 0.86);
+      text-decoration: none;
+    }
+
+    .relation-chip span {
+      color: color-mix(in srgb, var(--rel), #111827 30%);
+      font-size: 11px;
+      font-weight: 800;
+    }
+
+    .relation-chip strong {
+      color: #142033;
+      font-size: 14px;
+    }
+
+    .relation-empty {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .toc-list {
+      display: grid;
+      gap: 8px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      font-size: 13px;
+    }
+
+    .toc-list a {
+      color: var(--muted);
+      text-decoration: none;
+    }
+
+    .toc-list a:hover {
+      color: var(--blue);
+    }
+
+    .note-footer {
+      padding: 34px 0 0;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    @media (max-width: 980px) {
+      .note-topbar {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .note-shell {
+        width: min(100% - 28px, 760px);
+      }
+
+      .note-hero,
+      .note-layout,
+      .relation-columns {
+        grid-template-columns: 1fr;
+      }
+
+      h1 {
+        font-size: 40px;
+      }
+
+      .note-aside {
+        position: static;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="note-topbar">
+    <a class="note-brand" href="../index.html#domain-graph">General Multi-Agent Model</a>
+    <nav class="note-nav">
+      <a href="../index.html#domain-graph">关系图</a>
+      <a href="../index.html#roles">系统角色</a>
+      <a href="../index.html#papers">论文索引</a>
+      <a href="#relations">关系</a>
+      <a href="#open-question">开放问题</a>
+    </nav>
+  </header>
+
+  <main class="note-shell" id="top">
+    <section class="note-hero">
+      <div class="hero-main">
+        <div class="note-kicker">2026-03 · arXiv · World Action Model</div>
+        <h1>Fast-WAM</h1>
+        <div class="full-title">Fast-WAM: Do World Action Models Need Test-time Future Imagination?</div>
+        <div class="note-summary"><p>Fast-WAM 的核心结论是：WAM 的主要收益可能来自训练期的视频协同建模，而不是测试时显式生成未来画面；因此测试时可以跳过 future imagination，直接用当前真实观测生成动作，并显著降低推理延迟。</p></div>
+      </div>
+      <aside class="hero-side">
+        <div class="metric-grid">
+          <div class="metric">
+            <div class="metric-value">2026</div>
+            <div class="metric-label">Year</div>
+          </div>
+          <div class="metric">
+            <div class="metric-value">高</div>
+            <div class="metric-label">Readiness</div>
+          </div>
+          <div class="metric">
+            <div class="metric-value">已读论文</div>
+            <div class="metric-label">Evidence</div>
+          </div>
+          <div class="metric">
+            <div class="metric-value">3</div>
+            <div class="metric-label">Relations</div>
+          </div>
+        </div>
+        <div>
+          <div class="note-section-kicker">Authors</div>
+          <div>Tianyuan Yuan, Zibin Dong, Yicheng Liu, Hang Zhao</div>
+        </div>
+        <div>
+          <div class="note-section-kicker">Institutions</div>
+          <div>IIIS Tsinghua University · Galaxea AI</div>
+        </div>
+        <div class="note-link-row"><a href="https://arxiv.org/abs/2603.16666" target="_blank" rel="noreferrer">Paper</a><a href="https://yuantianyuan01.github.io/FastWAM/" target="_blank" rel="noreferrer">Project</a><a href="https://github.com/yuantianyuan01/FastWAM" target="_blank" rel="noreferrer">Code</a><a href="https://doi.org/10.48550/arXiv.2603.16666" target="_blank" rel="noreferrer">DOI</a><a href="https://arxiv.org/abs/2603.16666" target="_blank" rel="noreferrer">arXiv</a><a href="../papers/2026-fast-wam-test-time-future-imagination.md" target="_blank" rel="noreferrer">Markdown source</a></div>
+      </aside>
+    </section>
+
+    <section class="note-layout">
+      <article class="note-main">
+
+    <section class="note-section impact">
+      <div class="note-section-kicker">For Our Model</div>
+      <div class="note-section-body"><p>Fast-WAM 对我们的多智能体任务规划很关键：多机器人联合未来视频预测会非常昂贵，尤其当机器人数量、遮挡、通信和任务依赖增加时。如果 Fast-WAM 的结论成立，多机器人模型可以把“未来预测”主要用于训练世界表征或 planner critic，而不是每一步执行时都显式生成未来视频。</p>
+<p>更具体地，可以把系统分成两层：训练期用视频/状态预测任务学习 world encoder，让模型理解动作对环境的影响；测试时高层 planner 只调用低延迟 encoder + action/critic head，必要时再对少量关键候选计划做显式 rollout。这样能兼顾实时执行和世界模型能力。</p></div>
+    </section>
+
+
+    <section class="note-section ">
+      <div class="note-section-kicker">Research Question</div>
+      <div class="note-section-body"><p>DreamZero 代表的 WAM 路线把未来视频预测和动作生成绑在一起，默认认为机器人需要先“想象未来画面”再执行动作。但这一步会带来扩散去噪和视频生成的推理开销。Fast-WAM 直接追问：预测未来画面这一步真的有必要吗？还是说，视频预测的价值主要发生在训练期，用来塑造更好的 world representation？</p></div>
+    </section>
+
+
+    <section class="note-section ">
+      <div class="note-section-kicker">Method</div>
+      <div class="note-section-body"><p>论文把 WAM 拆成几个可比较范式。Figure 1A 对应 DreamZero 式路线：视频和动作在扩散过程中联合生成，测试时显式想象未来画面。Figure 1B 把未来视频生成和动作生成拆成两个过程，先想象视频，再由后续模块产出动作。Figure 1C 是 Fast-WAM：训练时仍保留 video co-training，让模型学习世界动态表征；测试时生成动作只使用当前真实观测，不再显式生成未来画面。</p>
+<p>Fast-WAM 使用预训练视频 DiT 作为视觉世界编码器，并加入 action expert DiT 做 action chunk 生成。训练阶段同时优化动作预测和未来视频预测，让视觉 backbone 通过视频建模学习动态敏感的 latent representation。推理阶段丢弃未来视频分支，只保留当前观测的 clean latent tokens，一次前向直接生成动作，从而避开 imagine-then-execute WAM 的主要延迟来源。</p>
+<p>论文还通过结构化 attention mask 避免信息泄漏：action tokens 不能直接看到未来视频 tokens，否则模型可能只是借用了测试时不存在的未来画面。这个 mask 让消融更干净：可以区分“训练期视频建模让 representation 变好”和“测试时生成未来画面带来额外信息”。</p></div>
+    </section>
+
+
+    <section class="note-section ">
+      <div class="note-section-kicker">Key Contributions</div>
+      <div class="note-section-body"><ul><li>提出了一个更尖锐的 WAM 消融问题：WAM 到底需要测试时想象，还是只需要训练时被视频预测任务塑形。</li><li>提出 Fast-WAM：保留 video co-training，但在测试时移除显式 future video generation，用当前真实观测直接生成动作。</li><li>通过 A / B / C 三种范式比较 DreamZero 式联合生成、两阶段想象-执行和 Fast-WAM 的直接动作生成。</li><li>实验显示 Fast-WAM 接近 imagine-then-execute 变体，而移除 video co-training 会造成更大性能下降，支持“训练期世界建模比测试时想象更关键”的解释。</li><li>在 LIBERO、RoboTwin 和真实毛巾折叠任务中取得强结果，并报告 190ms 推理延迟，比显式想象式 WAM 更适合实时控制。</li></ul></div>
+    </section>
+
+
+    <section class="note-section ">
+      <div class="note-section-kicker">Reading Highlights</div>
+      <div class="note-section-body"><ol><li>DreamZero 证明了未来视频和动作联合建模可以成为策略；Fast-WAM 则追问测试时是否真的需要生成未来视频。</li><li>Figure 1 的 A/B/C 对比很重要：A 是联合训练视频和动作扩散生成，B 是先预测未来视频再生成动作，C 是 Fast-WAM 只用当前真实观测直接动作生成。</li><li>最有价值的不是“模型会不会想象未来画面”，而是“视频预测任务是否把视觉 backbone 训练成了更好的世界编码器”。</li><li>对机器人部署来说，Fast-WAM 把 WAM 从昂贵的 runtime imagination 转成了低延迟 world representation learning。</li></ol></div>
+    </section>
+
+
+    <section class="note-section risk">
+      <div class="note-section-kicker">Limitations</div>
+      <div class="note-section-body"><p>Fast-WAM 主要验证单机器人控制和标准机器人 benchmark。它削弱了测试时未来视频生成的必要性，但不等于未来预测在所有规划层级都没用。对于多机器人任务规划，显式预测未来状态、冲突和资源占用仍可能对高层 planner 有价值，只是不一定需要像 DreamZero 那样在每个低层动作步都生成视频。</p></div>
+    </section>
+
+
+    <section class="note-section ">
+      <div class="note-section-kicker">Reusable Modules</div>
+      <div class="note-section-body"><p>video co-training world encoder、no-test-time-imagination inference、single-pass action generation、structured attention mask、WAM ablation protocol。对我们的仓库来说，它不是又一个单纯执行器，而是一个判断“什么时候需要显式想象未来”的实验模板。</p></div>
+    </section>
+
+
+    <section class="note-section risk">
+      <div class="note-section-kicker">Evidence &amp; Risk</div>
+      <div class="note-section-body"><p>证据来自官方论文报告的 LIBERO、RoboTwin 和真实毛巾折叠任务：Fast-WAM 在去掉测试时 future generation 后仍保持强性能，同时 190ms 延迟明显更利于实时控制。风险是这些结果还不能直接推出多机器人高层规划也不需要显式未来预测；多主体冲突、资源竞争、通信延迟和任务依赖可能仍需要在 planner 层做显式 rollout 或结构化状态预测。</p></div>
+    </section>
+
+        <div id="relations">
+    <section class="note-section relation-section">
+      <div class="note-section-kicker">Typed Relations</div>
+      <div class="relation-columns">
+        <div>
+          <h3>当前论文 -> 关联论文 / 前序工作</h3>
+          <div class="relation-chip-grid">
+            <a class="relation-chip" style="--rel:#d14d72" href="../notes/2026-world-action-models-zero-shot-policies.html">
+              <span>对比路线</span>
+              <strong>DreamZero / WAM</strong>
+            </a>
+
+            <a class="relation-chip" style="--rel:#d14d72" href="../notes/2024-pi0-vla-flow-model.html">
+              <span>对比路线</span>
+              <strong>π0</strong>
+            </a>
+
+            <a class="relation-chip" style="--rel:#d14d72" href="../notes/2025-pi05-open-world-generalization.html">
+              <span>对比路线</span>
+              <strong>π0.5</strong>
+            </a>
+          </div>
+        </div>
+        <div>
+          <h3>下游论文 -> 当前论文</h3>
+          <div class="relation-chip-grid">
+            <a class="relation-chip incoming" style="--rel:#188aa6" href="../notes/2023-diffusion-policy-action-diffusion.html">
+              <span>提供模块</span>
+              <strong>Diffusion Policy</strong>
+            </a>
+
+            <a class="relation-chip incoming" style="--rel:#d14d72" href="../notes/2026-psibot-from-human-skill-to-robotic-mastery.html">
+              <span>对比路线</span>
+              <strong>Psi-R2 / Psi-W0</strong>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+    <section class="note-section ">
+      <div class="note-section-kicker">Relation Notes</div>
+      <div class="note-section-body"><p>Fast-WAM 和 DreamZero 不是继承关系，而是 WAM 框架下的两条对比路线：DreamZero 代表测试时显式 future imagination / imagine-then-execute，Fast-WAM 代表训练期 video co-training 加测试时 direct action generation。Fast-WAM 的价值在于把 DreamZero 隐含的“执行时需要想象未来画面”假设拆出来做消融，而不是沿着 DreamZero 继续扩展。它也和 π0、π0.5 等 VLA 路线形成对比：VLA 通常直接从观测和语言到动作，Fast-WAM 则保留训练期 world modeling，但测试时表现得更像一个低延迟 action policy。</p></div>
+    </section>
+
+        <div id="open-question">
+    <section class="note-section impact">
+      <div class="note-section-kicker">Open Question</div>
+      <div class="note-section-body"><p>多机器人系统中，哪些预测应该只作为训练期 representation learning，哪些预测必须在测试时显式执行？例如：低层动作控制也许可以用 Fast-WAM 式直接生成，但任务分配、冲突检测和失败恢复可能仍需要对候选联合计划做未来状态想象。</p></div>
+    </section>
+  </div>
+      </article>
+
+      <aside class="note-aside">
+        <section class="note-aside-panel">
+          <h2>System Roles</h2>
+          <div class="pill-row"><span class="note-pill role-pill">世界编码器</span><span class="note-pill role-pill">执行器</span><span class="note-pill role-pill">Planner critic</span></div>
+        </section>
+        <section class="note-aside-panel">
+          <h2>Reusable Modules</h2>
+          <div class="pill-row"><span class="note-pill module-pill">视频协同训练世界编码器</span><span class="note-pill module-pill">无测试时未来想象</span><span class="note-pill module-pill">单次前向动作生成</span><span class="note-pill module-pill">结构化注意力掩码</span><span class="note-pill module-pill">WAM 消融协议</span></div>
+        </section>
+        <section class="note-aside-panel">
+          <h2>Next Action</h2>
+          <div class="note-pill role-pill">比较测试时未来想象</div>
+        </section>
+        <section class="note-aside-panel">
+          <h2>Tags</h2>
+          <div class="pill-row"><span class="note-pill">Fast-WAM</span><span class="note-pill">World Action Model</span><span class="note-pill">test-time imagination</span><span class="note-pill">video co-training</span><span class="note-pill">action generation</span><span class="note-pill">real-time control</span></div>
+        </section>
+        <section class="note-aside-panel">
+          <h2>Reading Map</h2>
+          <ul class="toc-list">
+            <li><a href="#top">Summary</a></li>
+            <li><a href="#relations">Typed relations</a></li>
+            <li><a href="#open-question">Open question</a></li>
+            <li><a href="../index.html#domain-graph">Back to graph</a></li>
+          </ul>
+        </section>
+      </aside>
+    </section>
+
+    <footer class="note-footer">
+      Generated from papers/2026-fast-wam-test-time-future-imagination.md at 2026/5/1 15:28:06.
+    </footer>
+  </main>
+</body>
+</html>

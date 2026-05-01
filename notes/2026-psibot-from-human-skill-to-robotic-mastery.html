@@ -1,0 +1,605 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Psi-R2 / Psi-W0 · Paper Note</title>
+  <style>
+    :root {
+      --bg: #eef4fb;
+      --paper: rgba(255, 255, 255, 0.82);
+      --paper-strong: rgba(255, 255, 255, 0.94);
+      --ink: #111827;
+      --muted: #61748d;
+      --line: rgba(74, 112, 154, 0.34);
+      --soft-line: rgba(133, 163, 196, 0.24);
+      --blue: #246bfe;
+      --cyan: #00a7c7;
+      --purple: #6a7dff;
+      --shadow: 0 18px 45px rgba(22, 50, 83, 0.12);
+      --sans: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      font-family: var(--sans);
+      line-height: 1.72;
+      background:
+        radial-gradient(circle at 16% 12%, rgba(36, 107, 254, 0.14), transparent 28rem),
+        radial-gradient(circle at 88% 16%, rgba(0, 167, 199, 0.16), transparent 26rem),
+        linear-gradient(var(--soft-line) 1px, transparent 1px),
+        linear-gradient(90deg, var(--soft-line) 1px, transparent 1px),
+        var(--bg);
+      background-size: auto, auto, 32px 32px, 32px 32px, auto;
+    }
+
+    a { color: inherit; }
+
+    .note-topbar {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      padding: 13px 28px;
+      border-bottom: 1px solid var(--soft-line);
+      background: rgba(248, 251, 255, 0.86);
+      backdrop-filter: blur(18px);
+      box-shadow: 0 14px 35px rgba(31, 76, 128, 0.08);
+    }
+
+    .note-brand,
+    .note-nav a,
+    .note-kicker,
+    .note-section-kicker,
+    .metric-label,
+    .note-pill,
+    .relation-chip span {
+      font-family: var(--mono);
+    }
+
+    .note-brand {
+      color: var(--blue);
+      font-weight: 800;
+      text-decoration: none;
+    }
+
+    .note-nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .note-nav a {
+      text-decoration: none;
+    }
+
+    .note-nav a:hover {
+      color: var(--blue);
+    }
+
+    .note-shell {
+      width: min(1500px, calc(100% - 48px));
+      margin: 0 auto;
+      padding: 38px 0 70px;
+    }
+
+    .note-hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1.6fr) 360px;
+      gap: 24px;
+      align-items: stretch;
+      margin-bottom: 24px;
+    }
+
+    .hero-main,
+    .hero-side,
+    .note-section,
+    .note-aside-panel {
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: var(--paper);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(18px);
+    }
+
+    .hero-main {
+      padding: 34px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .hero-main::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-top: 2px solid rgba(36, 107, 254, 0.42);
+      background: linear-gradient(135deg, rgba(36, 107, 254, 0.08), transparent 42%);
+      pointer-events: none;
+    }
+
+    .note-kicker {
+      position: relative;
+      color: var(--blue);
+      font-size: 12px;
+      margin-bottom: 14px;
+    }
+
+    h1, h2, h3 {
+      margin: 0;
+      line-height: 1.14;
+    }
+
+    h1 {
+      position: relative;
+      max-width: 980px;
+      color: #0f172a;
+      font-size: 56px;
+      font-weight: 820;
+    }
+
+    .full-title {
+      position: relative;
+      max-width: 940px;
+      margin-top: 14px;
+      color: var(--muted);
+      font-size: 18px;
+    }
+
+    .note-summary {
+      position: relative;
+      max-width: 980px;
+      margin-top: 28px;
+      padding-left: 18px;
+      border-left: 3px solid var(--blue);
+      font-size: 22px;
+      color: #16233a;
+    }
+
+    .note-summary p {
+      margin: 0;
+    }
+
+    .hero-side {
+      display: grid;
+      gap: 14px;
+      padding: 22px;
+    }
+
+    .metric-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+    }
+
+    .metric {
+      min-height: 84px;
+      padding: 14px;
+      border: 1px solid var(--soft-line);
+      border-radius: 8px;
+      background: rgba(247, 251, 255, 0.76);
+    }
+
+    .metric-value {
+      color: var(--blue);
+      font-size: 22px;
+      font-weight: 800;
+    }
+
+    .metric-label {
+      color: var(--muted);
+      font-size: 11px;
+    }
+
+    .note-link-row,
+    .pill-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .note-link-row a {
+      min-height: 30px;
+      display: inline-flex;
+      align-items: center;
+      padding: 0 10px;
+      border: 1px solid rgba(36, 107, 254, 0.28);
+      border-radius: 5px;
+      background: linear-gradient(135deg, #1e63ff, #0aa3c2);
+      color: #fff;
+      text-decoration: none;
+      font-size: 13px;
+      box-shadow: 0 10px 22px rgba(36, 107, 254, 0.16);
+    }
+
+    .note-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 320px;
+      gap: 24px;
+      align-items: start;
+    }
+
+    .note-main {
+      display: grid;
+      gap: 16px;
+    }
+
+    .note-section {
+      padding: 24px;
+      background: var(--paper-strong);
+    }
+
+    .note-section.impact {
+      border-color: rgba(36, 107, 254, 0.44);
+      background:
+        linear-gradient(135deg, rgba(36, 107, 254, 0.08), rgba(0, 167, 199, 0.05)),
+        var(--paper-strong);
+    }
+
+    .note-section.risk {
+      border-color: rgba(209, 77, 114, 0.26);
+    }
+
+    .note-section-kicker {
+      color: var(--blue);
+      font-size: 12px;
+      margin-bottom: 10px;
+    }
+
+    .note-section-body {
+      color: #172033;
+      font-size: 16px;
+    }
+
+    .note-section-body p,
+    .note-section-body ul,
+    .note-section-body ol {
+      margin: 0 0 12px;
+    }
+
+    .note-section-body :last-child {
+      margin-bottom: 0;
+    }
+
+    .note-section-body ul,
+    .note-section-body ol {
+      padding-left: 22px;
+    }
+
+    .note-section-body li {
+      margin: 7px 0;
+    }
+
+    code {
+      padding: 1px 5px;
+      border: 1px solid var(--soft-line);
+      border-radius: 4px;
+      background: rgba(236, 246, 255, 0.82);
+      font-family: var(--mono);
+      font-size: 0.92em;
+    }
+
+    .note-aside {
+      position: sticky;
+      top: 82px;
+      display: grid;
+      gap: 14px;
+    }
+
+    .note-aside-panel {
+      padding: 18px;
+    }
+
+    .note-aside-panel h2 {
+      margin-bottom: 12px;
+      font-size: 18px;
+    }
+
+    .note-pill {
+      display: inline-flex;
+      align-items: center;
+      min-height: 25px;
+      padding: 0 8px;
+      border: 1px solid var(--soft-line);
+      border-radius: 999px;
+      background: rgba(247, 251, 255, 0.84);
+      color: #415a77;
+      font-size: 11px;
+    }
+
+    .role-pill {
+      border-color: rgba(36, 107, 254, 0.32);
+      color: #1f4fd6;
+    }
+
+    .module-pill {
+      border-color: rgba(0, 167, 199, 0.32);
+      color: #0f7894;
+    }
+
+    .relation-columns {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+    }
+
+    .relation-columns h3 {
+      margin-bottom: 10px;
+      font-size: 16px;
+    }
+
+    .relation-chip-grid {
+      display: grid;
+      gap: 8px;
+    }
+
+    .relation-chip {
+      display: grid;
+      gap: 3px;
+      padding: 10px 12px;
+      border: 1px solid var(--soft-line);
+      border-left: 3px solid var(--rel);
+      border-radius: 6px;
+      background: rgba(247, 251, 255, 0.86);
+      text-decoration: none;
+    }
+
+    .relation-chip span {
+      color: color-mix(in srgb, var(--rel), #111827 30%);
+      font-size: 11px;
+      font-weight: 800;
+    }
+
+    .relation-chip strong {
+      color: #142033;
+      font-size: 14px;
+    }
+
+    .relation-empty {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .toc-list {
+      display: grid;
+      gap: 8px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      font-size: 13px;
+    }
+
+    .toc-list a {
+      color: var(--muted);
+      text-decoration: none;
+    }
+
+    .toc-list a:hover {
+      color: var(--blue);
+    }
+
+    .note-footer {
+      padding: 34px 0 0;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    @media (max-width: 980px) {
+      .note-topbar {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .note-shell {
+        width: min(100% - 28px, 760px);
+      }
+
+      .note-hero,
+      .note-layout,
+      .relation-columns {
+        grid-template-columns: 1fr;
+      }
+
+      h1 {
+        font-size: 40px;
+      }
+
+      .note-aside {
+        position: static;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="note-topbar">
+    <a class="note-brand" href="../index.html#domain-graph">General Multi-Agent Model</a>
+    <nav class="note-nav">
+      <a href="../index.html#domain-graph">关系图</a>
+      <a href="../index.html#roles">系统角色</a>
+      <a href="../index.html#papers">论文索引</a>
+      <a href="#relations">关系</a>
+      <a href="#open-question">开放问题</a>
+    </nav>
+  </header>
+
+  <main class="note-shell" id="top">
+    <section class="note-hero">
+      <div class="hero-main">
+        <div class="note-kicker">2026-03 · PsiBot Technical Blog · World Action Model</div>
+        <h1>Psi-R2 / Psi-W0</h1>
+        <div class="full-title">From Human Skill to Robotic Mastery</div>
+        <div class="note-summary"><p>这篇技术博客把 PsiBot 的 Psi-R2 / Psi-W0 路线讲得非常清楚：Psi-R2 是基于视频生成骨干的 WAM/VLA 策略模型，联合预测未来视频和机器人动作；Psi-W0 是动作条件世界模型，用来建模反事实失败、做策略评估、在人类数据到机器人数据的转换过程中执行 world-model 内强化学习。</p></div>
+      </div>
+      <aside class="hero-side">
+        <div class="metric-grid">
+          <div class="metric">
+            <div class="metric-value">2026</div>
+            <div class="metric-label">Year</div>
+          </div>
+          <div class="metric">
+            <div class="metric-value">高</div>
+            <div class="metric-label">Readiness</div>
+          </div>
+          <div class="metric">
+            <div class="metric-value">技术博客</div>
+            <div class="metric-label">Evidence</div>
+          </div>
+          <div class="metric">
+            <div class="metric-value">3</div>
+            <div class="metric-label">Relations</div>
+          </div>
+        </div>
+        <div>
+          <div class="note-section-kicker">Authors</div>
+          <div>Yuanpei Chen, PsiBot</div>
+        </div>
+        <div>
+          <div class="note-section-kicker">Institutions</div>
+          <div>PsiBot · Lingchu Intelligence</div>
+        </div>
+        <div class="note-link-row"><a href="https://cypypccpy.github.io/tech-blog.github.io/" target="_blank" rel="noreferrer">Paper</a><a href="https://cypypccpy.github.io/tech-blog.github.io/" target="_blank" rel="noreferrer">Project</a><a href="../papers/2026-psibot-from-human-skill-to-robotic-mastery.md" target="_blank" rel="noreferrer">Markdown source</a></div>
+      </aside>
+    </section>
+
+    <section class="note-layout">
+      <article class="note-main">
+
+    <section class="note-section impact">
+      <div class="note-section-kicker">For Our Model</div>
+      <div class="note-section-body"><p>对我们的多智能体任务规划模型来说，这篇博客最有价值的是数据飞轮设计。多机器人系统不能只训练“成功动作执行器”，还必须有一个能理解失败后果的 critic / world model。Psi-W0 的思路可以迁移成 Multi-Agent AC-WM：输入多机器人状态、语言目标、联合动作和通信动作，预测未来世界状态、冲突、接触事件和失败后果。</p>
+<p>另一个关键启发是数据价值排序。多机器人数据采集时，不应把预算平均花在背景场景变化上，而应优先扩任务类型、物体类型、接触事件、失败模式和高精度轨迹。若要做 No.1 仓库，这类工业技术博客应当和论文同等索引，因为它直接揭示了真实系统能跑起来的训练细节。</p></div>
+    </section>
+
+
+    <section class="note-section ">
+      <div class="note-section-kicker">Research Question</div>
+      <div class="note-section-body"><p>具身智能缺少像互联网文本或自动驾驶日志那样自然沉淀的大规模数据。人类日常和工业操作数据规模巨大，但直接迁移到机器人存在 embodiment gap：人手和机械手的关节、摩擦、动力学和接触规律都不同。博客要回答的是：如何把近 10 万小时人类操作数据真正变成可训练、可评估、可回流的机器人策略数据。</p></div>
+    </section>
+
+
+    <section class="note-section ">
+      <div class="note-section-kicker">Method</div>
+      <div class="note-section-body"><p>Psi-R2 以图像和语言为输入，输出未来视觉帧和机器人可执行动作。博客明确说它基于预训练视频生成模型，技术定义上与 WAM 契合，同时因为输入视觉语言、输出动作，也具备 VLA 能力。其骨干使用 Wan2.2-IT2V-5B-480P，训练目标是未来视频和动作联合预测。</p>
+<p>数据处理上，PsiBot 放弃复杂的人手/机械手视觉对齐，只做底层运动学维度映射：图像原始输入，动作标签按人手关节到机械手关节的映射处理。早期尝试过 image inpainting、keypoint auxiliary loss、跨空间对齐等精巧模块，但在大规模数据下这些模块会成为瓶颈。最后选择 Raw Data In, Raw Data Out：只做必要的输入输出维度对齐，让模型从足够大的原始数据中学习跨实体对应关系。</p>
+<p>Psi-W0 则是动作条件世界模型。它输入图像、语言和动作轨迹，输出未来视频。和 Psi-R2 的区别是动作作为条件控制未来视频生成，因此更适合做反事实推理：如果动作偏了、接触早了或夹爪闭合时机错了，未来会怎样。</p>
+<p>博客里最关键的闭环是 RL in World Model。人类动作经运动学映射后会有细小偏差，传统做法是在仿真器里用 RL 微调，但有 sim-to-real gap。PsiBot 用 Psi-W0 替代传统仿真器：把策略动作放入世界模型中 rollout，用 RL 在世界模型里微调动作，直到预测结果满足任务目标，再筛选高质量轨迹回流到 Psi-R2 / Psi-W0 训练中。</p></div>
+    </section>
+
+
+    <section class="note-section ">
+      <div class="note-section-kicker">Key Contributions</div>
+      <div class="note-section-body"><ul><li>把 Psi-R2 明确定位成 WAM/VLA 融合路线：视频生成骨干 + 未来视频/动作联合预测。</li><li>把 Psi-W0 明确定位成 Action-Conditioned World Model，用于反事实评估、数据转换和策略优化。</li><li>提出强工程判断：大规模高质量数据下，复杂视觉对齐模块反而会阻碍长程高精度操作。</li><li>披露了数据规模：约 5,417 小时真机数据 + 95,472 小时人类数据，覆盖 294 场景、4,821 任务和 1,382 物体。</li><li>给出数据价值排序：任务多样性 &gt; 物体多样性 &gt;&gt; 场景多样性；精准 3D 位姿 &gt;&gt; 触觉模态 &gt; 2D 图像特征。</li><li>说明失败数据对世界模型的重要性：Psi-W0 额外加入约 30% 失败/无意义样本，用来学习反事实后果。</li><li>披露 WAM 推理工程优化：通过 DiT 缓存、Torch Compile、量化等把单次推理从 2.2 秒压到 100ms 以内。</li></ul></div>
+    </section>
+
+
+    <section class="note-section ">
+      <div class="note-section-kicker">Reading Highlights</div>
+      <div class="note-section-body"><ol><li>最反直觉的是放弃视觉伪对齐：不把人手修成机械手，不强行对齐 latent，只用运动学映射和大规模原始数据。</li><li>Psi-W0 的价值不只是预测视频，而是把世界模型变成策略评估器、失败解释器、数据质检器和训练飞轮。</li><li>失败数据不是脏数据。对于 AC-WM，失败样本是学习反事实和做策略改进的必要分布。</li><li>触觉被当成跨实体的共同语言：人和机器人外观不同，但接触事件和接触状态是物理上可迁移的。</li><li>这条路线更像工业化 scaling law：不是靠一个漂亮模块取胜，而是靠高精度人类数据、世界模型评估和闭环回流。</li></ol></div>
+    </section>
+
+
+    <section class="note-section risk">
+      <div class="note-section-kicker">Limitations</div>
+      <div class="note-section-body"><p>博客不是正式论文，缺少完整 benchmark 表、训练细节、消融图和可复现代码。其重点也不是跨所有机器人具身的通用模型，而是用人类数据增强特定机器人本体的预训练。对多机器人任务规划来说，还需要额外验证联合动作、通信、协同约束、资源冲突和多主体失败恢复能否进入同一个 AC-WM 数据飞轮。</p></div>
+    </section>
+
+
+    <section class="note-section ">
+      <div class="note-section-kicker">Reusable Modules</div>
+      <div class="note-section-body"><p>Raw Data In Raw Data Out、人机运动学映射、动作条件世界模型、失败样本反事实建模、world-model 内 RL、Psi-W0 数据质检、触觉预测标签、高精度人类 3D 轨迹采集、DiT 推理缓存与量化优化。适合作为多机器人 WAM 数据飞轮和 planner critic 的重要参考。</p></div>
+    </section>
+
+
+    <section class="note-section risk">
+      <div class="note-section-kicker">Evidence &amp; Risk</div>
+      <div class="note-section-body"><p>证据来自 PsiBot 技术博客和 MolmoSpaces 榜单表现披露，强在工业系统经验、数据规模、训练策略和架构分工。风险是技术博客没有论文级可复现细节，也没有公开完整训练代码和消融表；因此在仓库中应标为 technical_blog evidence，而不是 paper_read evidence。</p></div>
+    </section>
+
+        <div id="relations">
+    <section class="note-section relation-section">
+      <div class="note-section-kicker">Typed Relations</div>
+      <div class="relation-columns">
+        <div>
+          <h3>当前论文 -> 关联论文 / 前序工作</h3>
+          <div class="relation-chip-grid">
+            <a class="relation-chip" style="--rel:#7c67d8" href="../notes/2026-world-action-models-zero-shot-policies.html">
+              <span>互补</span>
+              <strong>DreamZero / WAM</strong>
+            </a>
+
+            <a class="relation-chip" style="--rel:#7c67d8" href="../notes/2023-dreamerv3-world-models.html">
+              <span>互补</span>
+              <strong>DreamerV3</strong>
+            </a>
+
+            <a class="relation-chip" style="--rel:#d14d72" href="../notes/2026-fast-wam-test-time-future-imagination.html">
+              <span>对比路线</span>
+              <strong>Fast-WAM</strong>
+            </a>
+          </div>
+        </div>
+        <div>
+          <h3>下游论文 -> 当前论文</h3>
+          <div class="relation-chip-grid"><div class="relation-empty">暂时没有下游论文连接到这篇。</div></div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+    <section class="note-section ">
+      <div class="note-section-kicker">Relation Notes</div>
+      <div class="note-section-body"><p>Psi-R2 / Psi-W0 与 DreamZero 属于同一条 WAM 大路线：都把未来视频预测和动作生成结合起来，让世界演化参与策略学习。区别是 DreamZero 更像论文定义 WAM 的通用策略范式，PsiBot 这篇博客更像工业化实现路线，重点放在人类数据规模化、触觉/3D 位姿采集、数据质检和世界模型内 RL。</p>
+<p>它和 Fast-WAM 形成对比。Fast-WAM 追问测试时是否必须显式想象未来画面；PsiBot 路线则明确保留 Psi-W0 作为动作条件世界模型，用它做策略评估、失败建模和 RL 优化。它和 DreamerV3 也有互补关系：Dreamer 在 latent world model 中做 imagination rollout，Psi-W0 则把视频生成式世界模型当成更贴近真实视觉后果的 AC-WM。</p></div>
+    </section>
+
+        <div id="open-question">
+    <section class="note-section impact">
+      <div class="note-section-kicker">Open Question</div>
+      <div class="note-section-body"><p>多机器人版本的 Psi-W0 应该预测什么？是未来视频、对象状态图、接触事件、资源占用、通信状态，还是这些的组合？如果要做 world-model 内 RL，联合动作空间和奖励信号如何设计，才能避免多机器人协同中的信用分配和组合爆炸问题？</p></div>
+    </section>
+  </div>
+      </article>
+
+      <aside class="note-aside">
+        <section class="note-aside-panel">
+          <h2>System Roles</h2>
+          <div class="pill-row"><span class="note-pill role-pill">执行器</span><span class="note-pill role-pill">世界模拟器</span><span class="note-pill role-pill">Planner critic</span><span class="note-pill role-pill">策略训练器</span><span class="note-pill role-pill">数据治理器</span></div>
+        </section>
+        <section class="note-aside-panel">
+          <h2>Reusable Modules</h2>
+          <div class="pill-row"><span class="note-pill module-pill">原始数据直入直出</span><span class="note-pill module-pill">动作条件世界模型</span><span class="note-pill module-pill">世界模型内强化学习</span><span class="note-pill module-pill">反事实失败建模</span><span class="note-pill module-pill">人机运动学映射</span><span class="note-pill module-pill">触觉世界模型训练</span><span class="note-pill module-pill">数据质检自动标注</span><span class="note-pill module-pill">高精度人类数据</span><span class="note-pill module-pill">DiT 推理缓存</span></div>
+        </section>
+        <section class="note-aside-panel">
+          <h2>Next Action</h2>
+          <div class="note-pill role-pill">抽取数据飞轮</div>
+        </section>
+        <section class="note-aside-panel">
+          <h2>Tags</h2>
+          <div class="pill-row"><span class="note-pill">PsiBot</span><span class="note-pill">Psi-R2</span><span class="note-pill">Psi-W0</span><span class="note-pill">World Action Model</span><span class="note-pill">action-conditioned world model</span><span class="note-pill">human data</span><span class="note-pill">tactile data</span><span class="note-pill">RL in world model</span></div>
+        </section>
+        <section class="note-aside-panel">
+          <h2>Reading Map</h2>
+          <ul class="toc-list">
+            <li><a href="#top">Summary</a></li>
+            <li><a href="#relations">Typed relations</a></li>
+            <li><a href="#open-question">Open question</a></li>
+            <li><a href="../index.html#domain-graph">Back to graph</a></li>
+          </ul>
+        </section>
+      </aside>
+    </section>
+
+    <footer class="note-footer">
+      Generated from papers/2026-psibot-from-human-skill-to-robotic-mastery.md at 2026/5/1 15:28:06.
+    </footer>
+  </main>
+</body>
+</html>

@@ -7,13 +7,18 @@ const rootDir = dirname(dirname(fileURLToPath(import.meta.url)));
 const papersDir = join(rootDir, "papers");
 const dataDir = join(rootDir, "data");
 const viewsDir = join(rootDir, "views");
+const notesDir = join(rootDir, "notes");
 const watchMode = process.argv.includes("--watch");
 
 const valueLabels = {
+  "Overview / Foundation": "Overview / Foundation",
+  Diffusion: "Diffusion",
   vla: "VLA",
   llm_code_policy: "LLM Code Policy",
   llm_reward_design: "LLM Reward Design",
   vla_flow_policy: "VLA Flow Policy",
+  robot_diffusion_policy: "Robot Diffusion Policy",
+  foundation_swarm_overview: "Foundation Swarm Overview",
   vla_rl: "VLA + RL",
   world_action_model: "World Action Model",
   world_model_rl: "World Model RL",
@@ -21,6 +26,9 @@ const valueLabels = {
   multi_robot_allocation_rl: "Multi-Robot Allocation RL",
   semantic_grounding: "语义落地",
   action_representation: "动作表示",
+  action_diffusion_policy: "动作扩散策略",
+  fm_swarm_architecture: "FM 集群架构",
+  language_action_representation: "语言动作表示",
   code_policy_generation: "代码策略生成",
   reward_design: "奖励函数设计",
   efficient_action_tokenization: "高效动作 token 化",
@@ -32,12 +40,15 @@ const valueLabels = {
   policy_improvement: "策略改进",
   compositional_generalization: "组合泛化",
   dynamics_prediction: "动态预测",
+  human_to_robot_world_action_model: "人类到机器人 WAM",
   imagination_planning: "想象规划",
   embodied_learning: "真实机器人学习",
   language_conditioned_execution: "语言条件执行",
   swarm_policy_generation: "集群策略生成",
+  fm_enabled_robot_swarms: "FM 赋能机器人集群",
   reward_shaping: "奖励塑形",
   high_frequency_control: "高频控制",
+  visuomotor_diffusion_policy: "视觉动作扩散策略",
   memory_augmented_execution: "记忆增强执行",
   video_dynamics_generation: "视频动态生成",
   heterogeneous_task_allocation: "异构任务分配",
@@ -47,12 +58,16 @@ const valueLabels = {
   experience_driven_recovery: "经验驱动恢复",
   steerable_long_horizon_execution: "可控长程执行",
   zero_shot_policy: "零样本策略",
+  test_time_imagination_ablation: "测试时未来想象消融",
+  human_data_scaling: "人类数据规模化",
   latent_world_model_control: "潜在世界模型控制",
   real_robot_learning: "真实机器人学习",
   single_robot_manipulation: "单机器人操作",
+  imitation_manipulation: "示教操作学习",
   multi_embodiment_manipulation: "多具身操作",
   mobile_manipulator: "移动操作机器人",
   cross_embodiment_manipulation: "跨具身操作",
+  cross_embodiment_transfer: "跨具身迁移",
   heterogeneous_robot_data: "异构机器人数据",
   simulated_control_domains: "仿真控制域",
   physical_robot_learning: "真实机器人学习",
@@ -95,13 +110,23 @@ const valueLabels = {
   experience_learner: "经验学习器",
   steerable_policy: "可控策略",
   video_generator: "视频生成器",
+  world_encoder: "世界编码器",
+  data_curator: "数据治理器",
+  swarm_designer: "集群设计器",
+  swarm_operator: "集群操作器",
+  security_monitor: "安全监控器",
+  edge_model: "端侧模型",
   paper_read: "已读论文",
+  viewpoint_review: "观点综述",
+  technical_blog: "技术博客",
   skimmed: "略读",
   compare_with_dreamerv3: "对比 DreamerV3",
   map_to_planner_critic: "映射到 planner critic",
   link_to_genswarm: "连接 GenSwarm",
   keep_as_vla_root: "作为 VLA 根节点",
   define_executor_interface: "定义执行器接口",
+  extract_robot_diffusion_design: "抽取机器人扩散策略设计",
+  extract_swarm_fm_roadmap: "抽取集群 FM 路线图",
   connect_to_wam_only: "只连接 WAM",
   keep_as_action_interface: "保留为动作接口",
   turn_into_baseline: "转为 baseline",
@@ -113,6 +138,46 @@ const valueLabels = {
   use_as_executor_target: "作为执行器目标",
   extend_to_multi_agent_rollout: "扩展多智能体 rollout",
   relation_audit: "关系审计",
+  compare_test_time_imagination: "比较测试时未来想象",
+  compare_language_action_interface: "比较语言动作接口",
+  extract_data_flywheel: "抽取数据飞轮",
+  video_cotraining_world_encoder: "视频协同训练世界编码器",
+  no_test_time_imagination: "无测试时未来想象",
+  single_pass_action_generation: "单次前向动作生成",
+  structured_attention_mask: "结构化注意力掩码",
+  wam_ablation_protocol: "WAM 消融协议",
+  language_action_pretraining: "语言动作预训练",
+  natural_language_action_format: "自然语言动作格式",
+  action_chunk_to_text_converter: "动作块转文本脚本",
+  ce_language_action_supervision: "CE 语言动作监督",
+  vqa_action_cotraining: "VQA 与动作共训练",
+  zero_shot_cross_embodiment_transfer: "零样本跨具身迁移",
+  raw_data_in_raw_data_out: "原始数据直入直出",
+  action_conditioned_world_model: "动作条件世界模型",
+  rl_in_world_model: "世界模型内强化学习",
+  counterfactual_failure_modeling: "反事实失败建模",
+  human_robot_kinematic_mapping: "人机运动学映射",
+  tactile_world_model_training: "触觉世界模型训练",
+  data_quality_autolabeling: "数据质检自动标注",
+  high_precision_human_data: "高精度人类数据",
+  dit_inference_cache: "DiT 推理缓存",
+  conditional_action_diffusion: "条件动作扩散",
+  action_chunk_diffusion: "动作块扩散",
+  receding_horizon_control: "滚动时域控制",
+  visual_conditioning: "视觉条件控制",
+  time_series_diffusion_transformer: "时序扩散 Transformer",
+  multimodal_action_distribution: "多峰动作分布",
+  stochastic_langevin_action_sampling: "Langevin 动作采样",
+  fm_swarm_designer: "FM 集群设计器",
+  fm_swarm_operator: "FM 集群操作器",
+  comprehensive_swarm_control_architecture: "综合集群控制架构",
+  simulation_feedback_finetuning: "仿真反馈微调",
+  robot_generated_data_finetuning: "机器人数据微调",
+  code_security_finetuning: "代码安全微调",
+  edge_model_finetuning: "端侧模型微调",
+  micro_macro_validation: "微观-宏观验证",
+  prompt_api_controller_bridge: "Prompt-API 控制桥",
+  rag_swarm_memory: "RAG 集群记忆",
 };
 
 const palette = [
@@ -128,11 +193,23 @@ const palette = [
   "#0f7894",
 ];
 
-const domainColumns = ["LLM", "VLA", "World Model", "World Action Model", "RL", "GNN", "Planning"];
+const domainColumns = [
+  "Overview / Foundation",
+  "LLM",
+  "VLA",
+  "Diffusion",
+  "World Model",
+  "World Action Model",
+  "RL",
+  "GNN",
+  "Planning",
+];
 
 const domainColors = {
+  "Overview / Foundation": "#64748b",
   LLM: "#246bfe",
   VLA: "#00a7c7",
+  Diffusion: "#16a085",
   "World Model": "#6a7dff",
   "World Action Model": "#7c67d8",
   RL: "#188aa6",
@@ -187,6 +264,8 @@ const nextActionHints = {
   turn_into_baseline: "把论文方法整理成可复现实验基线，服务后续模型对比。",
   map_to_planner_critic: "把 world model 或 reward 机制映射成 planner critic。",
   define_executor_interface: "明确高层 planner 如何调用底层 VLA 执行器。",
+  extract_robot_diffusion_design: "把扩散策略拆成条件输入、动作块生成、去噪采样和滚动执行接口。",
+  extract_swarm_fm_roadmap: "把 FM 集群综述拆成路线图：设计器、操作器、验证、安全、端侧部署和数据闭环。",
   model_as_executor_plus_subtasker: "把论文拆成执行器和语义子任务器两个角色。",
   extract_capability_table: "提取平台能力、成功率、失败类型和预计耗时。",
   map_recovery_loop: "把失败样本、纠错和继续学习整理成恢复闭环。",
@@ -196,6 +275,9 @@ const nextActionHints = {
   connect_to_wam_only: "只保留与 WAM 生成式世界预测相关的强关系。",
   keep_as_action_interface: "保留为动作表示和高频控制接口方案。",
   relation_audit: "检查 typed relations 是否方向正确、是否足够强。",
+  compare_test_time_imagination: "比较测试时显式想象、训练期视频建模和直接动作生成的实际价值。",
+  compare_language_action_interface: "比较自然语言动作、频域动作 token 和连续 flow action expert 的接口取舍。",
+  extract_data_flywheel: "把人类数据、世界模型评估、失败样本和策略改进整理成可复用数据飞轮。",
 };
 
 const nextActionOrder = [
@@ -206,6 +288,8 @@ const nextActionOrder = [
   "turn_into_baseline",
   "map_to_planner_critic",
   "define_executor_interface",
+  "extract_robot_diffusion_design",
+  "extract_swarm_fm_roadmap",
   "model_as_executor_plus_subtasker",
   "extract_capability_table",
   "map_recovery_loop",
@@ -215,6 +299,9 @@ const nextActionOrder = [
   "connect_to_wam_only",
   "keep_as_action_interface",
   "relation_audit",
+  "compare_test_time_imagination",
+  "compare_language_action_interface",
+  "extract_data_flywheel",
 ];
 
 const agentWorkflows = [
@@ -250,15 +337,47 @@ const agentWorkflows = [
   },
 ];
 
+const benchmarkResources = [
+  {
+    name: "MolmoSpaces Leaderboard",
+    label: "机器人竞技排名榜单",
+    source: "Allen Institute for AI",
+    url: "https://molmospaces.allen.ai/leaderboard",
+    image: "assets/molmospaces-leaderboard.png",
+    captured: "2026-04-29",
+    description:
+      "跟踪机器人策略在大规模仿真与真实迁移相关任务上的竞争表现，用来补充论文阅读之外的实证坐标。",
+    takeaways: [
+      "关注 VLA、WAM、VLM+BM 等路线在同一榜单里的相对位置。",
+      "优先记录任务覆盖、是否使用 MolmoBot 数据、是否开源、参数量和动作空间。",
+      "把榜单中的强模型加入后续 paper ingest 或 baseline 对比队列。",
+    ],
+  },
+];
+
 const relationFields = Object.keys(relationTypes).filter((type) => type !== "cites");
+
+// Relation direction rule for the paper graph:
+// Edges are authored only on the current paper and point to papers it depends on,
+// compares with, cites, or otherwise needs for context. For a parent/child lineage,
+// record only the child -> parent edge, e.g. pi0.5 -> pi0. Do not add the reverse
+// parent -> child edge. Downstream/incoming links are derived at render time.
+// This keeps the graph readable: clicking a child reveals its ancestors/context,
+// while clicking a parent does not fan out to every descendant by default.
 
 const systemRoleOrder = [
   "semantic_planner",
   "task_allocator",
   "world_simulator",
   "planner_critic",
+  "world_encoder",
   "executor",
   "executor_interface",
+  "swarm_designer",
+  "swarm_operator",
+  "data_curator",
+  "security_monitor",
+  "edge_model",
   "memory_module",
   "reward_designer",
   "code_policy_generator",
@@ -316,7 +435,12 @@ function parseFrontmatter(text, filePath) {
 
 function section(text, heading) {
   const lines = text.split(/\r?\n/);
-  const start = lines.findIndex((line) => line.trim() === `## ${heading}`);
+  const start = lines.findIndex((line) => {
+    const match = line.trim().match(/^##\s+(.+)$/);
+    if (!match) return false;
+    const title = match[1].trim();
+    return title === heading || title.startsWith(`${heading}：`) || title.startsWith(`${heading}:`);
+  });
   if (start === -1) return "";
 
   const collected = [];
@@ -342,6 +466,7 @@ function buildRelations(meta) {
   const relations = [];
   const typedTargets = new Set();
 
+  // Preserve the authoring direction above. Do not synthesize reverse links here.
   for (const type of relationFields) {
     for (const target of asList(meta[type])) {
       relations.push({ type, target });
@@ -378,12 +503,46 @@ function escapeHtml(value) {
     .replaceAll("'", "&#39;");
 }
 
+function stripTrailingWhitespace(text) {
+  return text.replace(/[ \t]+$/gm, "");
+}
+
+function inlineMarkdownToHtml(text) {
+  return escapeHtml(text)
+    .replace(/`([^`]+)`/g, "<code>$1</code>")
+    .replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>");
+}
+
 function markdownToHtml(text) {
   if (!text) return "";
   return text
     .split(/\n{2,}/)
-    .map((paragraph) => `<p>${escapeHtml(paragraph).replace(/\n/g, "<br>")}</p>`)
+    .map((block) => {
+      const lines = block
+        .split(/\r?\n/)
+        .map((line) => line.trim())
+        .filter(Boolean);
+      if (!lines.length) return "";
+
+      if (lines.every((line) => /^[-*]\s+/.test(line))) {
+        return `<ul>${lines
+          .map((line) => `<li>${inlineMarkdownToHtml(line.replace(/^[-*]\s+/, ""))}</li>`)
+          .join("")}</ul>`;
+      }
+
+      if (lines.every((line) => /^\d+\.\s+/.test(line))) {
+        return `<ol>${lines
+          .map((line) => `<li>${inlineMarkdownToHtml(line.replace(/^\d+\.\s+/, ""))}</li>`)
+          .join("")}</ol>`;
+      }
+
+      return `<p>${lines.map(inlineMarkdownToHtml).join("<br>")}</p>`;
+    })
     .join("\n");
+}
+
+function notePathFor(paper) {
+  return `notes/${paper.id}.html`;
 }
 
 function normalizeMonth(value, fallbackYear) {
@@ -427,10 +586,12 @@ async function readPapers() {
       relations: buildRelations(meta),
       primary_domain: meta.primary_domain || asList(meta.domains)[0] || label(meta.tech_paradigm),
       file: relative(rootDir, filePath),
+      note_html: notePathFor(meta),
       summary: section(body, "一句话结论"),
       research_question: section(body, "研究问题"),
       method: section(body, "方法"),
       contribution: section(body, "关键贡献"),
+      reading_highlights: section(body, "阅读高光"),
       limitation: section(body, "局限"),
       relation: section(body, "和其他论文的关系"),
       planning_insight: section(body, "对多智能体任务规划模型的启发"),
@@ -694,6 +855,117 @@ function renderAgentBoard() {
   `;
 }
 
+function renderBenchmarkBoard() {
+  const cards = benchmarkResources
+    .map(
+      (resource) => `
+        <article class="benchmark-card">
+          <a class="benchmark-shot" href="${escapeHtml(resource.url)}" target="_blank" rel="noreferrer">
+            <img src="${escapeHtml(resource.image)}" alt="${escapeHtml(resource.name)} screenshot" loading="lazy">
+          </a>
+          <div class="benchmark-body">
+            <div class="benchmark-label">${escapeHtml(resource.label)}</div>
+            <h3>${escapeHtml(resource.name)}</h3>
+            <p>${escapeHtml(resource.description)}</p>
+            <ul>
+              ${resource.takeaways.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+            </ul>
+            <div class="benchmark-meta">
+              <span>${escapeHtml(resource.source)}</span>
+              <span>截图 ${escapeHtml(resource.captured)}</span>
+              <a href="${escapeHtml(resource.url)}" target="_blank" rel="noreferrer">打开榜单</a>
+            </div>
+          </div>
+        </article>
+      `,
+    )
+    .join("");
+
+  return `
+    <section class="section compact-section" id="benchmarks">
+      <div class="section-kicker">Benchmark watch</div>
+      <div class="section-head">
+        <div>
+          <h2>榜单与竞技场</h2>
+          <p>No.1 研究不能只看论文，还要持续看真实榜单、开源基线和可复现实验入口。这里记录值得长期跟踪的机器人排名与评测资源。</p>
+        </div>
+      </div>
+      <div class="benchmark-grid">${cards}</div>
+    </section>
+  `;
+}
+
+function sameMonthNodeOffset(index, count, step) {
+  return (index - (count - 1) / 2) * step;
+}
+
+function buildCompactTimeAxis(graphPapers, top) {
+  const monthValues = [...new Set(graphPapers.map((paper) => paper.published_value))].sort(
+    (a, b) => a - b,
+  );
+  const monthYByValue = new Map();
+  let y = top;
+
+  monthValues.forEach((value, index) => {
+    if (index > 0) {
+      const previous = monthValues[index - 1];
+      const skippedMonths = Math.max(0, value - previous - 1);
+      const yearChanged = Math.floor(value / 12) !== Math.floor(previous / 12);
+      y += 58 + Math.min(skippedMonths * 2, 18) + (yearChanged ? 16 : 0);
+    }
+    monthYByValue.set(value, y);
+  });
+
+  return { monthValues, monthYByValue, lastY: y };
+}
+
+function buildDomainGraphLayout(graphPapers, options) {
+  const { left, top, bottom, colWidth, nodeHeight, nodeGap, monthYByValue, timelineBottom } =
+    options;
+  const groups = new Map();
+  for (const paper of graphPapers) {
+    const key = `${paper.graph_domain}:${paper.published_value}`;
+    const items = groups.get(key) ?? [];
+    items.push(paper);
+    groups.set(key, items);
+  }
+
+  for (const items of groups.values()) {
+    items.sort((a, b) => a.short_title.localeCompare(b.short_title, "zh-CN"));
+  }
+
+  const positions = new Map();
+  let maxY = timelineBottom;
+
+  for (const domain of domainColumns) {
+    const domainIndex = domainColumns.indexOf(domain);
+    const x = left + domainIndex * colWidth + colWidth / 2;
+    let lastY = Number.NEGATIVE_INFINITY;
+    const papers = graphPapers
+      .filter((paper) => paper.graph_domain === domain)
+      .sort(
+        (a, b) =>
+          a.published_value - b.published_value || a.short_title.localeCompare(b.short_title, "zh-CN"),
+      );
+
+    for (const paper of papers) {
+      const baseY = monthYByValue.get(paper.published_value) ?? top;
+      const group = groups.get(`${paper.graph_domain}:${paper.published_value}`) ?? [paper];
+      const groupIndex = group.findIndex((item) => item.id === paper.id);
+      const desiredY =
+        baseY + sameMonthNodeOffset(groupIndex, group.length, nodeHeight + nodeGap);
+      const y = Math.max(desiredY, lastY + nodeHeight + nodeGap);
+      positions.set(paper.id, { x, y, baseY, paper });
+      lastY = y;
+      maxY = Math.max(maxY, y);
+    }
+  }
+
+  const width = left + domainColumns.length * colWidth + 40;
+  const height = Math.max(timelineBottom + bottom, maxY + bottom);
+  return { width, height, positions };
+}
+
 function renderDomainGraph(papers) {
   const graphPapers = papers
     .map((paper) => ({
@@ -703,28 +975,36 @@ function renderDomainGraph(papers) {
     .sort((a, b) => a.published_value - b.published_value || a.graph_domain.localeCompare(b.graph_domain));
 
   const byId = new Map(graphPapers.map((paper) => [paper.id, paper]));
-  const minMonth = Math.min(...graphPapers.map((paper) => paper.published_value));
-  const maxMonth = Math.max(...graphPapers.map((paper) => paper.published_value));
   const left = 56;
   const top = 48;
-  const bottom = 66;
-  const colWidth = 108;
-  const monthStep = 17;
-  const width = left + domainColumns.length * colWidth + 40;
-  const height = top + Math.max(18, maxMonth - minMonth) * monthStep + bottom;
-  const positions = new Map();
-  const placedByDomain = new Map();
-  const nearNodeOffsets = [0, 12, -12, 24, -24];
+  const bottom = 78;
+  const colWidth = 106;
+  const nodeWidth = 86;
+  const nodeHeight = 28;
+  const nodeGap = 7;
+  const timeAxis = buildCompactTimeAxis(graphPapers, top);
+  const { width, height, positions } = buildDomainGraphLayout(graphPapers, {
+    left,
+    top,
+    bottom,
+    colWidth,
+    nodeHeight,
+    nodeGap,
+    monthYByValue: timeAxis.monthYByValue,
+    timelineBottom: timeAxis.lastY,
+  });
+
+  const tethers = [...positions.values()]
+    .filter((position) => Math.abs(position.y - position.baseY) > 1)
+    .map(
+      ({ x, y, baseY }) =>
+        `<line class="graph-time-tether" x1="${x}" y1="${baseY}" x2="${x}" y2="${y}"></line>`,
+    )
+    .join("\n");
+
   const nodes = graphPapers
     .map((paper) => {
-      const domainIndex = domainColumns.indexOf(paper.graph_domain);
-      const y = top + (paper.published_value - minMonth) * monthStep;
-      const placed = placedByDomain.get(paper.graph_domain) ?? [];
-      const nearIndex = placed.filter((placedY) => Math.abs(placedY - y) < 30).length;
-      placed.push(y);
-      placedByDomain.set(paper.graph_domain, placed);
-      const x = left + domainIndex * colWidth + colWidth / 2 + nearNodeOffsets[nearIndex % nearNodeOffsets.length];
-      positions.set(paper.id, { x, y, paper });
+      const { x, y } = positions.get(paper.id);
       const secondaryDomains = asList(paper.domains)
         .filter((domain) => domain !== paper.graph_domain)
         .slice(0, 2)
@@ -734,7 +1014,7 @@ function renderDomainGraph(papers) {
           style="--x:${x}px; --y:${y}px; --node:${domainColors[paper.graph_domain] ?? palette[0]}"
           data-node-id="${escapeHtml(paper.id)}"
           data-node-title="${escapeHtml(paper.short_title)}"
-          data-note-path="${escapeHtml(paper.file)}"
+          data-note-path="${escapeHtml(paper.note_html)}"
           aria-label="${escapeHtml(`${paper.short_title} ${paper.published}`)}">
           <strong>${escapeHtml(paper.short_title)}</strong>
           <span>${escapeHtml(paper.graph_domain)}</span>
@@ -746,6 +1026,9 @@ function renderDomainGraph(papers) {
 
   const edges = graphPapers
     .flatMap((paper) =>
+      // Render only authored outgoing edges. This is the visual counterpart of the
+      // child -> parent rule in buildRelations: selecting a node shows what that
+      // paper points back to, not every later paper that points to it.
       asList(paper.relations)
         .filter((relation) => byId.has(relation.target) && positions.has(paper.id) && positions.has(relation.target))
         .map((relation) => ({ source: paper.id, target: relation.target, type: relation.type })),
@@ -753,9 +1036,21 @@ function renderDomainGraph(papers) {
     .map(({ source, target, type }) => {
       const from = positions.get(source);
       const to = positions.get(target);
-      const bend = Math.max(40, Math.abs(from.y - to.y) * 0.28);
-      const midY = (from.y + to.y) / 2;
-      const d = `M ${from.x} ${from.y} C ${from.x} ${midY - bend}, ${to.x} ${midY + bend}, ${to.x} ${to.y}`;
+      const sameColumn = Math.abs(from.x - to.x) < 4;
+      const direction = to.x >= from.x ? 1 : -1;
+      let d = "";
+      if (sameColumn) {
+        const side = nodeWidth / 2 + 8;
+        const sx = from.x + side;
+        const tx = to.x + side;
+        const cx = sx + 34;
+        d = `M ${sx} ${from.y} C ${cx} ${from.y}, ${cx} ${to.y}, ${tx} ${to.y}`;
+      } else {
+        const sx = from.x + direction * (nodeWidth / 2 + 2);
+        const tx = to.x - direction * (nodeWidth / 2 + 2);
+        const midX = (sx + tx) / 2;
+        d = `M ${sx} ${from.y} C ${midX} ${from.y}, ${midX} ${to.y}, ${tx} ${to.y}`;
+      }
       const relation = relationTypes[type] ?? relationTypes.cites;
       return `<path class="graph-edge"
         style="--edge-color:${relation.color}"
@@ -776,8 +1071,20 @@ function renderDomainGraph(papers) {
   );
   const monthLabels = paperMonths
     .map((month) => {
-      const y = top + (monthValue(month) - minMonth) * monthStep;
+      const y = timeAxis.monthYByValue.get(monthValue(month)) ?? top;
       return `<div class="graph-month" style="--y:${y}px">${escapeHtml(month)}</div>`;
+    })
+    .join("\n");
+
+  const gapMarkers = timeAxis.monthValues
+    .slice(1)
+    .map((value, index) => {
+      const previous = timeAxis.monthValues[index];
+      const skippedMonths = value - previous - 1;
+      if (skippedMonths < 3) return "";
+      const y = ((timeAxis.monthYByValue.get(previous) ?? top) + (timeAxis.monthYByValue.get(value) ?? top)) / 2;
+      const label = skippedMonths >= 12 ? `跳过 ${Math.floor(skippedMonths / 12)}y${skippedMonths % 12 ? ` ${skippedMonths % 12}m` : ""}` : `跳过 ${skippedMonths}m`;
+      return `<div class="graph-gap" style="--y:${y}px"><span>${escapeHtml(label)}</span></div>`;
     })
     .join("\n");
 
@@ -814,7 +1121,7 @@ function renderDomainGraph(papers) {
       <div class="section-head">
         <div>
           <h2>领域时间关系图</h2>
-          <p>纵向按论文发表年月排序，横向按领域分列。点击节点后，只显示该论文指向父论文或前序工作的关系线。</p>
+          <p>纵向按论文发表年月排序，但采用压缩时间轴：只给有论文的月份分配主刻度，长空档用 gap marker 标出；同月同领域论文会自动错层，并用细线回连真实月份。</p>
         </div>
       </div>
       <div class="relation-filterbar" aria-label="关系类型过滤">
@@ -823,13 +1130,15 @@ function renderDomainGraph(papers) {
       <a class="graph-note-button is-disabled" data-open-note target="_blank" rel="noreferrer" aria-disabled="true">选择节点后打开 Note</a>
       <div class="graph-workspace">
         <div class="graph-frame">
-          <div class="domain-graph" style="--graph-width:${width}px; --graph-height:${height}px">
+          <div class="domain-graph" style="--graph-width:${width}px; --graph-height:${height}px; --node-width:${nodeWidth}px; --node-height:${nodeHeight}px">
             ${columns}
             ${monthLabels}
+            ${gapMarkers}
             <svg class="graph-edges" viewBox="0 0 ${width} ${height}" aria-hidden="true">
               <defs>
                 ${relationMarkers}
               </defs>
+              ${tethers}
               ${edges}
             </svg>
             ${nodes}
@@ -838,7 +1147,7 @@ function renderDomainGraph(papers) {
         <aside class="relation-panel" data-relation-panel>
           <div class="relation-kicker">Relation lens</div>
           <h3 data-relation-title>选择一篇论文</h3>
-          <p data-relation-summary>点击左侧节点后，这里只解释“当前论文 -> 父论文/前序工作”的 typed relations。</p>
+          <p data-relation-summary>点击左侧节点后，这里只解释“当前论文 -> 关联论文/前序工作”的 typed relations。</p>
           <div class="relation-list" data-relation-list></div>
         </aside>
       </div>
@@ -862,10 +1171,12 @@ function renderPapers(papers) {
       const authors = asList(paper.authors).slice(0, 6).join(", ");
       const institutions = asList(paper.institutions).join(" · ");
       const links = [
+        `<a href="${escapeHtml(paper.note_html)}" data-note-link="${escapeHtml(paper.note_html)}" target="_blank" rel="noreferrer">Note</a>`,
         paper.url ? `<a href="${escapeHtml(paper.url)}" target="_blank" rel="noreferrer">论文</a>` : "",
         paper.project_url
           ? `<a href="${escapeHtml(paper.project_url)}" target="_blank" rel="noreferrer">项目页</a>`
           : "",
+        paper.code_url ? `<a href="${escapeHtml(paper.code_url)}" target="_blank" rel="noreferrer">代码</a>` : "",
         paper.doi ? `<a href="https://doi.org/${escapeHtml(paper.doi)}" target="_blank" rel="noreferrer">DOI</a>` : "",
       ]
         .filter(Boolean)
@@ -955,6 +1266,628 @@ function renderOpenQuestions(papers) {
     `,
     )
     .join("\n");
+}
+
+function renderNotePills(values, className = "note-pill") {
+  return asList(values)
+    .map((value) => `<span class="${className}">${escapeHtml(tokenLabel(value))}</span>`)
+    .join("");
+}
+
+function renderNoteSection(title, body, tone = "") {
+  if (!body) return "";
+  return `
+    <section class="note-section ${tone}">
+      <div class="note-section-kicker">${escapeHtml(title)}</div>
+      <div class="note-section-body">${markdownToHtml(body)}</div>
+    </section>
+  `;
+}
+
+function renderNoteLinks(paper) {
+  const links = [
+    paper.url ? `<a href="${escapeHtml(paper.url)}" target="_blank" rel="noreferrer">Paper</a>` : "",
+    paper.project_url
+      ? `<a href="${escapeHtml(paper.project_url)}" target="_blank" rel="noreferrer">Project</a>`
+      : "",
+    paper.code_url ? `<a href="${escapeHtml(paper.code_url)}" target="_blank" rel="noreferrer">Code</a>` : "",
+    paper.doi ? `<a href="https://doi.org/${escapeHtml(paper.doi)}" target="_blank" rel="noreferrer">DOI</a>` : "",
+    paper.arxiv ? `<a href="https://arxiv.org/abs/${escapeHtml(paper.arxiv)}" target="_blank" rel="noreferrer">arXiv</a>` : "",
+    `<a href="../${escapeHtml(paper.file)}" target="_blank" rel="noreferrer">Markdown source</a>`,
+  ].filter(Boolean);
+  return links.join("");
+}
+
+function renderNoteRelations(paper, papers) {
+  const byId = new Map(papers.map((item) => [item.id, item]));
+  const outgoing = asList(paper.relations).filter((relation) => byId.has(relation.target));
+  const incoming = papers
+    .flatMap((source) =>
+      asList(source.relations)
+        .filter((relation) => relation.target === paper.id)
+        .map((relation) => ({ ...relation, source: source.id })),
+    )
+    .filter((relation) => byId.has(relation.source));
+
+  const outgoingHtml = outgoing.length
+    ? outgoing
+        .map((relation) => {
+          const target = byId.get(relation.target);
+          const type = relationTypes[relation.type] ?? relationTypes.cites;
+          return `
+            <a class="relation-chip" style="--rel:${type.color}" href="../${escapeHtml(target.note_html)}">
+              <span>${escapeHtml(type.label)}</span>
+              <strong>${escapeHtml(target.short_title)}</strong>
+            </a>
+          `;
+        })
+        .join("")
+    : `<div class="relation-empty">还没有指向关联论文或前序工作的 typed relation。</div>`;
+
+  const incomingHtml = incoming.length
+    ? incoming
+        .map((relation) => {
+          const source = byId.get(relation.source);
+          const type = relationTypes[relation.type] ?? relationTypes.cites;
+          return `
+            <a class="relation-chip incoming" style="--rel:${type.color}" href="../${escapeHtml(source.note_html)}">
+              <span>${escapeHtml(type.label)}</span>
+              <strong>${escapeHtml(source.short_title)}</strong>
+            </a>
+          `;
+        })
+        .join("")
+    : `<div class="relation-empty">暂时没有下游论文连接到这篇。</div>`;
+
+  return `
+    <section class="note-section relation-section">
+      <div class="note-section-kicker">Typed Relations</div>
+      <div class="relation-columns">
+        <div>
+          <h3>当前论文 -> 关联论文 / 前序工作</h3>
+          <div class="relation-chip-grid">${outgoingHtml}</div>
+        </div>
+        <div>
+          <h3>下游论文 -> 当前论文</h3>
+          <div class="relation-chip-grid">${incomingHtml}</div>
+        </div>
+      </div>
+    </section>
+  `;
+}
+
+function renderNotePage(paper, papers) {
+  const authors = asList(paper.authors).join(", ");
+  const institutions = asList(paper.institutions).join(" · ");
+  const rolePills = renderNotePills(paper.system_roles, "note-pill role-pill");
+  const modulePills = renderNotePills(paper.reusable_modules, "note-pill module-pill");
+  const tagPills = renderNotePills(paper.tags, "note-pill");
+  const generatedAt = new Date().toLocaleString("zh-CN", {
+    timeZone: "Asia/Shanghai",
+    hour12: false,
+  });
+
+  return `<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>${escapeHtml(paper.short_title)} · Paper Note</title>
+  <style>
+    :root {
+      --bg: #eef4fb;
+      --paper: rgba(255, 255, 255, 0.82);
+      --paper-strong: rgba(255, 255, 255, 0.94);
+      --ink: #111827;
+      --muted: #61748d;
+      --line: rgba(74, 112, 154, 0.34);
+      --soft-line: rgba(133, 163, 196, 0.24);
+      --blue: #246bfe;
+      --cyan: #00a7c7;
+      --purple: #6a7dff;
+      --shadow: 0 18px 45px rgba(22, 50, 83, 0.12);
+      --sans: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      font-family: var(--sans);
+      line-height: 1.72;
+      background:
+        radial-gradient(circle at 16% 12%, rgba(36, 107, 254, 0.14), transparent 28rem),
+        radial-gradient(circle at 88% 16%, rgba(0, 167, 199, 0.16), transparent 26rem),
+        linear-gradient(var(--soft-line) 1px, transparent 1px),
+        linear-gradient(90deg, var(--soft-line) 1px, transparent 1px),
+        var(--bg);
+      background-size: auto, auto, 32px 32px, 32px 32px, auto;
+    }
+
+    a { color: inherit; }
+
+    .note-topbar {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      padding: 13px 28px;
+      border-bottom: 1px solid var(--soft-line);
+      background: rgba(248, 251, 255, 0.86);
+      backdrop-filter: blur(18px);
+      box-shadow: 0 14px 35px rgba(31, 76, 128, 0.08);
+    }
+
+    .note-brand,
+    .note-nav a,
+    .note-kicker,
+    .note-section-kicker,
+    .metric-label,
+    .note-pill,
+    .relation-chip span {
+      font-family: var(--mono);
+    }
+
+    .note-brand {
+      color: var(--blue);
+      font-weight: 800;
+      text-decoration: none;
+    }
+
+    .note-nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .note-nav a {
+      text-decoration: none;
+    }
+
+    .note-nav a:hover {
+      color: var(--blue);
+    }
+
+    .note-shell {
+      width: min(1500px, calc(100% - 48px));
+      margin: 0 auto;
+      padding: 38px 0 70px;
+    }
+
+    .note-hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1.6fr) 360px;
+      gap: 24px;
+      align-items: stretch;
+      margin-bottom: 24px;
+    }
+
+    .hero-main,
+    .hero-side,
+    .note-section,
+    .note-aside-panel {
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: var(--paper);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(18px);
+    }
+
+    .hero-main {
+      padding: 34px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .hero-main::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-top: 2px solid rgba(36, 107, 254, 0.42);
+      background: linear-gradient(135deg, rgba(36, 107, 254, 0.08), transparent 42%);
+      pointer-events: none;
+    }
+
+    .note-kicker {
+      position: relative;
+      color: var(--blue);
+      font-size: 12px;
+      margin-bottom: 14px;
+    }
+
+    h1, h2, h3 {
+      margin: 0;
+      line-height: 1.14;
+    }
+
+    h1 {
+      position: relative;
+      max-width: 980px;
+      color: #0f172a;
+      font-size: 56px;
+      font-weight: 820;
+    }
+
+    .full-title {
+      position: relative;
+      max-width: 940px;
+      margin-top: 14px;
+      color: var(--muted);
+      font-size: 18px;
+    }
+
+    .note-summary {
+      position: relative;
+      max-width: 980px;
+      margin-top: 28px;
+      padding-left: 18px;
+      border-left: 3px solid var(--blue);
+      font-size: 22px;
+      color: #16233a;
+    }
+
+    .note-summary p {
+      margin: 0;
+    }
+
+    .hero-side {
+      display: grid;
+      gap: 14px;
+      padding: 22px;
+    }
+
+    .metric-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+    }
+
+    .metric {
+      min-height: 84px;
+      padding: 14px;
+      border: 1px solid var(--soft-line);
+      border-radius: 8px;
+      background: rgba(247, 251, 255, 0.76);
+    }
+
+    .metric-value {
+      color: var(--blue);
+      font-size: 22px;
+      font-weight: 800;
+    }
+
+    .metric-label {
+      color: var(--muted);
+      font-size: 11px;
+    }
+
+    .note-link-row,
+    .pill-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .note-link-row a {
+      min-height: 30px;
+      display: inline-flex;
+      align-items: center;
+      padding: 0 10px;
+      border: 1px solid rgba(36, 107, 254, 0.28);
+      border-radius: 5px;
+      background: linear-gradient(135deg, #1e63ff, #0aa3c2);
+      color: #fff;
+      text-decoration: none;
+      font-size: 13px;
+      box-shadow: 0 10px 22px rgba(36, 107, 254, 0.16);
+    }
+
+    .note-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 320px;
+      gap: 24px;
+      align-items: start;
+    }
+
+    .note-main {
+      display: grid;
+      gap: 16px;
+    }
+
+    .note-section {
+      padding: 24px;
+      background: var(--paper-strong);
+    }
+
+    .note-section.impact {
+      border-color: rgba(36, 107, 254, 0.44);
+      background:
+        linear-gradient(135deg, rgba(36, 107, 254, 0.08), rgba(0, 167, 199, 0.05)),
+        var(--paper-strong);
+    }
+
+    .note-section.risk {
+      border-color: rgba(209, 77, 114, 0.26);
+    }
+
+    .note-section-kicker {
+      color: var(--blue);
+      font-size: 12px;
+      margin-bottom: 10px;
+    }
+
+    .note-section-body {
+      color: #172033;
+      font-size: 16px;
+    }
+
+    .note-section-body p,
+    .note-section-body ul,
+    .note-section-body ol {
+      margin: 0 0 12px;
+    }
+
+    .note-section-body :last-child {
+      margin-bottom: 0;
+    }
+
+    .note-section-body ul,
+    .note-section-body ol {
+      padding-left: 22px;
+    }
+
+    .note-section-body li {
+      margin: 7px 0;
+    }
+
+    code {
+      padding: 1px 5px;
+      border: 1px solid var(--soft-line);
+      border-radius: 4px;
+      background: rgba(236, 246, 255, 0.82);
+      font-family: var(--mono);
+      font-size: 0.92em;
+    }
+
+    .note-aside {
+      position: sticky;
+      top: 82px;
+      display: grid;
+      gap: 14px;
+    }
+
+    .note-aside-panel {
+      padding: 18px;
+    }
+
+    .note-aside-panel h2 {
+      margin-bottom: 12px;
+      font-size: 18px;
+    }
+
+    .note-pill {
+      display: inline-flex;
+      align-items: center;
+      min-height: 25px;
+      padding: 0 8px;
+      border: 1px solid var(--soft-line);
+      border-radius: 999px;
+      background: rgba(247, 251, 255, 0.84);
+      color: #415a77;
+      font-size: 11px;
+    }
+
+    .role-pill {
+      border-color: rgba(36, 107, 254, 0.32);
+      color: #1f4fd6;
+    }
+
+    .module-pill {
+      border-color: rgba(0, 167, 199, 0.32);
+      color: #0f7894;
+    }
+
+    .relation-columns {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+    }
+
+    .relation-columns h3 {
+      margin-bottom: 10px;
+      font-size: 16px;
+    }
+
+    .relation-chip-grid {
+      display: grid;
+      gap: 8px;
+    }
+
+    .relation-chip {
+      display: grid;
+      gap: 3px;
+      padding: 10px 12px;
+      border: 1px solid var(--soft-line);
+      border-left: 3px solid var(--rel);
+      border-radius: 6px;
+      background: rgba(247, 251, 255, 0.86);
+      text-decoration: none;
+    }
+
+    .relation-chip span {
+      color: color-mix(in srgb, var(--rel), #111827 30%);
+      font-size: 11px;
+      font-weight: 800;
+    }
+
+    .relation-chip strong {
+      color: #142033;
+      font-size: 14px;
+    }
+
+    .relation-empty {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .toc-list {
+      display: grid;
+      gap: 8px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      font-size: 13px;
+    }
+
+    .toc-list a {
+      color: var(--muted);
+      text-decoration: none;
+    }
+
+    .toc-list a:hover {
+      color: var(--blue);
+    }
+
+    .note-footer {
+      padding: 34px 0 0;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    @media (max-width: 980px) {
+      .note-topbar {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .note-shell {
+        width: min(100% - 28px, 760px);
+      }
+
+      .note-hero,
+      .note-layout,
+      .relation-columns {
+        grid-template-columns: 1fr;
+      }
+
+      h1 {
+        font-size: 40px;
+      }
+
+      .note-aside {
+        position: static;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="note-topbar">
+    <a class="note-brand" href="../index.html#domain-graph">General Multi-Agent Model</a>
+    <nav class="note-nav">
+      <a href="../index.html#domain-graph">关系图</a>
+      <a href="../index.html#roles">系统角色</a>
+      <a href="../index.html#papers">论文索引</a>
+      <a href="#relations">关系</a>
+      <a href="#open-question">开放问题</a>
+    </nav>
+  </header>
+
+  <main class="note-shell" id="top">
+    <section class="note-hero">
+      <div class="hero-main">
+        <div class="note-kicker">${escapeHtml(paper.published)} · ${escapeHtml(paper.venue)} · ${escapeHtml(label(paper.tech_paradigm))}</div>
+        <h1>${escapeHtml(paper.short_title)}</h1>
+        <div class="full-title">${escapeHtml(paper.title)}</div>
+        <div class="note-summary">${markdownToHtml(paper.summary)}</div>
+      </div>
+      <aside class="hero-side">
+        <div class="metric-grid">
+          <div class="metric">
+            <div class="metric-value">${escapeHtml(paper.year)}</div>
+            <div class="metric-label">Year</div>
+          </div>
+          <div class="metric">
+            <div class="metric-value">${escapeHtml(label(paper.readiness))}</div>
+            <div class="metric-label">Readiness</div>
+          </div>
+          <div class="metric">
+            <div class="metric-value">${escapeHtml(tokenLabel(paper.evidence_level))}</div>
+            <div class="metric-label">Evidence</div>
+          </div>
+          <div class="metric">
+            <div class="metric-value">${asList(paper.relations).length}</div>
+            <div class="metric-label">Relations</div>
+          </div>
+        </div>
+        <div>
+          <div class="note-section-kicker">Authors</div>
+          <div>${escapeHtml(authors)}</div>
+        </div>
+        <div>
+          <div class="note-section-kicker">Institutions</div>
+          <div>${escapeHtml(institutions)}</div>
+        </div>
+        <div class="note-link-row">${renderNoteLinks(paper)}</div>
+      </aside>
+    </section>
+
+    <section class="note-layout">
+      <article class="note-main">
+        ${renderNoteSection("For Our Model", paper.planning_insight, "impact")}
+        ${renderNoteSection("Research Question", paper.research_question)}
+        ${renderNoteSection("Method", paper.method)}
+        ${renderNoteSection("Key Contributions", paper.contribution)}
+        ${renderNoteSection("Reading Highlights", paper.reading_highlights)}
+        ${renderNoteSection("Limitations", paper.limitation, "risk")}
+        ${renderNoteSection("Reusable Modules", paper.reusable_module_text)}
+        ${renderNoteSection("Evidence & Risk", paper.evidence_risk, "risk")}
+        <div id="relations">${renderNoteRelations(paper, papers)}</div>
+        ${renderNoteSection("Relation Notes", paper.relation)}
+        <div id="open-question">${renderNoteSection("Open Question", paper.open_question, "impact")}</div>
+      </article>
+
+      <aside class="note-aside">
+        <section class="note-aside-panel">
+          <h2>System Roles</h2>
+          <div class="pill-row">${rolePills}</div>
+        </section>
+        <section class="note-aside-panel">
+          <h2>Reusable Modules</h2>
+          <div class="pill-row">${modulePills}</div>
+        </section>
+        <section class="note-aside-panel">
+          <h2>Next Action</h2>
+          <div class="note-pill role-pill">${escapeHtml(tokenLabel(paper.next_action))}</div>
+        </section>
+        <section class="note-aside-panel">
+          <h2>Tags</h2>
+          <div class="pill-row">${tagPills}</div>
+        </section>
+        <section class="note-aside-panel">
+          <h2>Reading Map</h2>
+          <ul class="toc-list">
+            <li><a href="#top">Summary</a></li>
+            <li><a href="#relations">Typed relations</a></li>
+            <li><a href="#open-question">Open question</a></li>
+            <li><a href="../index.html#domain-graph">Back to graph</a></li>
+          </ul>
+        </section>
+      </aside>
+    </section>
+
+    <footer class="note-footer">
+      Generated from ${escapeHtml(paper.file)} at ${escapeHtml(generatedAt)}.
+    </footer>
+  </main>
+</body>
+</html>`;
 }
 
 function renderIndex(papers) {
@@ -1254,13 +2187,14 @@ function renderIndex(papers) {
 
     .graph-workspace {
       display: grid;
-      grid-template-columns: max-content minmax(300px, 1fr);
-      gap: 18px;
+      grid-template-columns: 1fr;
+      gap: 14px;
       align-items: start;
     }
 
     .graph-frame {
       width: max-content;
+      max-width: 100%;
       overflow: visible;
       border: 1px solid var(--line);
       border-radius: 10px;
@@ -1329,6 +2263,40 @@ function renderIndex(papers) {
       border-top: 1px solid rgba(100, 116, 139, 0.16);
     }
 
+    .graph-gap {
+      position: absolute;
+      left: 10px;
+      right: 18px;
+      top: var(--y);
+      z-index: 1;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: rgba(100, 116, 139, 0.64);
+      font-family: var(--mono);
+      font-size: 6px;
+      pointer-events: none;
+    }
+
+    .graph-gap::before,
+    .graph-gap::after {
+      content: "";
+      height: 1px;
+      flex: 1;
+      background: repeating-linear-gradient(
+        90deg,
+        rgba(100, 116, 139, 0.2) 0 5px,
+        transparent 5px 10px
+      );
+    }
+
+    .graph-gap span {
+      padding: 1px 5px;
+      border: 1px solid rgba(100, 116, 139, 0.18);
+      border-radius: 999px;
+      background: rgba(247, 251, 255, 0.82);
+    }
+
     .graph-edges {
       position: absolute;
       inset: 0;
@@ -1336,6 +2304,13 @@ function renderIndex(papers) {
       height: var(--graph-height);
       pointer-events: none;
       overflow: visible;
+    }
+
+    .graph-time-tether {
+      stroke: rgba(75, 111, 150, 0.34);
+      stroke-width: 0.65;
+      stroke-dasharray: 2 3;
+      opacity: 0.72;
     }
 
     .graph-edge {
@@ -1355,12 +2330,12 @@ function renderIndex(papers) {
       display: grid;
       align-content: start;
       gap: 0;
-      width: 88px;
-      height: 32px;
+      width: var(--node-width);
+      height: var(--node-height);
       padding: 4px 5px;
       border: 1px solid color-mix(in srgb, var(--node), transparent 38%);
       border-radius: 5px;
-      background: rgba(255,255,255,0.9);
+      background: rgba(255,255,255,0.98);
       color: #142033;
       text-align: left;
       overflow: hidden;
@@ -1381,9 +2356,15 @@ function renderIndex(papers) {
 
     .graph-node:hover,
     .graph-node.is-active {
+      z-index: 6;
       transform: translate(-50%, -52%);
       border-color: var(--node);
       box-shadow: 0 9px 19px rgba(22, 50, 83, 0.18), 0 0 0 2px color-mix(in srgb, var(--node), transparent 82%);
+    }
+
+    .graph-node.is-related {
+      z-index: 5;
+      opacity: 1;
     }
 
     .graph-node.is-dimmed {
@@ -1421,9 +2402,8 @@ function renderIndex(papers) {
     }
 
     .relation-panel {
-      position: sticky;
-      top: 84px;
-      min-height: 280px;
+      position: static;
+      min-height: 0;
       padding: 18px;
       border: 1px solid var(--line);
       border-radius: 8px;
@@ -1491,10 +2471,17 @@ function renderIndex(papers) {
     .quality-grid,
     .role-grid,
     .queue-grid,
-    .agent-grid {
+    .agent-grid,
+    .benchmark-grid {
       display: grid;
-      grid-template-columns: repeat(5, 1fr);
       gap: 14px;
+    }
+
+    .quality-grid,
+    .role-grid,
+    .queue-grid,
+    .agent-grid {
+      grid-template-columns: repeat(5, 1fr);
     }
 
     .quality-card,
@@ -1619,6 +2606,114 @@ function renderIndex(papers) {
       color: #1f4fd6;
       text-decoration: none;
       box-shadow: 0 8px 18px rgba(22, 50, 83, 0.08);
+    }
+
+    .benchmark-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .benchmark-card {
+      display: grid;
+      grid-template-columns: minmax(420px, 1.18fr) minmax(320px, 0.82fr);
+      gap: 0;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.78);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(18px);
+    }
+
+    .benchmark-shot {
+      min-height: 330px;
+      border-right: 1px solid var(--line);
+      background: #061f22;
+    }
+
+    .benchmark-shot img {
+      width: 100%;
+      height: 100%;
+      min-height: 330px;
+      object-fit: cover;
+      object-position: top center;
+      display: block;
+    }
+
+    .benchmark-body {
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .benchmark-label {
+      color: var(--blue);
+      font-family: var(--mono);
+      font-size: 12px;
+      margin-bottom: 10px;
+    }
+
+    .benchmark-body h3 {
+      color: #0f172a;
+      font-size: 30px;
+      margin-bottom: 10px;
+    }
+
+    .benchmark-body p {
+      margin: 0 0 14px;
+      max-width: none;
+    }
+
+    .benchmark-body ul {
+      display: grid;
+      gap: 8px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      color: #263b52;
+      font-size: 14px;
+    }
+
+    .benchmark-body li {
+      position: relative;
+      padding-left: 14px;
+    }
+
+    .benchmark-body li::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0.72em;
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--cyan);
+      box-shadow: 0 0 0 3px rgba(0, 167, 199, 0.12);
+    }
+
+    .benchmark-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+      margin-top: 18px;
+      color: var(--muted);
+      font-family: var(--mono);
+      font-size: 12px;
+    }
+
+    .benchmark-meta span,
+    .benchmark-meta a {
+      border: 1px solid var(--soft-line);
+      border-radius: 4px;
+      padding: 5px 8px;
+      background: rgba(246, 251, 255, 0.88);
+      text-decoration: none;
+    }
+
+    .benchmark-meta a {
+      border-color: rgba(36, 107, 254, 0.34);
+      color: #1f4fd6;
     }
 
     input,
@@ -1902,8 +2997,14 @@ function renderIndex(papers) {
       .quality-grid,
       .role-grid,
       .queue-grid,
-      .agent-grid {
+      .agent-grid,
+      .benchmark-card {
         grid-template-columns: 1fr;
+      }
+
+      .benchmark-shot {
+        border-right: 0;
+        border-bottom: 1px solid var(--line);
       }
 
       .paper-media {
@@ -1918,6 +3019,7 @@ function renderIndex(papers) {
     <a class="brand" href="#">General Multi-Agent Model</a>
     <nav class="nav">
       <a href="#domain-graph">关系图</a>
+      <a href="#benchmarks">榜单</a>
       <a href="#roles">系统角色</a>
       <a href="#reading">阅读队列</a>
       <a href="#agents">Agent</a>
@@ -1935,6 +3037,7 @@ function renderIndex(papers) {
     </section>
 
     ${renderDomainGraph(papers)}
+    ${renderBenchmarkBoard()}
     ${renderQualityBoard(papers)}
     ${renderRoleBoard(papers)}
     ${renderReadingQueue(papers)}
@@ -2065,12 +3168,16 @@ function renderIndex(papers) {
       link.href = noteUrlFor("AGENT_PROMPTS.md");
     });
 
+    document.querySelectorAll("[data-note-link]").forEach((link) => {
+      link.href = noteUrlFor(link.dataset.noteLink);
+    });
+
     function updateRelationPanel(node, activeEdges) {
       if (!relationTitle || !relationSummary || !relationList) return;
       relationTitle.textContent = node.dataset.nodeTitle;
       relationSummary.textContent = activeEdges.length
-        ? "当前只显示这篇论文指向父论文或前序工作的关系。可以用上方关系类型过滤。"
-        : "当前过滤条件下没有父论文关系。切回“全部关系”可以检查是否还有其他关系。";
+        ? "当前只显示这篇论文指向关联论文或前序工作的关系。可以用上方关系类型过滤。"
+        : "当前过滤条件下没有指向关系。切回“全部关系”可以检查是否还有其他关系。";
       relationList.replaceChildren();
 
       for (const edge of activeEdges) {
@@ -2116,6 +3223,7 @@ function renderIndex(papers) {
         const isActive = node.dataset.nodeId === id;
         const isConnected = connected.has(node.dataset.nodeId);
         node.classList.toggle("is-active", isActive);
+        node.classList.toggle("is-related", !isActive && isConnected);
         node.classList.toggle("is-dimmed", !isConnected);
         if (isActive) selectedGraphNode = node;
       }
@@ -2157,16 +3265,21 @@ function renderIndex(papers) {
 async function build() {
   await mkdir(dataDir, { recursive: true });
   await mkdir(viewsDir, { recursive: true });
+  await mkdir(notesDir, { recursive: true });
 
   const papers = await readPapers();
-  const dashboardHtml = renderIndex(papers);
+  const dashboardHtml = stripTrailingWhitespace(renderIndex(papers));
   await writeFile(join(dataDir, "papers.json"), `${JSON.stringify(papers, null, 2)}\n`, "utf8");
   await writeFile(join(rootDir, "index.html"), dashboardHtml, "utf8");
   await writeFile(join(viewsDir, "dashboard.html"), dashboardHtml, "utf8");
+  for (const paper of papers) {
+    await writeFile(join(rootDir, paper.note_html), stripTrailingWhitespace(renderNotePage(paper, papers)), "utf8");
+  }
 
   console.log(`Generated ${relative(rootDir, join(dataDir, "papers.json"))}`);
   console.log(`Generated ${relative(rootDir, join(rootDir, "index.html"))}`);
   console.log(`Generated ${relative(rootDir, join(viewsDir, "dashboard.html"))}`);
+  console.log(`Generated ${papers.length} rendered note pages`);
   console.log(`Indexed ${papers.length} papers`);
 }
 

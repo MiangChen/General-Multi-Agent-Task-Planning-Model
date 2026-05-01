@@ -65,10 +65,12 @@
     "published_value": 24269,
     "relations": [],
     "file": "papers/2023-daydreamer-world-models-for-physical-robot-learning.md",
+    "note_html": "notes/2023-daydreamer-world-models-for-physical-robot-learning.html",
     "summary": "DayDreamer 把 Dreamer 式 world model 学习带到真实机器人，强调从少量真实交互中学习行为。",
     "research_question": "机器人能否通过在线真实经验和 world model，在样本效率更高的情况下学习多个物理任务。",
     "method": "论文基于 Dreamer，在真实机器人上学习潜在世界模型，并通过模型预测训练策略。",
     "contribution": "它连接了 DreamerV3 的通用 world model 思路和真实机器人学习，为后续部署型 world model 提供早期证据。",
+    "reading_highlights": "",
     "limitation": "任务规模和复杂度仍远小于真实多机器人任务规划。论文不处理语言指令、任务分配或多主体通信。",
     "relation": "DayDreamer 是 Dreamer 到机器人现实交互的桥。π*0.6 也强调从真实经验中改进，但采用的是 VLA + correction/RL 的路线。",
     "planning_insight": "多机器人系统可以让每个机器人维护自己的局部 world model，同时把执行经验汇总到共享能力库，服务于后续任务分配。",
@@ -150,16 +152,140 @@
       }
     ],
     "file": "papers/2023-dreamerv3-world-models.md",
+    "note_html": "notes/2023-dreamerv3-world-models.html",
     "summary": "DreamerV3 是 world model RL 的重要基线：先学环境模型，再在想象轨迹中优化行为，并在 Nature 版本中展示了跨多控制域和 Minecraft 长程任务的泛化能力。",
     "research_question": "能否用一个相对统一的模型化 RL 算法，在很多差异很大的控制任务上减少人工调参并保持稳定学习，甚至从零开始完成 Minecraft 挖钻石这类长程稀疏奖励任务。",
     "method": "Dreamer 学习潜在状态空间中的世界模型，用该模型预测未来并在 imagined trajectories 上训练 actor-critic。Nature 版本强调同一套算法在固定超参数下覆盖连续控制、离散控制、视觉输入、低维输入和 Minecraft 等多种环境。",
     "contribution": "它证明 world model 可以成为通用控制算法的核心，而不只是辅助模拟器；其中 Minecraft 结果说明 world model 可以支撑长时程、稀疏奖励、多步骤技术树式任务。",
+    "reading_highlights": "",
     "limitation": "DreamerV3 的核心评测不针对语言任务，也不直接解决机器人多智能体协同。它能做强控制学习，但还没有处理自然语言任务分解、异构机器人能力约束、通信和联合调度。",
     "relation": "DayDreamer 把 Dreamer 类方法带到真实机器人在线学习；DreamZero 则借视频扩散模型把 world model 推向 zero-shot policy。对你的路线来说，DreamerV3 / Nature 版本是“world model 可以做长程控制推演”的核心证据。",
     "planning_insight": "对多机器人 planner 来说，Dreamer 的价值是“可学习的任务级 transition model”：可以用来评估分配方案的长期后果，而不只是贪心分配当前任务。Minecraft 技术树式任务也提示，多机器人任务可以被建模为长程状态推进和资源转换过程。",
     "reusable_module_text": "latent transition model、imagination rollout、value model。可作为上层 planner 的 critic，用来评估任务分配、重规划和长期资源转换。",
     "evidence_risk": "证据强在跨领域 benchmark 和长程控制；风险在于多机器人场景需要显式建模 agent identity、通信动作和局部观测。",
     "open_question": "多机器人任务规划中，latent state 应该显式分解为每个机器人和任务对象，还是使用端到端共享 latent 表示。"
+  },
+  {
+    "id": "2023-diffusion-policy-action-diffusion",
+    "title": "Diffusion Policy: Visuomotor Policy Learning via Action Diffusion",
+    "short_title": "Diffusion Policy",
+    "year": 2023,
+    "published": "2023-03",
+    "venue": "RSS 2023 / IJRR 2024",
+    "status": "read",
+    "scope": "in_scope",
+    "readiness": "high",
+    "action": "deep_read",
+    "tech_paradigm": "robot_diffusion_policy",
+    "primary_domain": "Diffusion",
+    "domains": [
+      "Diffusion",
+      "VLA",
+      "World Action Model",
+      "RL"
+    ],
+    "primary_technical_layer": "action_diffusion_policy",
+    "primary_task_family": "visuomotor_diffusion_policy",
+    "platform": "imitation_manipulation",
+    "planning_relevance": "为高层 planner 提供了一个稳定的连续动作执行器接口：给定视觉观测和目标上下文，生成一段可执行 action chunk，并用滚动时域控制持续重规划。",
+    "multi_robot_relevance": "多机器人系统可以把每个机器人局部执行器建模成 diffusion action chunk policy，再由上层 planner 分配子任务、约束和失败恢复逻辑。",
+    "system_roles": [
+      "executor",
+      "foundation_policy",
+      "executor_interface"
+    ],
+    "reusable_modules": [
+      "conditional_action_diffusion",
+      "action_chunk_diffusion",
+      "receding_horizon_control",
+      "visual_conditioning",
+      "time_series_diffusion_transformer",
+      "multimodal_action_distribution",
+      "stochastic_langevin_action_sampling"
+    ],
+    "evidence_level": "paper_read",
+    "next_action": "extract_robot_diffusion_design",
+    "tags": [
+      "Diffusion Policy",
+      "action diffusion",
+      "visuomotor policy",
+      "imitation learning",
+      "robot manipulation",
+      "receding horizon control"
+    ],
+    "authors": [
+      "Cheng Chi",
+      "Zhenjia Xu",
+      "Siyuan Feng",
+      "Eric Cousineau",
+      "Yilun Du",
+      "Benjamin Burchfiel",
+      "Russ Tedrake",
+      "Shuran Song"
+    ],
+    "institutions": [
+      "Columbia University",
+      "Toyota Research Institute",
+      "MIT",
+      "Stanford University"
+    ],
+    "doi": "10.48550/arXiv.2303.04137",
+    "arxiv": "2303.04137",
+    "url": "https://arxiv.org/abs/2303.04137",
+    "project_url": "https://diffusion-policy.cs.columbia.edu/",
+    "image_url": "",
+    "zotero_key": "",
+    "citekey": "chi2023diffusionpolicy",
+    "cites": [],
+    "extends": [],
+    "uses": [],
+    "enables": [
+      "2024-pi0-vla-flow-model",
+      "2026-world-action-models-zero-shot-policies",
+      "2026-fast-wam-test-time-future-imagination"
+    ],
+    "complements": [
+      "2023-dreamerv3-world-models"
+    ],
+    "contrasts": [
+      "2023-rt-2-vla"
+    ],
+    "published_value": 24278,
+    "relations": [
+      {
+        "type": "enables",
+        "target": "2024-pi0-vla-flow-model"
+      },
+      {
+        "type": "enables",
+        "target": "2026-world-action-models-zero-shot-policies"
+      },
+      {
+        "type": "enables",
+        "target": "2026-fast-wam-test-time-future-imagination"
+      },
+      {
+        "type": "complements",
+        "target": "2023-dreamerv3-world-models"
+      },
+      {
+        "type": "contrasts",
+        "target": "2023-rt-2-vla"
+      }
+    ],
+    "file": "papers/2023-diffusion-policy-action-diffusion.md",
+    "note_html": "notes/2023-diffusion-policy-action-diffusion.html",
+    "summary": "Diffusion Policy 把机器人策略从“直接回归下一步动作”改成“条件扩散生成一段连续动作轨迹”，是独立于 VLA 语义路线之外的机器人动作生成根路线，也是后续 flow/diffusion action policy 和 WAM 低层动作生成的重要源头。",
+    "research_question": "传统 visuomotor imitation learning 常把策略写成确定性回归或简单混合分布：输入图像和机器人状态，直接输出下一步动作。这在机器人操作里会遇到三个问题。第一，同一个视觉状态下可能有多种合理动作，比如从左边绕或从右边绕，均值回归会把多峰动作压成一个不可执行的平均动作。第二，复杂操作需要连续、平滑、高维的动作序列，而不是孤立的一步动作。第三，真实机器人控制需要稳定训练和闭环重规划，不能只生成离线轨迹。\n\n这篇论文的核心问题是：能否把扩散模型的强分布建模能力搬到机器人动作空间，让策略学习的是 action distribution，而不是单点动作回归。",
+    "method": "Diffusion Policy 的基本设计可以拆成四步。\n\n第一，把动作当成生成对象。模型不是生成图片，而是生成未来一小段动作序列，也就是 action chunk。训练数据来自专家示教轨迹，标签是一段连续的末端位姿、关节或夹爪动作。\n\n第二，对专家动作加噪声。训练时从真实 action chunk 采样一个扩散时间步，把高斯噪声加到动作序列上，让网络在视觉观测、机器人状态和扩散时间步条件下预测噪声或干净动作。这样学到的是条件动作分布 `p(action_chunk | observation)`。\n\n第三，推理时从噪声里“去噪出动作”。部署时先采样一段随机噪声动作，再经过多步 denoising / Langevin-style refinement，把噪声逐渐变成一段平滑、可执行、符合当前观测的动作 chunk。这个过程可以理解成：策略不是一次性吐出答案，而是在动作空间里迭代优化一个候选轨迹。\n\n第四，只执行前几步，然后重新规划。论文把 diffusion action chunk 和 receding horizon control 结合起来：每次生成一段未来动作，但机器人只执行最靠前的一小段，随后读取新观测再次生成下一段动作。这样既保留了动作序列的时间一致性，又能在执行中对扰动、遮挡和偏差做闭环修正。\n\n架构上，论文强调 visual conditioning 和 time-series diffusion transformer：视觉编码器负责把图像变成条件特征，时序扩散模型负责在动作序列维度上建模多步动作之间的依赖。",
+    "contribution": "- 把 diffusion model 明确引入真实机器人 visuomotor policy learning，而不是只用于图像、视频或离线轨迹生成。\n- 用 action chunk diffusion 替代单步动作回归，使策略天然适合连续、高维、平滑的机器人控制。\n- 用 receding horizon control 解决闭环部署问题：生成长一点，只执行短一点，再根据新观测重规划。\n- 展示 diffusion policy 对多峰动作分布更友好：同一状态下有多个可行动作模式时，模型可以在一次 rollout 中选择并坚持其中一个模式，而不是输出模式平均值。\n- 证明 diffusion 形式在机器人策略训练中具备较好的稳定性，并在多类仿真和真实操作任务上优于当时的模仿学习基线。",
+    "reading_highlights": "",
+    "limitation": "Diffusion Policy 主要解决低层连续控制和 imitation learning，不解决高层任务规划、语言分解、多机器人任务分配或世界状态预测。它也不像 DreamZero / WAM 那样显式预测未来视频或世界状态，因此严格说它不是 WAM；它也不是 VLA，因为没有把语言语义作为核心建模目标。更准确的定位是：机器人 Diffusion/生成式动作策略，是 VLA 和 WAM 都可以调用或继承的低层动作生成路线。\n\n扩散采样需要多步去噪，实时性会成为工程瓶颈。后来的 flow matching、consistency、action tokenization、单步生成和缓存优化，本质上都在回答同一个问题：如何保留生成式动作分布的表达能力，同时把推理速度压到机器人闭环控制可接受的范围。",
+    "relation": "Diffusion Policy 和 RT-2 代表 2023 年机器人策略的两条根路线：RT-2 属于 VLA，核心是把互联网 VLM 知识迁移到离散动作 token；Diffusion Policy 属于 Diffusion 动作生成路线，核心是把连续机器人动作建模成条件生成分布。前者强调语义泛化，后者强调连续控制和多峰动作分布。\n\nπ0 把这个思想进一步推广到 robot foundation model：不用扩散而用 flow matching 生成连续 action chunk，但核心问题仍然是如何从视觉语言上下文生成稳定的连续动作段。DreamZero / WAM 则在 Diffusion Policy 的动作生成思想上再往前走一步：不只生成动作，还联合建模未来视频世界状态。Fast-WAM 继续追问测试时是否真的需要显式未来视觉想象，但它仍然继承了“生成式动作模型可以作为机器人策略”的大方向。",
+    "planning_insight": "对我们的 General Multi-Agent Task Planning Model 来说，Diffusion Policy 更适合放在低层 executor，而不是高层 planner。高层 planner 负责子任务分解、机器人分配、约束和协作时序；每个机器人本地可以用 diffusion policy 接收结构化子目标和局部观测，输出可执行 action chunk。\n\n真正值得借鉴的是接口形式：planner 不应该只调用“下一步动作”，而应该调用“带前置条件、目标、禁区、期望后置状态和失败反馈的 action chunk executor”。如果未来要做 multi-agent diffusion policy，可以把联合动作表示成多个机器人 action chunk 的组合，再加入 collision、resource occupancy 和 communication action 约束。",
+    "reusable_module_text": "conditional action diffusion、action chunk diffusion、visual conditioning、time-series diffusion transformer、receding horizon control、multimodal action distribution modeling、Langevin-style action sampling。适合作为多机器人系统里每个机器人本地执行器的动作生成核心，也适合作为后续 WAM action head 的历史源头。",
+    "evidence_risk": "证据强在多个机器人操作 benchmark 和真实任务，且项目页公开代码、数据和训练细节。风险是它没有解决世界模型、任务规划和多智能体协同；如果直接把它当成多机器人 planner，会缺少任务级记忆、角色分配、长期后果评估和失败恢复机制。",
+    "open_question": "多机器人场景中，diffusion policy 应该给每个机器人单独生成 action chunk，还是一次生成联合 action chunk？如果采用联合扩散，如何避免联合动作空间随机器人数量指数增长，并让模型显式满足碰撞、遮挡、共享资源和通信时序约束。"
   },
   {
     "id": "2023-rt-2-vla",
@@ -230,10 +356,12 @@
     "published_value": 24282,
     "relations": [],
     "file": "papers/2023-rt-2-vla.md",
+    "note_html": "notes/2023-rt-2-vla.html",
     "summary": "RT-2 把 VLM 的互联网语义知识和机器人轨迹数据共同训练到同一个 token 输出空间里，是 VLA 路线的关键起点。",
     "research_question": "机器人策略能否直接继承大规模视觉语言模型的语义泛化能力，而不是只在机器人数据中学动作映射。",
     "method": "论文将机器人动作离散化为文本 token，把视觉问答、网页视觉语言任务和机器人轨迹放在同一训练格式中共同微调。",
     "contribution": "RT-2 证明了 VLA 可以获得一定的语义泛化和简单推理能力，例如识别未在机器人数据中出现过的对象属性或指令关系。",
+    "reading_highlights": "",
     "limitation": "它主要解决单机器人短程操作的语言到动作映射。任务级规划、长时程状态记忆、多机器人资源冲突和协同约束并不是论文核心。",
     "relation": "π0 系列延续 VLA 思路，但把动作输出从离散 token 扩展到更适合连续控制的 flow/action chunk。World Action Model 则尝试从“语义泛化”推进到“物理运动泛化”。",
     "planning_insight": "RT-2 更适合放在系统底层：每个机器人接收局部语言子任务并执行。多机器人系统还需要上层 planner 处理任务分解、机器人能力建模、通信和失败恢复。",
@@ -315,10 +443,12 @@
     "published_value": 24285,
     "relations": [],
     "file": "papers/2023-eureka-reward-design-llm.md",
+    "note_html": "notes/2023-eureka-reward-design-llm.html",
     "summary": "Eureka 用 LLM 生成和迭代 reward code，再让 RL 在这些奖励函数下学习技能，是“语言理解 + 优化学习”的典型组合。",
     "research_question": "低层机器人技能往往需要精细 reward，人工设计成本高且难泛化。论文想回答：LLM 能否根据任务描述和环境代码自动写出接近人类专家水平的奖励函数。",
     "method": "Eureka 把环境源码和任务描述提供给 LLM，让模型生成 reward 函数代码；随后用 RL 训练策略，并把训练表现反馈给 LLM 迭代改进 reward。",
     "contribution": "它证明 LLM 不只可以做 symbolic planner，还可以参与优化环节，把自然语言目标转成可训练的 reward signal。",
+    "reading_highlights": "",
     "limitation": "LLM 生成 reward 的步骤本身不可微，不能直接作为端到端模型的一部分参与梯度更新。多机器人任务中的协同失败归因也比单体技能 reward 更复杂。",
     "relation": "GenSwarm 用 LLM 生成可执行代码策略；Eureka 用 LLM 生成 reward code。两者都把 LLM 放在“可执行结构生成器”的位置，而不是直接作为低层策略。",
     "planning_insight": "可以让语义理解模块输出 reward 或 critic 参数，用于训练任务分配模块。多机器人场景中，reward 需要同时考虑 makespan、等待时间、路径冲突、能力匹配和失败恢复。",
@@ -399,10 +529,12 @@
     "published_value": 24297,
     "relations": [],
     "file": "papers/2024-pyramidal-flow-matching-video.md",
+    "note_html": "notes/2024-pyramidal-flow-matching-video.html",
     "summary": "Pyramidal Flow Matching 用多尺度金字塔式 flow matching 降低视频生成训练成本，是 WAM 做未来视频预测时可借鉴的底层生成技术。",
     "research_question": "高分辨率长视频生成需要建模巨大的时空空间，训练成本高。论文关注如何在统一模型中更高效地学习视频生成轨迹。",
     "method": "论文把 denoising / flow 轨迹重解释为多个 pyramid stage，低分辨率阶段先建模粗动态，最终阶段再处理完整分辨率，并用统一 DiT 端到端优化。",
     "contribution": "它给出了高效视频 flow matching 的实现范式，对 DreamZero 这类需要未来视频 rollout 的 World Action Model 有基础支撑价值。",
+    "reading_highlights": "",
     "limitation": "它本身不是机器人策略论文，也不直接建模 action。要进入机器人任务规划，还需要把视频预测与机器人状态、动作和任务约束对齐。",
     "relation": "World Action Models / DreamZero 需要把未来视频和动作关联起来。Pyramidal Flow 更偏视频生成骨干，是 WAM 的底层技能树之一。",
     "planning_insight": "多机器人 world action model 可能需要预测较长时间范围内的场景演化。分层/多尺度生成可以先预测粗任务进展，再预测局部机器人交互细节。",
@@ -488,10 +620,12 @@
       }
     ],
     "file": "papers/2024-pi0-vla-flow-model.md",
+    "note_html": "notes/2024-pi0-vla-flow-model.html",
     "summary": "π0 的核心是把预训练 VLM 和 flow matching 动作头结合起来，面向跨平台、长程、灵巧操作学习连续动作策略。",
     "research_question": "通用机器人策略如何同时继承互联网语义知识，并在多种机器人平台和复杂真实任务上输出稳定动作。",
     "method": "模型在预训练视觉语言骨干上添加 flow matching 动作生成结构，训练数据覆盖单臂、双臂和移动操作平台。",
     "contribution": "相比 RT-2 的动作 token 化，π0 更重视连续动作分布和高频控制接口，适合复杂真实操作任务。",
+    "reading_highlights": "",
     "limitation": "论文重点仍是机器人操作执行，不是任务规划算法。它不直接处理多机器人之间的任务分配、队形、通信、协商或冲突消解。",
     "relation": "π0 是 π0.5、π0.6、π0.7 的基础。π0.5 强化开放环境泛化，π0.6 和 π*0.6 强调部署与经验学习，π0.7 强调可控上下文和组合泛化。",
     "planning_insight": "可以把 π0 视为“技能执行模型”，让上层 multi-agent planner 输出语言或子目标，再由不同机器人实例调用策略执行。",
@@ -580,10 +714,12 @@
       }
     ],
     "file": "papers/2025-fast-action-tokenization-vla.md",
+    "note_html": "notes/2025-fast-action-tokenization-vla.html",
     "summary": "FAST 用频域压缩方式对机器人动作序列做 tokenization，让自回归 VLA 能更好处理高频、灵巧、连续控制数据。",
     "research_question": "朴素逐维、逐时间步动作离散化会让高频动作 token 信息量低、序列长、训练困难。论文想解决 VLA 动作 token 表示效率问题。",
     "method": "FAST 使用离散余弦变换压缩动作时间序列，把连续高频动作转换为更紧凑的频域 token，并发布 FAST+ 通用动作 tokenizer。",
     "contribution": "它补上了 π0.5 中 Pre-Train 阶段的重要动作表示基础：先让 VLM 通过离散动作 token 学习大规模机器人数据，再在后训练阶段接入连续动作专家。",
+    "reading_highlights": "",
     "limitation": "FAST 主要优化动作编码和训练效率，不负责高层任务分解、长期记忆或多机器人协作。",
     "relation": "相对 RT-2 的直接动作 token 化，FAST 更关注高频连续动作的压缩。π0.5 可被理解为 FAST 式离散动作预训练和 π0 式 flow action expert 的组合。",
     "planning_insight": "如果多机器人 planner 需要训练统一执行器，动作 tokenizer 的效率会影响数据规模、推理速度和跨平台泛化。FAST 提醒我们动作接口设计本身就是模型能力的一部分。",
@@ -661,10 +797,12 @@
     "published_value": 24302,
     "relations": [],
     "file": "papers/2025-heterogeneous-mrta-rl.md",
+    "note_html": "notes/2025-heterogeneous-mrta-rl.html",
     "summary": "这篇论文用 RL 学习异构多机器人任务分配和调度策略，让机器人根据任务能力需求动态组队，并减少等待和总完成时间。",
     "research_question": "异构机器人任务往往要求多个具备不同能力的机器人同时到达同一任务点。如何在任务依赖、能力约束和等待成本下快速分配任务。",
     "method": "论文采用全局观测、分布式决策的 RL 框架，用 agent encoder、task encoder 和 cross encoder 学习 agent-agent、task-task、agent-task 关系，再由 decoder 输出任务选择策略。",
     "contribution": "它把多机器人任务分配从集中式 MILP/启发式方法推进到可快速反应的学习型策略，并显式考虑协作任务中的等待问题。",
+    "reading_highlights": "",
     "limitation": "论文主要处理已经给定的原子任务集合，不负责从自然语言目标中自动分解任务。它也不直接处理 VLA/WAM 执行器的不确定性反馈。",
     "relation": "GenSwarm 更关注自然语言到多机器人代码策略的自动生成；本论文更关注给定任务后的异构机器人分配和调度。两者对应 planner 的不同层。",
     "planning_insight": "你的系统可以把任务分解和任务分配分成两层：LLM/VLM 负责把目标转为结构化任务图，GNN/Transformer/RL 模块负责在 agent-task 图上做可优化分配。",
@@ -760,10 +898,12 @@
       }
     ],
     "file": "papers/2025-pi05-open-world-generalization.md",
+    "note_html": "notes/2025-pi05-open-world-generalization.html",
     "summary": "π0.5 关注开放世界泛化，把多任务、网页数据、目标检测、语义子任务预测和 FAST/π0 训练路线合并到 VLA 训练中。",
     "research_question": "VLA 能否在训练环境之外的真实家庭中完成长程灵巧任务，而不是只在实验室桌面任务上泛化。",
     "method": "模型使用异构任务 co-training，并混合图像观察、语言命令、对象检测、语义子任务预测和低层动作数据。",
     "contribution": "π0.5 明确把“高层语义子任务预测”和“低层动作生成”放在一个系统里，展示了 VLA 从短程操作向长程任务的推进。",
+    "reading_highlights": "",
     "limitation": "泛化主要是新环境、新物体和家庭任务层面的泛化，还不是多机器人协同层面的泛化。",
     "relation": "π0.5 是 π0 的开放世界扩展，并借鉴 FAST 式动作 tokenization 来提升大规模预训练效率。π0.7 后续用更丰富的上下文条件让模型可被更精细地 steer，减少多策略数据混合造成的平均化问题。",
     "planning_insight": "语义子任务预测可以借鉴到多机器人 planner 中：先预测任务分解，再依据机器人能力、位置和负载分派执行。",
@@ -857,10 +997,12 @@
       }
     ],
     "file": "papers/2025-pistar06-recap.md",
+    "note_html": "notes/2025-pistar06-recap.html",
     "summary": "π*0.6 的重点不是再做一个 VLA，而是让 VLA 从真实执行失败、人工纠错和自主经验中继续改进。",
     "research_question": "仅靠示范学习的 VLA 遇到分布外状态容易失败，如何让它利用自己的失败轨迹学习恢复策略。",
     "method": "RECAP 大体思路是结合示范、专家纠错和机器人自主经验，通过价值函数和 advantage-conditioned policy 把坏轨迹中的有用信息也纳入训练。",
     "contribution": "它把“部署后学习”推到 VLA 路线中央：机器人不只是执行预训练策略，也应从失败中收集针对性数据。",
+    "reading_highlights": "",
     "limitation": "公开材料主要集中于单体机器人任务吞吐和成功率。多机器人场景中的信用分配、协同失败归因和共享经验池仍未解决。",
     "relation": "π*0.6 是 π0.6 的经验学习扩展，和 Dreamer 的“通过模型想象改进策略”形成互补：一个更偏真实世界纠错数据，一个更偏学习世界模型和想象 rollout。",
     "planning_insight": "多机器人 planner 可以记录失败发生在哪个子任务、哪个机器人、哪个协作边界，再将失败样本反哺给执行策略或能力模型。",
@@ -945,10 +1087,12 @@
       }
     ],
     "file": "papers/2025-pi06-model-card.md",
+    "note_html": "notes/2025-pi06-model-card.html",
     "summary": "π0.6 是 π0.5 后续的部署型模型迭代，保留高层子任务预测和低层动作生成的层级设计，并改进骨干、提示和训练数据。",
     "research_question": "在真实长程任务中，VLA 如何进一步提升鲁棒性、减少失败并适配更多部署场景。",
     "method": "公开材料显示 π0.6 继续采用层级 VLA 架构，生成 action chunks，并结合改进后的 VLM backbone、prompt 设计和训练数据。",
     "contribution": "π0.6 对你的知识库的价值在于承接 π0.5 与 π*0.6：它是后续真实世界经验学习和部署报告的基础模型。",
+    "reading_highlights": "",
     "limitation": "它更像模型卡和技术更新，不是完整论文。需要谨慎标注证据等级，避免把营销材料当成 peer-reviewed 结论。",
     "relation": "π*0.6 在 π0.6 基础上通过 RECAP 加入经验、纠错和强化学习式改进；π0.7 进一步强调上下文条件和组合泛化。",
     "planning_insight": "可以把 π0.6 作为“机器人能力模型”的来源：不同平台在不同任务上的成功率、失败类型和恢复能力可以反馈给任务分配器。",
@@ -1044,10 +1188,12 @@
       }
     ],
     "file": "papers/2026-genswarm-multi-robot-code-policy.md",
+    "note_html": "notes/2026-genswarm-multi-robot-code-policy.html",
     "summary": "GenSwarm 用多 LLM agent 把自然语言任务转成多机器人代码策略，并自动部署到仿真和真实机器人，是“自然语言到多机器人执行”的强相关系统。",
     "research_question": "多机器人系统开发通常需要任务分析、算法设计、代码实现、仿真验证和真实部署。论文想降低这条链路的人工成本，并支持新任务快速适配。",
     "method": "系统分为任务分析、代码生成、代码部署与改进三部分。LLM agent 先抽取约束和技能，再生成 skill graph 与 Python skill 函数，随后通过仿真/VLM反馈和人类反馈迭代，并用自动化软件栈部署到真实机器人。",
     "contribution": "GenSwarm 把 LLM code policy 从单机器人/玩具环境推进到多机器人真实部署，强调 zero-shot 任务生成、全流程自动化和本地可执行代码策略。",
+    "reading_highlights": "",
     "limitation": "它生成的是白盒代码策略，通用性和可解释性强，但最优性、持续学习和端到端可微训练不足。论文也主要面向移动集群任务，不覆盖复杂 VLA 操作能力。",
     "relation": "Eureka 生成 reward code，GenSwarm 生成 policy code。Heterogeneous MRTA RL 关注可学习任务分配；GenSwarm 更关注把自然语言目标转成可部署多机器人行为。",
     "planning_insight": "GenSwarm 可以作为系统级 baseline：当前端到端多机器人任务规划至少需要语言理解、技能图、任务分配、执行反馈和部署接口。你的方案可以尝试把其中不可微的代码生成和 MILP 部分替换成可学习模块。",
@@ -1170,16 +1316,235 @@
       }
     ],
     "file": "papers/2026-world-action-models-zero-shot-policies.md",
+    "note_html": "notes/2026-world-action-models-zero-shot-policies.html",
     "summary": "World Action Model 的关键转向是：不只从视觉语言直接输出动作，而是联合预测未来视频世界状态和动作，用世界演化本身支持零样本策略。",
     "research_question": "VLA 语义泛化强，但对未见物理运动和新环境动作泛化弱。能否用预训练视频扩散模型学习物理动态，从而成为零样本策略。",
     "method": "DreamZero 基于预训练视频扩散/生成骨干，联合建模未来视频和动作，并做系统优化，使大规模视频生成模型能以约 7Hz 做实时闭环控制。关键工程链路包括：用 teacher forcing attention mask 降低闭环滚动中的误差累积，用 KV-cache 缓存历史视觉 token 以支持实时推理，并用 DreamZero-Flash 把扩散式多步生成压缩到更接近实时控制的单步推理。\n\nDreamZero-Flash 的核心是 decoupled noise schedules：训练时把视频噪声和动作噪声解绑，让视频更多处于高噪声、模糊状态，而动作仍保持可学习的均匀噪声。这样模型在单步推理时即使只能看到“模糊未来”，也要学会输出干净动作。这个设计可以理解成“抗大雾训练法”：故意让模型在视觉未来很不确定的条件下学习稳定控制。\n\n执行层采用 asynchronous execution：模型每次输出一段约 1.6 秒的 action chunk，机器人执行当前 chunk 的同时，GPU 在后台计算下一段动作。这样大模型推理不必阻塞低层控制循环，避免“停下思考再动一下”的同步卡顿。",
     "contribution": "论文报告相比当时 VLA 在新任务和新环境上有显著泛化提升，并展示视频-only 演示和少量新具身数据下的跨具身迁移。更重要的是，它把 robotics 里的几个关键假设往前推了一步：\n\n- 速度：DreamZero-Flash、KV-cache 和 Asynchronous Execution 共同服务于实时闭环，让 video diffusion 不再只是离线生成器。\n- 数据：采用 Diversity > Repetition 的数据哲学，不把采集预算耗在单任务重复熟练度上，而是通过 data deprecation 机制限制单任务重复次数，强迫数据覆盖更多任务和环境。\n- 跨具身：Cross-Embodiment 利用人类第一人称纯视频和少量新机器人 play data，把视频模型里的物理常识和语义能力迁移到不同机器人身体上。\n- 策略形式：WAM 不只是“看图出动作”的 VLA，而是用未来世界预测来支撑动作选择。",
+    "reading_highlights": "1. DreamZero-Flash：为单步去噪设计的抗噪训练。通过解耦视频噪声和动作噪声，让模型习惯在模糊未来里仍输出精确动作。\n2. Diversity > Repetition：数据收集强调任务和场景广度，而不是对同一任务反复示教。data deprecation 让单任务达到上限后被停止采集，逼迫数据集覆盖新任务。\n3. Asynchronous Execution：大脑推理和身体执行并行。动作 chunk 正在执行时，GPU 计算下一段 chunk，从而让大模型控制看起来连续。\n4. Cross-Embodiment：模型不只学习某个机器人身体的动作映射，还尝试从人类视频和少量新机器人 play data 中迁移技能与逆动力学。",
     "limitation": "WAM 当前仍主要面向机器人操作策略。对于多机器人，关键挑战会变成多主体状态预测、交互建模、通信动作和联合任务奖励。",
     "relation": "DreamZero 和 Dreamer 都是 world model 思路，但侧重点不同：Dreamer 在 latent world model 中用 RL 学行为，DreamZero 借视频生成模型和动作联合预测直接成为策略。Pyramidal Flow 是其视频生成和 flow matching 技术背景之一。",
     "planning_insight": "WAM 可以不只做执行器，还可以做 planner 的“行动后果预测器”：给定多个候选子任务分配，预测世界状态变化、冲突风险和可行性。\n\n对多机器人任务规划尤其关键的是三点。第一，diversity-first 数据策略提示我们不应只收集同一协作任务的大量重复轨迹，而要覆盖更多机器人组合、场景布局、任务依赖和失败模式。第二，asynchronous execution 可以变成多机器人系统的执行协议：每个机器人执行自己的 action chunk，同时中央 planner 或分布式 critic 在后台更新下一段联合计划。第三，cross-embodiment adaptation 提示多机器人系统可以把“机器人能力模型”和“任务语义模型”分开：少量 play data 用来适配新机器人身体，语义和世界预测能力尽量保留。",
     "reusable_module_text": "video-action world model、zero-shot policy rollout、action feasibility predictor、DreamZero-Flash / decoupled noise schedule、asynchronous action chunk executor、diversity-first data collector、cross-embodiment adapter。适合作为 planner critic、多机器人联合 rollout 和 planner-to-executor 接口的核心候选。",
     "evidence_risk": "证据强在 zero-shot policy、视频-动作联合建模、实时推理工程、数据广度策略和跨具身迁移；风险是多主体交互、联合动作空间、通信动作和多机器人任务级同步尚未直接验证。DreamZero 证明了 WAM 可以成为强执行器和单机器人世界预测器，但把它升级成多机器人 planner critic 还需要额外验证：联合状态表示、冲突预测、角色分工、通信延迟和失败恢复是否能被同一个视频-动作模型稳定建模。",
     "open_question": "如何把 WAM 从单机器人视频-动作预测扩展到多机器人联合动作预测，例如同时建模 A 机器人移动、B 机器人抓取、C 机器人等待带来的全局状态变化。"
+  },
+  {
+    "id": "2026-lap-language-action-pretraining",
+    "title": "LAP: Language-Action Pre-Training Enables Zero-shot Cross-Embodiment Transfer",
+    "short_title": "LAP-3B",
+    "year": 2026,
+    "published": "2026-02",
+    "venue": "arXiv",
+    "status": "read",
+    "scope": "in_scope",
+    "readiness": "high",
+    "action": "deep_read",
+    "tech_paradigm": "vla",
+    "primary_domain": "VLA",
+    "domains": [
+      "LLM",
+      "VLA"
+    ],
+    "primary_technical_layer": "language_action_representation",
+    "primary_task_family": "cross_embodiment_transfer",
+    "platform": "cross_embodiment_manipulation",
+    "planning_relevance": "把连续机器人动作块转成自然语言动作，让 VLM 直接输出较长时间尺度的可读动作命令，为 planner-to-executor 接口提供一种离散语言动作中间层。",
+    "multi_robot_relevance": "多机器人系统可以把语言动作作为跨具身、可检查、可通信的执行接口，但仍需要底层控制器把语言动作落到具体机器人动力学。",
+    "system_roles": [
+      "executor",
+      "executor_interface",
+      "foundation_policy",
+      "semantic_grounder"
+    ],
+    "reusable_modules": [
+      "language_action_pretraining",
+      "natural_language_action_format",
+      "action_chunk_to_text_converter",
+      "ce_language_action_supervision",
+      "vqa_action_cotraining",
+      "zero_shot_cross_embodiment_transfer"
+    ],
+    "evidence_level": "paper_read",
+    "next_action": "compare_language_action_interface",
+    "tags": [
+      "LAP",
+      "LAP-3B",
+      "VLA",
+      "language action",
+      "cross-embodiment transfer",
+      "discrete action representation"
+    ],
+    "authors": [
+      "Lihan Zha",
+      "Asher J. Hancock",
+      "Mingtong Zhang",
+      "Tenny Yin",
+      "Yixuan Huang",
+      "Dhruv Shah",
+      "Allen Z. Ren",
+      "Anirudha Majumdar"
+    ],
+    "institutions": [
+      "Princeton University",
+      "Physical Intelligence"
+    ],
+    "doi": "10.48550/arXiv.2602.10556",
+    "arxiv": "2602.10556",
+    "url": "https://arxiv.org/abs/2602.10556",
+    "project_url": "https://lap-vla.github.io/",
+    "code_url": "https://github.com/lihzha/lap",
+    "image_url": "",
+    "zotero_key": "",
+    "citekey": "zha2026lap",
+    "cites": [
+      "2024-pi0-vla-flow-model",
+      "2025-pi05-open-world-generalization",
+      "2025-fast-action-tokenization-vla"
+    ],
+    "extends": [],
+    "uses": [],
+    "enables": [],
+    "complements": [],
+    "contrasts": [
+      "2025-fast-action-tokenization-vla",
+      "2024-pi0-vla-flow-model",
+      "2025-pi05-open-world-generalization"
+    ],
+    "published_value": 24313,
+    "relations": [
+      {
+        "type": "contrasts",
+        "target": "2025-fast-action-tokenization-vla"
+      },
+      {
+        "type": "contrasts",
+        "target": "2024-pi0-vla-flow-model"
+      },
+      {
+        "type": "contrasts",
+        "target": "2025-pi05-open-world-generalization"
+      }
+    ],
+    "file": "papers/2026-lap-language-action-pretraining.md",
+    "note_html": "notes/2026-lap-language-action-pretraining.html",
+    "summary": "LAP 的核心是把机器人低层连续动作块转换成自然语言动作，让 VLM 像生成文本一样生成动作命令；它不是新增一个复杂 action head，而是把 action supervision 对齐到 VLM 原本擅长的离散语言输出空间，从而提升零样本跨具身迁移。",
+    "research_question": "现有 VLA 即使做了多具身预训练，动作表示仍然容易和训练时的机器人身体强耦合。π0 / π0.5 通过 flow action expert 或异构数据提升泛化，但在新机器人身体上仍可能需要适配。LAP 追问：如果把连续控制动作先翻译成自然语言动作，VLM 是否能学到更 embodiment-agnostic 的控制表示？",
+    "method": "LAP 设计了一个格式化的自然语言动作表示。给定从时间 t 到 t+H 的 action chunk，脚本会统计这段时间内末端执行器的累计平移、累计旋转和夹爪变化，然后生成类似 `move forward 5 cm; close gripper` 的离散文本动作。\n\n训练时，模型输入视觉观察和任务语言，输出语言动作。公式 1 的目标可以理解为标准语言建模交叉熵：让 VLM 生成的语言动作 token 对齐到脚本从真实连续动作块自动写出的语言动作。公式 2 则定义了语言动作的格式，把一个动作块的空间位移、旋转和夹爪状态写成可读、可学习、可跨具身共享的文本。\n\n这个设计和 FAST 的宏观思路相似：二者都不希望 VLM 直接处理极短时间尺度的连续控制细节，而是把一段时间内的动作块压缩成更适合 VLM 学习的离散表示。差异在于 FAST 用频域 token 压缩连续动作，LAP 用自然语言句子表达动作意图和粗粒度运动。",
+    "contribution": "- 提出 Language-Action Pre-training：把低层机器人动作直接表示成自然语言，避免学习专门 tokenizer 或新增复杂 action head。\n- 用脚本自动把连续 action chunk 转换成语言动作，降低人工标注成本。\n- 通过 CE 训练让 VLM 直接输出语言动作，使动作预测和 VQA 共享同一种文本输出空间。\n- 展示 LAP-3B 在未见过机器人具身上的零样本迁移能力，项目页报告平均成功率超过 50%，约为最强 prior VLA baseline 的 2 倍。\n- 主要对比对象包括 π0、π0.5-DROID、π0.5-replicated 和 X-VLA，重点证明语言动作监督能改善跨具身表示。",
+    "reading_highlights": "1. LAP 的关键不是“动作变成文本”这个表面形式，而是把动作学习放回 VLM 原本的语言建模分布中。\n2. 语言动作是一种可读的 action abstraction：上层 planner 可以检查、修改或组合它，比连续 action chunk 更适合作为系统接口。\n3. 它和 FAST 是动作表示问题的两种答案：FAST 更偏高频压缩效率，LAP 更偏跨具身语义对齐和可解释接口。\n4. 对多机器人来说，语言动作可能成为不同机器人之间共享的中间动作协议，但还需要验证它能否表达协同、避让、等待和同步动作。",
+    "limitation": "语言动作牺牲了一部分连续控制精度，最后仍需要底层控制器把文本动作落成机器人可执行轨迹。它适合表达一段时间内的粗粒度末端运动，但未必足够表达高频灵巧操作、接触动力学、双臂同步或多机器人联合动作约束。",
+    "relation": "LAP 的主要对比对象是 π0、π0.5 和 FAST。π0 / π0.5 代表 VLM 加连续动作专家或异构开放世界训练的路线，FAST 和 LAP 则都在回答“如何把一段 action chunk 变成更适合 VLM 学习的离散表示”。区别在于 FAST 用频域信号压缩 action chunk，LAP 用格式化语言动作压缩 action chunk；二者的共同目标都是把 VLM 的决策时间尺度从低层瞬时动作提升到更长一段动作块，因此这里应以对比关系为主。",
+    "planning_insight": "LAP 对我们的仓库很重要，因为多机器人任务规划需要一个比连续控制更高层、比自然语言子任务更低层的接口。语言动作可以成为中间层：高层 planner 输出子任务和约束，执行器输出或校验 `move forward 5 cm; close gripper` 这类短程动作命令，再由各机器人本地控制器执行。\n\n更进一步，多机器人系统可以把语言动作扩展成带主体和约束的协议，例如 `robot_1 move left 10 cm while robot_2 hold object; wait until gripper closed`。这条路线比纯连续动作更容易审计和通信，但要达到 No.1 水准，需要建立语言动作到真实物理效果的误差模型。",
+    "reusable_module_text": "language-action pretraining、action chunk to text converter、natural language action schema、CE language-action supervision、VQA/action co-training、zero-shot cross-embodiment evaluation。适合加入 planner-to-executor interface 和 cross-embodiment executor abstraction。",
+    "evidence_risk": "证据来自 LAP 官方项目页和 arXiv：LAP-3B 在 YAM、Kinova、Custom Franka、DROID 等平台上展示零样本跨具身迁移，并对比 π0、π0.5-DROID、π0.5-replicated、X-VLA。风险是语言动作格式可能过于粗粒度；在精细接触、动态避障、多机器人同步和长期任务中，需要额外的低层控制与失败恢复机制。",
+    "open_question": "语言动作能否成为多机器人通用动作协议？如果可以，协议里应该包含哪些字段：机器人 id、参考坐标系、位移/旋转、持续时间、同步条件、资源占用、失败检测和安全约束？"
+  },
+  {
+    "id": "2026-fast-wam-test-time-future-imagination",
+    "title": "Fast-WAM: Do World Action Models Need Test-time Future Imagination?",
+    "short_title": "Fast-WAM",
+    "year": 2026,
+    "published": "2026-03",
+    "venue": "arXiv",
+    "status": "read",
+    "scope": "in_scope",
+    "readiness": "high",
+    "action": "deep_read",
+    "tech_paradigm": "world_action_model",
+    "primary_domain": "World Action Model",
+    "domains": [
+      "World Action Model",
+      "VLA",
+      "World Model"
+    ],
+    "primary_technical_layer": "dynamics_prediction",
+    "primary_task_family": "test_time_imagination_ablation",
+    "platform": "heterogeneous_robot_data",
+    "planning_relevance": "直接回答 WAM 在测试时是否必须显式生成未来画面，为 planner critic 和实时执行器的接口设计提供关键消融证据。",
+    "multi_robot_relevance": "多机器人规划若依赖联合未来视频想象，推理成本会更高；Fast-WAM 提示可以把视频建模保留在训练期，把测试时接口简化为直接动作生成或低延迟 critic。",
+    "system_roles": [
+      "world_encoder",
+      "executor",
+      "planner_critic"
+    ],
+    "reusable_modules": [
+      "video_cotraining_world_encoder",
+      "no_test_time_imagination",
+      "single_pass_action_generation",
+      "structured_attention_mask",
+      "wam_ablation_protocol"
+    ],
+    "evidence_level": "paper_read",
+    "next_action": "compare_test_time_imagination",
+    "tags": [
+      "Fast-WAM",
+      "World Action Model",
+      "test-time imagination",
+      "video co-training",
+      "action generation",
+      "real-time control"
+    ],
+    "authors": [
+      "Tianyuan Yuan",
+      "Zibin Dong",
+      "Yicheng Liu",
+      "Hang Zhao"
+    ],
+    "institutions": [
+      "IIIS Tsinghua University",
+      "Galaxea AI"
+    ],
+    "doi": "10.48550/arXiv.2603.16666",
+    "arxiv": "2603.16666",
+    "url": "https://arxiv.org/abs/2603.16666",
+    "project_url": "https://yuantianyuan01.github.io/FastWAM/",
+    "code_url": "https://github.com/yuantianyuan01/FastWAM",
+    "image_url": "",
+    "zotero_key": "",
+    "citekey": "yuan2026fastwam",
+    "cites": [
+      "2026-world-action-models-zero-shot-policies",
+      "2024-pi0-vla-flow-model",
+      "2025-pi05-open-world-generalization"
+    ],
+    "extends": [],
+    "uses": [],
+    "enables": [],
+    "complements": [],
+    "contrasts": [
+      "2026-world-action-models-zero-shot-policies",
+      "2024-pi0-vla-flow-model",
+      "2025-pi05-open-world-generalization"
+    ],
+    "published_value": 24314,
+    "relations": [
+      {
+        "type": "contrasts",
+        "target": "2026-world-action-models-zero-shot-policies"
+      },
+      {
+        "type": "contrasts",
+        "target": "2024-pi0-vla-flow-model"
+      },
+      {
+        "type": "contrasts",
+        "target": "2025-pi05-open-world-generalization"
+      }
+    ],
+    "file": "papers/2026-fast-wam-test-time-future-imagination.md",
+    "note_html": "notes/2026-fast-wam-test-time-future-imagination.html",
+    "summary": "Fast-WAM 的核心结论是：WAM 的主要收益可能来自训练期的视频协同建模，而不是测试时显式生成未来画面；因此测试时可以跳过 future imagination，直接用当前真实观测生成动作，并显著降低推理延迟。",
+    "research_question": "DreamZero 代表的 WAM 路线把未来视频预测和动作生成绑在一起，默认认为机器人需要先“想象未来画面”再执行动作。但这一步会带来扩散去噪和视频生成的推理开销。Fast-WAM 直接追问：预测未来画面这一步真的有必要吗？还是说，视频预测的价值主要发生在训练期，用来塑造更好的 world representation？",
+    "method": "论文把 WAM 拆成几个可比较范式。Figure 1A 对应 DreamZero 式路线：视频和动作在扩散过程中联合生成，测试时显式想象未来画面。Figure 1B 把未来视频生成和动作生成拆成两个过程，先想象视频，再由后续模块产出动作。Figure 1C 是 Fast-WAM：训练时仍保留 video co-training，让模型学习世界动态表征；测试时生成动作只使用当前真实观测，不再显式生成未来画面。\n\nFast-WAM 使用预训练视频 DiT 作为视觉世界编码器，并加入 action expert DiT 做 action chunk 生成。训练阶段同时优化动作预测和未来视频预测，让视觉 backbone 通过视频建模学习动态敏感的 latent representation。推理阶段丢弃未来视频分支，只保留当前观测的 clean latent tokens，一次前向直接生成动作，从而避开 imagine-then-execute WAM 的主要延迟来源。\n\n论文还通过结构化 attention mask 避免信息泄漏：action tokens 不能直接看到未来视频 tokens，否则模型可能只是借用了测试时不存在的未来画面。这个 mask 让消融更干净：可以区分“训练期视频建模让 representation 变好”和“测试时生成未来画面带来额外信息”。",
+    "contribution": "- 提出了一个更尖锐的 WAM 消融问题：WAM 到底需要测试时想象，还是只需要训练时被视频预测任务塑形。\n- 提出 Fast-WAM：保留 video co-training，但在测试时移除显式 future video generation，用当前真实观测直接生成动作。\n- 通过 A / B / C 三种范式比较 DreamZero 式联合生成、两阶段想象-执行和 Fast-WAM 的直接动作生成。\n- 实验显示 Fast-WAM 接近 imagine-then-execute 变体，而移除 video co-training 会造成更大性能下降，支持“训练期世界建模比测试时想象更关键”的解释。\n- 在 LIBERO、RoboTwin 和真实毛巾折叠任务中取得强结果，并报告 190ms 推理延迟，比显式想象式 WAM 更适合实时控制。",
+    "reading_highlights": "1. DreamZero 证明了未来视频和动作联合建模可以成为策略；Fast-WAM 则追问测试时是否真的需要生成未来视频。\n2. Figure 1 的 A/B/C 对比很重要：A 是联合训练视频和动作扩散生成，B 是先预测未来视频再生成动作，C 是 Fast-WAM 只用当前真实观测直接动作生成。\n3. 最有价值的不是“模型会不会想象未来画面”，而是“视频预测任务是否把视觉 backbone 训练成了更好的世界编码器”。\n4. 对机器人部署来说，Fast-WAM 把 WAM 从昂贵的 runtime imagination 转成了低延迟 world representation learning。",
+    "limitation": "Fast-WAM 主要验证单机器人控制和标准机器人 benchmark。它削弱了测试时未来视频生成的必要性，但不等于未来预测在所有规划层级都没用。对于多机器人任务规划，显式预测未来状态、冲突和资源占用仍可能对高层 planner 有价值，只是不一定需要像 DreamZero 那样在每个低层动作步都生成视频。",
+    "relation": "Fast-WAM 和 DreamZero 不是继承关系，而是 WAM 框架下的两条对比路线：DreamZero 代表测试时显式 future imagination / imagine-then-execute，Fast-WAM 代表训练期 video co-training 加测试时 direct action generation。Fast-WAM 的价值在于把 DreamZero 隐含的“执行时需要想象未来画面”假设拆出来做消融，而不是沿着 DreamZero 继续扩展。它也和 π0、π0.5 等 VLA 路线形成对比：VLA 通常直接从观测和语言到动作，Fast-WAM 则保留训练期 world modeling，但测试时表现得更像一个低延迟 action policy。",
+    "planning_insight": "Fast-WAM 对我们的多智能体任务规划很关键：多机器人联合未来视频预测会非常昂贵，尤其当机器人数量、遮挡、通信和任务依赖增加时。如果 Fast-WAM 的结论成立，多机器人模型可以把“未来预测”主要用于训练世界表征或 planner critic，而不是每一步执行时都显式生成未来视频。\n\n更具体地，可以把系统分成两层：训练期用视频/状态预测任务学习 world encoder，让模型理解动作对环境的影响；测试时高层 planner 只调用低延迟 encoder + action/critic head，必要时再对少量关键候选计划做显式 rollout。这样能兼顾实时执行和世界模型能力。",
+    "reusable_module_text": "video co-training world encoder、no-test-time-imagination inference、single-pass action generation、structured attention mask、WAM ablation protocol。对我们的仓库来说，它不是又一个单纯执行器，而是一个判断“什么时候需要显式想象未来”的实验模板。",
+    "evidence_risk": "证据来自官方论文报告的 LIBERO、RoboTwin 和真实毛巾折叠任务：Fast-WAM 在去掉测试时 future generation 后仍保持强性能，同时 190ms 延迟明显更利于实时控制。风险是这些结果还不能直接推出多机器人高层规划也不需要显式未来预测；多主体冲突、资源竞争、通信延迟和任务依赖可能仍需要在 planner 层做显式 rollout 或结构化状态预测。",
+    "open_question": "多机器人系统中，哪些预测应该只作为训练期 representation learning，哪些预测必须在测试时显式执行？例如：低层动作控制也许可以用 Fast-WAM 式直接生成，但任务分配、冲突检测和失败恢复可能仍需要对候选联合计划做未来状态想象。"
   },
   {
     "id": "2026-mem-multi-scale-embodied-memory",
@@ -1286,16 +1651,233 @@
       }
     ],
     "file": "papers/2026-mem-multi-scale-embodied-memory.md",
+    "note_html": "notes/2026-mem-multi-scale-embodied-memory.html",
     "summary": "MEM 给 VLA 加入多尺度记忆：短期用视频编码处理遮挡和近期动作，长期用文本摘要记住任务进展，从而支持十几分钟级长程操作。",
     "research_question": "长程真实任务要求机器人记住已经完成的步骤、对象状态和近期遮挡信息。简单堆叠历史图像会让上下文过长、推理成本过高。",
     "method": "MEM 结合短期视频记忆和长期语言记忆。短期视频 encoder 保留近期视觉动态，长期文本 memory 压缩高层语义事件，并把这些记忆接入 π0.6 类 VLA 策略。",
     "contribution": "它把 VLA 从“当前观察 + 指令 -> 动作”推进到“历史事件 + 当前观察 + 指令 -> 动作”，是 π0.7 长程能力的重要基础。",
+    "reading_highlights": "",
     "limitation": "MEM 主要是单机器人长程操作记忆，不直接处理团队级共享记忆、多机器人通信、任务分配或协作状态一致性。",
     "relation": "π0.7 可以理解为在 π0、π0.6/MEM 和 world model 等模块基础上的进一步整合。MEM 补的是 VLA 的长程上下文能力。",
     "planning_insight": "多机器人系统应有多层记忆：机器人本地短期记忆、机器人本地任务摘要、团队共享任务进度和全局场景状态。MEM 的视频/文本双记忆结构可以迁移到这个设计。",
     "reusable_module_text": "short-term video memory、long-term language memory、memory-augmented policy。可迁移为机器人本地记忆和团队级任务进度摘要。",
     "evidence_risk": "证据强在长程单机器人任务；风险是共享记忆一致性、跨机器人隐私和通信成本未解决。",
     "open_question": "多机器人记忆如何同步：哪些事件留在本地，哪些事件写入团队共享 memory，哪些事件用于更新 planner 的全局状态。"
+  },
+  {
+    "id": "2026-psibot-from-human-skill-to-robotic-mastery",
+    "title": "From Human Skill to Robotic Mastery",
+    "short_title": "Psi-R2 / Psi-W0",
+    "year": 2026,
+    "published": "2026-03",
+    "venue": "PsiBot Technical Blog",
+    "status": "read",
+    "scope": "in_scope",
+    "readiness": "high",
+    "action": "deep_read",
+    "tech_paradigm": "world_action_model",
+    "primary_domain": "World Action Model",
+    "domains": [
+      "World Action Model",
+      "VLA",
+      "World Model",
+      "RL"
+    ],
+    "primary_technical_layer": "human_to_robot_world_action_model",
+    "primary_task_family": "human_data_scaling",
+    "platform": "dexterous_manipulation",
+    "planning_relevance": "提供一条工业化 WAM 路线：用 Psi-R2 做未来视频和动作联合预测，用 Psi-W0 做动作条件世界模型、策略评估和世界模型内 RL。",
+    "multi_robot_relevance": "多机器人系统可以借鉴其数据飞轮与 AC-WM critic：用世界模型评估候选动作后果、失败风险和数据质量，再回流改进执行策略。",
+    "system_roles": [
+      "executor",
+      "world_simulator",
+      "planner_critic",
+      "policy_trainer",
+      "data_curator"
+    ],
+    "reusable_modules": [
+      "raw_data_in_raw_data_out",
+      "action_conditioned_world_model",
+      "rl_in_world_model",
+      "counterfactual_failure_modeling",
+      "human_robot_kinematic_mapping",
+      "tactile_world_model_training",
+      "data_quality_autolabeling",
+      "high_precision_human_data",
+      "dit_inference_cache"
+    ],
+    "evidence_level": "technical_blog",
+    "next_action": "extract_data_flywheel",
+    "tags": [
+      "PsiBot",
+      "Psi-R2",
+      "Psi-W0",
+      "World Action Model",
+      "action-conditioned world model",
+      "human data",
+      "tactile data",
+      "RL in world model"
+    ],
+    "authors": [
+      "Yuanpei Chen",
+      "PsiBot"
+    ],
+    "institutions": [
+      "PsiBot",
+      "Lingchu Intelligence"
+    ],
+    "doi": "",
+    "arxiv": "",
+    "url": "https://cypypccpy.github.io/tech-blog.github.io/",
+    "project_url": "https://cypypccpy.github.io/tech-blog.github.io/",
+    "image_url": "",
+    "zotero_key": "",
+    "citekey": "chen2026fromhuman",
+    "cites": [
+      "2026-world-action-models-zero-shot-policies",
+      "2026-fast-wam-test-time-future-imagination",
+      "2023-dreamerv3-world-models"
+    ],
+    "extends": [],
+    "uses": [],
+    "enables": [],
+    "complements": [
+      "2026-world-action-models-zero-shot-policies",
+      "2023-dreamerv3-world-models"
+    ],
+    "contrasts": [
+      "2026-fast-wam-test-time-future-imagination"
+    ],
+    "published_value": 24314,
+    "relations": [
+      {
+        "type": "complements",
+        "target": "2026-world-action-models-zero-shot-policies"
+      },
+      {
+        "type": "complements",
+        "target": "2023-dreamerv3-world-models"
+      },
+      {
+        "type": "contrasts",
+        "target": "2026-fast-wam-test-time-future-imagination"
+      }
+    ],
+    "file": "papers/2026-psibot-from-human-skill-to-robotic-mastery.md",
+    "note_html": "notes/2026-psibot-from-human-skill-to-robotic-mastery.html",
+    "summary": "这篇技术博客把 PsiBot 的 Psi-R2 / Psi-W0 路线讲得非常清楚：Psi-R2 是基于视频生成骨干的 WAM/VLA 策略模型，联合预测未来视频和机器人动作；Psi-W0 是动作条件世界模型，用来建模反事实失败、做策略评估、在人类数据到机器人数据的转换过程中执行 world-model 内强化学习。",
+    "research_question": "具身智能缺少像互联网文本或自动驾驶日志那样自然沉淀的大规模数据。人类日常和工业操作数据规模巨大，但直接迁移到机器人存在 embodiment gap：人手和机械手的关节、摩擦、动力学和接触规律都不同。博客要回答的是：如何把近 10 万小时人类操作数据真正变成可训练、可评估、可回流的机器人策略数据。",
+    "method": "Psi-R2 以图像和语言为输入，输出未来视觉帧和机器人可执行动作。博客明确说它基于预训练视频生成模型，技术定义上与 WAM 契合，同时因为输入视觉语言、输出动作，也具备 VLA 能力。其骨干使用 Wan2.2-IT2V-5B-480P，训练目标是未来视频和动作联合预测。\n\n数据处理上，PsiBot 放弃复杂的人手/机械手视觉对齐，只做底层运动学维度映射：图像原始输入，动作标签按人手关节到机械手关节的映射处理。早期尝试过 image inpainting、keypoint auxiliary loss、跨空间对齐等精巧模块，但在大规模数据下这些模块会成为瓶颈。最后选择 Raw Data In, Raw Data Out：只做必要的输入输出维度对齐，让模型从足够大的原始数据中学习跨实体对应关系。\n\nPsi-W0 则是动作条件世界模型。它输入图像、语言和动作轨迹，输出未来视频。和 Psi-R2 的区别是动作作为条件控制未来视频生成，因此更适合做反事实推理：如果动作偏了、接触早了或夹爪闭合时机错了，未来会怎样。\n\n博客里最关键的闭环是 RL in World Model。人类动作经运动学映射后会有细小偏差，传统做法是在仿真器里用 RL 微调，但有 sim-to-real gap。PsiBot 用 Psi-W0 替代传统仿真器：把策略动作放入世界模型中 rollout，用 RL 在世界模型里微调动作，直到预测结果满足任务目标，再筛选高质量轨迹回流到 Psi-R2 / Psi-W0 训练中。",
+    "contribution": "- 把 Psi-R2 明确定位成 WAM/VLA 融合路线：视频生成骨干 + 未来视频/动作联合预测。\n- 把 Psi-W0 明确定位成 Action-Conditioned World Model，用于反事实评估、数据转换和策略优化。\n- 提出强工程判断：大规模高质量数据下，复杂视觉对齐模块反而会阻碍长程高精度操作。\n- 披露了数据规模：约 5,417 小时真机数据 + 95,472 小时人类数据，覆盖 294 场景、4,821 任务和 1,382 物体。\n- 给出数据价值排序：任务多样性 > 物体多样性 >> 场景多样性；精准 3D 位姿 >> 触觉模态 > 2D 图像特征。\n- 说明失败数据对世界模型的重要性：Psi-W0 额外加入约 30% 失败/无意义样本，用来学习反事实后果。\n- 披露 WAM 推理工程优化：通过 DiT 缓存、Torch Compile、量化等把单次推理从 2.2 秒压到 100ms 以内。",
+    "reading_highlights": "1. 最反直觉的是放弃视觉伪对齐：不把人手修成机械手，不强行对齐 latent，只用运动学映射和大规模原始数据。\n2. Psi-W0 的价值不只是预测视频，而是把世界模型变成策略评估器、失败解释器、数据质检器和训练飞轮。\n3. 失败数据不是脏数据。对于 AC-WM，失败样本是学习反事实和做策略改进的必要分布。\n4. 触觉被当成跨实体的共同语言：人和机器人外观不同，但接触事件和接触状态是物理上可迁移的。\n5. 这条路线更像工业化 scaling law：不是靠一个漂亮模块取胜，而是靠高精度人类数据、世界模型评估和闭环回流。",
+    "limitation": "博客不是正式论文，缺少完整 benchmark 表、训练细节、消融图和可复现代码。其重点也不是跨所有机器人具身的通用模型，而是用人类数据增强特定机器人本体的预训练。对多机器人任务规划来说，还需要额外验证联合动作、通信、协同约束、资源冲突和多主体失败恢复能否进入同一个 AC-WM 数据飞轮。",
+    "relation": "Psi-R2 / Psi-W0 与 DreamZero 属于同一条 WAM 大路线：都把未来视频预测和动作生成结合起来，让世界演化参与策略学习。区别是 DreamZero 更像论文定义 WAM 的通用策略范式，PsiBot 这篇博客更像工业化实现路线，重点放在人类数据规模化、触觉/3D 位姿采集、数据质检和世界模型内 RL。\n\n它和 Fast-WAM 形成对比。Fast-WAM 追问测试时是否必须显式想象未来画面；PsiBot 路线则明确保留 Psi-W0 作为动作条件世界模型，用它做策略评估、失败建模和 RL 优化。它和 DreamerV3 也有互补关系：Dreamer 在 latent world model 中做 imagination rollout，Psi-W0 则把视频生成式世界模型当成更贴近真实视觉后果的 AC-WM。",
+    "planning_insight": "对我们的多智能体任务规划模型来说，这篇博客最有价值的是数据飞轮设计。多机器人系统不能只训练“成功动作执行器”，还必须有一个能理解失败后果的 critic / world model。Psi-W0 的思路可以迁移成 Multi-Agent AC-WM：输入多机器人状态、语言目标、联合动作和通信动作，预测未来世界状态、冲突、接触事件和失败后果。\n\n另一个关键启发是数据价值排序。多机器人数据采集时，不应把预算平均花在背景场景变化上，而应优先扩任务类型、物体类型、接触事件、失败模式和高精度轨迹。若要做 No.1 仓库，这类工业技术博客应当和论文同等索引，因为它直接揭示了真实系统能跑起来的训练细节。",
+    "reusable_module_text": "Raw Data In Raw Data Out、人机运动学映射、动作条件世界模型、失败样本反事实建模、world-model 内 RL、Psi-W0 数据质检、触觉预测标签、高精度人类 3D 轨迹采集、DiT 推理缓存与量化优化。适合作为多机器人 WAM 数据飞轮和 planner critic 的重要参考。",
+    "evidence_risk": "证据来自 PsiBot 技术博客和 MolmoSpaces 榜单表现披露，强在工业系统经验、数据规模、训练策略和架构分工。风险是技术博客没有论文级可复现细节，也没有公开完整训练代码和消融表；因此在仓库中应标为 technical_blog evidence，而不是 paper_read evidence。",
+    "open_question": "多机器人版本的 Psi-W0 应该预测什么？是未来视频、对象状态图、接触事件、资源占用、通信状态，还是这些的组合？如果要做 world-model 内 RL，联合动作空间和奖励信号如何设计，才能避免多机器人协同中的信用分配和组合爆炸问题？"
+  },
+  {
+    "id": "2026-foundation-models-robot-swarms",
+    "title": "How Foundation Models Will Revolutionize Robot Swarms",
+    "short_title": "FM Swarms Viewpoint",
+    "year": 2026,
+    "published": "2026-04",
+    "venue": "Science Robotics Viewpoint",
+    "status": "read",
+    "scope": "in_scope",
+    "readiness": "high",
+    "action": "deep_read",
+    "tech_paradigm": "foundation_swarm_overview",
+    "primary_domain": "Overview / Foundation",
+    "domains": [
+      "Overview / Foundation",
+      "LLM",
+      "Planning"
+    ],
+    "primary_technical_layer": "fm_swarm_architecture",
+    "primary_task_family": "fm_enabled_robot_swarms",
+    "platform": "multi_robot_swarm",
+    "planning_relevance": "这是 FM 进入机器人集群的路线图论文，把 FM 分成 swarm designer 和 swarm operator，并指出仿真反馈、机器人数据、安全和端侧部署是下一阶段关键工作。",
+    "multi_robot_relevance": "论文直接面向 robot swarms，讨论去中心化、局部通信、micro-macro link、分区、规模化、控制安全和人-集群交互。",
+    "system_roles": [
+      "semantic_planner",
+      "code_policy_generator",
+      "task_allocator",
+      "swarm_designer",
+      "swarm_operator",
+      "security_monitor",
+      "edge_model"
+    ],
+    "reusable_modules": [
+      "fm_swarm_designer",
+      "fm_swarm_operator",
+      "comprehensive_swarm_control_architecture",
+      "simulation_feedback_finetuning",
+      "robot_generated_data_finetuning",
+      "code_security_finetuning",
+      "edge_model_finetuning",
+      "micro_macro_validation",
+      "prompt_api_controller_bridge",
+      "rag_swarm_memory"
+    ],
+    "evidence_level": "viewpoint_review",
+    "next_action": "extract_swarm_fm_roadmap",
+    "tags": [
+      "foundation models",
+      "robot swarms",
+      "LLM",
+      "VLM",
+      "swarm designer",
+      "swarm operator",
+      "edge computing",
+      "code security"
+    ],
+    "authors": [
+      "Volker Strobel",
+      "Marco Dorigo",
+      "Mario Fritz"
+    ],
+    "institutions": [
+      "IRIDIA",
+      "Université Libre de Bruxelles",
+      "CISPA Helmholtz Center for Information Security"
+    ],
+    "doi": "10.1126/scirobotics.adz1543",
+    "arxiv": "",
+    "url": "https://www.science.org/doi/10.1126/scirobotics.adz1543",
+    "project_url": "",
+    "image_url": "",
+    "zotero_key": "",
+    "citekey": "strobel2026foundation",
+    "cites": [
+      "2026-genswarm-multi-robot-code-policy"
+    ],
+    "extends": [],
+    "uses": [],
+    "enables": [],
+    "complements": [],
+    "contrasts": [],
+    "published_value": 24315,
+    "relations": [
+      {
+        "type": "cites",
+        "target": "2026-genswarm-multi-robot-code-policy"
+      }
+    ],
+    "file": "papers/2026-foundation-models-robot-swarms.md",
+    "note_html": "notes/2026-foundation-models-robot-swarms.html",
+    "summary": "这篇 Science Robotics Viewpoint 把 foundation models 用于 robot swarms 的未来路线分成两类角色：FM as swarm designer 负责生成控制器、任务规划和代码；FM as swarm operator 负责把传感器、通信和人类指令转成机器人之间的协作决策。",
+    "research_question": "机器人集群的难点不是单个机器人是否聪明，而是大量简单机器人如何通过局部通信和去中心化控制产生可靠的群体行为。传统 swarm controller 往往需要专家提前写好协议和控制逻辑，面对灾害搜救、环境监测、未知地形这类开放场景时很难实时适配。\n\n论文的问题是：foundation models 能否把 robot swarms 从“预先写死控制器”推进到“可以根据自然语言、图像、示意图、传感器和任务反馈动态设计与操作集群”的系统。",
+    "method": "论文不是提出一个新模型，而是提出一个 FM-enabled robot swarms 的系统框架。\n\n第一类角色是 FM designer。它负责 controller synthesis 和 high-level planning：把自然语言、草图、图表或示范行为转成单个机器人的控制代码或集群任务计划。生成后需要做语法检查、逻辑验证、仿真验证、真实机器人验证和安全检查。这里的关键挑战是 micro-macro link：FM 生成的是个体机器人层面的控制逻辑，但我们真正关心的是群体层面的 emergent behavior。\n\n第二类角色是 FM operator。它运行在机器人执行过程中，把机器人传感器、相机、收到的消息、人类指令和历史上下文写入 prompt，再把 FM 输出映射到机器人 API 或预定义控制程序。FM operator 可以支持 robot-robot collaboration 和 human-swarm interaction，例如让机器人用自然语言协商、向人类解释集群状态、在搜救任务中向伤员提问或汇报行动意图。\n\n第三类是 comprehensive control architecture。论文主张不要把传统控制、FM designer、FM operator 互斥起来，而是按任务动态组合：低层实时运动仍可由传统控制保障，FM operator 处理语义、通信和局部决策，FM designer 在低活动阶段或部署前生成新功能和新控制器。",
+    "contribution": "- 把 FM 在机器人集群中的角色拆成 designer 和 operator，而不是笼统说“用 LLM 控制机器人”。\n- 明确指出 robot swarms 和普通多机器人系统不同：去中心化、局部通信、无中心控制、规模更大、硬件更受限，不能直接套用单机器人 VLA 或 centralized multi-agent LLM。\n- 把 micro-macro link 放在核心位置：FM 如果不理解“一个机器人行为变化如何影响整个集群”，生成的控制器可能在个体层面看起来合理，在群体层面却失败。\n- 把安全、可控性、端侧算力、分区通信和人-集群交互都放入同一个研究议程。\n- 引用 GenSwarm，把自然语言到多机器人代码策略生成视为 FM designer 方向的具体系统代表。",
+    "reading_highlights": "1. Fine-tuning with simulation feedback：FM 需要理解 micro-macro link。当前 FM 通常不知道改变某个机器人的局部行为会怎样影响整个 swarm，因此应该用物理仿真器、VLM 视频分析、任务指标或真实实验反馈来微调模型，让它学习 swarm-level behavior 的因果后果。对我们来说，这对应“仿真反馈训练 planner critic / controller generator”。\n2. Fine-tuning with robot-generated data：当前 FM 主要从人类文本、图像和视频里学世界，但机器人看到的是传感器、局部通信、噪声观测、低分辨率图像、有限算力和硬件约束。论文强调需要研究 human perspective 和 robot perspective 的差异，并用机器人自己产生的 sensor data 微调 FM，使其理解机器人的物理环境、通信限制和硬件边界。\n3. Fine-tuning for code security：FM designer 会生成机器人控制器代码，这些代码可能包含漏洞、恶意逻辑、prompt injection 可利用接口，甚至可能让攻击者接管集群或破坏其他机器人。论文建议可以结合 CWE、模型检查、sandboxing、allowlisting 和专门微调的安全模型，在部署前检测并修复控制器中的安全问题。\n4. Fine-tuning for edge computing：机器人集群不能默认依赖云端大模型，因为水下、矿井、太空、灾害现场都可能没有可靠网络，而且集中通信会造成瓶颈。未来应把 fine-tuning 和 quantization、pruning、distillation、KV-cache/FlashAttention 等压缩加速技术结合，得到能在每个机器人端侧运行的轻量 FM。",
+    "limitation": "这是一篇 Viewpoint，不是实验论文。它没有提供一个统一模型、benchmark 或可复现实验结果，因此不能把其中的路线直接当成已验证结论。它的价值在于定位问题和拆解研究议程：哪些问题必须被解决，哪些模块需要组合，哪些风险会阻碍真实 swarm deployment。",
+    "relation": "GenSwarm 可以看作这篇 Viewpoint 中 FM designer 路线的具体系统化实现：从自然语言任务生成多机器人代码策略，再进入仿真验证和真实部署。Strobel 等人的文章站得更高，讨论 GenSwarm 之外还需要哪些东西：micro-macro link 验证、端侧部署、安全控制、人-集群交互、分区通信和机器人视角数据。\n\n它和 VLA / WAM 不是同一个层级。VLA 和 WAM 更像单个机器人或少数机器人执行器/世界模型；这篇文章关心的是 foundation model 如何进入 swarm-level architecture。它给我们的启发是：多机器人任务规划模型不能只追求“更强的动作模型”，还要建模通信、局部性、规模化、代码安全和端侧部署。",
+    "planning_insight": "这篇论文应该作为我们仓库的 overview/foundation 节点。它把后续研究拆成可执行路线：planner 需要连接仿真反馈，executor 需要理解机器人视角数据，code policy 需要安全审计，模型需要能在端侧运行。\n\n如果我们要做 General Multi-Agent Task Planning Model，最关键的不是把一个大模型直接塞进每台机器人，而是建立四个闭环：\n\n- 仿真反馈闭环：语言计划或代码策略生成后进入物理仿真，仿真结果反向训练 planner / critic。\n- 机器人数据闭环：真实机器人传感器、通信日志、失败轨迹和硬件约束回流训练。\n- 安全验证闭环：生成控制器必须过语法、逻辑、权限、安全和行为边界检查。\n- 端侧部署闭环：模型压缩、角色分工和通信摘要要共同满足 swarm 的算力和通信限制。",
+    "reusable_module_text": "FM swarm designer、FM swarm operator、综合控制架构、micro-macro validation、simulation-feedback fine-tuning、robot-generated-data fine-tuning、code-security fine-tuning、edge-model fine-tuning、prompt-to-API controller bridge、RAG swarm memory、sandbox/allowlist security wrapper。",
+    "evidence_risk": "证据来自 Science Robotics Viewpoint 的系统性分析和相关文献引用，尤其是 GenSwarm、LLM2Swarm、ChatGPT for Robotics、多机器人 LLM 协作、robot swarm 自动设计和 FM 安全研究。风险是本文主要是路线图与观点，不包含新 benchmark；同时 edge FM、robot-generated data fine-tuning 和 swarm-level causal evaluation 都还缺少统一实验标准。",
+    "open_question": "如何把 FM designer 生成的个体控制器和 swarm-level 目标放进同一个可训练目标中？也就是说，模型不仅要生成能运行的代码，还要预测它在 N 个机器人、局部通信、遮挡、分区和故障情况下产生的群体行为。"
   },
   {
     "id": "2026-pi07-steerable-generalist-robotic-foundation-model",
@@ -1404,10 +1986,12 @@
       }
     ],
     "file": "papers/2026-pi07-steerable-generalist-robotic-foundation-model.md",
+    "note_html": "notes/2026-pi07-steerable-generalist-robotic-foundation-model.html",
     "summary": "π0.7 把 PI 系列推进到“可 steer 的通用机器人基础模型”，重点是用更丰富的上下文条件支持组合泛化和策略选择。",
     "research_question": "当训练数据包含多种策略和质量差异时，通用 VLA 如何避免平均化，并根据任务上下文选择正确执行方式。",
     "method": "论文使用 diverse context conditioning：不仅给语言命令，还给任务表现元数据、策略信息、子目标图像和记忆相关上下文等多模态条件。",
     "contribution": "π0.7 显示出更强的开箱表现、跨具身零样本泛化和多阶段任务能力，是目前 PI 系列中最接近“可由 planner 调用”的策略模型。",
+    "reading_highlights": "",
     "limitation": "论文展示的是通用机器人策略能力，不等于完整任务规划系统。多机器人中的协同、任务竞价、路径冲突和通信延迟仍需外部系统处理。",
     "relation": "相对 π0.5 的开放世界泛化、π*0.6 的经验学习和 MEM 的长程记忆，π0.7 更强调上下文条件对策略行为的可控性。它和 WAM 的区别在于：π0.7 仍偏直接策略，WAM 偏预测世界状态和动作。",
     "planning_insight": "对你的方向最有价值的是“上下文可控执行器”这个接口：多机器人 planner 可以为不同机器人生成不同上下文，例如角色、目标、路径约束、协作顺序和失败恢复策略。",

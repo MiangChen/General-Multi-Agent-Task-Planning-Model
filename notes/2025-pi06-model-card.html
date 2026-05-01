@@ -1,0 +1,605 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>π0.6 · Paper Note</title>
+  <style>
+    :root {
+      --bg: #eef4fb;
+      --paper: rgba(255, 255, 255, 0.82);
+      --paper-strong: rgba(255, 255, 255, 0.94);
+      --ink: #111827;
+      --muted: #61748d;
+      --line: rgba(74, 112, 154, 0.34);
+      --soft-line: rgba(133, 163, 196, 0.24);
+      --blue: #246bfe;
+      --cyan: #00a7c7;
+      --purple: #6a7dff;
+      --shadow: 0 18px 45px rgba(22, 50, 83, 0.12);
+      --sans: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      font-family: var(--sans);
+      line-height: 1.72;
+      background:
+        radial-gradient(circle at 16% 12%, rgba(36, 107, 254, 0.14), transparent 28rem),
+        radial-gradient(circle at 88% 16%, rgba(0, 167, 199, 0.16), transparent 26rem),
+        linear-gradient(var(--soft-line) 1px, transparent 1px),
+        linear-gradient(90deg, var(--soft-line) 1px, transparent 1px),
+        var(--bg);
+      background-size: auto, auto, 32px 32px, 32px 32px, auto;
+    }
+
+    a { color: inherit; }
+
+    .note-topbar {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      padding: 13px 28px;
+      border-bottom: 1px solid var(--soft-line);
+      background: rgba(248, 251, 255, 0.86);
+      backdrop-filter: blur(18px);
+      box-shadow: 0 14px 35px rgba(31, 76, 128, 0.08);
+    }
+
+    .note-brand,
+    .note-nav a,
+    .note-kicker,
+    .note-section-kicker,
+    .metric-label,
+    .note-pill,
+    .relation-chip span {
+      font-family: var(--mono);
+    }
+
+    .note-brand {
+      color: var(--blue);
+      font-weight: 800;
+      text-decoration: none;
+    }
+
+    .note-nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .note-nav a {
+      text-decoration: none;
+    }
+
+    .note-nav a:hover {
+      color: var(--blue);
+    }
+
+    .note-shell {
+      width: min(1500px, calc(100% - 48px));
+      margin: 0 auto;
+      padding: 38px 0 70px;
+    }
+
+    .note-hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1.6fr) 360px;
+      gap: 24px;
+      align-items: stretch;
+      margin-bottom: 24px;
+    }
+
+    .hero-main,
+    .hero-side,
+    .note-section,
+    .note-aside-panel {
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: var(--paper);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(18px);
+    }
+
+    .hero-main {
+      padding: 34px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .hero-main::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-top: 2px solid rgba(36, 107, 254, 0.42);
+      background: linear-gradient(135deg, rgba(36, 107, 254, 0.08), transparent 42%);
+      pointer-events: none;
+    }
+
+    .note-kicker {
+      position: relative;
+      color: var(--blue);
+      font-size: 12px;
+      margin-bottom: 14px;
+    }
+
+    h1, h2, h3 {
+      margin: 0;
+      line-height: 1.14;
+    }
+
+    h1 {
+      position: relative;
+      max-width: 980px;
+      color: #0f172a;
+      font-size: 56px;
+      font-weight: 820;
+    }
+
+    .full-title {
+      position: relative;
+      max-width: 940px;
+      margin-top: 14px;
+      color: var(--muted);
+      font-size: 18px;
+    }
+
+    .note-summary {
+      position: relative;
+      max-width: 980px;
+      margin-top: 28px;
+      padding-left: 18px;
+      border-left: 3px solid var(--blue);
+      font-size: 22px;
+      color: #16233a;
+    }
+
+    .note-summary p {
+      margin: 0;
+    }
+
+    .hero-side {
+      display: grid;
+      gap: 14px;
+      padding: 22px;
+    }
+
+    .metric-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+    }
+
+    .metric {
+      min-height: 84px;
+      padding: 14px;
+      border: 1px solid var(--soft-line);
+      border-radius: 8px;
+      background: rgba(247, 251, 255, 0.76);
+    }
+
+    .metric-value {
+      color: var(--blue);
+      font-size: 22px;
+      font-weight: 800;
+    }
+
+    .metric-label {
+      color: var(--muted);
+      font-size: 11px;
+    }
+
+    .note-link-row,
+    .pill-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .note-link-row a {
+      min-height: 30px;
+      display: inline-flex;
+      align-items: center;
+      padding: 0 10px;
+      border: 1px solid rgba(36, 107, 254, 0.28);
+      border-radius: 5px;
+      background: linear-gradient(135deg, #1e63ff, #0aa3c2);
+      color: #fff;
+      text-decoration: none;
+      font-size: 13px;
+      box-shadow: 0 10px 22px rgba(36, 107, 254, 0.16);
+    }
+
+    .note-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 320px;
+      gap: 24px;
+      align-items: start;
+    }
+
+    .note-main {
+      display: grid;
+      gap: 16px;
+    }
+
+    .note-section {
+      padding: 24px;
+      background: var(--paper-strong);
+    }
+
+    .note-section.impact {
+      border-color: rgba(36, 107, 254, 0.44);
+      background:
+        linear-gradient(135deg, rgba(36, 107, 254, 0.08), rgba(0, 167, 199, 0.05)),
+        var(--paper-strong);
+    }
+
+    .note-section.risk {
+      border-color: rgba(209, 77, 114, 0.26);
+    }
+
+    .note-section-kicker {
+      color: var(--blue);
+      font-size: 12px;
+      margin-bottom: 10px;
+    }
+
+    .note-section-body {
+      color: #172033;
+      font-size: 16px;
+    }
+
+    .note-section-body p,
+    .note-section-body ul,
+    .note-section-body ol {
+      margin: 0 0 12px;
+    }
+
+    .note-section-body :last-child {
+      margin-bottom: 0;
+    }
+
+    .note-section-body ul,
+    .note-section-body ol {
+      padding-left: 22px;
+    }
+
+    .note-section-body li {
+      margin: 7px 0;
+    }
+
+    code {
+      padding: 1px 5px;
+      border: 1px solid var(--soft-line);
+      border-radius: 4px;
+      background: rgba(236, 246, 255, 0.82);
+      font-family: var(--mono);
+      font-size: 0.92em;
+    }
+
+    .note-aside {
+      position: sticky;
+      top: 82px;
+      display: grid;
+      gap: 14px;
+    }
+
+    .note-aside-panel {
+      padding: 18px;
+    }
+
+    .note-aside-panel h2 {
+      margin-bottom: 12px;
+      font-size: 18px;
+    }
+
+    .note-pill {
+      display: inline-flex;
+      align-items: center;
+      min-height: 25px;
+      padding: 0 8px;
+      border: 1px solid var(--soft-line);
+      border-radius: 999px;
+      background: rgba(247, 251, 255, 0.84);
+      color: #415a77;
+      font-size: 11px;
+    }
+
+    .role-pill {
+      border-color: rgba(36, 107, 254, 0.32);
+      color: #1f4fd6;
+    }
+
+    .module-pill {
+      border-color: rgba(0, 167, 199, 0.32);
+      color: #0f7894;
+    }
+
+    .relation-columns {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+    }
+
+    .relation-columns h3 {
+      margin-bottom: 10px;
+      font-size: 16px;
+    }
+
+    .relation-chip-grid {
+      display: grid;
+      gap: 8px;
+    }
+
+    .relation-chip {
+      display: grid;
+      gap: 3px;
+      padding: 10px 12px;
+      border: 1px solid var(--soft-line);
+      border-left: 3px solid var(--rel);
+      border-radius: 6px;
+      background: rgba(247, 251, 255, 0.86);
+      text-decoration: none;
+    }
+
+    .relation-chip span {
+      color: color-mix(in srgb, var(--rel), #111827 30%);
+      font-size: 11px;
+      font-weight: 800;
+    }
+
+    .relation-chip strong {
+      color: #142033;
+      font-size: 14px;
+    }
+
+    .relation-empty {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .toc-list {
+      display: grid;
+      gap: 8px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      font-size: 13px;
+    }
+
+    .toc-list a {
+      color: var(--muted);
+      text-decoration: none;
+    }
+
+    .toc-list a:hover {
+      color: var(--blue);
+    }
+
+    .note-footer {
+      padding: 34px 0 0;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    @media (max-width: 980px) {
+      .note-topbar {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .note-shell {
+        width: min(100% - 28px, 760px);
+      }
+
+      .note-hero,
+      .note-layout,
+      .relation-columns {
+        grid-template-columns: 1fr;
+      }
+
+      h1 {
+        font-size: 40px;
+      }
+
+      .note-aside {
+        position: static;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="note-topbar">
+    <a class="note-brand" href="../index.html#domain-graph">General Multi-Agent Model</a>
+    <nav class="note-nav">
+      <a href="../index.html#domain-graph">关系图</a>
+      <a href="../index.html#roles">系统角色</a>
+      <a href="../index.html#papers">论文索引</a>
+      <a href="#relations">关系</a>
+      <a href="#open-question">开放问题</a>
+    </nav>
+  </header>
+
+  <main class="note-shell" id="top">
+    <section class="note-hero">
+      <div class="hero-main">
+        <div class="note-kicker">2025-11 · Model Card / Physical Intelligence · VLA</div>
+        <h1>π0.6</h1>
+        <div class="full-title">π0.6 Model Card</div>
+        <div class="note-summary"><p>π0.6 是 π0.5 后续的部署型模型迭代，保留高层子任务预测和低层动作生成的层级设计，并改进骨干、提示和训练数据。</p></div>
+      </div>
+      <aside class="hero-side">
+        <div class="metric-grid">
+          <div class="metric">
+            <div class="metric-value">2025</div>
+            <div class="metric-label">Year</div>
+          </div>
+          <div class="metric">
+            <div class="metric-value">中</div>
+            <div class="metric-label">Readiness</div>
+          </div>
+          <div class="metric">
+            <div class="metric-value">略读</div>
+            <div class="metric-label">Evidence</div>
+          </div>
+          <div class="metric">
+            <div class="metric-value">2</div>
+            <div class="metric-label">Relations</div>
+          </div>
+        </div>
+        <div>
+          <div class="note-section-kicker">Authors</div>
+          <div>Physical Intelligence</div>
+        </div>
+        <div>
+          <div class="note-section-kicker">Institutions</div>
+          <div>Physical Intelligence</div>
+        </div>
+        <div class="note-link-row"><a href="https://website.pi-asset.com/pi06star/PI06_model_card.pdf" target="_blank" rel="noreferrer">Paper</a><a href="https://physicalintelligence.company/" target="_blank" rel="noreferrer">Project</a><a href="../papers/2025-pi06-model-card.md" target="_blank" rel="noreferrer">Markdown source</a></div>
+      </aside>
+    </section>
+
+    <section class="note-layout">
+      <article class="note-main">
+
+    <section class="note-section impact">
+      <div class="note-section-kicker">For Our Model</div>
+      <div class="note-section-body"><p>可以把 π0.6 作为“机器人能力模型”的来源：不同平台在不同任务上的成功率、失败类型和恢复能力可以反馈给任务分配器。</p></div>
+    </section>
+
+
+    <section class="note-section ">
+      <div class="note-section-kicker">Research Question</div>
+      <div class="note-section-body"><p>在真实长程任务中，VLA 如何进一步提升鲁棒性、减少失败并适配更多部署场景。</p></div>
+    </section>
+
+
+    <section class="note-section ">
+      <div class="note-section-kicker">Method</div>
+      <div class="note-section-body"><p>公开材料显示 π0.6 继续采用层级 VLA 架构，生成 action chunks，并结合改进后的 VLM backbone、prompt 设计和训练数据。</p></div>
+    </section>
+
+
+    <section class="note-section ">
+      <div class="note-section-kicker">Key Contributions</div>
+      <div class="note-section-body"><p>π0.6 对你的知识库的价值在于承接 π0.5 与 π*0.6：它是后续真实世界经验学习和部署报告的基础模型。</p></div>
+    </section>
+
+
+
+    <section class="note-section risk">
+      <div class="note-section-kicker">Limitations</div>
+      <div class="note-section-body"><p>它更像模型卡和技术更新，不是完整论文。需要谨慎标注证据等级，避免把营销材料当成 peer-reviewed 结论。</p></div>
+    </section>
+
+
+    <section class="note-section ">
+      <div class="note-section-kicker">Reusable Modules</div>
+      <div class="note-section-body"><p>deployment model card、robot capability profile、action chunk policy。可转成多机器人任务分配器需要的能力和风险先验。</p></div>
+    </section>
+
+
+    <section class="note-section risk">
+      <div class="note-section-kicker">Evidence &amp; Risk</div>
+      <div class="note-section-body"><p>证据来自模型卡和部署报告；风险是公开细节有限，需要和实验数据或其他论文互证。</p></div>
+    </section>
+
+        <div id="relations">
+    <section class="note-section relation-section">
+      <div class="note-section-kicker">Typed Relations</div>
+      <div class="relation-columns">
+        <div>
+          <h3>当前论文 -> 关联论文 / 前序工作</h3>
+          <div class="relation-chip-grid">
+            <a class="relation-chip" style="--rel:#246bfe" href="../notes/2025-pi05-open-world-generalization.html">
+              <span>继承/扩展</span>
+              <strong>π0.5</strong>
+            </a>
+
+            <a class="relation-chip" style="--rel:#246bfe" href="../notes/2024-pi0-vla-flow-model.html">
+              <span>继承/扩展</span>
+              <strong>π0</strong>
+            </a>
+          </div>
+        </div>
+        <div>
+          <h3>下游论文 -> 当前论文</h3>
+          <div class="relation-chip-grid">
+            <a class="relation-chip incoming" style="--rel:#246bfe" href="../notes/2025-pistar06-recap.html">
+              <span>继承/扩展</span>
+              <strong>π*0.6 / RECAP</strong>
+            </a>
+
+            <a class="relation-chip incoming" style="--rel:#246bfe" href="../notes/2026-mem-multi-scale-embodied-memory.html">
+              <span>继承/扩展</span>
+              <strong>MEM</strong>
+            </a>
+
+            <a class="relation-chip incoming" style="--rel:#246bfe" href="../notes/2026-pi07-steerable-generalist-robotic-foundation-model.html">
+              <span>继承/扩展</span>
+              <strong>π0.7</strong>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+    <section class="note-section ">
+      <div class="note-section-kicker">Relation Notes</div>
+      <div class="note-section-body"><p>π*0.6 在 π0.6 基础上通过 RECAP 加入经验、纠错和强化学习式改进；π0.7 进一步强调上下文条件和组合泛化。</p></div>
+    </section>
+
+        <div id="open-question">
+    <section class="note-section impact">
+      <div class="note-section-kicker">Open Question</div>
+      <div class="note-section-body"><p>如何从 VLA 部署日志中自动估计每个机器人在不同子任务上的 success probability 和 expected duration。</p></div>
+    </section>
+  </div>
+      </article>
+
+      <aside class="note-aside">
+        <section class="note-aside-panel">
+          <h2>System Roles</h2>
+          <div class="pill-row"><span class="note-pill role-pill">执行器</span><span class="note-pill role-pill">基础策略</span></div>
+        </section>
+        <section class="note-aside-panel">
+          <h2>Reusable Modules</h2>
+          <div class="pill-row"><span class="note-pill module-pill">deployment model card</span><span class="note-pill module-pill">action chunk policy</span><span class="note-pill module-pill">robot capability profile</span></div>
+        </section>
+        <section class="note-aside-panel">
+          <h2>Next Action</h2>
+          <div class="note-pill role-pill">提取能力表</div>
+        </section>
+        <section class="note-aside-panel">
+          <h2>Tags</h2>
+          <div class="pill-row"><span class="note-pill">π0.6</span><span class="note-pill">VLA</span><span class="note-pill">deployment</span><span class="note-pill">robot foundation model</span><span class="note-pill">model card</span></div>
+        </section>
+        <section class="note-aside-panel">
+          <h2>Reading Map</h2>
+          <ul class="toc-list">
+            <li><a href="#top">Summary</a></li>
+            <li><a href="#relations">Typed relations</a></li>
+            <li><a href="#open-question">Open question</a></li>
+            <li><a href="../index.html#domain-graph">Back to graph</a></li>
+          </ul>
+        </section>
+      </aside>
+    </section>
+
+    <footer class="note-footer">
+      Generated from papers/2025-pi06-model-card.md at 2026/5/1 15:28:06.
+    </footer>
+  </main>
+</body>
+</html>

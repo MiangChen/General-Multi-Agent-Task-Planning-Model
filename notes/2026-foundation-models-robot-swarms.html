@@ -1,0 +1,597 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>FM Swarms Viewpoint · Paper Note</title>
+  <style>
+    :root {
+      --bg: #eef4fb;
+      --paper: rgba(255, 255, 255, 0.82);
+      --paper-strong: rgba(255, 255, 255, 0.94);
+      --ink: #111827;
+      --muted: #61748d;
+      --line: rgba(74, 112, 154, 0.34);
+      --soft-line: rgba(133, 163, 196, 0.24);
+      --blue: #246bfe;
+      --cyan: #00a7c7;
+      --purple: #6a7dff;
+      --shadow: 0 18px 45px rgba(22, 50, 83, 0.12);
+      --sans: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      font-family: var(--sans);
+      line-height: 1.72;
+      background:
+        radial-gradient(circle at 16% 12%, rgba(36, 107, 254, 0.14), transparent 28rem),
+        radial-gradient(circle at 88% 16%, rgba(0, 167, 199, 0.16), transparent 26rem),
+        linear-gradient(var(--soft-line) 1px, transparent 1px),
+        linear-gradient(90deg, var(--soft-line) 1px, transparent 1px),
+        var(--bg);
+      background-size: auto, auto, 32px 32px, 32px 32px, auto;
+    }
+
+    a { color: inherit; }
+
+    .note-topbar {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      padding: 13px 28px;
+      border-bottom: 1px solid var(--soft-line);
+      background: rgba(248, 251, 255, 0.86);
+      backdrop-filter: blur(18px);
+      box-shadow: 0 14px 35px rgba(31, 76, 128, 0.08);
+    }
+
+    .note-brand,
+    .note-nav a,
+    .note-kicker,
+    .note-section-kicker,
+    .metric-label,
+    .note-pill,
+    .relation-chip span {
+      font-family: var(--mono);
+    }
+
+    .note-brand {
+      color: var(--blue);
+      font-weight: 800;
+      text-decoration: none;
+    }
+
+    .note-nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .note-nav a {
+      text-decoration: none;
+    }
+
+    .note-nav a:hover {
+      color: var(--blue);
+    }
+
+    .note-shell {
+      width: min(1500px, calc(100% - 48px));
+      margin: 0 auto;
+      padding: 38px 0 70px;
+    }
+
+    .note-hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1.6fr) 360px;
+      gap: 24px;
+      align-items: stretch;
+      margin-bottom: 24px;
+    }
+
+    .hero-main,
+    .hero-side,
+    .note-section,
+    .note-aside-panel {
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: var(--paper);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(18px);
+    }
+
+    .hero-main {
+      padding: 34px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .hero-main::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-top: 2px solid rgba(36, 107, 254, 0.42);
+      background: linear-gradient(135deg, rgba(36, 107, 254, 0.08), transparent 42%);
+      pointer-events: none;
+    }
+
+    .note-kicker {
+      position: relative;
+      color: var(--blue);
+      font-size: 12px;
+      margin-bottom: 14px;
+    }
+
+    h1, h2, h3 {
+      margin: 0;
+      line-height: 1.14;
+    }
+
+    h1 {
+      position: relative;
+      max-width: 980px;
+      color: #0f172a;
+      font-size: 56px;
+      font-weight: 820;
+    }
+
+    .full-title {
+      position: relative;
+      max-width: 940px;
+      margin-top: 14px;
+      color: var(--muted);
+      font-size: 18px;
+    }
+
+    .note-summary {
+      position: relative;
+      max-width: 980px;
+      margin-top: 28px;
+      padding-left: 18px;
+      border-left: 3px solid var(--blue);
+      font-size: 22px;
+      color: #16233a;
+    }
+
+    .note-summary p {
+      margin: 0;
+    }
+
+    .hero-side {
+      display: grid;
+      gap: 14px;
+      padding: 22px;
+    }
+
+    .metric-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+    }
+
+    .metric {
+      min-height: 84px;
+      padding: 14px;
+      border: 1px solid var(--soft-line);
+      border-radius: 8px;
+      background: rgba(247, 251, 255, 0.76);
+    }
+
+    .metric-value {
+      color: var(--blue);
+      font-size: 22px;
+      font-weight: 800;
+    }
+
+    .metric-label {
+      color: var(--muted);
+      font-size: 11px;
+    }
+
+    .note-link-row,
+    .pill-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .note-link-row a {
+      min-height: 30px;
+      display: inline-flex;
+      align-items: center;
+      padding: 0 10px;
+      border: 1px solid rgba(36, 107, 254, 0.28);
+      border-radius: 5px;
+      background: linear-gradient(135deg, #1e63ff, #0aa3c2);
+      color: #fff;
+      text-decoration: none;
+      font-size: 13px;
+      box-shadow: 0 10px 22px rgba(36, 107, 254, 0.16);
+    }
+
+    .note-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 320px;
+      gap: 24px;
+      align-items: start;
+    }
+
+    .note-main {
+      display: grid;
+      gap: 16px;
+    }
+
+    .note-section {
+      padding: 24px;
+      background: var(--paper-strong);
+    }
+
+    .note-section.impact {
+      border-color: rgba(36, 107, 254, 0.44);
+      background:
+        linear-gradient(135deg, rgba(36, 107, 254, 0.08), rgba(0, 167, 199, 0.05)),
+        var(--paper-strong);
+    }
+
+    .note-section.risk {
+      border-color: rgba(209, 77, 114, 0.26);
+    }
+
+    .note-section-kicker {
+      color: var(--blue);
+      font-size: 12px;
+      margin-bottom: 10px;
+    }
+
+    .note-section-body {
+      color: #172033;
+      font-size: 16px;
+    }
+
+    .note-section-body p,
+    .note-section-body ul,
+    .note-section-body ol {
+      margin: 0 0 12px;
+    }
+
+    .note-section-body :last-child {
+      margin-bottom: 0;
+    }
+
+    .note-section-body ul,
+    .note-section-body ol {
+      padding-left: 22px;
+    }
+
+    .note-section-body li {
+      margin: 7px 0;
+    }
+
+    code {
+      padding: 1px 5px;
+      border: 1px solid var(--soft-line);
+      border-radius: 4px;
+      background: rgba(236, 246, 255, 0.82);
+      font-family: var(--mono);
+      font-size: 0.92em;
+    }
+
+    .note-aside {
+      position: sticky;
+      top: 82px;
+      display: grid;
+      gap: 14px;
+    }
+
+    .note-aside-panel {
+      padding: 18px;
+    }
+
+    .note-aside-panel h2 {
+      margin-bottom: 12px;
+      font-size: 18px;
+    }
+
+    .note-pill {
+      display: inline-flex;
+      align-items: center;
+      min-height: 25px;
+      padding: 0 8px;
+      border: 1px solid var(--soft-line);
+      border-radius: 999px;
+      background: rgba(247, 251, 255, 0.84);
+      color: #415a77;
+      font-size: 11px;
+    }
+
+    .role-pill {
+      border-color: rgba(36, 107, 254, 0.32);
+      color: #1f4fd6;
+    }
+
+    .module-pill {
+      border-color: rgba(0, 167, 199, 0.32);
+      color: #0f7894;
+    }
+
+    .relation-columns {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+    }
+
+    .relation-columns h3 {
+      margin-bottom: 10px;
+      font-size: 16px;
+    }
+
+    .relation-chip-grid {
+      display: grid;
+      gap: 8px;
+    }
+
+    .relation-chip {
+      display: grid;
+      gap: 3px;
+      padding: 10px 12px;
+      border: 1px solid var(--soft-line);
+      border-left: 3px solid var(--rel);
+      border-radius: 6px;
+      background: rgba(247, 251, 255, 0.86);
+      text-decoration: none;
+    }
+
+    .relation-chip span {
+      color: color-mix(in srgb, var(--rel), #111827 30%);
+      font-size: 11px;
+      font-weight: 800;
+    }
+
+    .relation-chip strong {
+      color: #142033;
+      font-size: 14px;
+    }
+
+    .relation-empty {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .toc-list {
+      display: grid;
+      gap: 8px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      font-size: 13px;
+    }
+
+    .toc-list a {
+      color: var(--muted);
+      text-decoration: none;
+    }
+
+    .toc-list a:hover {
+      color: var(--blue);
+    }
+
+    .note-footer {
+      padding: 34px 0 0;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    @media (max-width: 980px) {
+      .note-topbar {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .note-shell {
+        width: min(100% - 28px, 760px);
+      }
+
+      .note-hero,
+      .note-layout,
+      .relation-columns {
+        grid-template-columns: 1fr;
+      }
+
+      h1 {
+        font-size: 40px;
+      }
+
+      .note-aside {
+        position: static;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="note-topbar">
+    <a class="note-brand" href="../index.html#domain-graph">General Multi-Agent Model</a>
+    <nav class="note-nav">
+      <a href="../index.html#domain-graph">关系图</a>
+      <a href="../index.html#roles">系统角色</a>
+      <a href="../index.html#papers">论文索引</a>
+      <a href="#relations">关系</a>
+      <a href="#open-question">开放问题</a>
+    </nav>
+  </header>
+
+  <main class="note-shell" id="top">
+    <section class="note-hero">
+      <div class="hero-main">
+        <div class="note-kicker">2026-04 · Science Robotics Viewpoint · Foundation Swarm Overview</div>
+        <h1>FM Swarms Viewpoint</h1>
+        <div class="full-title">How Foundation Models Will Revolutionize Robot Swarms</div>
+        <div class="note-summary"><p>这篇 Science Robotics Viewpoint 把 foundation models 用于 robot swarms 的未来路线分成两类角色：FM as swarm designer 负责生成控制器、任务规划和代码；FM as swarm operator 负责把传感器、通信和人类指令转成机器人之间的协作决策。</p></div>
+      </div>
+      <aside class="hero-side">
+        <div class="metric-grid">
+          <div class="metric">
+            <div class="metric-value">2026</div>
+            <div class="metric-label">Year</div>
+          </div>
+          <div class="metric">
+            <div class="metric-value">高</div>
+            <div class="metric-label">Readiness</div>
+          </div>
+          <div class="metric">
+            <div class="metric-value">观点综述</div>
+            <div class="metric-label">Evidence</div>
+          </div>
+          <div class="metric">
+            <div class="metric-value">1</div>
+            <div class="metric-label">Relations</div>
+          </div>
+        </div>
+        <div>
+          <div class="note-section-kicker">Authors</div>
+          <div>Volker Strobel, Marco Dorigo, Mario Fritz</div>
+        </div>
+        <div>
+          <div class="note-section-kicker">Institutions</div>
+          <div>IRIDIA · Université Libre de Bruxelles · CISPA Helmholtz Center for Information Security</div>
+        </div>
+        <div class="note-link-row"><a href="https://www.science.org/doi/10.1126/scirobotics.adz1543" target="_blank" rel="noreferrer">Paper</a><a href="https://doi.org/10.1126/scirobotics.adz1543" target="_blank" rel="noreferrer">DOI</a><a href="../papers/2026-foundation-models-robot-swarms.md" target="_blank" rel="noreferrer">Markdown source</a></div>
+      </aside>
+    </section>
+
+    <section class="note-layout">
+      <article class="note-main">
+
+    <section class="note-section impact">
+      <div class="note-section-kicker">For Our Model</div>
+      <div class="note-section-body"><p>这篇论文应该作为我们仓库的 overview/foundation 节点。它把后续研究拆成可执行路线：planner 需要连接仿真反馈，executor 需要理解机器人视角数据，code policy 需要安全审计，模型需要能在端侧运行。</p>
+<p>如果我们要做 General Multi-Agent Task Planning Model，最关键的不是把一个大模型直接塞进每台机器人，而是建立四个闭环：</p>
+<ul><li>仿真反馈闭环：语言计划或代码策略生成后进入物理仿真，仿真结果反向训练 planner / critic。</li><li>机器人数据闭环：真实机器人传感器、通信日志、失败轨迹和硬件约束回流训练。</li><li>安全验证闭环：生成控制器必须过语法、逻辑、权限、安全和行为边界检查。</li><li>端侧部署闭环：模型压缩、角色分工和通信摘要要共同满足 swarm 的算力和通信限制。</li></ul></div>
+    </section>
+
+
+    <section class="note-section ">
+      <div class="note-section-kicker">Research Question</div>
+      <div class="note-section-body"><p>机器人集群的难点不是单个机器人是否聪明，而是大量简单机器人如何通过局部通信和去中心化控制产生可靠的群体行为。传统 swarm controller 往往需要专家提前写好协议和控制逻辑，面对灾害搜救、环境监测、未知地形这类开放场景时很难实时适配。</p>
+<p>论文的问题是：foundation models 能否把 robot swarms 从“预先写死控制器”推进到“可以根据自然语言、图像、示意图、传感器和任务反馈动态设计与操作集群”的系统。</p></div>
+    </section>
+
+
+    <section class="note-section ">
+      <div class="note-section-kicker">Method</div>
+      <div class="note-section-body"><p>论文不是提出一个新模型，而是提出一个 FM-enabled robot swarms 的系统框架。</p>
+<p>第一类角色是 FM designer。它负责 controller synthesis 和 high-level planning：把自然语言、草图、图表或示范行为转成单个机器人的控制代码或集群任务计划。生成后需要做语法检查、逻辑验证、仿真验证、真实机器人验证和安全检查。这里的关键挑战是 micro-macro link：FM 生成的是个体机器人层面的控制逻辑，但我们真正关心的是群体层面的 emergent behavior。</p>
+<p>第二类角色是 FM operator。它运行在机器人执行过程中，把机器人传感器、相机、收到的消息、人类指令和历史上下文写入 prompt，再把 FM 输出映射到机器人 API 或预定义控制程序。FM operator 可以支持 robot-robot collaboration 和 human-swarm interaction，例如让机器人用自然语言协商、向人类解释集群状态、在搜救任务中向伤员提问或汇报行动意图。</p>
+<p>第三类是 comprehensive control architecture。论文主张不要把传统控制、FM designer、FM operator 互斥起来，而是按任务动态组合：低层实时运动仍可由传统控制保障，FM operator 处理语义、通信和局部决策，FM designer 在低活动阶段或部署前生成新功能和新控制器。</p></div>
+    </section>
+
+
+    <section class="note-section ">
+      <div class="note-section-kicker">Key Contributions</div>
+      <div class="note-section-body"><ul><li>把 FM 在机器人集群中的角色拆成 designer 和 operator，而不是笼统说“用 LLM 控制机器人”。</li><li>明确指出 robot swarms 和普通多机器人系统不同：去中心化、局部通信、无中心控制、规模更大、硬件更受限，不能直接套用单机器人 VLA 或 centralized multi-agent LLM。</li><li>把 micro-macro link 放在核心位置：FM 如果不理解“一个机器人行为变化如何影响整个集群”，生成的控制器可能在个体层面看起来合理，在群体层面却失败。</li><li>把安全、可控性、端侧算力、分区通信和人-集群交互都放入同一个研究议程。</li><li>引用 GenSwarm，把自然语言到多机器人代码策略生成视为 FM designer 方向的具体系统代表。</li></ul></div>
+    </section>
+
+
+    <section class="note-section ">
+      <div class="note-section-kicker">Reading Highlights</div>
+      <div class="note-section-body"><ol><li>Fine-tuning with simulation feedback：FM 需要理解 micro-macro link。当前 FM 通常不知道改变某个机器人的局部行为会怎样影响整个 swarm，因此应该用物理仿真器、VLM 视频分析、任务指标或真实实验反馈来微调模型，让它学习 swarm-level behavior 的因果后果。对我们来说，这对应“仿真反馈训练 planner critic / controller generator”。</li><li>Fine-tuning with robot-generated data：当前 FM 主要从人类文本、图像和视频里学世界，但机器人看到的是传感器、局部通信、噪声观测、低分辨率图像、有限算力和硬件约束。论文强调需要研究 human perspective 和 robot perspective 的差异，并用机器人自己产生的 sensor data 微调 FM，使其理解机器人的物理环境、通信限制和硬件边界。</li><li>Fine-tuning for code security：FM designer 会生成机器人控制器代码，这些代码可能包含漏洞、恶意逻辑、prompt injection 可利用接口，甚至可能让攻击者接管集群或破坏其他机器人。论文建议可以结合 CWE、模型检查、sandboxing、allowlisting 和专门微调的安全模型，在部署前检测并修复控制器中的安全问题。</li><li>Fine-tuning for edge computing：机器人集群不能默认依赖云端大模型，因为水下、矿井、太空、灾害现场都可能没有可靠网络，而且集中通信会造成瓶颈。未来应把 fine-tuning 和 quantization、pruning、distillation、KV-cache/FlashAttention 等压缩加速技术结合，得到能在每个机器人端侧运行的轻量 FM。</li></ol></div>
+    </section>
+
+
+    <section class="note-section risk">
+      <div class="note-section-kicker">Limitations</div>
+      <div class="note-section-body"><p>这是一篇 Viewpoint，不是实验论文。它没有提供一个统一模型、benchmark 或可复现实验结果，因此不能把其中的路线直接当成已验证结论。它的价值在于定位问题和拆解研究议程：哪些问题必须被解决，哪些模块需要组合，哪些风险会阻碍真实 swarm deployment。</p></div>
+    </section>
+
+
+    <section class="note-section ">
+      <div class="note-section-kicker">Reusable Modules</div>
+      <div class="note-section-body"><p>FM swarm designer、FM swarm operator、综合控制架构、micro-macro validation、simulation-feedback fine-tuning、robot-generated-data fine-tuning、code-security fine-tuning、edge-model fine-tuning、prompt-to-API controller bridge、RAG swarm memory、sandbox/allowlist security wrapper。</p></div>
+    </section>
+
+
+    <section class="note-section risk">
+      <div class="note-section-kicker">Evidence &amp; Risk</div>
+      <div class="note-section-body"><p>证据来自 Science Robotics Viewpoint 的系统性分析和相关文献引用，尤其是 GenSwarm、LLM2Swarm、ChatGPT for Robotics、多机器人 LLM 协作、robot swarm 自动设计和 FM 安全研究。风险是本文主要是路线图与观点，不包含新 benchmark；同时 edge FM、robot-generated data fine-tuning 和 swarm-level causal evaluation 都还缺少统一实验标准。</p></div>
+    </section>
+
+        <div id="relations">
+    <section class="note-section relation-section">
+      <div class="note-section-kicker">Typed Relations</div>
+      <div class="relation-columns">
+        <div>
+          <h3>当前论文 -> 关联论文 / 前序工作</h3>
+          <div class="relation-chip-grid">
+            <a class="relation-chip" style="--rel:#4b6f96" href="../notes/2026-genswarm-multi-robot-code-policy.html">
+              <span>引用/背景</span>
+              <strong>GenSwarm</strong>
+            </a>
+          </div>
+        </div>
+        <div>
+          <h3>下游论文 -> 当前论文</h3>
+          <div class="relation-chip-grid"><div class="relation-empty">暂时没有下游论文连接到这篇。</div></div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+    <section class="note-section ">
+      <div class="note-section-kicker">Relation Notes</div>
+      <div class="note-section-body"><p>GenSwarm 可以看作这篇 Viewpoint 中 FM designer 路线的具体系统化实现：从自然语言任务生成多机器人代码策略，再进入仿真验证和真实部署。Strobel 等人的文章站得更高，讨论 GenSwarm 之外还需要哪些东西：micro-macro link 验证、端侧部署、安全控制、人-集群交互、分区通信和机器人视角数据。</p>
+<p>它和 VLA / WAM 不是同一个层级。VLA 和 WAM 更像单个机器人或少数机器人执行器/世界模型；这篇文章关心的是 foundation model 如何进入 swarm-level architecture。它给我们的启发是：多机器人任务规划模型不能只追求“更强的动作模型”，还要建模通信、局部性、规模化、代码安全和端侧部署。</p></div>
+    </section>
+
+        <div id="open-question">
+    <section class="note-section impact">
+      <div class="note-section-kicker">Open Question</div>
+      <div class="note-section-body"><p>如何把 FM designer 生成的个体控制器和 swarm-level 目标放进同一个可训练目标中？也就是说，模型不仅要生成能运行的代码，还要预测它在 N 个机器人、局部通信、遮挡、分区和故障情况下产生的群体行为。</p></div>
+    </section>
+  </div>
+      </article>
+
+      <aside class="note-aside">
+        <section class="note-aside-panel">
+          <h2>System Roles</h2>
+          <div class="pill-row"><span class="note-pill role-pill">语义规划器</span><span class="note-pill role-pill">代码策略生成器</span><span class="note-pill role-pill">任务分配器</span><span class="note-pill role-pill">集群设计器</span><span class="note-pill role-pill">集群操作器</span><span class="note-pill role-pill">安全监控器</span><span class="note-pill role-pill">端侧模型</span></div>
+        </section>
+        <section class="note-aside-panel">
+          <h2>Reusable Modules</h2>
+          <div class="pill-row"><span class="note-pill module-pill">FM 集群设计器</span><span class="note-pill module-pill">FM 集群操作器</span><span class="note-pill module-pill">综合集群控制架构</span><span class="note-pill module-pill">仿真反馈微调</span><span class="note-pill module-pill">机器人数据微调</span><span class="note-pill module-pill">代码安全微调</span><span class="note-pill module-pill">端侧模型微调</span><span class="note-pill module-pill">微观-宏观验证</span><span class="note-pill module-pill">Prompt-API 控制桥</span><span class="note-pill module-pill">RAG 集群记忆</span></div>
+        </section>
+        <section class="note-aside-panel">
+          <h2>Next Action</h2>
+          <div class="note-pill role-pill">抽取集群 FM 路线图</div>
+        </section>
+        <section class="note-aside-panel">
+          <h2>Tags</h2>
+          <div class="pill-row"><span class="note-pill">foundation models</span><span class="note-pill">robot swarms</span><span class="note-pill">LLM</span><span class="note-pill">VLM</span><span class="note-pill">swarm designer</span><span class="note-pill">swarm operator</span><span class="note-pill">edge computing</span><span class="note-pill">code security</span></div>
+        </section>
+        <section class="note-aside-panel">
+          <h2>Reading Map</h2>
+          <ul class="toc-list">
+            <li><a href="#top">Summary</a></li>
+            <li><a href="#relations">Typed relations</a></li>
+            <li><a href="#open-question">Open question</a></li>
+            <li><a href="../index.html#domain-graph">Back to graph</a></li>
+          </ul>
+        </section>
+      </aside>
+    </section>
+
+    <footer class="note-footer">
+      Generated from papers/2026-foundation-models-robot-swarms.md at 2026/5/1 15:28:06.
+    </footer>
+  </main>
+</body>
+</html>
