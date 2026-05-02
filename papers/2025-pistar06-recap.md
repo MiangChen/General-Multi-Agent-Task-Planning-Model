@@ -28,6 +28,7 @@ doi:
 arxiv:
 url: https://www.physicalintelligence.company/download/pistar06.pdf
 project_url: https://physicalintelligence.company/
+pdf_path: pdfs/2025-11-01-pistar06-vla-rl.pdf
 image_url:
 zotero_key:
 citekey: physicalintelligence2025pistar06

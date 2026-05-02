@@ -28,6 +28,7 @@ doi: 10.48550/arXiv.2602.10556
 arxiv: 2602.10556
 url: https://arxiv.org/abs/2602.10556
 project_url: https://lap-vla.github.io/
+pdf_path: pdfs/2026-02-01-LAP-vla-language-action.pdf
 code_url: https://github.com/lihzha/lap
 image_url:
 zotero_key:

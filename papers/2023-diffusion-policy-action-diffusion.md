@@ -28,6 +28,7 @@ doi: 10.48550/arXiv.2303.04137
 arxiv: 2303.04137
 url: https://arxiv.org/abs/2303.04137
 project_url: https://diffusion-policy.cs.columbia.edu/
+pdf_path: pdfs/2023-03-01-Diffusion-Policy-robot-diffusion.pdf
 image_url:
 zotero_key:
 citekey: chi2023diffusionpolicy

@@ -28,6 +28,7 @@ doi: 10.48550/arXiv.2504.16054
 arxiv: 2504.16054
 url: https://arxiv.org/abs/2504.16054
 project_url: https://www.physicalintelligence.company/download/pi05.pdf
+pdf_path: pdfs/2025-04-01-pi05-vla-open-world.pdf
 image_url:
 zotero_key:
 citekey: physicalintelligence2025pi05

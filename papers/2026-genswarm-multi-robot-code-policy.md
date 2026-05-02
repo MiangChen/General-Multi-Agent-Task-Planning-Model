@@ -28,6 +28,7 @@ doi: 10.1038/s44182-025-00065-w
 arxiv: 2503.23875
 url: https://www.nature.com/articles/s44182-025-00065-w
 project_url: https://github.com/wenkangji/GenSwarm
+pdf_path: pdfs/2026-01-01-GenSwarm-llm-code-policy.pdf
 image_url:
 zotero_key:
 citekey: ji2026genswarm

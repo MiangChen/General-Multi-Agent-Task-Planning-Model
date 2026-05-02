@@ -28,6 +28,7 @@ doi: 10.1109/LRA.2025.3534682
 arxiv:
 url: https://ieeexplore.ieee.org/document/10854527
 project_url: https://www.marmotlab.org/publications/73-RAL2025-HetMRTA.pdf
+pdf_path: pdfs/2025-03-01-HetMRTA-RL-gnn-task-allocation.pdf
 image_url:
 zotero_key:
 citekey: dai2025heterogeneous

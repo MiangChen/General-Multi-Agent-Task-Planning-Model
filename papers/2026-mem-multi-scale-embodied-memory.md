@@ -28,6 +28,7 @@ doi: 10.48550/arXiv.2603.03596
 arxiv: 2603.03596
 url: https://arxiv.org/abs/2603.03596
 project_url: https://pi.website/research/memory
+pdf_path: pdfs/2026-03-01-MEM-vla-memory.pdf
 image_url:
 zotero_key:
 citekey: torne2026mem

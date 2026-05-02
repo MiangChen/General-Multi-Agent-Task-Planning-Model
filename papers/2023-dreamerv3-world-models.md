@@ -28,6 +28,7 @@ doi: 10.1038/s41586-025-08744-2
 arxiv: 2301.04104
 url: https://www.nature.com/articles/s41586-025-08744-2
 project_url: https://danijar.com/project/dreamerv3/
+pdf_path: pdfs/2023-01-01-DreamerV3-world-model-rl.pdf
 image_url:
 zotero_key:
 citekey: hafner2023dreamerv3

@@ -28,6 +28,7 @@ doi: 10.1126/scirobotics.adz1543
 arxiv:
 url: https://www.science.org/doi/10.1126/scirobotics.adz1543
 project_url:
+pdf_path: pdfs/2026-04-01-FM-Swarms-overview-foundation.pdf
 image_url:
 zotero_key:
 citekey: strobel2026foundation

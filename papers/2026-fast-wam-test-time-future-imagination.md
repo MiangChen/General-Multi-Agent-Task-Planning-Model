@@ -28,6 +28,7 @@ doi: 10.48550/arXiv.2603.16666
 arxiv: 2603.16666
 url: https://arxiv.org/abs/2603.16666
 project_url: https://yuantianyuan01.github.io/FastWAM/
+pdf_path: pdfs/2026-03-01-Fast-WAM-world-action-model.pdf
 code_url: https://github.com/yuantianyuan01/FastWAM
 image_url:
 zotero_key:

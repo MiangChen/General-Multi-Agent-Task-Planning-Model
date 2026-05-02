@@ -28,6 +28,7 @@ doi: 10.48550/arXiv.2410.05954
 arxiv: 2410.05954
 url: https://arxiv.org/abs/2410.05954
 project_url: https://pyramid-flow.github.io/
+pdf_path: pdfs/2024-10-01-Pyramidal-Flow-video-world-model.pdf
 image_url:
 zotero_key:
 citekey: jin2024pyramidal

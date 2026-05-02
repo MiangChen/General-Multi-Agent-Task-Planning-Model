@@ -28,6 +28,7 @@ doi: 10.48550/arXiv.2604.15483
 arxiv: 2604.15483
 url: https://arxiv.org/abs/2604.15483
 project_url: https://physicalintelligence.company/
+pdf_path: pdfs/2026-04-01-pi07-vla-steerable.pdf
 image_url:
 zotero_key:
 citekey: physicalintelligence2026pi07

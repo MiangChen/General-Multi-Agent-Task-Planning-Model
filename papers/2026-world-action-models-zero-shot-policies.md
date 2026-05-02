@@ -28,6 +28,7 @@ doi: 10.48550/arXiv.2602.15922
 arxiv: 2602.15922
 url: https://arxiv.org/abs/2602.15922
 project_url: https://dreamzero0.github.io/
+pdf_path: pdfs/2026-02-01-DreamZero-world-action-model.pdf
 image_url:
 zotero_key:
 citekey: ye2026world

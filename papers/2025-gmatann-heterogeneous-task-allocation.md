@@ -28,6 +28,7 @@ doi: 10.1109/JIOT.2025.3535641
 arxiv:
 url: https://ieeexplore.ieee.org/document/10856273
 project_url:
+pdf_path: pdfs/2025-06-01-GMATANN-gnn-task-allocation.pdf
 image_url:
 zotero_key:
 citekey: ma2025gmatann

@@ -28,6 +28,7 @@ doi: 10.48550/arXiv.2501.09747
 arxiv: 2501.09747
 url: https://arxiv.org/abs/2501.09747
 project_url: https://pi.website/research/fast
+pdf_path: pdfs/2025-01-01-FAST-vla-action-tokenization.pdf
 image_url:
 zotero_key:
 citekey: pertsch2025fast

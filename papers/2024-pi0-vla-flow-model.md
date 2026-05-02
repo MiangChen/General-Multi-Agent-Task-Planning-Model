@@ -28,6 +28,7 @@ doi: 10.48550/arXiv.2410.24164
 arxiv: 2410.24164
 url: https://arxiv.org/abs/2410.24164
 project_url: https://physicalintelligence.company/blog/pi0
+pdf_path: pdfs/2024-10-01-pi0-vla-flow.pdf
 image_url:
 zotero_key:
 citekey: black2024pi0
