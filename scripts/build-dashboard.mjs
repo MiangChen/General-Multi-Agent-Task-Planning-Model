@@ -26,6 +26,8 @@ const valueLabels = {
   video_flow_model: "Video Flow Model",
   multi_robot_allocation_rl: "Multi-Robot Allocation RL",
   graph_assignment_network: "Graph Assignment Network",
+  combinatorial_optimization_gnn: "Combinatorial Optimization GNN",
+  scene_graph_task_planning: "Scene Graph Task Planning",
   semantic_grounding: "语义落地",
   action_representation: "动作表示",
   action_diffusion_policy: "动作扩散策略",
@@ -37,6 +39,8 @@ const valueLabels = {
   long_horizon_memory: "长程记忆",
   video_generation: "视频生成",
   graph_based_task_allocation: "图任务分配",
+  graph_reasoning_for_optimization: "图优化推理",
+  scene_graph_grounding: "场景图 grounding",
   decentralized_task_allocation: "分布式任务分配",
   open_world_generalization: "开放世界泛化",
   deployment_generalization: "部署泛化",
@@ -55,7 +59,9 @@ const valueLabels = {
   memory_augmented_execution: "记忆增强执行",
   video_dynamics_generation: "视频动态生成",
   heterogeneous_task_allocation: "异构任务分配",
+  combinatorial_optimization: "组合优化",
   heterogeneous_multi_agent_systems: "异构多智能体系统",
+  optimization_solvers: "优化求解器",
   generalist_robot_control: "通用机器人控制",
   long_horizon_execution: "长程执行",
   robust_execution: "鲁棒执行",
@@ -80,6 +86,8 @@ const valueLabels = {
   long_horizon_manipulation: "长程操作",
   video_generation_models: "视频生成模型",
   heterogeneous_multi_robot_systems: "异构多机器人系统",
+  instruction_driven_task_planning: "指令驱动任务规划",
+  large_scene_robot_planning: "大场景机器人规划",
   in_scope: "范围内",
   candidate: "候选",
   out_of_scope: "范围外",
@@ -105,6 +113,7 @@ const valueLabels = {
   action_tokenizer: "动作 tokenizer",
   task_allocator: "任务分配器",
   graph_encoder: "图编码器",
+  solver_heuristic: "求解器启发式",
   scheduler: "调度器",
   planner_baseline: "规划基线",
   code_policy_generator: "代码策略生成器",
@@ -184,9 +193,24 @@ const valueLabels = {
   prompt_api_controller_bridge: "Prompt-API 控制桥",
   rag_swarm_memory: "RAG 集群记忆",
   task_agent_graph: "任务-agent 图",
+  bipartite_variable_constraint_graph: "变量-约束二分图",
+  time_series_conditional_vae: "时序条件 VAE",
+  global_local_attention: "全局-局部注意力",
   graph_attention_assignment: "图注意力分配",
+  rl_assignment_policy: "RL 分配策略",
   heterogeneous_capability_matching: "异构能力匹配",
+  solver_guidance_policy: "求解器引导策略",
+  branch_and_bound_heuristic: "分支定界启发式",
+  warm_start_assignment: "Warm-start 分配",
+  constraint_aware_decoding: "约束感知解码",
+  scene_graph_representation: "场景图表示",
+  llm_node_tokenization: "LLM 节点 token 化",
+  instruction_conditioned_gat: "指令条件 GAT",
+  instruction_feature_enhancer: "指令特征增强器",
+  robot_scene_graph_decoder: "机器人-场景图解码器",
   extract_graph_assignment_design: "抽取图分配设计",
+  extract_gnn_solver_design_rules: "抽取 GNN 求解器设计规则",
+  extract_scene_graph_planner: "抽取场景图 planner",
 };
 
 const palette = [
@@ -287,6 +311,7 @@ const nextActionHints = {
   compare_test_time_imagination: "比较测试时显式想象、训练期视频建模和直接动作生成的实际价值。",
   compare_language_action_interface: "比较自然语言动作、频域动作 token 和连续 flow action expert 的接口取舍。",
   extract_data_flywheel: "把人类数据、世界模型评估、失败样本和策略改进整理成可复用数据飞轮。",
+  extract_scene_graph_planner: "把 scene graph、instruction encoder、GAT 和 task decoder 拆成可接入多机器人 planner 的模块。",
 };
 
 const nextActionOrder = [
@@ -311,6 +336,7 @@ const nextActionOrder = [
   "compare_test_time_imagination",
   "compare_language_action_interface",
   "extract_data_flywheel",
+  "extract_scene_graph_planner",
 ];
 
 const agentWorkflows = [

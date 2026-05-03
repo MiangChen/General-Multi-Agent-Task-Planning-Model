@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>GenSwarm · Paper Note</title>
+  <title>GRID · Paper Note</title>
   <style>
     :root {
       --bg: #eef4fb;
@@ -433,15 +433,15 @@
   <main class="note-shell" id="top">
     <section class="note-hero">
       <div class="hero-main">
-        <div class="note-kicker">2026-01 · npj Robotics 2026 · LLM Code Policy</div>
-        <h1>GenSwarm</h1>
-        <div class="full-title">GenSwarm: Scalable Multi-Robot Code-Policy Generation and Deployment via Language Models</div>
-        <div class="note-summary"><p>GenSwarm 用多 LLM agent 把自然语言任务转成多机器人代码策略，并自动部署到仿真和真实机器人，是“自然语言到多机器人执行”的强相关系统。</p></div>
+        <div class="note-kicker">2023-09 · arXiv 2023 · Scene Graph Task Planning</div>
+        <h1>GRID</h1>
+        <div class="full-title">GRID: Scene-Graph-based Instruction-driven Robotic Task Planning</div>
+        <div class="note-summary"><p>GRID 的核心价值是：把大场景机器人任务规划从“看一张局部图片再问 LLM”改成“把环境表示成 scene graph，再用 instruction-conditioned GNN 选择与任务相关的物体、关系和动作”。</p></div>
       </div>
       <aside class="hero-side">
         <div class="metric-grid">
           <div class="metric">
-            <div class="metric-value">2026</div>
+            <div class="metric-value">2023</div>
             <div class="metric-label">Year</div>
           </div>
           <div class="metric">
@@ -453,19 +453,19 @@
             <div class="metric-label">Evidence</div>
           </div>
           <div class="metric">
-            <div class="metric-value">2</div>
+            <div class="metric-value">3</div>
             <div class="metric-label">Relations</div>
           </div>
         </div>
         <div>
           <div class="note-section-kicker">Authors</div>
-          <div>Ji, Chen, Chen, Zhu, Xu, Groß, Zhou, Cao, Zhao</div>
+          <div>Zhe Ni, Xiaoxin Deng, Cong Tai, Xinyue Zhu, Qinghongbing Xie, Weihang Huang, Xiang Wu, Long Zeng</div>
         </div>
         <div>
           <div class="note-section-kicker">Institutions</div>
-          <div>Westlake University · Huzhou Institute · University of Groningen · University of Sheffield</div>
+          <div>Tsinghua University · Shenzhen Pudu Technology Inc.</div>
         </div>
-        <div class="note-link-row"><a href="../pdfs/2026-01-01-GenSwarm-llm-code-policy.pdf" target="_blank" rel="noreferrer">PDF</a><a href="https://www.nature.com/articles/s44182-025-00065-w" target="_blank" rel="noreferrer">Paper</a><a href="https://github.com/wenkangji/GenSwarm" target="_blank" rel="noreferrer">Project</a><a href="https://doi.org/10.1038/s44182-025-00065-w" target="_blank" rel="noreferrer">DOI</a><a href="https://arxiv.org/abs/2503.23875" target="_blank" rel="noreferrer">arXiv</a><a href="../papers/2026-genswarm-multi-robot-code-policy.md" target="_blank" rel="noreferrer">Markdown source</a></div>
+        <div class="note-link-row"><a href="../pdfs/2023-09-01-GRID-scene-graph-task-planning.pdf" target="_blank" rel="noreferrer">PDF</a><a href="https://arxiv.org/abs/2309.07726" target="_blank" rel="noreferrer">Paper</a><a href="https://jackyzengl.github.io/GRID.github.io/" target="_blank" rel="noreferrer">Project</a><a href="https://arxiv.org/abs/2309.07726" target="_blank" rel="noreferrer">arXiv</a><a href="../papers/2023-grid-scene-graph-task-planning.md" target="_blank" rel="noreferrer">Markdown source</a></div>
       </aside>
     </section>
 
@@ -474,44 +474,60 @@
 
     <section class="note-section impact">
       <div class="note-section-kicker">For Our Model</div>
-      <div class="note-section-body"><p>GenSwarm 可以作为系统级 baseline：当前端到端多机器人任务规划至少需要语言理解、技能图、任务分配、执行反馈和部署接口。你的方案可以尝试把其中不可微的代码生成和 MILP 部分替换成可学习模块。</p></div>
+      <div class="note-section-body"><p>如果我们要做 General Multi-Agent Task Planning Model，GRID 提醒我们必须保留一个显式 world / scene representation 层。比较稳的架构是：</p>
+<p>```text<br>Language goal<br>-&gt; scene graph / object-relation graph<br>-&gt; instruction-conditioned graph encoder<br>-&gt; grounded subtask sequence<br>-&gt; multi-agent task allocation<br>-&gt; VLA / WAM / diffusion executor<br>```</p>
+<p>也就是说，scene graph 不是一个可有可无的可视化材料，而是 planner 能够严肃 grounding 的中间表示。</p></div>
     </section>
 
 
     <section class="note-section ">
       <div class="note-section-kicker">Research Question</div>
-      <div class="note-section-body"><p>多机器人系统开发通常需要任务分析、算法设计、代码实现、仿真验证和真实部署。论文想降低这条链路的人工成本，并支持新任务快速适配。</p></div>
+      <div class="note-section-body"><p>LLM 做机器人任务规划时，需要同时理解用户指令和环境语义。直接把图片喂给多模态模型有两个问题：第一，图片观察范围有限，容易看不到全局场景；第二，多模态训练成本高，且模型很大。</p>
+<p>GRID 关心的问题是：能不能用更结构化、更轻量的 scene graph 表达大场景信息，让机器人根据自然语言指令逐步分解子任务。</p></div>
     </section>
 
 
     <section class="note-section ">
       <div class="note-section-kicker">Method</div>
-      <div class="note-section-body"><p>系统分为任务分析、代码生成、代码部署与改进三部分。LLM agent 先抽取约束和技能，再生成 skill graph 与 Python skill 函数，随后通过仿真/VLM反馈和人类反馈迭代，并用自动化软件栈部署到真实机器人。</p></div>
+      <div class="note-section-body"><p>论文提出 Graph-based Robotic Instruction Decomposer，也就是 GRID。它的输入包括 instruction、scene graph 和 robot graph，输出是一系列子任务，每个子任务由预定义机器人动作和目标物体组成。</p>
+<p>它的关键流程可以拆成四步：</p>
+<ol><li><strong>Scene graph 表示环境</strong>：节点表示物体、房间、桌子、杯子等实体，边表示 on、in、beside 等空间或语义关系。这样机器人不只看到一个局部图像，而是拿到整张大场景的结构化地图。</li><li><strong>LLM 编码节点 token</strong>：图网络中的 node 首先经过 LLM，变成带语义知识的 node token。相比只用 one-hot 或类别 id，这一步让节点携带更多自然语言语义。</li><li><strong>GAT 融合 instruction 与 graph</strong>：Graph Attention Network 会把 node token 和 instruction token 拼接，并融入 node/edge 信息。第一轮重点关注和 instruction 有关的节点与边，例如把“水杯”理解成“在桌子上的水杯”。</li><li><strong>Feature enhancer 与 task decoder</strong>：feature enhancer 根据 instruction token 再次增强图中相关节点的 attention；最后 task decoder 结合 robot graph 和 scene graph，生成机器人需要执行的动作以及要操作的目标物体。</li></ol></div>
     </section>
 
 
     <section class="note-section ">
       <div class="note-section-kicker">Key Contributions</div>
-      <div class="note-section-body"><p>GenSwarm 把 LLM code policy 从单机器人/玩具环境推进到多机器人真实部署，强调 zero-shot 任务生成、全流程自动化和本地可执行代码策略。</p></div>
+      <div class="note-section-body"><p>GRID 把机器人任务规划里的环境理解从 raw image 推向 scene graph。它不是让 LLM 独自“想象”场景，而是先给 LLM/GNN 一个结构化的环境图，再让模型在图上做 instruction-conditioned attention。</p>
+<p>这有三个直接好处：</p>
+<ul><li>场景范围更大：scene graph 能覆盖房间、家具、物体和关系，不受单张图像视野限制。</li><li>语义 grounding 更明确：节点和边让“物体是什么、在哪里、和谁有关”变成显式结构。</li><li>规划输出更可控：task decoder 输出的是预定义动作和目标物体，而不是自由文本计划，更容易接机器人执行接口。</li></ul></div>
     </section>
 
+
+    <section class="note-section ">
+      <div class="note-section-kicker">Reading Highlights</div>
+      <div class="note-section-body"><p>最值得拿出来讲的是它的“水杯”例子：模型不是只看到一个孤立的 cup node，而是通过 GAT 和 edge 信息把它提升成“在桌子上的水杯”。这一步很关键，因为机器人真正需要操作的不是抽象物体类别，而是处在具体空间关系里的目标实例。</p>
+<p>这和我们做多智能体任务规划的需求很像。上层 goal 不能直接变成动作，必须先 grounding 到场景中的对象、位置、约束和可执行动作。</p></div>
+    </section>
 
 
     <section class="note-section risk">
       <div class="note-section-kicker">Limitations</div>
-      <div class="note-section-body"><p>它生成的是白盒代码策略，通用性和可解释性强，但最优性、持续学习和端到端可微训练不足。论文也主要面向移动集群任务，不覆盖复杂 VLA 操作能力。</p></div>
+      <div class="note-section-body"><p>GRID 依赖已有或可生成的 scene graph。如果场景图本身漏检、关系错误或更新不及时，planner 会在错误结构上做推理。</p>
+<p>它也不是 VLA 或 WAM 执行器，不负责学习连续控制动作。论文输出的是预定义动作和目标物体，真正执行还需要底层导航、抓取、避障或操作策略。</p>
+<p>另外，论文主要验证单机器人任务规划。要用于多机器人系统，还需要加入 agent-agent 关系、能力约束、通信约束、任务分配和冲突消解。</p></div>
     </section>
 
 
     <section class="note-section ">
       <div class="note-section-kicker">Reusable Modules</div>
-      <div class="note-section-body"><p>language-to-skill graph、multi-agent code policy generation、deployment loop。适合作为我们的系统结构 baseline 和 ablation 对象。</p></div>
+      <div class="note-section-body"><p>scene graph representation、LLM node tokenization、instruction-conditioned GAT、instruction-aware feature enhancer、robot graph + scene graph task decoder。</p></div>
     </section>
 
 
     <section class="note-section risk">
       <div class="note-section-kicker">Evidence &amp; Risk</div>
-      <div class="note-section-body"><p>证据直接来自多机器人系统；风险是代码生成路线可解释但不一定端到端可学习，真实部署约束可能强依赖工程系统。</p></div>
+      <div class="note-section-body"><p>论文报告 GRID 在 subtask accuracy 上超过 GPT-4 25.4%，task accuracy 上超过 GPT-4 43.6%，并达到 0.11s per inference 的实时推理速度；在 unseen scenes 和不同物体数量场景上，task accuracy 最大下降 3.8%，说明 scene graph 路线有较好的跨场景泛化。</p>
+<p>风险在于这些结果依赖数据构造流程、预定义动作集合和 scene graph 质量。对真实多机器人系统来说，还必须验证 scene graph 更新延迟、动态物体、机器人之间的冲突，以及底层执行失败如何反馈给 planner。</p></div>
     </section>
 
         <div id="relations">
@@ -521,35 +537,25 @@
         <div>
           <h3>当前论文 -> 关联论文 / 前序工作</h3>
           <div class="relation-chip-grid">
-            <a class="relation-chip" style="--rel:#7c67d8" href="../notes/2023-eureka-reward-design-llm.html">
-              <span>互补</span>
-              <strong>Eureka</strong>
+            <a class="relation-chip" style="--rel:#00a7c7" href="../notes/2023-combinatorial-optimization-gnn-reasoning.html">
+              <span>使用/依赖</span>
+              <strong>CO + GNN Survey</strong>
             </a>
 
-            <a class="relation-chip" style="--rel:#7c67d8" href="../notes/2025-heterogeneous-mrta-rl.html">
+            <a class="relation-chip" style="--rel:#7c67d8" href="../notes/2025-gmatann-heterogeneous-task-allocation.html">
               <span>互补</span>
-              <strong>Heterogeneous MRTA RL</strong>
+              <strong>GMATANN</strong>
+            </a>
+
+            <a class="relation-chip" style="--rel:#7c67d8" href="../notes/2026-genswarm-multi-robot-code-policy.html">
+              <span>互补</span>
+              <strong>GenSwarm</strong>
             </a>
           </div>
         </div>
         <div>
           <h3>下游论文 -> 当前论文</h3>
-          <div class="relation-chip-grid">
-            <a class="relation-chip incoming" style="--rel:#7c67d8" href="../notes/2023-grid-scene-graph-task-planning.html">
-              <span>互补</span>
-              <strong>GRID</strong>
-            </a>
-
-            <a class="relation-chip incoming" style="--rel:#7c67d8" href="../notes/2025-gmatann-heterogeneous-task-allocation.html">
-              <span>互补</span>
-              <strong>GMATANN</strong>
-            </a>
-
-            <a class="relation-chip incoming" style="--rel:#4b6f96" href="../notes/2026-foundation-models-robot-swarms.html">
-              <span>引用/背景</span>
-              <strong>FM Swarms Viewpoint</strong>
-            </a>
-          </div>
+          <div class="relation-chip-grid"><div class="relation-empty">暂时没有下游论文连接到这篇。</div></div>
         </div>
       </div>
     </section>
@@ -557,13 +563,15 @@
 
     <section class="note-section ">
       <div class="note-section-kicker">Relation Notes</div>
-      <div class="note-section-body"><p>Eureka 生成 reward code，GenSwarm 生成 policy code。Heterogeneous MRTA RL 关注可学习任务分配；GenSwarm 更关注把自然语言目标转成可部署多机器人行为。</p></div>
+      <div class="note-section-body"><p>和 CO + GNN Survey 相比，GRID 是一个具体的机器人任务规划实例：综述解释 GNN 适合做结构化推理和求解器辅助，GRID 则把图推理落到 scene graph grounding 与 instruction-driven subtask decoding。</p>
+<p>和 GMATANN 相比，GRID 更靠近自然语言和场景语义，负责把 instruction 变成 grounded subtask；GMATANN 更靠近多机器人任务分配，负责在 agent-task graph 上做 allocation。</p>
+<p>和 GenSwarm 相比，GRID 可以放在 GenSwarm 前面或旁边：GenSwarm 更像 language-to-code policy generator，GRID 更像 scene-aware task decomposer，负责告诉系统“要操作哪个物体、执行哪类动作”。</p></div>
     </section>
 
         <div id="open-question">
     <section class="note-section impact">
       <div class="note-section-kicker">Open Question</div>
-      <div class="note-section-body"><p>如何从 GenSwarm 式“生成代码再部署”的范式，过渡到可端到端优化的“自然语言 + 状态图 -&gt; 任务排班/技能调用”的神经模型。</p></div>
+      <div class="note-section-body"><ul><li>Scene graph 应该由视觉模型实时生成，还是由 SLAM / semantic map / human annotation 组合维护？</li><li>多机器人版本里，robot graph 应该包含哪些字段：位置、能力、电量、负载、通信质量、当前任务还是可用动作集合？</li><li>GRID 输出的子任务如何与 GMATANN 这类 task allocator 对接？</li><li>当底层执行失败时，scene graph 和 task decoder 应该如何更新计划？</li></ul></div>
     </section>
   </div>
       </article>
@@ -571,19 +579,19 @@
       <aside class="note-aside">
         <section class="note-aside-panel">
           <h2>System Roles</h2>
-          <div class="pill-row"><span class="note-pill role-pill">语义规划器</span><span class="note-pill role-pill">代码策略生成器</span><span class="note-pill role-pill">任务分配器</span><span class="note-pill role-pill">规划基线</span></div>
+          <div class="pill-row"><span class="note-pill role-pill">语义规划器</span><span class="note-pill role-pill">图编码器</span><span class="note-pill role-pill">任务分配器</span><span class="note-pill role-pill">规划基线</span></div>
         </section>
         <section class="note-aside-panel">
           <h2>Reusable Modules</h2>
-          <div class="pill-row"><span class="note-pill module-pill">language to skill graph</span><span class="note-pill module-pill">代码策略生成</span><span class="note-pill module-pill">deployment loop</span></div>
+          <div class="pill-row"><span class="note-pill module-pill">场景图表示</span><span class="note-pill module-pill">LLM 节点 token 化</span><span class="note-pill module-pill">指令条件 GAT</span><span class="note-pill module-pill">指令特征增强器</span><span class="note-pill module-pill">机器人-场景图解码器</span></div>
         </section>
         <section class="note-aside-panel">
           <h2>Next Action</h2>
-          <div class="note-pill role-pill">提取系统架构</div>
+          <div class="note-pill role-pill">抽取场景图 planner</div>
         </section>
         <section class="note-aside-panel">
           <h2>Tags</h2>
-          <div class="pill-row"><span class="note-pill">GenSwarm</span><span class="note-pill">multi-robot</span><span class="note-pill">LLM agent</span><span class="note-pill">code policy</span><span class="note-pill">deployment</span><span class="note-pill">skill graph</span></div>
+          <div class="pill-row"><span class="note-pill">Planning</span><span class="note-pill">GNN</span><span class="note-pill">LLM</span><span class="note-pill">scene graph</span><span class="note-pill">robotic task planning</span><span class="note-pill">instruction following</span><span class="note-pill">graph attention</span></div>
         </section>
         <section class="note-aside-panel">
           <h2>Reading Map</h2>
@@ -598,7 +606,7 @@
     </section>
 
     <footer class="note-footer">
-      Generated from papers/2026-genswarm-multi-robot-code-policy.md.
+      Generated from papers/2023-grid-scene-graph-task-planning.md.
     </footer>
   </main>
 </body>
