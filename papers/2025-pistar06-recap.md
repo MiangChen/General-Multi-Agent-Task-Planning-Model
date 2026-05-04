@@ -36,7 +36,6 @@ cites: [2025-pi06-model-card, 2025-pi05-open-world-generalization, 2024-pi0-vla-
 extends: [2025-pi06-model-card]
 uses: [2025-pi05-open-world-generalization, 2024-pi0-vla-flow-model]
 enables: []
-complements: []
 contrasts: []
 ---
 
@@ -62,7 +61,7 @@ RECAP 大体思路是结合示范、专家纠错和机器人自主经验，通�
 
 ## 和其他论文的关系
 
-π*0.6 是 π0.6 的经验学习扩展，和 Dreamer 的“通过模型想象改进策略”形成互补：一个更偏真实世界纠错数据，一个更偏学习世界模型和想象 rollout。
+π*0.6 是 π0.6 的经验学习扩展，和 Dreamer 的“通过模型想象改进策略”形成相邻对照：一个更偏真实世界纠错数据，一个更偏学习世界模型和想象 rollout。
 
 ## 对多智能体任务规划模型的启发
 

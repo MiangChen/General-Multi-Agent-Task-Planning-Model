@@ -36,7 +36,6 @@ cites: [2024-pyramidal-flow-matching-video, 2025-pi05-open-world-generalization,
 extends: []
 uses: [2024-pyramidal-flow-matching-video, 2023-dreamerv3-world-models]
 enables: []
-complements: []
 contrasts: [2025-pi05-open-world-generalization, 2024-pi0-vla-flow-model, 2023-rt-2-vla]
 ---
 

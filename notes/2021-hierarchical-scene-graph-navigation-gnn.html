@@ -1,0 +1,606 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>3DSG Navigation · Paper Note</title>
+  <style>
+    :root {
+      --bg: #eef4fb;
+      --paper: rgba(255, 255, 255, 0.82);
+      --paper-strong: rgba(255, 255, 255, 0.94);
+      --ink: #111827;
+      --muted: #61748d;
+      --line: rgba(74, 112, 154, 0.34);
+      --soft-line: rgba(133, 163, 196, 0.24);
+      --blue: #246bfe;
+      --cyan: #00a7c7;
+      --purple: #6a7dff;
+      --shadow: 0 18px 45px rgba(22, 50, 83, 0.12);
+      --sans: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      font-family: var(--sans);
+      line-height: 1.72;
+      background:
+        radial-gradient(circle at 16% 12%, rgba(36, 107, 254, 0.14), transparent 28rem),
+        radial-gradient(circle at 88% 16%, rgba(0, 167, 199, 0.16), transparent 26rem),
+        linear-gradient(var(--soft-line) 1px, transparent 1px),
+        linear-gradient(90deg, var(--soft-line) 1px, transparent 1px),
+        var(--bg);
+      background-size: auto, auto, 32px 32px, 32px 32px, auto;
+    }
+
+    a { color: inherit; }
+
+    .note-topbar {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      padding: 13px 28px;
+      border-bottom: 1px solid var(--soft-line);
+      background: rgba(248, 251, 255, 0.86);
+      backdrop-filter: blur(18px);
+      box-shadow: 0 14px 35px rgba(31, 76, 128, 0.08);
+    }
+
+    .note-brand,
+    .note-nav a,
+    .note-kicker,
+    .note-section-kicker,
+    .metric-label,
+    .note-pill,
+    .relation-chip span {
+      font-family: var(--mono);
+    }
+
+    .note-brand {
+      color: var(--blue);
+      font-weight: 800;
+      text-decoration: none;
+    }
+
+    .note-nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .note-nav a {
+      text-decoration: none;
+    }
+
+    .note-nav a:hover {
+      color: var(--blue);
+    }
+
+    .note-shell {
+      width: min(1500px, calc(100% - 48px));
+      margin: 0 auto;
+      padding: 38px 0 70px;
+    }
+
+    .note-hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1.6fr) 360px;
+      gap: 24px;
+      align-items: stretch;
+      margin-bottom: 24px;
+    }
+
+    .hero-main,
+    .hero-side,
+    .note-section,
+    .note-aside-panel {
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: var(--paper);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(18px);
+    }
+
+    .hero-main {
+      padding: 34px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .hero-main::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-top: 2px solid rgba(36, 107, 254, 0.42);
+      background: linear-gradient(135deg, rgba(36, 107, 254, 0.08), transparent 42%);
+      pointer-events: none;
+    }
+
+    .note-kicker {
+      position: relative;
+      color: var(--blue);
+      font-size: 12px;
+      margin-bottom: 14px;
+    }
+
+    h1, h2, h3 {
+      margin: 0;
+      line-height: 1.14;
+    }
+
+    h1 {
+      position: relative;
+      max-width: 980px;
+      color: #0f172a;
+      font-size: 56px;
+      font-weight: 820;
+    }
+
+    .full-title {
+      position: relative;
+      max-width: 940px;
+      margin-top: 14px;
+      color: var(--muted);
+      font-size: 18px;
+    }
+
+    .note-summary {
+      position: relative;
+      max-width: 980px;
+      margin-top: 28px;
+      padding-left: 18px;
+      border-left: 3px solid var(--blue);
+      font-size: 22px;
+      color: #16233a;
+    }
+
+    .note-summary p {
+      margin: 0;
+    }
+
+    .hero-side {
+      display: grid;
+      gap: 14px;
+      padding: 22px;
+    }
+
+    .metric-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+    }
+
+    .metric {
+      min-height: 84px;
+      padding: 14px;
+      border: 1px solid var(--soft-line);
+      border-radius: 8px;
+      background: rgba(247, 251, 255, 0.76);
+    }
+
+    .metric-value {
+      color: var(--blue);
+      font-size: 22px;
+      font-weight: 800;
+    }
+
+    .metric-label {
+      color: var(--muted);
+      font-size: 11px;
+    }
+
+    .note-link-row,
+    .pill-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .note-link-row a {
+      min-height: 30px;
+      display: inline-flex;
+      align-items: center;
+      padding: 0 10px;
+      border: 1px solid rgba(36, 107, 254, 0.28);
+      border-radius: 5px;
+      background: linear-gradient(135deg, #1e63ff, #0aa3c2);
+      color: #fff;
+      text-decoration: none;
+      font-size: 13px;
+      box-shadow: 0 10px 22px rgba(36, 107, 254, 0.16);
+    }
+
+    .note-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 320px;
+      gap: 24px;
+      align-items: start;
+    }
+
+    .note-main {
+      display: grid;
+      gap: 16px;
+    }
+
+    .note-section {
+      padding: 24px;
+      background: var(--paper-strong);
+    }
+
+    .note-section.impact {
+      border-color: rgba(36, 107, 254, 0.44);
+      background:
+        linear-gradient(135deg, rgba(36, 107, 254, 0.08), rgba(0, 167, 199, 0.05)),
+        var(--paper-strong);
+    }
+
+    .note-section.risk {
+      border-color: rgba(209, 77, 114, 0.26);
+    }
+
+    .note-section-kicker {
+      color: var(--blue);
+      font-size: 12px;
+      margin-bottom: 10px;
+    }
+
+    .note-section-body {
+      color: #172033;
+      font-size: 16px;
+    }
+
+    .note-section-body p,
+    .note-section-body ul,
+    .note-section-body ol {
+      margin: 0 0 12px;
+    }
+
+    .note-section-body :last-child {
+      margin-bottom: 0;
+    }
+
+    .note-section-body ul,
+    .note-section-body ol {
+      padding-left: 22px;
+    }
+
+    .note-section-body li {
+      margin: 7px 0;
+    }
+
+    code {
+      padding: 1px 5px;
+      border: 1px solid var(--soft-line);
+      border-radius: 4px;
+      background: rgba(236, 246, 255, 0.82);
+      font-family: var(--mono);
+      font-size: 0.92em;
+    }
+
+    .note-aside {
+      position: sticky;
+      top: 82px;
+      display: grid;
+      gap: 14px;
+    }
+
+    .note-aside-panel {
+      padding: 18px;
+    }
+
+    .note-aside-panel h2 {
+      margin-bottom: 12px;
+      font-size: 18px;
+    }
+
+    .note-pill {
+      display: inline-flex;
+      align-items: center;
+      min-height: 25px;
+      padding: 0 8px;
+      border: 1px solid var(--soft-line);
+      border-radius: 999px;
+      background: rgba(247, 251, 255, 0.84);
+      color: #415a77;
+      font-size: 11px;
+    }
+
+    .role-pill {
+      border-color: rgba(36, 107, 254, 0.32);
+      color: #1f4fd6;
+    }
+
+    .module-pill {
+      border-color: rgba(0, 167, 199, 0.32);
+      color: #0f7894;
+    }
+
+    .relation-columns {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+    }
+
+    .relation-columns h3 {
+      margin-bottom: 10px;
+      font-size: 16px;
+    }
+
+    .relation-chip-grid {
+      display: grid;
+      gap: 8px;
+    }
+
+    .relation-chip {
+      display: grid;
+      gap: 3px;
+      padding: 10px 12px;
+      border: 1px solid var(--soft-line);
+      border-left: 3px solid var(--rel);
+      border-radius: 6px;
+      background: rgba(247, 251, 255, 0.86);
+      text-decoration: none;
+    }
+
+    .relation-chip span {
+      color: color-mix(in srgb, var(--rel), #111827 30%);
+      font-size: 11px;
+      font-weight: 800;
+    }
+
+    .relation-chip strong {
+      color: #142033;
+      font-size: 14px;
+    }
+
+    .relation-empty {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .toc-list {
+      display: grid;
+      gap: 8px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      font-size: 13px;
+    }
+
+    .toc-list a {
+      color: var(--muted);
+      text-decoration: none;
+    }
+
+    .toc-list a:hover {
+      color: var(--blue);
+    }
+
+    .note-footer {
+      padding: 34px 0 0;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    @media (max-width: 980px) {
+      .note-topbar {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .note-shell {
+        width: min(100% - 28px, 760px);
+      }
+
+      .note-hero,
+      .note-layout,
+      .relation-columns {
+        grid-template-columns: 1fr;
+      }
+
+      h1 {
+        font-size: 40px;
+      }
+
+      .note-aside {
+        position: static;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="note-topbar">
+    <a class="note-brand" href="../index.html#domain-graph">General Multi-Agent Model</a>
+    <nav class="note-nav">
+      <a href="../index.html#domain-graph">关系图</a>
+      <a href="../index.html#roles">系统角色</a>
+      <a href="../index.html#papers">论文索引</a>
+      <a href="#relations">关系</a>
+      <a href="#open-question">开放问题</a>
+    </nav>
+  </header>
+
+  <main class="note-shell" id="top">
+    <section class="note-hero">
+      <div class="hero-main">
+        <div class="note-kicker">2021-08 · ICRA 2022 · Scene Graph Navigation Policy</div>
+        <h1>3DSG Navigation</h1>
+        <div class="full-title">Hierarchical Representations and Explicit Memory: Learning Effective Navigation Policies on 3D Scene Graphs using Graph Neural Networks</div>
+        <div class="note-summary"><p>这篇论文的核心价值是：把分层 3D Scene Graph 变成机器人导航策略的显式空间记忆，并通过 GNN 在 action node 上做决策，而不是让策略从 RGB 或局部深度图里自己学出场景结构。</p></div>
+      </div>
+      <aside class="hero-side">
+        <div class="metric-grid">
+          <div class="metric">
+            <div class="metric-value">2021</div>
+            <div class="metric-label">Year</div>
+          </div>
+          <div class="metric">
+            <div class="metric-value">高</div>
+            <div class="metric-label">Readiness</div>
+          </div>
+          <div class="metric">
+            <div class="metric-value">已读论文</div>
+            <div class="metric-label">Evidence</div>
+          </div>
+          <div class="metric">
+            <div class="metric-value">0</div>
+            <div class="metric-label">Relations</div>
+          </div>
+        </div>
+        <div>
+          <div class="note-section-kicker">Authors</div>
+          <div>Zachary Ravichandran, Lisa Peng, Nathan Hughes, J. Daniel Griffith, Luca Carlone</div>
+        </div>
+        <div>
+          <div class="note-section-kicker">Institutions</div>
+          <div>MIT Lincoln Laboratory · MIT Laboratory for Information and Decision Systems</div>
+        </div>
+        <div class="note-link-row"><a href="../pdfs/2021-08-01-3DSG-GNN-navigation-policy.pdf" target="_blank" rel="noreferrer">PDF</a><a href="https://arxiv.org/abs/2108.01176" target="_blank" rel="noreferrer">Paper</a><a href="https://github.com/MIT-TESSE/dsg-rl" target="_blank" rel="noreferrer">Project</a><a href="https://doi.org/10.1109/ICRA46639.2022.9812179" target="_blank" rel="noreferrer">DOI</a><a href="https://arxiv.org/abs/2108.01176" target="_blank" rel="noreferrer">arXiv</a><a href="../papers/2021-hierarchical-scene-graph-navigation-gnn.md" target="_blank" rel="noreferrer">Markdown source</a></div>
+      </aside>
+    </section>
+
+    <section class="note-layout">
+      <article class="note-main">
+
+    <section class="note-section impact">
+      <div class="note-section-kicker">For Our Model</div>
+      <div class="note-section-body"><p>这篇给我们的启发很直接：多机器人 planner 不应该只维护一个全局任务列表，还应该维护一个可被每个机器人投影成 action candidates 的 3D scene graph。</p>
+<p>一个更稳的结构是：</p>
+<p>```text<br>Global 3D scene graph<br>-&gt; remove low-level mesh nodes<br>-&gt; keep room / place / object / semantic nodes<br>-&gt; add per-robot action layer<br>-&gt; collision check action nodes<br>-&gt; GNN message passing<br>-&gt; per-robot action scores<br>-&gt; multi-agent conflict resolution / task allocation<br>```</p>
+<p>它和 GRID 可以拼在一起：GRID 负责从 instruction 和 scene graph 得到 grounded subtask，这篇负责把 scene graph 和当前机器人状态变成可执行导航动作。</p></div>
+    </section>
+
+
+    <section class="note-section ">
+      <div class="note-section-kicker">Research Question</div>
+      <div class="note-section-body"><p>机器人导航策略如果只看 raw image、depth 或 2D semantic segmentation，需要自己从低层观测里学出三维结构、拓扑关系、语义关联和历史访问记忆。这个学习负担很重，也不利于泛化到新场景。</p>
+<p>论文的问题是：如果机器人已经有一个 3D Dynamic Scene Graph，它能不能直接在这张结构化图上学习导航策略，并利用图中显式的层级信息和访问记忆提升 object search 表现。</p></div>
+    </section>
+
+
+    <section class="note-section ">
+      <div class="note-section-kicker">Method</div>
+      <div class="note-section-body"><p>作者引入分层 3D Scene Graph 作为导航策略的输入。在执行规划时，系统保留高层 node 信息，例如 room、object、place 等语义和拓扑节点，同时去掉底层 mesh node，避免低层几何过密导致图过大、消息传递低效。</p>
+<p>关键预处理是加入一个 action layer。作者在机器人当前位置附近加入 8 个离散 action node，用来表示 8 个方向上的移动候选动作。然后通过避碰算法检查这些动作是否会和场景里的物体 node 或占据区域发生碰撞，把碰撞风险编码进动作节点，从而构成论文图 1(b) 中的 agent-centric DSG observation。</p>
+<p>每个 node 会被编码成一个 size=10 的特征向量：</p>
+<ul><li>位置 x 3。</li><li>尺寸 x 3。</li><li>类型 x 2。</li><li>访问记录 x 1。</li><li>碰撞风险 x 1。</li></ul>
+<p>这个充满 10 维特征的 graph 会被送进 GNN 做消息传递。公式 1 中，v_i^t 表示当前中心节点，N(v_i^t) 表示它的邻居节点，y 是前面这组 10 维节点特征。AGG 表示每个 node 都会对邻居 node 的信息做一次聚合，论文里这个聚合过程重复 3 次。</p>
+<p>经过消息传递后，每个 action node 已经吸收了周围场景、语义、访问历史和碰撞信息。公式 2 里的 V_a 只收集那 8 个 action node 的特征；然后把这 8 个动作特征拼接起来，输入 MLP 的 READ 模块，最终得到 y_G^t。策略基于这个图级输出选择最终动作，例如前进、左转或右转。</p></div>
+    </section>
+
+
+    <section class="note-section ">
+      <div class="note-section-kicker">Key Contributions</div>
+      <div class="note-section-body"><p>这篇论文把 3D Scene Graph 从“地图表示”推进到“策略输入”。它不是只把 scene graph 用来做可视化，也不是只预测 graph 上的 subgoal，而是把全局 DSG 转换成机器人中心的局部动作图，然后直接学习从图到导航动作的 policy。</p>
+<p>它的贡献可以概括成三点：</p>
+<ul><li>用分层 3D Scene Graph 显式提供 geometry、topology 和 semantics。</li><li>用 explicit memory 记录访问历史，让策略知道哪些区域已经搜索过。</li><li>用 action node 把连续导航空间离散成可检查、可聚合、可决策的候选动作。</li></ul></div>
+    </section>
+
+
+    <section class="note-section ">
+      <div class="note-section-kicker">Reading Highlights</div>
+      <div class="note-section-body"><p>最漂亮的设计是 action layer。普通 scene graph 只有场景里的物体、房间、地点和关系，但策略真正要选的是“下一步往哪里走”。作者把 8 个离散动作也变成图节点，并在 GNN 消息传递前就用碰撞检测给它们加上风险信息。</p>
+<p>这样一来，GNN 最终不是在抽象场景节点上做分类，而是在一组已经吸收环境上下文的 action node 上做选择。这非常适合后续扩展到 multi-agent planner：每个机器人都可以生成自己的 action layer，上层再协调多个 action layer 的冲突和覆盖效率。</p></div>
+    </section>
+
+
+    <section class="note-section risk">
+      <div class="note-section-kicker">Limitations</div>
+      <div class="note-section-body"><p>这篇主要处理导航和 object search，不处理复杂操作任务，也不负责从自然语言指令生成子任务。它依赖已有的 3D Dynamic Scene Graph，图构建质量、语义检测和场景更新都会直接影响策略表现。</p>
+<p>另外，动作空间被压缩成平台无关的导航动作，例如 go straight、turn left、turn right。这对导航很干净，但还不能直接覆盖机械臂操作、协作搬运或需要精细连续控制的任务。</p></div>
+    </section>
+
+
+    <section class="note-section ">
+      <div class="note-section-kicker">Reusable Modules</div>
+      <div class="note-section-body"><p>hierarchical 3D scene graph pruning、8-direction action layer、collision-checked action nodes、10D node feature schema、explicit visit memory、3-step GNN message passing、action-node readout policy。</p></div>
+    </section>
+
+
+    <section class="note-section risk">
+      <div class="note-section-kicker">Evidence &amp; Risk</div>
+      <div class="note-section-body"><p>论文在 multi-object search 任务中和常见 visuomotor policy 对比，展示了 3D Scene Graph 表示、层级信息和 explicit memory 对搜索效率和泛化的提升。消融结果也支持 room / object 等高层节点对导航目标选择有帮助。</p>
+<p>风险在于实验仍然是导航类任务，且依赖模拟环境和 DSG 构建流程。要用于真实多机器人任务规划，还需要补充动态图更新、跨机器人 map fusion、通信延迟、行动冲突和执行失败反馈。</p></div>
+    </section>
+
+        <div id="relations">
+    <section class="note-section relation-section">
+      <div class="note-section-kicker">Typed Relations</div>
+      <div class="relation-columns">
+        <div>
+          <h3>当前论文 -> 关联论文 / 前序工作</h3>
+          <div class="relation-chip-grid"><div class="relation-empty">还没有指向关联论文或前序工作的 typed relation。</div></div>
+        </div>
+        <div>
+          <h3>下游论文 -> 当前论文</h3>
+          <div class="relation-chip-grid">
+            <a class="relation-chip incoming" style="--rel:#00a7c7" href="../notes/2023-grid-scene-graph-task-planning.html">
+              <span>使用/依赖</span>
+              <strong>GRID</strong>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+    <section class="note-section ">
+      <div class="note-section-kicker">Relation Notes</div>
+      <div class="note-section-body"><p>和 GRID 相比，这篇更早，也更底层：GRID 关注 instruction 如何 grounding 到 scene graph 并生成子任务；3DSG Navigation 关注 scene graph 如何变成 navigation policy 的动作选择。</p>
+<p>和 GMATANN 相比，这篇的图是 scene-centric/action-centric，用来做导航动作决策；GMATANN 的图是 task-agent graph，用来做异构多智能体任务分配。</p>
+<p>和 CO + GNN Survey 的观点一致，这篇没有让 GNN 脱离结构做纯黑盒决策，而是先把问题设计成一个强结构图：高层 scene graph 保留语义和拓扑，action node 表示候选决策，GNN 负责在结构上做信息聚合和启发式判断。</p></div>
+    </section>
+
+        <div id="open-question">
+    <section class="note-section impact">
+      <div class="note-section-kicker">Open Question</div>
+      <div class="note-section-body"><ul><li>action node 是否只能是 8 个方向，还是可以扩展成导航、抓取、观察、等待等多类型 action layer？</li><li>多机器人系统中，每个机器人独立生成 action layer，还是共享一个联合 action graph？</li><li>explicit visit memory 如何区分“我访问过”和“队友访问过”？</li><li>如果 scene graph 中的语义节点错误，GNN policy 是否有纠错机制？</li></ul></div>
+    </section>
+  </div>
+      </article>
+
+      <aside class="note-aside">
+        <section class="note-aside-panel">
+          <h2>System Roles</h2>
+          <div class="pill-row"><span class="note-pill role-pill">语义规划器</span><span class="note-pill role-pill">图编码器</span><span class="note-pill role-pill">记忆模块</span><span class="note-pill role-pill">规划基线</span></div>
+        </section>
+        <section class="note-aside-panel">
+          <h2>Reusable Modules</h2>
+          <div class="pill-row"><span class="note-pill module-pill">分层 3D 场景图</span><span class="note-pill module-pill">离散导航 action layer</span><span class="note-pill module-pill">避碰检查动作节点</span><span class="note-pill module-pill">显式访问记忆</span><span class="note-pill module-pill">机器人中心场景图嵌入</span><span class="note-pill module-pill">平台无关导航策略</span></div>
+        </section>
+        <section class="note-aside-panel">
+          <h2>Next Action</h2>
+          <div class="note-pill role-pill">抽取场景图导航策略</div>
+        </section>
+        <section class="note-aside-panel">
+          <h2>Tags</h2>
+          <div class="pill-row"><span class="note-pill">Scene Graph</span><span class="note-pill">GNN</span><span class="note-pill">RL</span><span class="note-pill">3D scene graph</span><span class="note-pill">dynamic scene graph</span><span class="note-pill">navigation</span><span class="note-pill">object search</span><span class="note-pill">explicit memory</span></div>
+        </section>
+        <section class="note-aside-panel">
+          <h2>Reading Map</h2>
+          <ul class="toc-list">
+            <li><a href="#top">Summary</a></li>
+            <li><a href="#relations">Typed relations</a></li>
+            <li><a href="#open-question">Open question</a></li>
+            <li><a href="../index.html#domain-graph">Back to graph</a></li>
+          </ul>
+        </section>
+      </aside>
+    </section>
+
+    <footer class="note-footer">
+      Generated from papers/2021-hierarchical-scene-graph-navigation-gnn.md.
+    </footer>
+  </main>
+</body>
+</html>

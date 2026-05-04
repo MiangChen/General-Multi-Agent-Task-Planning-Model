@@ -36,7 +36,6 @@ cites: []
 extends: []
 uses: []
 enables: [2024-pi0-vla-flow-model, 2026-world-action-models-zero-shot-policies, 2026-fast-wam-test-time-future-imagination]
-complements: [2023-dreamerv3-world-models]
 contrasts: [2023-rt-2-vla]
 ---
 

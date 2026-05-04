@@ -13,6 +13,7 @@ const watchMode = process.argv.includes("--watch");
 
 const valueLabels = {
   "Overview / Foundation": "Overview / Foundation",
+  "Scene Graph": "Scene Graph",
   Diffusion: "Diffusion",
   vla: "VLA",
   llm_code_policy: "LLM Code Policy",
@@ -28,6 +29,7 @@ const valueLabels = {
   graph_assignment_network: "Graph Assignment Network",
   combinatorial_optimization_gnn: "Combinatorial Optimization GNN",
   scene_graph_task_planning: "Scene Graph Task Planning",
+  scene_graph_navigation_policy: "Scene Graph Navigation Policy",
   semantic_grounding: "语义落地",
   action_representation: "动作表示",
   action_diffusion_policy: "动作扩散策略",
@@ -41,6 +43,7 @@ const valueLabels = {
   graph_based_task_allocation: "图任务分配",
   graph_reasoning_for_optimization: "图优化推理",
   scene_graph_grounding: "场景图 grounding",
+  hierarchical_scene_graph_memory: "分层场景图记忆",
   decentralized_task_allocation: "分布式任务分配",
   open_world_generalization: "开放世界泛化",
   deployment_generalization: "部署泛化",
@@ -87,7 +90,9 @@ const valueLabels = {
   video_generation_models: "视频生成模型",
   heterogeneous_multi_robot_systems: "异构多机器人系统",
   instruction_driven_task_planning: "指令驱动任务规划",
+  object_search_navigation: "目标搜索导航",
   large_scene_robot_planning: "大场景机器人规划",
+  indoor_3d_navigation: "室内 3D 导航",
   in_scope: "范围内",
   candidate: "候选",
   out_of_scope: "范围外",
@@ -204,13 +209,20 @@ const valueLabels = {
   warm_start_assignment: "Warm-start 分配",
   constraint_aware_decoding: "约束感知解码",
   scene_graph_representation: "场景图表示",
+  hierarchical_3d_scene_graph: "分层 3D 场景图",
   llm_node_tokenization: "LLM 节点 token 化",
   instruction_conditioned_gat: "指令条件 GAT",
   instruction_feature_enhancer: "指令特征增强器",
   robot_scene_graph_decoder: "机器人-场景图解码器",
+  action_layer_discrete_navigation: "离散导航 action layer",
+  collision_checked_action_nodes: "避碰检查动作节点",
+  explicit_visit_memory: "显式访问记忆",
+  agent_centric_scene_graph_embedding: "机器人中心场景图嵌入",
+  platform_agnostic_navigation_policy: "平台无关导航策略",
   extract_graph_assignment_design: "抽取图分配设计",
   extract_gnn_solver_design_rules: "抽取 GNN 求解器设计规则",
   extract_scene_graph_planner: "抽取场景图 planner",
+  extract_scene_graph_navigation_policy: "抽取场景图导航策略",
 };
 
 const palette = [
@@ -235,7 +247,7 @@ const domainColumns = [
   "World Action Model",
   "RL",
   "GNN",
-  "Planning",
+  "Scene Graph",
 ];
 
 const domainColors = {
@@ -247,7 +259,7 @@ const domainColors = {
   "World Action Model": "#7c67d8",
   RL: "#188aa6",
   GNN: "#4b6f96",
-  Planning: "#2f80ed",
+  "Scene Graph": "#2f80ed",
 };
 
 const relationTypes = {
@@ -268,12 +280,6 @@ const relationTypes = {
     short: "enables",
     color: "#188aa6",
     description: "前序工作提供了可被当前系统复用的关键模块。",
-  },
-  complements: {
-    label: "互补",
-    short: "complements",
-    color: "#7c67d8",
-    description: "两条路线解决相邻问题，可以组合进同一个系统。",
   },
   contrasts: {
     label: "对比路线",
@@ -312,6 +318,7 @@ const nextActionHints = {
   compare_language_action_interface: "比较自然语言动作、频域动作 token 和连续 flow action expert 的接口取舍。",
   extract_data_flywheel: "把人类数据、世界模型评估、失败样本和策略改进整理成可复用数据飞轮。",
   extract_scene_graph_planner: "把 scene graph、instruction encoder、GAT 和 task decoder 拆成可接入多机器人 planner 的模块。",
+  extract_scene_graph_navigation_policy: "把 3D scene graph pruning、action layer、碰撞风险和 GNN readout 拆成导航策略模块。",
 };
 
 const nextActionOrder = [
@@ -337,6 +344,7 @@ const nextActionOrder = [
   "compare_language_action_interface",
   "extract_data_flywheel",
   "extract_scene_graph_planner",
+  "extract_scene_graph_navigation_policy",
 ];
 
 const agentWorkflows = [
@@ -393,10 +401,10 @@ const benchmarkResources = [
 const relationFields = Object.keys(relationTypes).filter((type) => type !== "cites");
 
 // Relation direction rule for the paper graph:
-// Edges are authored only on the current paper and point to papers it depends on,
-// compares with, cites, or otherwise needs for context. For a parent/child lineage,
-// record only the child -> parent edge, e.g. pi0.5 -> pi0. Do not add the reverse
+// Edges must be strong and directional. For a parent/child lineage, record only
+// child -> parent/context, e.g. pi0.5 -> pi0. Never author the reverse
 // parent -> child edge. Downstream/incoming links are derived at render time.
+// Soft "complementary" associations are intentionally not modeled as edges.
 // This keeps the graph readable: clicking a child reveals its ancestors/context,
 // while clicking a parent does not fan out to every descendant by default.
 
@@ -1142,7 +1150,10 @@ function renderDomainGraph(papers) {
   const graphPapers = papers
     .map((paper) => ({
       ...paper,
-      graph_domain: domainColumns.includes(paper.primary_domain) ? paper.primary_domain : "Planning",
+      graph_domain:
+        domainColumns.includes(paper.primary_domain)
+          ? paper.primary_domain
+          : asList(paper.domains).find((domain) => domainColumns.includes(domain)) || "GNN",
     }))
     .sort((a, b) => a.published_value - b.published_value || a.graph_domain.localeCompare(b.graph_domain));
 

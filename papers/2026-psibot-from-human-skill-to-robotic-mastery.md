@@ -35,7 +35,6 @@ cites: [2026-world-action-models-zero-shot-policies, 2026-fast-wam-test-time-fut
 extends: []
 uses: []
 enables: []
-complements: [2026-world-action-models-zero-shot-policies, 2023-dreamerv3-world-models]
 contrasts: [2026-fast-wam-test-time-future-imagination]
 ---
 
@@ -83,7 +82,7 @@ Psi-W0 则是动作条件世界模型。它输入图像、语言和动作轨迹�
 
 Psi-R2 / Psi-W0 与 DreamZero 属于同一条 WAM 大路线：都把未来视频预测和动作生成结合起来，让世界演化参与策略学习。区别是 DreamZero 更像论文定义 WAM 的通用策略范式，PsiBot 这篇博客更像工业化实现路线，重点放在人类数据规模化、触觉/3D 位姿采集、数据质检和世界模型内 RL。
 
-它和 Fast-WAM 形成对比。Fast-WAM 追问测试时是否必须显式想象未来画面；PsiBot 路线则明确保留 Psi-W0 作为动作条件世界模型，用它做策略评估、失败建模和 RL 优化。它和 DreamerV3 也有互补关系：Dreamer 在 latent world model 中做 imagination rollout，Psi-W0 则把视频生成式世界模型当成更贴近真实视觉后果的 AC-WM。
+它和 Fast-WAM 形成对比。Fast-WAM 追问测试时是否必须显式想象未来画面；PsiBot 路线则明确保留 Psi-W0 作为动作条件世界模型，用它做策略评估、失败建模和 RL 优化。它和 DreamerV3 也形成相邻对照：Dreamer 在 latent world model 中做 imagination rollout，Psi-W0 则把视频生成式世界模型当成更贴近真实视觉后果的 AC-WM。
 
 ## 对多智能体任务规划模型的启发
 

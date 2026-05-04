@@ -1,5 +1,94 @@
 [
   {
+    "id": "2021-hierarchical-scene-graph-navigation-gnn",
+    "title": "Hierarchical Representations and Explicit Memory: Learning Effective Navigation Policies on 3D Scene Graphs using Graph Neural Networks",
+    "short_title": "3DSG Navigation",
+    "year": 2021,
+    "published": "2021-08",
+    "venue": "ICRA 2022",
+    "status": "read",
+    "scope": "in_scope",
+    "readiness": "high",
+    "action": "build_note",
+    "tech_paradigm": "scene_graph_navigation_policy",
+    "primary_domain": "Scene Graph",
+    "domains": [
+      "Scene Graph",
+      "GNN",
+      "RL"
+    ],
+    "primary_technical_layer": "hierarchical_scene_graph_memory",
+    "primary_task_family": "object_search_navigation",
+    "platform": "indoor_3d_navigation",
+    "planning_relevance": "这篇把 3D Dynamic Scene Graph 变成 agent-centric 的导航观测，用 action layer 显式加入离散可行动作节点，再用 GNN 聚合环境、记忆和碰撞风险，最终选择平台无关的导航动作。",
+    "multi_robot_relevance": "论文主要验证单机器人 object search，但它提供了一个很适合扩展到多机器人规划的模块：把全局 3D scene graph 压缩成每个机器人视角下的动作候选图，再让分配器或协同 planner 在 action node 上做联合决策。",
+    "system_roles": [
+      "semantic_planner",
+      "graph_encoder",
+      "memory_module",
+      "planner_baseline"
+    ],
+    "reusable_modules": [
+      "hierarchical_3d_scene_graph",
+      "action_layer_discrete_navigation",
+      "collision_checked_action_nodes",
+      "explicit_visit_memory",
+      "agent_centric_scene_graph_embedding",
+      "platform_agnostic_navigation_policy"
+    ],
+    "evidence_level": "paper_read",
+    "next_action": "extract_scene_graph_navigation_policy",
+    "tags": [
+      "Scene Graph",
+      "GNN",
+      "RL",
+      "3D scene graph",
+      "dynamic scene graph",
+      "navigation",
+      "object search",
+      "explicit memory"
+    ],
+    "authors": [
+      "Zachary Ravichandran",
+      "Lisa Peng",
+      "Nathan Hughes",
+      "J. Daniel Griffith",
+      "Luca Carlone"
+    ],
+    "institutions": [
+      "MIT Lincoln Laboratory",
+      "MIT Laboratory for Information and Decision Systems"
+    ],
+    "doi": "10.1109/ICRA46639.2022.9812179",
+    "arxiv": "2108.01176",
+    "url": "https://arxiv.org/abs/2108.01176",
+    "project_url": "https://github.com/MIT-TESSE/dsg-rl",
+    "pdf_path": "pdfs/2021-08-01-3DSG-GNN-navigation-policy.pdf",
+    "image_url": "",
+    "zotero_key": "",
+    "citekey": "ravichandran2021hierarchical",
+    "cites": [],
+    "extends": [],
+    "uses": [],
+    "enables": [],
+    "contrasts": [],
+    "published_value": 24259,
+    "relations": [],
+    "file": "papers/2021-hierarchical-scene-graph-navigation-gnn.md",
+    "note_html": "notes/2021-hierarchical-scene-graph-navigation-gnn.html",
+    "summary": "这篇论文的核心价值是：把分层 3D Scene Graph 变成机器人导航策略的显式空间记忆，并通过 GNN 在 action node 上做决策，而不是让策略从 RGB 或局部深度图里自己学出场景结构。",
+    "research_question": "机器人导航策略如果只看 raw image、depth 或 2D semantic segmentation，需要自己从低层观测里学出三维结构、拓扑关系、语义关联和历史访问记忆。这个学习负担很重，也不利于泛化到新场景。\n\n论文的问题是：如果机器人已经有一个 3D Dynamic Scene Graph，它能不能直接在这张结构化图上学习导航策略，并利用图中显式的层级信息和访问记忆提升 object search 表现。",
+    "method": "作者引入分层 3D Scene Graph 作为导航策略的输入。在执行规划时，系统保留高层 node 信息，例如 room、object、place 等语义和拓扑节点，同时去掉底层 mesh node，避免低层几何过密导致图过大、消息传递低效。\n\n关键预处理是加入一个 action layer。作者在机器人当前位置附近加入 8 个离散 action node，用来表示 8 个方向上的移动候选动作。然后通过避碰算法检查这些动作是否会和场景里的物体 node 或占据区域发生碰撞，把碰撞风险编码进动作节点，从而构成论文图 1(b) 中的 agent-centric DSG observation。\n\n每个 node 会被编码成一个 size=10 的特征向量：\n\n- 位置 x 3。\n- 尺寸 x 3。\n- 类型 x 2。\n- 访问记录 x 1。\n- 碰撞风险 x 1。\n\n这个充满 10 维特征的 graph 会被送进 GNN 做消息传递。公式 1 中，v_i^t 表示当前中心节点，N(v_i^t) 表示它的邻居节点，y 是前面这组 10 维节点特征。AGG 表示每个 node 都会对邻居 node 的信息做一次聚合，论文里这个聚合过程重复 3 次。\n\n经过消息传递后，每个 action node 已经吸收了周围场景、语义、访问历史和碰撞信息。公式 2 里的 V_a 只收集那 8 个 action node 的特征；然后把这 8 个动作特征拼接起来，输入 MLP 的 READ 模块，最终得到 y_G^t。策略基于这个图级输出选择最终动作，例如前进、左转或右转。",
+    "contribution": "这篇论文把 3D Scene Graph 从“地图表示”推进到“策略输入”。它不是只把 scene graph 用来做可视化，也不是只预测 graph 上的 subgoal，而是把全局 DSG 转换成机器人中心的局部动作图，然后直接学习从图到导航动作的 policy。\n\n它的贡献可以概括成三点：\n\n- 用分层 3D Scene Graph 显式提供 geometry、topology 和 semantics。\n- 用 explicit memory 记录访问历史，让策略知道哪些区域已经搜索过。\n- 用 action node 把连续导航空间离散成可检查、可聚合、可决策的候选动作。",
+    "reading_highlights": "最漂亮的设计是 action layer。普通 scene graph 只有场景里的物体、房间、地点和关系，但策略真正要选的是“下一步往哪里走”。作者把 8 个离散动作也变成图节点，并在 GNN 消息传递前就用碰撞检测给它们加上风险信息。\n\n这样一来，GNN 最终不是在抽象场景节点上做分类，而是在一组已经吸收环境上下文的 action node 上做选择。这非常适合后续扩展到 multi-agent planner：每个机器人都可以生成自己的 action layer，上层再协调多个 action layer 的冲突和覆盖效率。",
+    "limitation": "这篇主要处理导航和 object search，不处理复杂操作任务，也不负责从自然语言指令生成子任务。它依赖已有的 3D Dynamic Scene Graph，图构建质量、语义检测和场景更新都会直接影响策略表现。\n\n另外，动作空间被压缩成平台无关的导航动作，例如 go straight、turn left、turn right。这对导航很干净，但还不能直接覆盖机械臂操作、协作搬运或需要精细连续控制的任务。",
+    "relation": "和 GRID 相比，这篇更早，也更底层：GRID 关注 instruction 如何 grounding 到 scene graph 并生成子任务；3DSG Navigation 关注 scene graph 如何变成 navigation policy 的动作选择。\n\n和 GMATANN 相比，这篇的图是 scene-centric/action-centric，用来做导航动作决策；GMATANN 的图是 task-agent graph，用来做异构多智能体任务分配。\n\n和 CO + GNN Survey 的观点一致，这篇没有让 GNN 脱离结构做纯黑盒决策，而是先把问题设计成一个强结构图：高层 scene graph 保留语义和拓扑，action node 表示候选决策，GNN 负责在结构上做信息聚合和启发式判断。",
+    "planning_insight": "这篇给我们的启发很直接：多机器人 planner 不应该只维护一个全局任务列表，还应该维护一个可被每个机器人投影成 action candidates 的 3D scene graph。\n\n一个更稳的结构是：\n\n```text\nGlobal 3D scene graph\n  -> remove low-level mesh nodes\n  -> keep room / place / object / semantic nodes\n  -> add per-robot action layer\n  -> collision check action nodes\n  -> GNN message passing\n  -> per-robot action scores\n  -> multi-agent conflict resolution / task allocation\n```\n\n它和 GRID 可以拼在一起：GRID 负责从 instruction 和 scene graph 得到 grounded subtask，这篇负责把 scene graph 和当前机器人状态变成可执行导航动作。",
+    "reusable_module_text": "hierarchical 3D scene graph pruning、8-direction action layer、collision-checked action nodes、10D node feature schema、explicit visit memory、3-step GNN message passing、action-node readout policy。",
+    "evidence_risk": "论文在 multi-object search 任务中和常见 visuomotor policy 对比，展示了 3D Scene Graph 表示、层级信息和 explicit memory 对搜索效率和泛化的提升。消融结果也支持 room / object 等高层节点对导航目标选择有帮助。\n\n风险在于实验仍然是导航类任务，且依赖模拟环境和 DSG 构建流程。要用于真实多机器人任务规划，还需要补充动态图更新、跨机器人 map fusion、通信延迟、行动冲突和执行失败反馈。",
+    "open_question": "- action node 是否只能是 8 个方向，还是可以扩展成导航、抓取、观察、等待等多类型 action layer？\n- 多机器人系统中，每个机器人独立生成 action layer，还是共享一个联合 action graph？\n- explicit visit memory 如何区分“我访问过”和“队友访问过”？\n- 如果 scene graph 中的语义节点错误，GNN policy 是否有纠错机制？"
+  },
+  {
     "id": "2023-daydreamer-world-models-for-physical-robot-learning",
     "title": "DayDreamer: World Models for Physical Robot Learning",
     "short_title": "DayDreamer",
@@ -60,7 +149,6 @@
     "extends": [],
     "uses": [],
     "enables": [],
-    "complements": [],
     "contrasts": [],
     "published_value": 24269,
     "relations": [],
@@ -143,7 +231,6 @@
     "extends": [],
     "uses": [],
     "enables": [],
-    "complements": [],
     "contrasts": [],
     "published_value": 24276,
     "relations": [
@@ -246,9 +333,6 @@
       "2026-world-action-models-zero-shot-policies",
       "2026-fast-wam-test-time-future-imagination"
     ],
-    "complements": [
-      "2023-dreamerv3-world-models"
-    ],
     "contrasts": [
       "2023-rt-2-vla"
     ],
@@ -265,10 +349,6 @@
       {
         "type": "enables",
         "target": "2026-fast-wam-test-time-future-imagination"
-      },
-      {
-        "type": "complements",
-        "target": "2023-dreamerv3-world-models"
       },
       {
         "type": "contrasts",
@@ -361,7 +441,6 @@
     "extends": [],
     "uses": [],
     "enables": [],
-    "complements": [],
     "contrasts": [],
     "published_value": 24279,
     "relations": [],
@@ -444,7 +523,6 @@
     "extends": [],
     "uses": [],
     "enables": [],
-    "complements": [],
     "contrasts": [],
     "published_value": 24282,
     "relations": [],
@@ -474,9 +552,9 @@
     "readiness": "high",
     "action": "build_note",
     "tech_paradigm": "scene_graph_task_planning",
-    "primary_domain": "Planning",
+    "primary_domain": "Scene Graph",
     "domains": [
-      "Planning",
+      "Scene Graph",
       "GNN",
       "LLM"
     ],
@@ -501,7 +579,7 @@
     "evidence_level": "paper_read",
     "next_action": "extract_scene_graph_planner",
     "tags": [
-      "Planning",
+      "Scene Graph",
       "GNN",
       "LLM",
       "scene graph",
@@ -534,27 +612,20 @@
     "cites": [],
     "extends": [],
     "uses": [
+      "2021-hierarchical-scene-graph-navigation-gnn",
       "2023-combinatorial-optimization-gnn-reasoning"
     ],
     "enables": [],
-    "complements": [
-      "2025-gmatann-heterogeneous-task-allocation",
-      "2026-genswarm-multi-robot-code-policy"
-    ],
     "contrasts": [],
     "published_value": 24284,
     "relations": [
       {
         "type": "uses",
+        "target": "2021-hierarchical-scene-graph-navigation-gnn"
+      },
+      {
+        "type": "uses",
         "target": "2023-combinatorial-optimization-gnn-reasoning"
-      },
-      {
-        "type": "complements",
-        "target": "2025-gmatann-heterogeneous-task-allocation"
-      },
-      {
-        "type": "complements",
-        "target": "2026-genswarm-multi-robot-code-policy"
       }
     ],
     "file": "papers/2023-grid-scene-graph-task-planning.md",
@@ -640,7 +711,6 @@
     "extends": [],
     "uses": [],
     "enables": [],
-    "complements": [],
     "contrasts": [],
     "published_value": 24285,
     "relations": [],
@@ -727,7 +797,6 @@
     "extends": [],
     "uses": [],
     "enables": [],
-    "complements": [],
     "contrasts": [],
     "published_value": 24297,
     "relations": [],
@@ -814,7 +883,6 @@
     ],
     "uses": [],
     "enables": [],
-    "complements": [],
     "contrasts": [],
     "published_value": 24297,
     "relations": [
@@ -907,14 +975,11 @@
     "extends": [],
     "uses": [],
     "enables": [],
-    "complements": [
-      "2024-pi0-vla-flow-model"
-    ],
     "contrasts": [],
     "published_value": 24300,
     "relations": [
       {
-        "type": "complements",
+        "type": "cites",
         "target": "2024-pi0-vla-flow-model"
       }
     ],
@@ -998,7 +1063,6 @@
     "extends": [],
     "uses": [],
     "enables": [],
-    "complements": [],
     "contrasts": [],
     "published_value": 24302,
     "relations": [],
@@ -1091,7 +1155,6 @@
       "2025-fast-action-tokenization-vla"
     ],
     "enables": [],
-    "complements": [],
     "contrasts": [],
     "published_value": 24303,
     "relations": [
@@ -1186,27 +1249,9 @@
     "extends": [],
     "uses": [],
     "enables": [],
-    "complements": [
-      "2023-combinatorial-optimization-gnn-reasoning",
-      "2025-heterogeneous-mrta-rl",
-      "2026-genswarm-multi-robot-code-policy"
-    ],
     "contrasts": [],
     "published_value": 24305,
-    "relations": [
-      {
-        "type": "complements",
-        "target": "2023-combinatorial-optimization-gnn-reasoning"
-      },
-      {
-        "type": "complements",
-        "target": "2025-heterogeneous-mrta-rl"
-      },
-      {
-        "type": "complements",
-        "target": "2026-genswarm-multi-robot-code-policy"
-      }
-    ],
+    "relations": [],
     "file": "papers/2025-gmatann-heterogeneous-task-allocation.md",
     "note_html": "notes/2025-gmatann-heterogeneous-task-allocation.html",
     "summary": "GMATANN 是一篇典型的“GNN 负责表征提取 + RL 负责最终决策”的异构多智能体任务分配论文：它把机器人和任务建成 task-agent graph，用全局-局部注意力提取大局状态，再让强化学习输出具体分配动作。",
@@ -1290,7 +1335,6 @@
       "2024-pi0-vla-flow-model"
     ],
     "enables": [],
-    "complements": [],
     "contrasts": [],
     "published_value": 24310,
     "relations": [
@@ -1315,7 +1359,7 @@
     "contribution": "它把“部署后学习”推到 VLA 路线中央：机器人不只是执行预训练策略，也应从失败中收集针对性数据。",
     "reading_highlights": "",
     "limitation": "公开材料主要集中于单体机器人任务吞吐和成功率。多机器人场景中的信用分配、协同失败归因和共享经验池仍未解决。",
-    "relation": "π*0.6 是 π0.6 的经验学习扩展，和 Dreamer 的“通过模型想象改进策略”形成互补：一个更偏真实世界纠错数据，一个更偏学习世界模型和想象 rollout。",
+    "relation": "π*0.6 是 π0.6 的经验学习扩展，和 Dreamer 的“通过模型想象改进策略”形成相邻对照：一个更偏真实世界纠错数据，一个更偏学习世界模型和想象 rollout。",
     "planning_insight": "多机器人 planner 可以记录失败发生在哪个子任务、哪个机器人、哪个协作边界，再将失败样本反哺给执行策略或能力模型。",
     "reusable_module_text": "RECAP experience loop、correction data pipeline、failure recovery policy。适合多机器人系统的持续学习和失败后再规划。",
     "evidence_risk": "证据来自真实世界经验学习方向；风险是公开材料细节有限，且多机器人失败归因更复杂。",
@@ -1384,7 +1428,6 @@
     ],
     "uses": [],
     "enables": [],
-    "complements": [],
     "contrasts": [],
     "published_value": 24310,
     "relations": [
@@ -1483,22 +1526,9 @@
     "extends": [],
     "uses": [],
     "enables": [],
-    "complements": [
-      "2023-eureka-reward-design-llm",
-      "2025-heterogeneous-mrta-rl"
-    ],
     "contrasts": [],
     "published_value": 24312,
-    "relations": [
-      {
-        "type": "complements",
-        "target": "2023-eureka-reward-design-llm"
-      },
-      {
-        "type": "complements",
-        "target": "2025-heterogeneous-mrta-rl"
-      }
-    ],
+    "relations": [],
     "file": "papers/2026-genswarm-multi-robot-code-policy.md",
     "note_html": "notes/2026-genswarm-multi-robot-code-policy.html",
     "summary": "GenSwarm 用多 LLM agent 把自然语言任务转成多机器人代码策略，并自动部署到仿真和真实机器人，是“自然语言到多机器人执行”的强相关系统。",
@@ -1599,7 +1629,6 @@
       "2023-dreamerv3-world-models"
     ],
     "enables": [],
-    "complements": [],
     "contrasts": [
       "2025-pi05-open-world-generalization",
       "2024-pi0-vla-flow-model",
@@ -1719,7 +1748,6 @@
     "extends": [],
     "uses": [],
     "enables": [],
-    "complements": [],
     "contrasts": [
       "2025-fast-action-tokenization-vla",
       "2024-pi0-vla-flow-model",
@@ -1826,7 +1854,6 @@
     "extends": [],
     "uses": [],
     "enables": [],
-    "complements": [],
     "contrasts": [
       "2026-world-action-models-zero-shot-policies",
       "2024-pi0-vla-flow-model",
@@ -1949,7 +1976,6 @@
       "2024-pi0-vla-flow-model"
     ],
     "enables": [],
-    "complements": [],
     "contrasts": [],
     "published_value": 24314,
     "relations": [
@@ -2057,26 +2083,22 @@
     "extends": [],
     "uses": [],
     "enables": [],
-    "complements": [
-      "2026-world-action-models-zero-shot-policies",
-      "2023-dreamerv3-world-models"
-    ],
     "contrasts": [
       "2026-fast-wam-test-time-future-imagination"
     ],
     "published_value": 24314,
     "relations": [
       {
-        "type": "complements",
+        "type": "contrasts",
+        "target": "2026-fast-wam-test-time-future-imagination"
+      },
+      {
+        "type": "cites",
         "target": "2026-world-action-models-zero-shot-policies"
       },
       {
-        "type": "complements",
+        "type": "cites",
         "target": "2023-dreamerv3-world-models"
-      },
-      {
-        "type": "contrasts",
-        "target": "2026-fast-wam-test-time-future-imagination"
       }
     ],
     "file": "papers/2026-psibot-from-human-skill-to-robotic-mastery.md",
@@ -2087,7 +2109,7 @@
     "contribution": "- 把 Psi-R2 明确定位成 WAM/VLA 融合路线：视频生成骨干 + 未来视频/动作联合预测。\n- 把 Psi-W0 明确定位成 Action-Conditioned World Model，用于反事实评估、数据转换和策略优化。\n- 提出强工程判断：大规模高质量数据下，复杂视觉对齐模块反而会阻碍长程高精度操作。\n- 披露了数据规模：约 5,417 小时真机数据 + 95,472 小时人类数据，覆盖 294 场景、4,821 任务和 1,382 物体。\n- 给出数据价值排序：任务多样性 > 物体多样性 >> 场景多样性；精准 3D 位姿 >> 触觉模态 > 2D 图像特征。\n- 说明失败数据对世界模型的重要性：Psi-W0 额外加入约 30% 失败/无意义样本，用来学习反事实后果。\n- 披露 WAM 推理工程优化：通过 DiT 缓存、Torch Compile、量化等把单次推理从 2.2 秒压到 100ms 以内。",
     "reading_highlights": "1. 最反直觉的是放弃视觉伪对齐：不把人手修成机械手，不强行对齐 latent，只用运动学映射和大规模原始数据。\n2. Psi-W0 的价值不只是预测视频，而是把世界模型变成策略评估器、失败解释器、数据质检器和训练飞轮。\n3. 失败数据不是脏数据。对于 AC-WM，失败样本是学习反事实和做策略改进的必要分布。\n4. 触觉被当成跨实体的共同语言：人和机器人外观不同，但接触事件和接触状态是物理上可迁移的。\n5. 这条路线更像工业化 scaling law：不是靠一个漂亮模块取胜，而是靠高精度人类数据、世界模型评估和闭环回流。",
     "limitation": "博客不是正式论文，缺少完整 benchmark 表、训练细节、消融图和可复现代码。其重点也不是跨所有机器人具身的通用模型，而是用人类数据增强特定机器人本体的预训练。对多机器人任务规划来说，还需要额外验证联合动作、通信、协同约束、资源冲突和多主体失败恢复能否进入同一个 AC-WM 数据飞轮。",
-    "relation": "Psi-R2 / Psi-W0 与 DreamZero 属于同一条 WAM 大路线：都把未来视频预测和动作生成结合起来，让世界演化参与策略学习。区别是 DreamZero 更像论文定义 WAM 的通用策略范式，PsiBot 这篇博客更像工业化实现路线，重点放在人类数据规模化、触觉/3D 位姿采集、数据质检和世界模型内 RL。\n\n它和 Fast-WAM 形成对比。Fast-WAM 追问测试时是否必须显式想象未来画面；PsiBot 路线则明确保留 Psi-W0 作为动作条件世界模型，用它做策略评估、失败建模和 RL 优化。它和 DreamerV3 也有互补关系：Dreamer 在 latent world model 中做 imagination rollout，Psi-W0 则把视频生成式世界模型当成更贴近真实视觉后果的 AC-WM。",
+    "relation": "Psi-R2 / Psi-W0 与 DreamZero 属于同一条 WAM 大路线：都把未来视频预测和动作生成结合起来，让世界演化参与策略学习。区别是 DreamZero 更像论文定义 WAM 的通用策略范式，PsiBot 这篇博客更像工业化实现路线，重点放在人类数据规模化、触觉/3D 位姿采集、数据质检和世界模型内 RL。\n\n它和 Fast-WAM 形成对比。Fast-WAM 追问测试时是否必须显式想象未来画面；PsiBot 路线则明确保留 Psi-W0 作为动作条件世界模型，用它做策略评估、失败建模和 RL 优化。它和 DreamerV3 也形成相邻对照：Dreamer 在 latent world model 中做 imagination rollout，Psi-W0 则把视频生成式世界模型当成更贴近真实视觉后果的 AC-WM。",
     "planning_insight": "对我们的多智能体任务规划模型来说，这篇博客最有价值的是数据飞轮设计。多机器人系统不能只训练“成功动作执行器”，还必须有一个能理解失败后果的 critic / world model。Psi-W0 的思路可以迁移成 Multi-Agent AC-WM：输入多机器人状态、语言目标、联合动作和通信动作，预测未来世界状态、冲突、接触事件和失败后果。\n\n另一个关键启发是数据价值排序。多机器人数据采集时，不应把预算平均花在背景场景变化上，而应优先扩任务类型、物体类型、接触事件、失败模式和高精度轨迹。若要做 No.1 仓库，这类工业技术博客应当和论文同等索引，因为它直接揭示了真实系统能跑起来的训练细节。",
     "reusable_module_text": "Raw Data In Raw Data Out、人机运动学映射、动作条件世界模型、失败样本反事实建模、world-model 内 RL、Psi-W0 数据质检、触觉预测标签、高精度人类 3D 轨迹采集、DiT 推理缓存与量化优化。适合作为多机器人 WAM 数据飞轮和 planner critic 的重要参考。",
     "evidence_risk": "证据来自 PsiBot 技术博客和 MolmoSpaces 榜单表现披露，强在工业系统经验、数据规模、训练策略和架构分工。风险是技术博客没有论文级可复现细节，也没有公开完整训练代码和消融表；因此在仓库中应标为 technical_blog evidence，而不是 paper_read evidence。",
@@ -2173,7 +2195,6 @@
     "extends": [],
     "uses": [],
     "enables": [],
-    "complements": [],
     "contrasts": [],
     "published_value": 24315,
     "relations": [
@@ -2278,7 +2299,6 @@
       "2024-pi0-vla-flow-model"
     ],
     "enables": [],
-    "complements": [],
     "contrasts": [],
     "published_value": 24315,
     "relations": [

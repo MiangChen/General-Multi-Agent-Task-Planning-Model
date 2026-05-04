@@ -36,7 +36,6 @@ cites: [2026-genswarm-multi-robot-code-policy]
 extends: []
 uses: []
 enables: []
-complements: []
 contrasts: []
 ---
 

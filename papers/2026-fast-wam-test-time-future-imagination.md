@@ -37,7 +37,6 @@ cites: [2026-world-action-models-zero-shot-policies, 2024-pi0-vla-flow-model, 20
 extends: []
 uses: []
 enables: []
-complements: []
 contrasts: [2026-world-action-models-zero-shot-policies, 2024-pi0-vla-flow-model, 2025-pi05-open-world-generalization]
 ---
 

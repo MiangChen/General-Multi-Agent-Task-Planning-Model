@@ -10,8 +10,8 @@ scope: in_scope
 readiness: high
 action: build_note
 tech_paradigm: scene_graph_task_planning
-primary_domain: Planning
-domains: [Planning, GNN, LLM]
+primary_domain: Scene Graph
+domains: [Scene Graph, GNN, LLM]
 primary_technical_layer: scene_graph_grounding
 primary_task_family: instruction_driven_task_planning
 platform: large_scene_robot_planning
@@ -21,7 +21,7 @@ system_roles: [semantic_planner, graph_encoder, task_allocator, planner_baseline
 reusable_modules: [scene_graph_representation, llm_node_tokenization, instruction_conditioned_gat, instruction_feature_enhancer, robot_scene_graph_decoder]
 evidence_level: paper_read
 next_action: extract_scene_graph_planner
-tags: [Planning, GNN, LLM, scene graph, robotic task planning, instruction following, graph attention]
+tags: [Scene Graph, GNN, LLM, scene graph, robotic task planning, instruction following, graph attention]
 authors: [Zhe Ni, Xiaoxin Deng, Cong Tai, Xinyue Zhu, Qinghongbing Xie, Weihang Huang, Xiang Wu, Long Zeng]
 institutions: [Tsinghua University, Shenzhen Pudu Technology Inc.]
 doi:
@@ -34,9 +34,8 @@ zotero_key:
 citekey: ni2023grid
 cites: []
 extends: []
-uses: [2023-combinatorial-optimization-gnn-reasoning]
+uses: [2021-hierarchical-scene-graph-navigation-gnn, 2023-combinatorial-optimization-gnn-reasoning]
 enables: []
-complements: [2025-gmatann-heterogeneous-task-allocation, 2026-genswarm-multi-robot-code-policy]
 contrasts: []
 ---
 

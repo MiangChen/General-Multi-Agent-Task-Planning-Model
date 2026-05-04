@@ -36,7 +36,6 @@ cites: [2026-mem-multi-scale-embodied-memory, 2025-pistar06-recap, 2025-pi06-mod
 extends: [2026-mem-multi-scale-embodied-memory, 2025-pistar06-recap, 2025-pi06-model-card]
 uses: [2025-pi05-open-world-generalization, 2024-pi0-vla-flow-model]
 enables: []
-complements: []
 contrasts: []
 ---
 

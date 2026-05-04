@@ -36,7 +36,6 @@ cites: [2025-pi06-model-card, 2025-pi05-open-world-generalization, 2024-pi0-vla-
 extends: [2025-pi06-model-card]
 uses: [2025-pi05-open-world-generalization, 2024-pi0-vla-flow-model]
 enables: []
-complements: []
 contrasts: []
 ---
 
