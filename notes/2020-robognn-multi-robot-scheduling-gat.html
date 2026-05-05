@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>CO + GNN Survey · Paper Note</title>
+  <title>RoboGNN Scheduler · Paper Note</title>
   <style>
     :root {
       --bg: #eef4fb;
@@ -433,15 +433,15 @@
   <main class="note-shell" id="top">
     <section class="note-hero">
       <div class="hero-main">
-        <div class="note-kicker">2023-04 · Journal of Machine Learning Research 2023 · Combinatorial Optimization GNN</div>
-        <h1>CO + GNN Survey</h1>
-        <div class="full-title">Combinatorial Optimization and Reasoning with Graph Neural Networks</div>
-        <div class="note-summary"><p>这篇 JMLR 综述的核心判断是：GNN 最适合做组合优化和规划求解器里的 heuristic guide，而不是直接替代传统算法独立输出最终方案。</p></div>
+        <div class="note-kicker">2020-07 · IEEE Robotics and Automation Letters 2020 · RoboGNN Scheduling Policy</div>
+        <h1>RoboGNN Scheduler</h1>
+        <div class="full-title">Learning Scheduling Policies for Multi-Robot Coordination With Graph Attention Networks</div>
+        <div class="note-summary"><p>RoboGNN Scheduler 用模仿学习把传统优化器生成的小规模高质量调度数据蒸馏进 GAT + Q network，从而在同构多机器人 ST/SR/TA/XD 调度问题上快速生成接近最优的任务分配与排序。</p></div>
       </div>
       <aside class="hero-side">
         <div class="metric-grid">
           <div class="metric">
-            <div class="metric-value">2023</div>
+            <div class="metric-value">2020</div>
             <div class="metric-label">Year</div>
           </div>
           <div class="metric">
@@ -453,19 +453,19 @@
             <div class="metric-label">Evidence</div>
           </div>
           <div class="metric">
-            <div class="metric-value">0</div>
+            <div class="metric-value">1</div>
             <div class="metric-label">Relations</div>
           </div>
         </div>
         <div>
           <div class="note-section-kicker">Authors</div>
-          <div>Quentin Cappart, Didier Chetelat, Elias B. Khalil, Andrea Lodi, Christopher Morris, Petar Velickovic</div>
+          <div>Zheyuan Wang, Matthew Gombolay</div>
         </div>
         <div>
           <div class="note-section-kicker">Institutions</div>
-          <div>Polytechnique Montreal · University of Toronto · Cornell Tech · Technion · RWTH Aachen University · DeepMind</div>
+          <div>Georgia Institute of Technology</div>
         </div>
-        <div class="note-link-row"><a href="../pdfs/2023-04-01-CO-GNN-combinatorial-optimization-reasoning.pdf" target="_blank" rel="noreferrer">PDF</a><a href="https://jmlr.org/papers/v24/21-0449.html" target="_blank" rel="noreferrer">Paper</a><a href="../papers/2023-combinatorial-optimization-gnn-reasoning.md" target="_blank" rel="noreferrer">Markdown source</a></div>
+        <div class="note-link-row"><a href="../pdfs/2020-07-01-RoboGNN-multi-robot-scheduling-gat.pdf" target="_blank" rel="noreferrer">PDF</a><a href="https://ieeexplore.ieee.org/document/9119835" target="_blank" rel="noreferrer">Paper</a><a href="https://doi.org/10.1109/LRA.2020.3002198" target="_blank" rel="noreferrer">DOI</a><a href="../papers/2020-robognn-multi-robot-scheduling-gat.md" target="_blank" rel="noreferrer">Markdown source</a></div>
       </aside>
     </section>
 
@@ -474,57 +474,55 @@
 
     <section class="note-section impact">
       <div class="note-section-kicker">For Our Model</div>
-      <div class="note-section-body"><p>我们不应该让 LLM 或 VLA 直接“猜”整个多机器人计划。更稳的架构是：</p>
-<p>```text<br>Language goal<br>-&gt; task graph / constraint graph<br>-&gt; GNN heuristic guide<br>-&gt; search / optimization / scheduler<br>-&gt; VLA or WAM executor<br>```</p>
-<p>也就是说，GNN 的角色不是输出最终答案，而是给 planner 提供：</p>
-<ul><li>哪个 task 更应该先分配。</li><li>哪个 robot-task edge 更可能成功。</li><li>哪个变量应该优先 branch。</li><li>哪个候选计划值得搜索器优先展开。</li><li>哪个 warm-start 方案能让传统求解器更快收敛。</li></ul></div>
+      <div class="note-section-body"><p>这篇提醒我们，General Multi-Agent Task Planning Model 里需要一个明确的 scheduling 层，而不只是 task allocator：</p>
+<p>```text<br>Language / scene graph grounding<br>-&gt; task graph with temporal constraints<br>-&gt; capability-aware allocation<br>-&gt; GAT / solver-guided scheduler<br>-&gt; VLA / WAM / code policy executor<br>```</p>
+<p>RoboGNN 的可复用点是：把任务 start time、任务依赖、deadline、地点互斥和 partial schedule 都编码进图，再让 GAT 提取时序邻域特征，最后用 Q-value 方式逐步构造 schedule。</p>
+<p>对我们的系统来说，它更适合作为 scheduler baseline 或 solver heuristic，而不是完整 planner。</p></div>
     </section>
 
 
     <section class="note-section ">
       <div class="note-section-kicker">Research Question</div>
-      <div class="note-section-body"><p>组合优化问题普遍存在于路径规划、任务分配、调度、SAT、MIP 和车辆路径等场景中。传统求解器有可行性和最优性保证，但搜索慢；纯神经网络推理快，但很难保证硬约束和最优性。</p>
-<p>论文关心的问题是：GNN 应该如何表示组合优化问题，应该输出什么，以及应该用什么学习范式嵌入到真实求解流程中。</p></div>
+      <div class="note-section-body"><p>这篇论文处理的是经典多机器人调度问题：多个机器人要完成一批任务，任务之间有时序约束、等待约束、deadline、地点互斥和 makespan 目标。</p>
+<p>用 iTax 语言说，它的问题设定是 SR、ST、TA、XD：每个任务只需要一个机器人，每个机器人一次只做一个任务，任务有时间扩展，并且不同机器人日程之间存在 cross-schedule dependency。论文还假设机器人同构，所以不处理不同机器人能力不同的问题。</p>
+<p>传统 MILP / CP / exact solver 能给高质量解，但大规模时太慢；手工启发式更快，但需要领域专家调参。论文的问题就是：能不能让 GAT 从优化器生成的示范解里学一个快速调度策略。</p></div>
     </section>
 
 
     <section class="note-section ">
       <div class="note-section-kicker">Method</div>
-      <div class="note-section-body"><p>这不是一篇提出单一模型的算法论文，而是一篇结构化综述。它把 GNN for CO 的方法整理成三个关键维度：</p>
-<ol><li><strong>输入图建模</strong>：把问题转成 natural graph、bipartite graph 或 tripartite graph。</li><li><strong>输出接口设计</strong>：输出边概率、变量取值、搜索策略或 action value。</li><li><strong>训练范式</strong>：监督学习 / 模仿学习、强化学习、无监督学习。</li></ol>
-<p>最重要的工程判断是：GNN 不应该只被看作一个端到端黑盒，而应该嵌入 Branch-and-Bound、Local Search、MCTS、Beam Search 等传统算法内部，替换其中“凭经验、算得慢”的启发式部件。</p></div>
+      <div class="note-section-body"><p>论文提出 RoboGNN scheduler。整体思路是 imitation learning + graph attention network + Q-value decoder。</p>
+<ol><li><strong>专家数据生成</strong>：先用传统优化方法在小规模问题上求出高质量或最优任务分配数据，把这些 schedule 拆成状态-动作对，作为模仿学习数据。</li><li><strong>任务图输入</strong>：输入是一个 task graph / Simple Temporal Network。节点是任务的 start-time event，边表示任务之间的时序约束、等待关系、deadline 或地点互斥信息。edge 不只是连接关系，还带有重要的时间权重。</li><li><strong>机器人特定 node feature</strong>：对某个机器人 i，节点特征会编码该任务是否已经分给机器人 i、是否分给其他机器人、是否未调度、任务持续时间和任务位置。也就是说，同一张任务图会因为“当前评估哪个机器人”而有不同 node feature。</li><li><strong>有向加权 GAT</strong>：GAT 提取机器人 i 周围 neighbor node 和 edge 的信息。论文对原始 GAT 做了适配：消息沿有向边传递，edge weight 会进入 attention coefficient 和 node feature aggregation。经过多层处理后，每个 node 得到包含局部时序结构和邻居信息的描述。</li><li><strong>Q network 打分</strong>：对机器人 i 和候选任务 x，Q network 读取 state embedding 与 action embedding，估计“把任务 x 分给机器人 i”的未来累计收益。调度时按得分最高的候选动作贪心分配，决定该机器人下一步去哪一个任务。</li></ol></div>
     </section>
 
 
     <section class="note-section ">
       <div class="note-section-kicker">Key Contributions</div>
-      <div class="note-section-body"><p>论文把 GNN 和组合优化的连接方式讲清楚了：</p>
-<ul><li>GNN 的优势在于 permutation invariance、稀疏结构感知和关系归纳偏置。</li><li>对 TSP、VRP、routing 这类问题，可以直接用城市、客户、仓库和道路形成 natural graph。</li><li>对 MIP、SAT 等通用数学规划问题，可以用变量节点、约束节点和变量-约束边形成 bipartite graph。</li><li>对更复杂的求解流程，可以让 GNN 输出 warm-start、branching policy、node / edge probability、局部搜索移动建议或搜索优先级。</li></ul></div>
+      <div class="note-section-body"><p>它把 STN-based multi-robot scheduling 接进了 GNN 框架，而且不是把 GAT 当成普通无向图编码器，而是让 GAT 处理 directed weighted edges。这一点很重要，因为调度问题的边不是普通相似度，边里有方向、时间差、等待和 deadline 语义。</p>
+<p>第二个贡献是训练路线务实：不直接用 RL 从零学调度，而是用优化器或专家 schedule 生成 imitation learning 数据。这样小规模 exact solver 的强质量可以迁移成大规模快速 heuristic。</p>
+<p>第三个贡献是模型对任务数和机器人数量 non-parametric，可以从小问题学到策略，再用于更大任务图。</p></div>
     </section>
 
-
-    <section class="note-section ">
-      <div class="note-section-kicker">Reading Highlights</div>
-      <div class="note-section-body"><p>这篇综述最值得记住的是它对 GNN 定位的克制：工业级复杂规划里，GNN 不是独立决策者，而是传统算法的“超强辅助”。</p>
-<p>传统算法负责守规矩、给证明和保证可行性；GNN 负责凭结构直觉指路，让搜索更快、更聪明。</p></div>
-    </section>
 
 
     <section class="note-section risk">
       <div class="note-section-kicker">Limitations</div>
-      <div class="note-section-body"><p>综述本身不直接给出一个可复现的多机器人任务规划系统。它也没有解决 VLA/WAM 执行层的不确定性问题。对我们的仓库来说，它更像方法论底座，而不是直接可部署模块。</p></div>
+      <div class="note-section-body"><p>这篇的设定比较窄：SR、ST、TA、XD，再加同构机器人。它不处理异构能力匹配，也不处理一个任务需要多个不同能力机器人协作的情况。</p>
+<p>它也不负责自然语言任务分解、场景 grounding 或底层 VLA/WAM 执行。输入已经是结构化任务图和约束，输出是调度决策。</p>
+<p>另外，它的策略本质上是从优化器生成的数据里学 heuristic，因此质量上限和泛化边界会受专家数据分布、目标函数和约束形式影响。</p></div>
     </section>
 
 
     <section class="note-section ">
       <div class="note-section-kicker">Reusable Modules</div>
-      <div class="note-section-body"><p>bipartite variable-constraint graph、task-agent graph、GNN-guided branching、warm-start assignment、constraint-aware decoding、hybrid solver loop。</p></div>
+      <div class="note-section-body"><p>Simple Temporal Network task graph、robot-specific node features、directed weighted GAT、expert-schedule imitation learning、Q-value schedule decoder、opportunistic time rollout。</p></div>
     </section>
 
 
     <section class="note-section risk">
       <div class="note-section-kicker">Evidence &amp; Risk</div>
-      <div class="note-section-body"><p>证据来自 JMLR 综述和大量 CO/GNN 文献归纳，适合作为方法论参考。风险是综述结论偏通用组合优化，落到多机器人系统时还需要加入实时状态、通信约束、执行失败反馈和 VLA/WAM 成功率估计。</p></div>
+      <div class="note-section-body"><p>论文报告 RoboGNN 在 2-5 个机器人、最多 100 个任务的测试问题上，约 90% case 能找到高质量解，并且相比 exact solver 最多快 100 倍。这个证据支持它作为快速调度启发式。</p>
+<p>风险是实验证据集中在同构机器人和制造调度式约束。若迁移到异构机器人、动态场景、多任务协作或真实执行失败反馈，需要重新定义 node feature、edge feature 和专家数据生成方式。</p></div>
     </section>
 
         <div id="relations">
@@ -533,21 +531,16 @@
       <div class="relation-columns">
         <div>
           <h3>当前论文 -> 关联论文 / 前序工作</h3>
-          <div class="relation-chip-grid"><div class="relation-empty">还没有指向关联论文或前序工作的 typed relation。</div></div>
+          <div class="relation-chip-grid">
+            <a class="relation-chip" style="--rel:#00a7c7" href="../notes/2023-combinatorial-optimization-gnn-reasoning.html">
+              <span>使用/依赖</span>
+              <strong>CO + GNN Survey</strong>
+            </a>
+          </div>
         </div>
         <div>
           <h3>下游论文 -> 当前论文</h3>
-          <div class="relation-chip-grid">
-            <a class="relation-chip incoming" style="--rel:#00a7c7" href="../notes/2020-robognn-multi-robot-scheduling-gat.html">
-              <span>使用/依赖</span>
-              <strong>RoboGNN Scheduler</strong>
-            </a>
-
-            <a class="relation-chip incoming" style="--rel:#00a7c7" href="../notes/2023-grid-scene-graph-task-planning.html">
-              <span>使用/依赖</span>
-              <strong>GRID</strong>
-            </a>
-          </div>
+          <div class="relation-chip-grid"><div class="relation-empty">暂时没有下游论文连接到这篇。</div></div>
         </div>
       </div>
     </section>
@@ -555,14 +548,17 @@
 
     <section class="note-section ">
       <div class="note-section-kicker">Relation Notes</div>
-      <div class="note-section-body"><p>GMATANN 和 Heterogeneous MRTA RL 都是多智能体任务分配的具体模型；这篇综述提供更上层的组合优化视角，解释为什么 agent-task allocation 可以被写成图、为什么 GNN 更适合作为启发式分配器或求解器辅助模块。</p>
-<p>它也能解释 GenSwarm 之后为什么还需要一个结构化 planner：自然语言可以生成任务图，但任务图到机器人分配、路径、调度仍然需要组合优化推理。</p></div>
+      <div class="note-section-body"><p>和 CO + GNN Survey 的关系很直接：综述说 GNN 更适合作为组合优化求解流程里的 heuristic guide，而 RoboGNN 是这个判断在多机器人 STN 调度中的具体实现。</p>
+<p>和 GMATANN 相比，RoboGNN 更早、更偏同构调度和时序约束；GMATANN 更偏异构 agent-task graph、能力匹配和 RL allocation。两者可以互补：GMATANN 解决“谁能做什么”，RoboGNN 解决“在时序约束下怎么排”。</p>
+<p>和 Heterogeneous MRTA RL 相比，RoboGNN 的专家数据来自传统优化器，训练更像 imitation learning；Heterogeneous MRTA RL 更强调端到端 RL 和异构机器人能力。</p>
+<p>和 GRID 相比，GRID 负责从自然语言和 scene graph 得到 grounded subtask，RoboGNN 假设这些任务已经结构化好，再做多机器人调度。</p></div>
     </section>
 
         <div id="open-question">
     <section class="note-section impact">
       <div class="note-section-kicker">Open Question</div>
-      <div class="note-section-body"><p>如何把多机器人任务规划统一表示成 variable-constraint graph 或 task-agent graph，并让 GNN 输出 planner 可用的启发式信号，而不是直接输出一个难以保证可行性的端到端计划。</p></div>
+      <div class="note-section-body"><p>如何把 RoboGNN 的 STN 调度图和 GRID/GMATANN 这类上游任务图连接起来：scene graph 产生 grounded task，task allocator 处理能力匹配，scheduler 再根据时间、地点和资源约束安排执行顺序。</p>
+<p>另一个关键问题是：如果加入 VLA/WAM 执行成功率、机器人电量、通信延迟和动态失败恢复，这些信息应该进入 node feature、edge weight，还是进入 Q network 的 state embedding。</p></div>
     </section>
   </div>
       </article>
@@ -570,19 +566,19 @@
       <aside class="note-aside">
         <section class="note-aside-panel">
           <h2>System Roles</h2>
-          <div class="pill-row"><span class="note-pill role-pill">图编码器</span><span class="note-pill role-pill">求解器启发式</span><span class="note-pill role-pill">规划基线</span></div>
+          <div class="pill-row"><span class="note-pill role-pill">调度器</span><span class="note-pill role-pill">图编码器</span><span class="note-pill role-pill">求解器启发式</span><span class="note-pill role-pill">规划基线</span></div>
         </section>
         <section class="note-aside-panel">
           <h2>Reusable Modules</h2>
-          <div class="pill-row"><span class="note-pill module-pill">变量-约束二分图</span><span class="note-pill module-pill">求解器引导策略</span><span class="note-pill module-pill">分支定界启发式</span><span class="note-pill module-pill">Warm-start 分配</span><span class="note-pill module-pill">约束感知解码</span></div>
+          <div class="pill-row"><span class="note-pill module-pill">Simple Temporal Network</span><span class="note-pill module-pill">机器人特定节点特征</span><span class="note-pill module-pill">有向加权 GAT</span><span class="note-pill module-pill">模仿学习调度策略</span><span class="note-pill module-pill">Q 值调度解码器</span><span class="note-pill module-pill">机会式时间 rollout</span></div>
         </section>
         <section class="note-aside-panel">
           <h2>Next Action</h2>
-          <div class="note-pill role-pill">抽取 GNN 求解器设计规则</div>
+          <div class="note-pill role-pill">抽取 RoboGNN 调度基线</div>
         </section>
         <section class="note-aside-panel">
           <h2>Tags</h2>
-          <div class="pill-row"><span class="note-pill">GNN</span><span class="note-pill">combinatorial optimization</span><span class="note-pill">operations research</span><span class="note-pill">algorithmic reasoning</span><span class="note-pill">hybrid solver</span><span class="note-pill">branch and bound</span></div>
+          <div class="pill-row"><span class="note-pill">RoboGNN</span><span class="note-pill">GAT</span><span class="note-pill">multi-robot scheduling</span><span class="note-pill">imitation learning</span><span class="note-pill">STN</span><span class="note-pill">Q learning</span><span class="note-pill">homogeneous robots</span></div>
         </section>
         <section class="note-aside-panel">
           <h2>Reading Map</h2>
@@ -597,7 +593,7 @@
     </section>
 
     <footer class="note-footer">
-      Generated from papers/2023-combinatorial-optimization-gnn-reasoning.md.
+      Generated from papers/2020-robognn-multi-robot-scheduling-gat.md.
     </footer>
   </main>
 </body>
