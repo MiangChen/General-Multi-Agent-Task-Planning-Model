@@ -1389,13 +1389,13 @@
 
   <main class="page">
     <section class="hero">
-      <div class="eyebrow">Obsidian-first paper repository · generated 2026/5/5 21:07:15</div>
+      <div class="eyebrow">Obsidian-first paper repository · generated 2026/5/6 14:42:13</div>
       <h1>通用多智能体任务规划模型研究图谱</h1>
       <p>基于 Markdown note 的 typed relations 自动生成。当前版本聚焦 VLA、π 系列、World Action Model 和 Dreamer，把论文定位为端到端多智能体任务规划模型里的执行器、世界模拟器、planner critic、记忆模块或任务分配器。</p>
 
     <div class="stats">
       <div class="stat-card">
-        <div class="stat-value">26</div>
+        <div class="stat-value">28</div>
         <div class="stat-label">论文总数</div>
       </div>
       <div class="stat-card">
@@ -1403,11 +1403,11 @@
         <div class="stat-label">年份范围</div>
       </div>
       <div class="stat-card">
-        <div class="stat-value">41</div>
+        <div class="stat-value">43</div>
         <div class="stat-label">Typed relations</div>
       </div>
       <div class="stat-card">
-        <div class="stat-value">22</div>
+        <div class="stat-value">24</div>
         <div class="stat-label">高优先级</div>
       </div>
     </div>
@@ -1428,7 +1428,7 @@
       </div>
       <div class="graph-workspace">
         <div class="graph-frame">
-          <div class="domain-graph" style="--graph-width:1050px; --graph-height:1414px; --node-width:86px; --node-height:28px">
+          <div class="domain-graph" style="--graph-width:1156px; --graph-height:1414px; --node-width:86px; --node-height:28px">
 
         <div class="graph-column" style="--x:56px; --w:106px; --domain:#64748b">
           <span>Overview / Foundation</span>
@@ -1474,6 +1474,11 @@
           <span>Scene Graph</span>
         </div>
 
+
+        <div class="graph-column" style="--x:1010px; --w:106px; --domain:#4a56b8">
+          <span>Task Graph</span>
+        </div>
+
             <div class="graph-month" style="--y:48px">2020-07</div>
 <div class="graph-month" style="--y:140px">2021-08</div>
 <div class="graph-month" style="--y:228px">2022-04</div>
@@ -1513,7 +1518,7 @@
 
 
 
-            <svg class="graph-edges" viewBox="0 0 1050 1414" aria-hidden="true">
+            <svg class="graph-edges" viewBox="0 0 1156 1414" aria-hidden="true">
               <defs>
 
                 <marker id="arrowhead-extends" markerWidth="4.5" markerHeight="4.5" refX="3.5" refY="2.25" orient="auto">
@@ -1538,6 +1543,8 @@
               </defs>
               <line class="graph-time-tether" x1="639" y1="1278" x2="639" y2="1260.5"></line>
 <line class="graph-time-tether" x1="639" y1="1278" x2="639" y2="1295.5"></line>
+<line class="graph-time-tether" x1="851" y1="1020" x2="851" y2="1002.5"></line>
+<line class="graph-time-tether" x1="851" y1="1020" x2="851" y2="1037.5"></line>
               <path class="graph-edge"
         style="--edge-color:#00a7c7"
         data-edge-source="2020-robognn-multi-robot-scheduling-gat"
@@ -1693,6 +1700,30 @@
         data-edge-target-title="FAST"
         data-edge-target-note="notes/2025-fast-action-tokenization-vla.html"
         d="M 372 960 C 406 960, 406 842, 372 842"
+        marker-end="url(#arrowhead-uses)"></path>
+<path class="graph-edge"
+        style="--edge-color:#00a7c7"
+        data-edge-source="2025-magnnet-decentralized-task-allocation"
+        data-edge-target="2025-heterogeneous-mrta-rl"
+        data-edge-type="uses"
+        data-edge-label="使用/依赖"
+        data-edge-short="uses"
+        data-edge-description="当前论文借用了前序工作的模块、表示、训练路线或系统组件。"
+        data-edge-target-title="Heterogeneous MRTA RL"
+        data-edge-target-note="notes/2025-heterogeneous-mrta-rl.html"
+        d="M 902 1037.5 C 936 1037.5, 936 902, 902 902"
+        marker-end="url(#arrowhead-uses)"></path>
+<path class="graph-edge"
+        style="--edge-color:#00a7c7"
+        data-edge-source="2025-magnnet-decentralized-task-allocation"
+        data-edge-target="2023-combinatorial-optimization-gnn-reasoning"
+        data-edge-type="uses"
+        data-edge-label="使用/依赖"
+        data-edge-short="uses"
+        data-edge-description="当前论文借用了前序工作的模块、表示、训练路线或系统组件。"
+        data-edge-target-title="CO + GNN Survey"
+        data-edge-target-note="notes/2023-combinatorial-optimization-gnn-reasoning.html"
+        d="M 902 1037.5 C 936 1037.5, 936 492, 902 492"
         marker-end="url(#arrowhead-uses)"></path>
 <path class="graph-edge"
         style="--edge-color:#246bfe"
@@ -2117,6 +2148,18 @@
 
 
         <button class="graph-node"
+          style="--x:1063px; --y:554px; --node:#4a56b8"
+          data-node-id="2023-unsupervised-task-graph-generation"
+          data-node-title="Unsupervised Task Graphs"
+          data-note-path="notes/2023-unsupervised-task-graph-generation.html"
+          aria-label="Unsupervised Task Graphs 2023-07">
+          <strong>Unsupervised Task Graphs</strong>
+          <span>Task Graph</span>
+          <em>Planning</em>
+        </button>
+
+
+        <button class="graph-node"
           style="--x:321px; --y:554px; --node:#00a7c7"
           data-node-id="2023-rt-2-vla"
           data-node-title="RT-2"
@@ -2213,7 +2256,7 @@
 
 
         <button class="graph-node"
-          style="--x:851px; --y:1020px; --node:#4b6f96"
+          style="--x:851px; --y:1002.5px; --node:#4b6f96"
           data-node-id="2025-gmatann-heterogeneous-task-allocation"
           data-node-title="GMATANN"
           data-note-path="notes/2025-gmatann-heterogeneous-task-allocation.html"
@@ -2221,6 +2264,18 @@
           <strong>GMATANN</strong>
           <span>GNN</span>
           <em>Planning · RL</em>
+        </button>
+
+
+        <button class="graph-node"
+          style="--x:851px; --y:1037.5px; --node:#4b6f96"
+          data-node-id="2025-magnnet-decentralized-task-allocation"
+          data-node-title="MAGNNET"
+          data-note-path="notes/2025-magnnet-decentralized-task-allocation.html"
+          aria-label="MAGNNET 2025-06">
+          <strong>MAGNNET</strong>
+          <span>GNN</span>
+          <em>RL · Planning</em>
         </button>
 
 
@@ -2532,25 +2587,25 @@
           </div>
 
           <div class="quality-card">
-            <div class="quality-value">17/26</div>
+            <div class="quality-value">18/28</div>
             <div class="quality-name">关系覆盖</div>
             <p>至少一条 typed relation</p>
           </div>
 
           <div class="quality-card">
-            <div class="quality-value">26/26</div>
+            <div class="quality-value">28/28</div>
             <div class="quality-name">系统角色覆盖</div>
             <p>能放入我们的模型架构</p>
           </div>
 
           <div class="quality-card">
-            <div class="quality-value">26/26</div>
+            <div class="quality-value">28/28</div>
             <div class="quality-name">复用模块覆盖</div>
             <p>可转成设计组件</p>
           </div>
 
           <div class="quality-card">
-            <div class="quality-value">26/26</div>
+            <div class="quality-value">28/28</div>
             <div class="quality-name">证据风险覆盖</div>
             <p>明确知道证据和风险</p>
           </div>
@@ -2569,7 +2624,7 @@
       </div>
       <div class="role-grid">
         <article class="role-card">
-          <div class="role-count">5</div>
+          <div class="role-count">6</div>
           <h3>语义规划器</h3>
           <ul>
           <li>
@@ -2593,6 +2648,23 @@ Global 3D scene graph
           </li>
 
           <li>
+            <strong>Unsupervised Task Graphs</strong>
+            <span>对 General Multi-Agent Task Planning Model 来说，这篇补上的是最上游的一层：
+
+```text
+unstructured instruction / transcript
+  -&gt; key step extraction
+  -&gt; task dependency graph
+  -&gt; scene grounding
+  -&gt; task allocation
+  -&gt; scheduling
+  -&gt; executor
+```
+
+如果我们只让 LLM 直接输出机器人动作，很容易丢掉隐含前置条件。Task graph generation 的价值是先把任务结构抽出来，再让后面的 planner 处理机器人、资源和执行约束。</span>
+          </li>
+
+          <li>
             <strong>GRID</strong>
             <span>如果我们要做 General Multi-Agent Task Planning Model，GRID 提醒我们必须保留一个显式 world / scene representation 层。比较稳的架构是：
 
@@ -2612,16 +2684,11 @@ Language goal
             <strong>π0.5</strong>
             <span>语义子任务预测可以借鉴到多机器人 planner 中：先预测任务分解，再依据机器人能力、位置和负载分派执行。</span>
           </li>
-
-          <li>
-            <strong>GenSwarm</strong>
-            <span>GenSwarm 可以作为系统级 baseline：当前端到端多机器人任务规划至少需要语言理解、技能图、任务分配、执行反馈和部署接口。你的方案可以尝试把其中不可微的代码生成和 MILP 部分替换成可学习模块。</span>
-          </li>
         </ul>
         </article>
 
         <article class="role-card">
-          <div class="role-count">6</div>
+          <div class="role-count">7</div>
           <h3>任务分配器</h3>
           <ul>
           <li>
@@ -2980,7 +3047,7 @@ Global 3D scene graph
         </article>
 
         <article class="role-card">
-          <div class="role-count">8</div>
+          <div class="role-count">10</div>
           <h3>规划基线</h3>
           <ul>
           <li>
@@ -3085,7 +3152,7 @@ Language goal
         </article>
 
         <article class="role-card">
-          <div class="role-count">3</div>
+          <div class="role-count">4</div>
           <h3>调度器</h3>
           <ul>
           <li>
@@ -3126,6 +3193,21 @@ GNN 在这里是“快速代价模型”：先给高层 planner 一个足够好�
           <li>
             <strong>Heterogeneous MRTA RL</strong>
             <span>你的系统可以把任务分解和任务分配分成两层：LLM/VLM 负责把目标转为结构化任务图，GNN/Transformer/RL 模块负责在 agent-task 图上做可优化分配。</span>
+          </li>
+
+          <li>
+            <strong>MAGNNET</strong>
+            <span>MAGNNET 给我们的系统提供了一个分布式 allocator 接口：
+
+```text
+task graph / task list
+  -&gt; agent-task heterogeneous graph
+  -&gt; GNN relational embeddings per agent
+  -&gt; decentralized request/reject policy
+  -&gt; environment resolves conflicts by cost
+```
+
+如果未来做 General Multi-Agent Task Planning Model，MAGNNET 这种结构适合放在“任务已经 grounded、需要快速去中心化认领”的层。它可以和上游 GRID-style scene grounding、下游 VLA/WAM executor 连接。</span>
           </li>
         </ul>
         </article>
@@ -3254,7 +3336,7 @@ Language goal
         </article>
 
         <article class="role-card">
-          <div class="role-count">6</div>
+          <div class="role-count">8</div>
           <h3>图编码器</h3>
           <ul>
           <li>
@@ -3688,12 +3770,38 @@ Language goal
 
         <article class="queue-card">
           <div class="queue-count">1</div>
+          <h3>抽取 MAGNNET 输入输出契约</h3>
+          <p>把这组论文转成更明确的系统设计动作。</p>
+          <ul>
+          <li>
+            <span>2025-06</span>
+            <strong>MAGNNET</strong>
+            <em>已读论文</em>
+          </li>
+        </ul>
+        </article>
+
+        <article class="queue-card">
+          <div class="queue-count">1</div>
           <h3>抽取 RoboGNN 调度基线</h3>
           <p>把这组论文转成更明确的系统设计动作。</p>
           <ul>
           <li>
             <span>2020-07</span>
             <strong>RoboGNN Scheduler</strong>
+            <em>已读论文</em>
+          </li>
+        </ul>
+        </article>
+
+        <article class="queue-card">
+          <div class="queue-count">1</div>
+          <h3>抽取任务图生成流水线</h3>
+          <p>把这组论文转成更明确的系统设计动作。</p>
+          <ul>
+          <li>
+            <span>2023-07</span>
+            <strong>Unsupervised Task Graphs</strong>
             <em>已读论文</em>
           </li>
         </ul>
@@ -3783,7 +3891,7 @@ Language goal
           <h2>论文列表</h2>
           <p>搜索会匹配标题、摘要、作者、机构、方法和标签。</p>
         </div>
-        <div id="result-count">26 篇</div>
+        <div id="result-count">28 篇</div>
       </div>
       <div class="control-panel">
         <input id="search" type="search" placeholder="搜索论文、作者、方法或标签">
@@ -3799,11 +3907,13 @@ Language goal
 <option value="learned_subteam_performance">Learned Subteam Performance</option>
 <option value="llm_code_policy">LLM Code Policy</option>
 <option value="llm_reward_design">LLM Reward Design</option>
+<option value="magnnet_decentralized_allocation">MAGNNET Decentralized Allocation</option>
 <option value="multi_robot_allocation_rl">Multi-Robot Allocation RL</option>
 <option value="robognn_scheduling_policy">RoboGNN Scheduling Policy</option>
 <option value="robot_diffusion_policy">Robot Diffusion Policy</option>
 <option value="scene_graph_navigation_policy">Scene Graph Navigation Policy</option>
 <option value="scene_graph_task_planning">Scene Graph Task Planning</option>
+<option value="unsupervised_task_graph_generation">Unsupervised Task Graph Generation</option>
 <option value="video_flow_model">Video Flow Model</option>
 <option value="vla">VLA</option>
 <option value="vla_rl">VLA + RL</option>
@@ -3826,6 +3936,7 @@ Language goal
 <option value="reward_design">奖励函数设计</option>
 <option value="open_world_generalization">开放世界泛化</option>
 <option value="human_to_robot_world_action_model">人类到机器人 WAM</option>
+<option value="task_graph_generation">任务图生成</option>
 <option value="video_generation">视频生成</option>
 <option value="graph_scheduling_policy">图调度策略</option>
 <option value="graph_based_task_allocation">图任务分配</option>
@@ -3838,6 +3949,7 @@ Language goal
 <option value="embodied_learning">真实机器人学习</option>
 <option value="compositional_generalization">组合泛化</option>
 <option value="fm_swarm_architecture">FM 集群架构</option>
+<option value="gnn_marL_task_allocation">GNN + MARL 任务分配</option>
         </select>
         <select id="role-filter">
           <option value="">全部系统角色</option>
@@ -4351,6 +4463,73 @@ gnn 负责预测某个区域图 + 某个子团队配置的 makespan。高层 mil
         <article class="paper-card"
           data-paper-card
           data-year="2023"
+          data-tech_paradigm="unsupervised_task_graph_generation"
+          data-primary_technical_layer="task_graph_generation"
+          data-primary_task_family="instruction_to_dependency_graph"
+          data-system_roles="semantic_planner graph_encoder planner_baseline"
+          data-search="unsupervised task graph generation from instructional video transcripts unsupervised task graphs findings of acl 2023 这篇论文是 task graph generation 的直接参考：它从多个 instructional video transcripts 中无监督抽取关键步骤，并推断步骤之间的 precondition dependency graph。 论文的 pipeline 分成五步：
+
+1. **generate summary steps**：用 instruction-tuned language model 从每个 transcript 生成 free-form step summary。
+2. **identify key steps**：把不同 transcript 中相似的 summary steps 用 sentence embeddings 聚类，找出频繁出现的 key steps。
+3. **re-label summary steps**：把每条 transcript 的 summary step sequence 对齐到统一 key step 集合。
+4. **ranking**：用 language model 给 key step sequences 打分，筛掉低质量序列，保留 top-k。
+5. **generate graph**：用基于 inductive logic programming 的 graph inference 算法，从 key step sequences 推断 precondition graph。
+
+这套方法的关键是：llm 主要负责从 noisy transcript 中抽 step summary，后面的聚类、排序和 ilp 负责把多个样本合并成更稳定的任务依赖图。 第一，它明确把 task graph 定义为 key steps 之间的 dependency / precondition graph，而不是普通流程列表。
+
+第二，它是 unsupervised pipeline，不需要人工标注 task graph。它利用多个 instructional transcripts 的重复性来估计哪些步骤是核心步骤，哪些顺序关系更可能是真实依赖。
+
+第三，它把 llm 用作信息抽取和 ranking 组件，而不是直接让 llm 一次性生成最终图。这比“直接问 llm 计划步骤”更稳，也更可解释。 2023-07 task graph paper_read extract_task_graph_generation_pipeline task graph planning task graph instructional videos dependency graph preconditions script understanding unsupervised learning semantic_planner graph_encoder planner_baseline key_step_extraction transcript_to_task_graph dependency_graph_generation sequence_ranking ilp_precondition_inference lajanugen logeswaran, sungryull sohn, yunseok jang, moontae lee, honglak lee lg ai research · university of michigan">
+          <div class="paper-media">
+            <div class="paper-placeholder">Unsupervised Task Graphs</div>
+            <span>2023-07</span>
+          </div>
+          <div class="paper-main">
+            <div class="paper-meta">
+              <strong>Findings of ACL 2023</strong>
+              <span>Unsupervised Task Graph Generation</span>
+              <span>任务图生成</span>
+              <span>高优先级</span>
+            </div>
+            <h3>Unsupervised Task Graphs</h3>
+            <div class="paper-title">Unsupervised Task Graph Generation from Instructional Video Transcripts</div>
+            <div class="paper-authors">Lajanugen Logeswaran, Sungryull Sohn, Yunseok Jang, Moontae Lee, Honglak Lee · LG AI Research · University of Michigan</div>
+            <div class="paper-summary"><p>这篇论文是 task graph generation 的直接参考：它从多个 instructional video transcripts 中无监督抽取关键步骤，并推断步骤之间的 precondition dependency graph。</p></div>
+            <details>
+              <summary>研究理解</summary>
+              <div class="detail-grid">
+                <div><b>研究问题</b><p>现实任务通常不是一个单步指令，而是由多个 key steps 和依赖关系组成。例如做 CPR 时，检查安全、确认意识、打开气道、检查呼吸、开始胸外按压之间有明确的先后依赖。</p>
+<p>问题是这些知识通常只存在于非结构化文本中，比如 how-to 视频的 ASR 转录、教程说明、操作流程描述。论文要解决的是：如何从这些 noisy transcripts 中生成结构化 task graph。</p></div>
+                <div><b>方法</b><p>论文的 pipeline 分成五步：</p>
+<ol><li><strong>Generate summary steps</strong>：用 instruction-tuned language model 从每个 transcript 生成 free-form step summary。</li><li><strong>Identify key steps</strong>：把不同 transcript 中相似的 summary steps 用 sentence embeddings 聚类，找出频繁出现的 key steps。</li><li><strong>Re-label summary steps</strong>：把每条 transcript 的 summary step sequence 对齐到统一 key step 集合。</li><li><strong>Ranking</strong>：用 language model 给 key step sequences 打分，筛掉低质量序列，保留 top-k。</li><li><strong>Generate graph</strong>：用基于 Inductive Logic Programming 的 graph inference 算法，从 key step sequences 推断 precondition graph。</li></ol>
+<p>这套方法的关键是：LLM 主要负责从 noisy transcript 中抽 step summary，后面的聚类、排序和 ILP 负责把多个样本合并成更稳定的任务依赖图。</p></div>
+                <div><b>局限</b><p>这篇论文不处理 grounding 到真实机器人场景的问题。它能生成 abstract task graph，但不知道哪个杯子、哪张桌子、哪个机器人能执行，也不知道空间约束和执行失败。</p>
+<p>输入依赖 instructional transcripts。如果任务没有足够多的说明文本，或者 ASR 噪声很强，key step 聚类和依赖推断会受影响。</p>
+<p>此外，生成的 graph 主要表达步骤前置关系，不直接表达资源冲突、时间窗、机器人能力、通信约束或多机器人协作需求。</p></div>
+                <div><b>关系</b><p>和 GRID 相比，这篇更靠近上游：它从文本说明生成 abstract task graph；GRID 从 instruction + scene graph 生成 grounded robot subtask。两者可以串起来：</p>
+<p>```text<br>instructional text / demonstrations<br>-&gt; abstract task graph<br>-&gt; scene graph grounding<br>-&gt; robot subtasks<br>```</p>
+<p>和 RoboGNN / MAGNNET / GMATANN 相比，这篇不做 allocation 或 scheduling，而是为它们提供任务依赖图输入。</p>
+<p>和 GenSwarm 相比，GenSwarm 更像 language-to-code policy generator；这篇更像 language-to-task-structure extractor。</p></div>
+                <div><b>对多智能体任务规划模型的启发</b><p>对 General Multi-Agent Task Planning Model 来说，这篇补上的是最上游的一层：</p>
+<p>```text<br>unstructured instruction / transcript<br>-&gt; key step extraction<br>-&gt; task dependency graph<br>-&gt; scene grounding<br>-&gt; task allocation<br>-&gt; scheduling<br>-&gt; executor<br>```</p>
+<p>如果我们只让 LLM 直接输出机器人动作，很容易丢掉隐含前置条件。Task graph generation 的价值是先把任务结构抽出来，再让后面的 planner 处理机器人、资源和执行约束。</p></div>
+                <div><b>可复用模块</b><p>key step extraction、transcript-to-task-graph pipeline、sequence clustering、language-model sequence ranking、ILP precondition inference。</p></div>
+                <div><b>证据与风险</b><p>论文在 ProceL 和 CrossTask 上评估，结果显示这种 unsupervised pipeline 可以超过 supervised baseline 和其他 unsupervised baseline。证据说明多个 noisy transcripts 里确实能抽出稳定的任务结构。</p>
+<p>风险是这些 benchmark 主要是人类活动/教程任务，不是机器人执行数据。要用于多机器人系统，还需要加入 scene graph grounding、agent capability matching、时间/资源约束和执行反馈。</p></div>
+              </div>
+            </details>
+            <div class="paper-roles"><span class="tag role-tag">语义规划器</span><span class="tag role-tag">图编码器</span><span class="tag role-tag">规划基线</span></div>
+            <div class="paper-modules"><span class="tag module-tag">关键步骤抽取</span><span class="tag module-tag">转录文本到任务图</span><span class="tag module-tag">依赖图生成</span><span class="tag module-tag">步骤序列排序</span><span class="tag module-tag">ILP 前置条件推理</span></div>
+            <div class="paper-next">Evidence: 已读论文 · Next: 抽取任务图生成流水线</div>
+            <div class="paper-tags"><span class="tag">Task Graph</span><span class="tag">instructional videos</span><span class="tag">dependency graph</span><span class="tag">preconditions</span><span class="tag">script understanding</span><span class="tag">unsupervised learning</span></div>
+            <div class="paper-links"><a href="pdfs/2023-07-01-unsupervised-task-graph-generation-transcripts.pdf" data-pdf-link="pdfs/2023-07-01-unsupervised-task-graph-generation-transcripts.pdf" target="_blank" rel="noreferrer">PDF</a><a href="notes/2023-unsupervised-task-graph-generation.html" data-note-link="notes/2023-unsupervised-task-graph-generation.html" target="_blank" rel="noreferrer">Note</a><a href="https://aclanthology.org/2023.findings-acl.210/" target="_blank" rel="noreferrer">论文</a></div>
+          </div>
+        </article>
+
+
+        <article class="paper-card"
+          data-paper-card
+          data-year="2023"
           data-tech_paradigm="scene_graph_task_planning"
           data-primary_technical_layer="scene_graph_grounding"
           data-primary_task_family="instruction_driven_task_planning"
@@ -4627,7 +4806,7 @@ gnn 负责预测某个区域图 + 某个子团队配置的 makespan。高层 mil
               </div>
             </details>
             <div class="paper-roles"><span class="tag role-tag">任务分配器</span><span class="tag role-tag">调度器</span><span class="tag role-tag">规划基线</span></div>
-            <div class="paper-modules"><span class="tag module-tag">heterogeneous agent task graph</span><span class="tag module-tag">rl scheduler</span><span class="tag module-tag">allocation objective</span></div>
+            <div class="paper-modules"><span class="tag module-tag">异构 agent-task 图</span><span class="tag module-tag">rl scheduler</span><span class="tag module-tag">allocation objective</span></div>
             <div class="paper-next">Evidence: 已读论文 · Next: 转为 baseline</div>
             <div class="paper-tags"><span class="tag">MRTA</span><span class="tag">heterogeneous robots</span><span class="tag">reinforcement learning</span><span class="tag">scheduling</span><span class="tag">attention</span><span class="tag">task allocation</span></div>
             <div class="paper-links"><a href="pdfs/2025-03-01-HetMRTA-RL-gnn-task-allocation.pdf" data-pdf-link="pdfs/2025-03-01-HetMRTA-RL-gnn-task-allocation.pdf" target="_blank" rel="noreferrer">PDF</a><a href="notes/2025-heterogeneous-mrta-rl.html" data-note-link="notes/2025-heterogeneous-mrta-rl.html" target="_blank" rel="noreferrer">Note</a><a href="https://ieeexplore.ieee.org/document/10854527" target="_blank" rel="noreferrer">论文</a><a href="https://www.marmotlab.org/publications/73-RAL2025-HetMRTA.pdf" target="_blank" rel="noreferrer">项目页</a><a href="https://doi.org/10.1109/LRA.2025.3534682" target="_blank" rel="noreferrer">DOI</a></div>
@@ -4755,6 +4934,70 @@ gnn 在这里不直接做最终分配决策。它的角色是 state representati
             <div class="paper-next">Evidence: 已读论文 · Next: 抽取图分配设计</div>
             <div class="paper-tags"><span class="tag">GNN</span><span class="tag">MRTA</span><span class="tag">heterogeneous agents</span><span class="tag">task allocation</span><span class="tag">graph attention</span><span class="tag">assignment network</span><span class="tag">reinforcement learning</span></div>
             <div class="paper-links"><a href="pdfs/2025-06-01-GMATANN-gnn-task-allocation.pdf" data-pdf-link="pdfs/2025-06-01-GMATANN-gnn-task-allocation.pdf" target="_blank" rel="noreferrer">PDF</a><a href="notes/2025-gmatann-heterogeneous-task-allocation.html" data-note-link="notes/2025-gmatann-heterogeneous-task-allocation.html" target="_blank" rel="noreferrer">Note</a><a href="https://ieeexplore.ieee.org/document/10856273" target="_blank" rel="noreferrer">论文</a><a href="https://doi.org/10.1109/JIOT.2025.3535641" target="_blank" rel="noreferrer">DOI</a></div>
+          </div>
+        </article>
+
+
+        <article class="paper-card"
+          data-paper-card
+          data-year="2025"
+          data-tech_paradigm="magnnet_decentralized_allocation"
+          data-primary_technical_layer="gnn_marL_task_allocation"
+          data-primary_task_family="decentralized_vehicle_task_allocation"
+          data-system_roles="task_allocator graph_encoder scheduler planner_baseline"
+          data-search="magnnet: multi-agent graph neural network-based efficient task allocation for autonomous vehicles with deep reinforcement learning magnnet ieee intelligent vehicles symposium 2025 magnnet 是一个“gnn 做关系编码 + ppo 做分布式决策”的异构 uav/ugv 任务分配框架：每个 agent 根据本地状态、到任务的代价和 gnn 聚合到的邻域/任务关系，决定是否请求某个任务。 训练使用 ctde：
+
+- 训练时 centralized critic 看全局状态，包括所有 agent positions、task states 和 assignments。
+- 每个 agent 的 decentralized policy 只看自己的 local observation 和 gnn-derived context。
+- policy 用 ppo 更新，reward 包含成功抢到任务的正奖励、竞争失败的 conflict penalty、idle penalty，以及所有任务成功分配后的 global reward。
+- 部署时 centralized critic 被丢弃，每个 agent 独立执行自己的 policy。
+
+路径代价由 a* / reservation-based planner 计算，冲突时优先保留 task completion cost 更低的 agent 路径，其他 agent 重新规划或等待。 magnnet 的价值是把 gnn 和 ctde 结合进动态异构车辆任务分配：训练阶段可以利用全局信息学习协作策略，执行阶段仍然保持去中心化。
+
+它不是追求像 hungarian 一样严格全局最优，而是降低集中通信依赖，同时让分布式策略比 greedy 更少冲突、更接近全局分配效果。 2025-06 gnn paper_read extract_magnnet_io_contract gnn rl planning magnnet gnn marl ppo ctde decentralized task allocation autonomous vehicles uav ugv task_allocator graph_encoder scheduler planner_baseline heterogeneous_agent_task_graph agent_agent_communication_edges fully_connected_agent_task_edges gnn_relational_agent_embedding ctde_ppo_policy request_reject_task_action reservation_based_path_cost lavanya ratnabala, aleksey fedoseev, robinroy peter, dzmitry tsetserukou skolkovo institute of science and technology">
+          <div class="paper-media">
+            <div class="paper-placeholder">MAGNNET</div>
+            <span>2025-06</span>
+          </div>
+          <div class="paper-main">
+            <div class="paper-meta">
+              <strong>IEEE Intelligent Vehicles Symposium 2025</strong>
+              <span>MAGNNET Decentralized Allocation</span>
+              <span>GNN + MARL 任务分配</span>
+              <span>高优先级</span>
+            </div>
+            <h3>MAGNNET</h3>
+            <div class="paper-title">MAGNNET: Multi-Agent Graph Neural Network-based Efficient Task Allocation for Autonomous Vehicles with Deep Reinforcement Learning</div>
+            <div class="paper-authors">Lavanya Ratnabala, Aleksey Fedoseev, Robinroy Peter, Dzmitry Tsetserukou · Skolkovo Institute of Science and Technology</div>
+            <div class="paper-summary"><p>MAGNNET 是一个“GNN 做关系编码 + PPO 做分布式决策”的异构 UAV/UGV 任务分配框架：每个 agent 根据本地状态、到任务的代价和 GNN 聚合到的邻域/任务关系，决定是否请求某个任务。</p></div>
+            <details>
+              <summary>研究理解</summary>
+              <div class="detail-grid">
+                <div><b>研究问题</b><p>论文解决的是通信受限、动态任务场景里的去中心化任务分配。集中式 Hungarian 方法可以给较优分配，但需要所有 agent 状态持续上传到中心节点；去中心化 greedy 方法更快但容易冲突，多个 agent 可能同时抢同一个任务，或者一些任务没人接。</p>
+<p>MAGNNET 想在两者之间取平衡：训练时使用全局 critic 做 centralized training，执行时每个 agent 只用本地 observation 和 GNN message passing 做 decentralized execution。</p></div>
+                <div><b>方法</b><p>训练使用 CTDE：</p>
+<ul><li>训练时 centralized critic 看全局状态，包括所有 agent positions、task states 和 assignments。</li><li>每个 agent 的 decentralized policy 只看自己的 local observation 和 GNN-derived context。</li><li>policy 用 PPO 更新，reward 包含成功抢到任务的正奖励、竞争失败的 conflict penalty、idle penalty，以及所有任务成功分配后的 global reward。</li><li>部署时 centralized critic 被丢弃，每个 agent 独立执行自己的 policy。</li></ul>
+<p>路径代价由 A* / reservation-based planner 计算，冲突时优先保留 task completion cost 更低的 agent 路径，其他 agent 重新规划或等待。</p></div>
+                <div><b>局限</b><p>论文的设置中 task 数量等于 agent 数量，主要验证一对一 conflict-free allocation。它没有处理一个任务需要多个机器人协作的 ST-MR 任务，也没有处理复杂任务依赖或长时序调度。</p>
+<p>GNN 目前是两层 graph convolution，每层 6 hidden units，表达能力较轻。论文结论也提到未来要加入 attention-based GNN layers 来增强动态冲突解决。</p>
+<p>另外，执行层的真实路径质量和碰撞处理依赖 A* / reservation-based planner，MAGNNET 本身主要负责分配，不直接学习连续导航控制。</p></div>
+                <div><b>关系</b><p>和 Heterogeneous MRTA RL 相比，MAGNNET 更强调 decentralized execution 和 agent-task 异构图；Heterogeneous MRTA RL 更偏异构机器人任务分配与调度的 RL baseline。</p>
+<p>和 GMATANN 相比，MAGNNET 的 GNN 用来给每个 agent 生成 relational embedding，再由 decentralized policy 输出 request/reject；GMATANN 更像集中式 graph state encoder + RL allocation head。</p>
+<p>和 RoboGNN Scheduler 相比，MAGNNET 没有显式 STN 时序图，主要解决动态任务到 agent 的一对一分配；RoboGNN 更偏带时序约束的调度。</p>
+<p>和 CO + GNN Survey 相比，MAGNNET 是 GNN 用作学习型分布式启发式策略的例子，而不是辅助 MILP 或 search。</p></div>
+                <div><b>对多智能体任务规划模型的启发</b><p>MAGNNET 给我们的系统提供了一个分布式 allocator 接口：</p>
+<p>```text<br>task graph / task list<br>-&gt; agent-task heterogeneous graph<br>-&gt; GNN relational embeddings per agent<br>-&gt; decentralized request/reject policy<br>-&gt; environment resolves conflicts by cost<br>```</p>
+<p>如果未来做 General Multi-Agent Task Planning Model，MAGNNET 这种结构适合放在“任务已经 grounded、需要快速去中心化认领”的层。它可以和上游 GRID-style scene grounding、下游 VLA/WAM executor 连接。</p></div>
+                <div><b>可复用模块</b><p>heterogeneous agent-task graph、agent-agent communication edges、fully connected agent-task edges、GNN relational agent embedding、CTDE PPO policy、request/reject task action、reservation-based path cost。</p></div>
+                <div><b>证据与风险</b><p>论文报告 MAGNNET 达到 92.5% conflict-free success rate，与 centralized Hungarian 相比 performance gap 为 7.49%，在 20 个 agents/tasks 下 allocation processing 为 2.8s，优于 greedy 和 random baseline。</p>
+<p>风险是实验是 PyBullet 3D grid 仿真，且 agent/task 数量平衡。真实系统中的通信延迟、传感噪声、不平衡任务数、多机器人协作任务、任务优先级和时序约束都需要额外验证。</p></div>
+              </div>
+            </details>
+            <div class="paper-roles"><span class="tag role-tag">任务分配器</span><span class="tag role-tag">图编码器</span><span class="tag role-tag">调度器</span><span class="tag role-tag">规划基线</span></div>
+            <div class="paper-modules"><span class="tag module-tag">异构 agent-task 图</span><span class="tag module-tag">agent-agent 通信边</span><span class="tag module-tag">全连接 agent-task 边</span><span class="tag module-tag">GNN 关系型 agent embedding</span><span class="tag module-tag">CTDE PPO 策略</span></div>
+            <div class="paper-next">Evidence: 已读论文 · Next: 抽取 MAGNNET 输入输出契约</div>
+            <div class="paper-tags"><span class="tag">MAGNNET</span><span class="tag">GNN</span><span class="tag">MARL</span><span class="tag">PPO</span><span class="tag">CTDE</span><span class="tag">decentralized task allocation</span><span class="tag">autonomous vehicles</span><span class="tag">UAV</span><span class="tag">UGV</span></div>
+            <div class="paper-links"><a href="pdfs/2025-06-01-MAGNNET-decentralized-task-allocation-gnn-ppo.pdf" data-pdf-link="pdfs/2025-06-01-MAGNNET-decentralized-task-allocation-gnn-ppo.pdf" target="_blank" rel="noreferrer">PDF</a><a href="notes/2025-magnnet-decentralized-task-allocation.html" data-note-link="notes/2025-magnnet-decentralized-task-allocation.html" target="_blank" rel="noreferrer">Note</a><a href="https://ieeexplore.ieee.org/document/11097641" target="_blank" rel="noreferrer">论文</a><a href="https://doi.org/10.1109/IV64158.2025.11097641" target="_blank" rel="noreferrer">DOI</a></div>
           </div>
         </article>
 
@@ -5338,6 +5581,14 @@ psi-w0 则是动作条件世界模型。它输入图像、语言和动作轨迹�
 
 
       <div class="question-card">
+        <div class="question-meta">2023 · Unsupervised Task Graphs</div>
+        <h3>任务图生成</h3>
+        <p>如何把抽象 task graph 自动转成机器人可执行的 task graph：每个 key step 需要绑定 object、location、required capability、expected duration、precondition、postcondition 和 failure recovery rule。</p>
+<p>另一个问题是：多机器人任务中某些步骤可以并行执行，task graph 需要区分“真实因果前置条件”和“视频中常见但非必要的顺序偏好”。</p>
+      </div>
+
+
+      <div class="question-card">
         <div class="question-meta">2023 · GRID</div>
         <h3>场景图 grounding</h3>
         <ul><li>Scene graph 应该由视觉模型实时生成，还是由 SLAM / semantic map / human annotation 组合维护？</li><li>多机器人版本里，robot graph 应该包含哪些字段：位置、能力、电量、负载、通信质量、当前任务还是可用动作集合？</li><li>GRID 输出的子任务如何与 GMATANN 这类 task allocator 对接？</li><li>当底层执行失败时，scene graph 和 task decoder 应该如何更新计划？</li></ul>
@@ -5390,6 +5641,14 @@ psi-w0 则是动作条件世界模型。它输入图像、语言和动作轨迹�
         <div class="question-meta">2025 · GMATANN</div>
         <h3>图任务分配</h3>
         <p>如何把 WAM 预测出的执行成功率、VLA 执行失败反馈、机器人通信约束、实时电量和任务紧急程度一起变成 graph edge / node feature，让 GNN 不只是按静态能力分任务，而是按未来执行可行性分配任务。</p>
+      </div>
+
+
+      <div class="question-card">
+        <div class="question-meta">2025 · MAGNNET</div>
+        <h3>GNN + MARL 任务分配</h3>
+        <p>如何把 MAGNNET 的 request/reject 分布式分配动作，扩展到 ST-MR 任务和多阶段任务：一个任务可能需要多个不同能力机器人，同时还要满足时间窗、空间冲突和执行失败恢复。</p>
+<p>另一个问题是 GNN embedding 是否应该加入更丰富的 edge feature，例如通信质量、任务 deadline、VLA/WAM 成功率、能耗和动态风险，而不仅是空间邻域与 path cost。</p>
       </div>
 
 

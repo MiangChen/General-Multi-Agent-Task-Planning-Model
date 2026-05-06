@@ -1,0 +1,603 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>MAGNNET · Paper Note</title>
+  <style>
+    :root {
+      --bg: #eef4fb;
+      --paper: rgba(255, 255, 255, 0.82);
+      --paper-strong: rgba(255, 255, 255, 0.94);
+      --ink: #111827;
+      --muted: #61748d;
+      --line: rgba(74, 112, 154, 0.34);
+      --soft-line: rgba(133, 163, 196, 0.24);
+      --blue: #246bfe;
+      --cyan: #00a7c7;
+      --purple: #6a7dff;
+      --shadow: 0 18px 45px rgba(22, 50, 83, 0.12);
+      --sans: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      font-family: var(--sans);
+      line-height: 1.72;
+      background:
+        radial-gradient(circle at 16% 12%, rgba(36, 107, 254, 0.14), transparent 28rem),
+        radial-gradient(circle at 88% 16%, rgba(0, 167, 199, 0.16), transparent 26rem),
+        linear-gradient(var(--soft-line) 1px, transparent 1px),
+        linear-gradient(90deg, var(--soft-line) 1px, transparent 1px),
+        var(--bg);
+      background-size: auto, auto, 32px 32px, 32px 32px, auto;
+    }
+
+    a { color: inherit; }
+
+    .note-topbar {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      padding: 13px 28px;
+      border-bottom: 1px solid var(--soft-line);
+      background: rgba(248, 251, 255, 0.86);
+      backdrop-filter: blur(18px);
+      box-shadow: 0 14px 35px rgba(31, 76, 128, 0.08);
+    }
+
+    .note-brand,
+    .note-nav a,
+    .note-kicker,
+    .note-section-kicker,
+    .metric-label,
+    .note-pill,
+    .relation-chip span {
+      font-family: var(--mono);
+    }
+
+    .note-brand {
+      color: var(--blue);
+      font-weight: 800;
+      text-decoration: none;
+    }
+
+    .note-nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .note-nav a {
+      text-decoration: none;
+    }
+
+    .note-nav a:hover {
+      color: var(--blue);
+    }
+
+    .note-shell {
+      width: min(1500px, calc(100% - 48px));
+      margin: 0 auto;
+      padding: 38px 0 70px;
+    }
+
+    .note-hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1.6fr) 360px;
+      gap: 24px;
+      align-items: stretch;
+      margin-bottom: 24px;
+    }
+
+    .hero-main,
+    .hero-side,
+    .note-section,
+    .note-aside-panel {
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: var(--paper);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(18px);
+    }
+
+    .hero-main {
+      padding: 34px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .hero-main::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-top: 2px solid rgba(36, 107, 254, 0.42);
+      background: linear-gradient(135deg, rgba(36, 107, 254, 0.08), transparent 42%);
+      pointer-events: none;
+    }
+
+    .note-kicker {
+      position: relative;
+      color: var(--blue);
+      font-size: 12px;
+      margin-bottom: 14px;
+    }
+
+    h1, h2, h3 {
+      margin: 0;
+      line-height: 1.14;
+    }
+
+    h1 {
+      position: relative;
+      max-width: 980px;
+      color: #0f172a;
+      font-size: 56px;
+      font-weight: 820;
+    }
+
+    .full-title {
+      position: relative;
+      max-width: 940px;
+      margin-top: 14px;
+      color: var(--muted);
+      font-size: 18px;
+    }
+
+    .note-summary {
+      position: relative;
+      max-width: 980px;
+      margin-top: 28px;
+      padding-left: 18px;
+      border-left: 3px solid var(--blue);
+      font-size: 22px;
+      color: #16233a;
+    }
+
+    .note-summary p {
+      margin: 0;
+    }
+
+    .hero-side {
+      display: grid;
+      gap: 14px;
+      padding: 22px;
+    }
+
+    .metric-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+    }
+
+    .metric {
+      min-height: 84px;
+      padding: 14px;
+      border: 1px solid var(--soft-line);
+      border-radius: 8px;
+      background: rgba(247, 251, 255, 0.76);
+    }
+
+    .metric-value {
+      color: var(--blue);
+      font-size: 22px;
+      font-weight: 800;
+    }
+
+    .metric-label {
+      color: var(--muted);
+      font-size: 11px;
+    }
+
+    .note-link-row,
+    .pill-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .note-link-row a {
+      min-height: 30px;
+      display: inline-flex;
+      align-items: center;
+      padding: 0 10px;
+      border: 1px solid rgba(36, 107, 254, 0.28);
+      border-radius: 5px;
+      background: linear-gradient(135deg, #1e63ff, #0aa3c2);
+      color: #fff;
+      text-decoration: none;
+      font-size: 13px;
+      box-shadow: 0 10px 22px rgba(36, 107, 254, 0.16);
+    }
+
+    .note-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 320px;
+      gap: 24px;
+      align-items: start;
+    }
+
+    .note-main {
+      display: grid;
+      gap: 16px;
+    }
+
+    .note-section {
+      padding: 24px;
+      background: var(--paper-strong);
+    }
+
+    .note-section.impact {
+      border-color: rgba(36, 107, 254, 0.44);
+      background:
+        linear-gradient(135deg, rgba(36, 107, 254, 0.08), rgba(0, 167, 199, 0.05)),
+        var(--paper-strong);
+    }
+
+    .note-section.risk {
+      border-color: rgba(209, 77, 114, 0.26);
+    }
+
+    .note-section-kicker {
+      color: var(--blue);
+      font-size: 12px;
+      margin-bottom: 10px;
+    }
+
+    .note-section-body {
+      color: #172033;
+      font-size: 16px;
+    }
+
+    .note-section-body p,
+    .note-section-body ul,
+    .note-section-body ol {
+      margin: 0 0 12px;
+    }
+
+    .note-section-body :last-child {
+      margin-bottom: 0;
+    }
+
+    .note-section-body ul,
+    .note-section-body ol {
+      padding-left: 22px;
+    }
+
+    .note-section-body li {
+      margin: 7px 0;
+    }
+
+    code {
+      padding: 1px 5px;
+      border: 1px solid var(--soft-line);
+      border-radius: 4px;
+      background: rgba(236, 246, 255, 0.82);
+      font-family: var(--mono);
+      font-size: 0.92em;
+    }
+
+    .note-aside {
+      position: sticky;
+      top: 82px;
+      display: grid;
+      gap: 14px;
+    }
+
+    .note-aside-panel {
+      padding: 18px;
+    }
+
+    .note-aside-panel h2 {
+      margin-bottom: 12px;
+      font-size: 18px;
+    }
+
+    .note-pill {
+      display: inline-flex;
+      align-items: center;
+      min-height: 25px;
+      padding: 0 8px;
+      border: 1px solid var(--soft-line);
+      border-radius: 999px;
+      background: rgba(247, 251, 255, 0.84);
+      color: #415a77;
+      font-size: 11px;
+    }
+
+    .role-pill {
+      border-color: rgba(36, 107, 254, 0.32);
+      color: #1f4fd6;
+    }
+
+    .module-pill {
+      border-color: rgba(0, 167, 199, 0.32);
+      color: #0f7894;
+    }
+
+    .relation-columns {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+    }
+
+    .relation-columns h3 {
+      margin-bottom: 10px;
+      font-size: 16px;
+    }
+
+    .relation-chip-grid {
+      display: grid;
+      gap: 8px;
+    }
+
+    .relation-chip {
+      display: grid;
+      gap: 3px;
+      padding: 10px 12px;
+      border: 1px solid var(--soft-line);
+      border-left: 3px solid var(--rel);
+      border-radius: 6px;
+      background: rgba(247, 251, 255, 0.86);
+      text-decoration: none;
+    }
+
+    .relation-chip span {
+      color: color-mix(in srgb, var(--rel), #111827 30%);
+      font-size: 11px;
+      font-weight: 800;
+    }
+
+    .relation-chip strong {
+      color: #142033;
+      font-size: 14px;
+    }
+
+    .relation-empty {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .toc-list {
+      display: grid;
+      gap: 8px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      font-size: 13px;
+    }
+
+    .toc-list a {
+      color: var(--muted);
+      text-decoration: none;
+    }
+
+    .toc-list a:hover {
+      color: var(--blue);
+    }
+
+    .note-footer {
+      padding: 34px 0 0;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    @media (max-width: 980px) {
+      .note-topbar {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .note-shell {
+        width: min(100% - 28px, 760px);
+      }
+
+      .note-hero,
+      .note-layout,
+      .relation-columns {
+        grid-template-columns: 1fr;
+      }
+
+      h1 {
+        font-size: 40px;
+      }
+
+      .note-aside {
+        position: static;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="note-topbar">
+    <a class="note-brand" href="../index.html#domain-graph">General Multi-Agent Model</a>
+    <nav class="note-nav">
+      <a href="../index.html#domain-graph">关系图</a>
+      <a href="../index.html#roles">系统角色</a>
+      <a href="../index.html#papers">论文索引</a>
+      <a href="#relations">关系</a>
+      <a href="#open-question">开放问题</a>
+    </nav>
+  </header>
+
+  <main class="note-shell" id="top">
+    <section class="note-hero">
+      <div class="hero-main">
+        <div class="note-kicker">2025-06 · IEEE Intelligent Vehicles Symposium 2025 · MAGNNET Decentralized Allocation</div>
+        <h1>MAGNNET</h1>
+        <div class="full-title">MAGNNET: Multi-Agent Graph Neural Network-based Efficient Task Allocation for Autonomous Vehicles with Deep Reinforcement Learning</div>
+        <div class="note-summary"><p>MAGNNET 是一个“GNN 做关系编码 + PPO 做分布式决策”的异构 UAV/UGV 任务分配框架：每个 agent 根据本地状态、到任务的代价和 GNN 聚合到的邻域/任务关系，决定是否请求某个任务。</p></div>
+      </div>
+      <aside class="hero-side">
+        <div class="metric-grid">
+          <div class="metric">
+            <div class="metric-value">2025</div>
+            <div class="metric-label">Year</div>
+          </div>
+          <div class="metric">
+            <div class="metric-value">高</div>
+            <div class="metric-label">Readiness</div>
+          </div>
+          <div class="metric">
+            <div class="metric-value">已读论文</div>
+            <div class="metric-label">Evidence</div>
+          </div>
+          <div class="metric">
+            <div class="metric-value">2</div>
+            <div class="metric-label">Relations</div>
+          </div>
+        </div>
+        <div>
+          <div class="note-section-kicker">Authors</div>
+          <div>Lavanya Ratnabala, Aleksey Fedoseev, Robinroy Peter, Dzmitry Tsetserukou</div>
+        </div>
+        <div>
+          <div class="note-section-kicker">Institutions</div>
+          <div>Skolkovo Institute of Science and Technology</div>
+        </div>
+        <div class="note-link-row"><a href="../pdfs/2025-06-01-MAGNNET-decentralized-task-allocation-gnn-ppo.pdf" target="_blank" rel="noreferrer">PDF</a><a href="https://ieeexplore.ieee.org/document/11097641" target="_blank" rel="noreferrer">Paper</a><a href="https://doi.org/10.1109/IV64158.2025.11097641" target="_blank" rel="noreferrer">DOI</a><a href="../papers/2025-magnnet-decentralized-task-allocation.md" target="_blank" rel="noreferrer">Markdown source</a></div>
+      </aside>
+    </section>
+
+    <section class="note-layout">
+      <article class="note-main">
+
+    <section class="note-section impact">
+      <div class="note-section-kicker">For Our Model</div>
+      <div class="note-section-body"><p>MAGNNET 给我们的系统提供了一个分布式 allocator 接口：</p>
+<p>```text<br>task graph / task list<br>-&gt; agent-task heterogeneous graph<br>-&gt; GNN relational embeddings per agent<br>-&gt; decentralized request/reject policy<br>-&gt; environment resolves conflicts by cost<br>```</p>
+<p>如果未来做 General Multi-Agent Task Planning Model，MAGNNET 这种结构适合放在“任务已经 grounded、需要快速去中心化认领”的层。它可以和上游 GRID-style scene grounding、下游 VLA/WAM executor 连接。</p></div>
+    </section>
+
+
+    <section class="note-section ">
+      <div class="note-section-kicker">Research Question</div>
+      <div class="note-section-body"><p>论文解决的是通信受限、动态任务场景里的去中心化任务分配。集中式 Hungarian 方法可以给较优分配，但需要所有 agent 状态持续上传到中心节点；去中心化 greedy 方法更快但容易冲突，多个 agent 可能同时抢同一个任务，或者一些任务没人接。</p>
+<p>MAGNNET 想在两者之间取平衡：训练时使用全局 critic 做 centralized training，执行时每个 agent 只用本地 observation 和 GNN message passing 做 decentralized execution。</p></div>
+    </section>
+
+
+    <section class="note-section ">
+      <div class="note-section-kicker">Method</div>
+      <div class="note-section-body"><p>训练使用 CTDE：</p>
+<ul><li>训练时 centralized critic 看全局状态，包括所有 agent positions、task states 和 assignments。</li><li>每个 agent 的 decentralized policy 只看自己的 local observation 和 GNN-derived context。</li><li>policy 用 PPO 更新，reward 包含成功抢到任务的正奖励、竞争失败的 conflict penalty、idle penalty，以及所有任务成功分配后的 global reward。</li><li>部署时 centralized critic 被丢弃，每个 agent 独立执行自己的 policy。</li></ul>
+<p>路径代价由 A* / reservation-based planner 计算，冲突时优先保留 task completion cost 更低的 agent 路径，其他 agent 重新规划或等待。</p></div>
+    </section>
+
+
+    <section class="note-section ">
+      <div class="note-section-kicker">Key Contributions</div>
+      <div class="note-section-body"><p>MAGNNET 的价值是把 GNN 和 CTDE 结合进动态异构车辆任务分配：训练阶段可以利用全局信息学习协作策略，执行阶段仍然保持去中心化。</p>
+<p>它不是追求像 Hungarian 一样严格全局最优，而是降低集中通信依赖，同时让分布式策略比 greedy 更少冲突、更接近全局分配效果。</p></div>
+    </section>
+
+
+
+    <section class="note-section risk">
+      <div class="note-section-kicker">Limitations</div>
+      <div class="note-section-body"><p>论文的设置中 task 数量等于 agent 数量，主要验证一对一 conflict-free allocation。它没有处理一个任务需要多个机器人协作的 ST-MR 任务，也没有处理复杂任务依赖或长时序调度。</p>
+<p>GNN 目前是两层 graph convolution，每层 6 hidden units，表达能力较轻。论文结论也提到未来要加入 attention-based GNN layers 来增强动态冲突解决。</p>
+<p>另外，执行层的真实路径质量和碰撞处理依赖 A* / reservation-based planner，MAGNNET 本身主要负责分配，不直接学习连续导航控制。</p></div>
+    </section>
+
+
+    <section class="note-section ">
+      <div class="note-section-kicker">Reusable Modules</div>
+      <div class="note-section-body"><p>heterogeneous agent-task graph、agent-agent communication edges、fully connected agent-task edges、GNN relational agent embedding、CTDE PPO policy、request/reject task action、reservation-based path cost。</p></div>
+    </section>
+
+
+    <section class="note-section risk">
+      <div class="note-section-kicker">Evidence &amp; Risk</div>
+      <div class="note-section-body"><p>论文报告 MAGNNET 达到 92.5% conflict-free success rate，与 centralized Hungarian 相比 performance gap 为 7.49%，在 20 个 agents/tasks 下 allocation processing 为 2.8s，优于 greedy 和 random baseline。</p>
+<p>风险是实验是 PyBullet 3D grid 仿真，且 agent/task 数量平衡。真实系统中的通信延迟、传感噪声、不平衡任务数、多机器人协作任务、任务优先级和时序约束都需要额外验证。</p></div>
+    </section>
+
+        <div id="relations">
+    <section class="note-section relation-section">
+      <div class="note-section-kicker">Typed Relations</div>
+      <div class="relation-columns">
+        <div>
+          <h3>当前论文 -> 关联论文 / 前序工作</h3>
+          <div class="relation-chip-grid">
+            <a class="relation-chip" style="--rel:#00a7c7" href="../notes/2025-heterogeneous-mrta-rl.html">
+              <span>使用/依赖</span>
+              <strong>Heterogeneous MRTA RL</strong>
+            </a>
+
+            <a class="relation-chip" style="--rel:#00a7c7" href="../notes/2023-combinatorial-optimization-gnn-reasoning.html">
+              <span>使用/依赖</span>
+              <strong>CO + GNN Survey</strong>
+            </a>
+          </div>
+        </div>
+        <div>
+          <h3>下游论文 -> 当前论文</h3>
+          <div class="relation-chip-grid"><div class="relation-empty">暂时没有下游论文连接到这篇。</div></div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+    <section class="note-section ">
+      <div class="note-section-kicker">Relation Notes</div>
+      <div class="note-section-body"><p>和 Heterogeneous MRTA RL 相比，MAGNNET 更强调 decentralized execution 和 agent-task 异构图；Heterogeneous MRTA RL 更偏异构机器人任务分配与调度的 RL baseline。</p>
+<p>和 GMATANN 相比，MAGNNET 的 GNN 用来给每个 agent 生成 relational embedding，再由 decentralized policy 输出 request/reject；GMATANN 更像集中式 graph state encoder + RL allocation head。</p>
+<p>和 RoboGNN Scheduler 相比，MAGNNET 没有显式 STN 时序图，主要解决动态任务到 agent 的一对一分配；RoboGNN 更偏带时序约束的调度。</p>
+<p>和 CO + GNN Survey 相比，MAGNNET 是 GNN 用作学习型分布式启发式策略的例子，而不是辅助 MILP 或 search。</p></div>
+    </section>
+
+        <div id="open-question">
+    <section class="note-section impact">
+      <div class="note-section-kicker">Open Question</div>
+      <div class="note-section-body"><p>如何把 MAGNNET 的 request/reject 分布式分配动作，扩展到 ST-MR 任务和多阶段任务：一个任务可能需要多个不同能力机器人，同时还要满足时间窗、空间冲突和执行失败恢复。</p>
+<p>另一个问题是 GNN embedding 是否应该加入更丰富的 edge feature，例如通信质量、任务 deadline、VLA/WAM 成功率、能耗和动态风险，而不仅是空间邻域与 path cost。</p></div>
+    </section>
+  </div>
+      </article>
+
+      <aside class="note-aside">
+        <section class="note-aside-panel">
+          <h2>System Roles</h2>
+          <div class="pill-row"><span class="note-pill role-pill">任务分配器</span><span class="note-pill role-pill">图编码器</span><span class="note-pill role-pill">调度器</span><span class="note-pill role-pill">规划基线</span></div>
+        </section>
+        <section class="note-aside-panel">
+          <h2>Reusable Modules</h2>
+          <div class="pill-row"><span class="note-pill module-pill">异构 agent-task 图</span><span class="note-pill module-pill">agent-agent 通信边</span><span class="note-pill module-pill">全连接 agent-task 边</span><span class="note-pill module-pill">GNN 关系型 agent embedding</span><span class="note-pill module-pill">CTDE PPO 策略</span><span class="note-pill module-pill">request/reject 任务动作</span><span class="note-pill module-pill">预约式路径代价</span></div>
+        </section>
+        <section class="note-aside-panel">
+          <h2>Next Action</h2>
+          <div class="note-pill role-pill">抽取 MAGNNET 输入输出契约</div>
+        </section>
+        <section class="note-aside-panel">
+          <h2>Tags</h2>
+          <div class="pill-row"><span class="note-pill">MAGNNET</span><span class="note-pill">GNN</span><span class="note-pill">MARL</span><span class="note-pill">PPO</span><span class="note-pill">CTDE</span><span class="note-pill">decentralized task allocation</span><span class="note-pill">autonomous vehicles</span><span class="note-pill">UAV</span><span class="note-pill">UGV</span></div>
+        </section>
+        <section class="note-aside-panel">
+          <h2>Reading Map</h2>
+          <ul class="toc-list">
+            <li><a href="#top">Summary</a></li>
+            <li><a href="#relations">Typed relations</a></li>
+            <li><a href="#open-question">Open question</a></li>
+            <li><a href="../index.html#domain-graph">Back to graph</a></li>
+          </ul>
+        </section>
+      </aside>
+    </section>
+
+    <footer class="note-footer">
+      Generated from papers/2025-magnnet-decentralized-task-allocation.md.
+    </footer>
+  </main>
+</body>
+</html>
