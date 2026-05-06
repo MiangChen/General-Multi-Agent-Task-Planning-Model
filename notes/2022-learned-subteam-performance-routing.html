@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>CO + GNN Survey · Paper Note</title>
+  <title>Learned Subteam Performance · Paper Note</title>
   <style>
     :root {
       --bg: #eef4fb;
@@ -433,15 +433,15 @@
   <main class="note-shell" id="top">
     <section class="note-hero">
       <div class="hero-main">
-        <div class="note-kicker">2023-04 · Journal of Machine Learning Research 2023 · Combinatorial Optimization GNN</div>
-        <h1>CO + GNN Survey</h1>
-        <div class="full-title">Combinatorial Optimization and Reasoning with Graph Neural Networks</div>
-        <div class="note-summary"><p>这篇 JMLR 综述的核心判断是：GNN 最适合做组合优化和规划求解器里的 heuristic guide，而不是直接替代传统算法独立输出最终方案。</p></div>
+        <div class="note-kicker">2022-04 · IEEE Robotics and Automation Letters 2022 · Learned Subteam Performance</div>
+        <h1>Learned Subteam Performance</h1>
+        <div class="full-title">Hierarchical Planning for Heterogeneous Multi-Robot Routing Problems via Learned Subteam Performance</div>
+        <div class="note-summary"><p>这篇论文把 GNN 放在高层任务规划和低层 MILP 路由之间：GNN 先估计某个 UAV/UGV 子团队完成某个区域检查任务的耗时，再只把最有希望的分配方案送进低层 MILP 精算，从而避免在推测阶段反复触发昂贵的 MILP。</p></div>
       </div>
       <aside class="hero-side">
         <div class="metric-grid">
           <div class="metric">
-            <div class="metric-value">2023</div>
+            <div class="metric-value">2022</div>
             <div class="metric-label">Year</div>
           </div>
           <div class="metric">
@@ -453,19 +453,19 @@
             <div class="metric-label">Evidence</div>
           </div>
           <div class="metric">
-            <div class="metric-value">0</div>
+            <div class="metric-value">1</div>
             <div class="metric-label">Relations</div>
           </div>
         </div>
         <div>
           <div class="note-section-kicker">Authors</div>
-          <div>Quentin Cappart, Didier Chetelat, Elias B. Khalil, Andrea Lodi, Christopher Morris, Petar Velickovic</div>
+          <div>Jacopo Banfi, Andrew Messing, Christopher Kroninger, Ethan Stump, Seth Hutchinson, Nicholas Roy</div>
         </div>
         <div>
           <div class="note-section-kicker">Institutions</div>
-          <div>Polytechnique Montreal · University of Toronto · Cornell Tech · Technion · RWTH Aachen University · DeepMind</div>
+          <div>MIT CSAIL · Georgia Institute of Technology · DEVCOM Army Research Laboratory</div>
         </div>
-        <div class="note-link-row"><a href="../pdfs/2023-04-01-CO-GNN-combinatorial-optimization-reasoning.pdf" target="_blank" rel="noreferrer">PDF</a><a href="https://jmlr.org/papers/v24/21-0449.html" target="_blank" rel="noreferrer">Paper</a><a href="../papers/2023-combinatorial-optimization-gnn-reasoning.md" target="_blank" rel="noreferrer">Markdown source</a></div>
+        <div class="note-link-row"><a href="../pdfs/2022-04-01-Hierarchical-Planning-learned-subteam-performance.pdf" target="_blank" rel="noreferrer">PDF</a><a href="https://ieeexplore.ieee.org/document/9705143" target="_blank" rel="noreferrer">Paper</a><a href="https://doi.org/10.1109/LRA.2022.3148489" target="_blank" rel="noreferrer">DOI</a><a href="../papers/2022-learned-subteam-performance-routing.md" target="_blank" rel="noreferrer">Markdown source</a></div>
       </aside>
     </section>
 
@@ -474,57 +474,56 @@
 
     <section class="note-section impact">
       <div class="note-section-kicker">For Our Model</div>
-      <div class="note-section-body"><p>我们不应该让 LLM 或 VLA 直接“猜”整个多机器人计划。更稳的架构是：</p>
-<p>```text<br>Language goal<br>-&gt; task graph / constraint graph<br>-&gt; GNN heuristic guide<br>-&gt; search / optimization / scheduler<br>-&gt; VLA or WAM executor<br>```</p>
-<p>也就是说，GNN 的角色不是输出最终答案，而是给 planner 提供：</p>
-<ul><li>哪个 task 更应该先分配。</li><li>哪个 robot-task edge 更可能成功。</li><li>哪个变量应该优先 branch。</li><li>哪个候选计划值得搜索器优先展开。</li><li>哪个 warm-start 方案能让传统求解器更快收敛。</li></ul></div>
+      <div class="note-section-body"><p>这篇论文对 General Multi-Agent Task Planning Model 的启发很直接：复杂系统里很多候选计划的真实代价都要通过昂贵模拟器、MILP、物理 rollout 或 WAM 预测才能得到，不可能在高层搜索中全部精算。</p>
+<p>更合理的结构是：</p>
+<p>```text<br>Language / scene graph grounding<br>-&gt; area tasks / routing task graph<br>-&gt; learned subteam performance estimator<br>-&gt; high-level allocation MILP / scheduler<br>-&gt; low-level routing MILP / executor<br>-&gt; true cost feedback to estimator<br>```</p>
+<p>GNN 在这里是“快速代价模型”：先给高层 planner 一个足够好的耗时估计，让 planner 优先探索有希望的子团队划分，再用精确求解器修正估计。</p></div>
     </section>
 
 
     <section class="note-section ">
       <div class="note-section-kicker">Research Question</div>
-      <div class="note-section-body"><p>组合优化问题普遍存在于路径规划、任务分配、调度、SAT、MIP 和车辆路径等场景中。传统求解器有可行性和最优性保证，但搜索慢；纯神经网络推理快，但很难保证硬约束和最优性。</p>
-<p>论文关心的问题是：GNN 应该如何表示组合优化问题，应该输出什么，以及应该用什么学习范式嵌入到真实求解流程中。</p></div>
+      <div class="note-section-body"><p>场景中有多个子任务区域，每个区域内部又是一个异构多机器人路由问题。系统需要从总体机器人队伍中，为每个区域划分一个小团队，例如分配几个 UAV 和几个 UGV 去检查某片区域。</p>
+<p>难点在于：要判断某个子团队是否适合某个区域，通常需要求解该区域内部的 routing MILP，才能得到精确耗时。如果高层分配阶段枚举很多子团队-区域组合，每个组合都调用 MILP，规划时间会爆炸。</p>
+<p>论文把这个问题整体归为 ST-MR-TA-ID：机器人是 single-task，任务需要 multi-robot，分配是 time-extended，并且区域内部路由存在 in-schedule dependencies。它的高层 GNN 估计部分可以看成 ST-MR-IA 式 coalition formation：先估计“哪个子团队适合哪个任务”。</p></div>
     </section>
 
 
     <section class="note-section ">
       <div class="note-section-kicker">Method</div>
-      <div class="note-section-body"><p>这不是一篇提出单一模型的算法论文，而是一篇结构化综述。它把 GNN for CO 的方法整理成三个关键维度：</p>
-<ol><li><strong>输入图建模</strong>：把问题转成 natural graph、bipartite graph 或 tripartite graph。</li><li><strong>输出接口设计</strong>：输出边概率、变量取值、搜索策略或 action value。</li><li><strong>训练范式</strong>：监督学习 / 模仿学习、强化学习、无监督学习。</li></ol>
-<p>最重要的工程判断是：GNN 不应该只被看作一个端到端黑盒，而应该嵌入 Branch-and-Bound、Local Search、MCTS、Beam Search 等传统算法内部，替换其中“凭经验、算得慢”的启发式部件。</p></div>
+      <div class="note-section-body"><p>论文提出一个分层 planner：</p>
+<ol><li><strong>高层任务分配 MILP</strong>：决定每个区域任务分配多少 UAV、多少 UGV，目标是最小化整体 makespan。</li><li><strong>GNN 子团队性能估计器</strong>：在高层还没有真实路径时，快速估计某个子团队在某个区域的完成时间。</li><li><strong>低层 routing MILP</strong>：只对当前高层选出的候选分配，求解每个区域内部的精确路径和真实耗时。</li><li><strong>迭代精化</strong>：低层 MILP 算出的真实耗时会回写到高层估计表，更新 GNN / estimator 给出的值，再重新求解高层分配，直到收敛或时间预算结束。</li></ol>
+<p>这相当于把昂贵的低层 MILP 从“每个候选都算”改成“先用 GNN 估，再只算最有希望的一小部分”。</p></div>
     </section>
 
 
     <section class="note-section ">
       <div class="note-section-kicker">Key Contributions</div>
-      <div class="note-section-body"><p>论文把 GNN 和组合优化的连接方式讲清楚了：</p>
-<ul><li>GNN 的优势在于 permutation invariance、稀疏结构感知和关系归纳偏置。</li><li>对 TSP、VRP、routing 这类问题，可以直接用城市、客户、仓库和道路形成 natural graph。</li><li>对 MIP、SAT 等通用数学规划问题，可以用变量节点、约束节点和变量-约束边形成 bipartite graph。</li><li>对更复杂的求解流程，可以让 GNN 输出 warm-start、branching policy、node / edge probability、局部搜索移动建议或搜索优先级。</li></ul></div>
+      <div class="note-section-body"><p>论文最关键的贡献不是用 GNN 直接输出最终分配，而是让 GNN 作为 subteam performance estimator，服务于传统分层优化器。</p>
+<p>GNN 负责预测某个区域图 + 某个子团队配置的 makespan。高层 MILP 使用这个估计值做快速分配，低层 MILP 负责真实路径质量和可行性。这个结构保留了优化器的严谨性，同时用学习模型减少无谓 MILP 调用。</p>
+<p>在最多 45 个机器人、20 个区域的实验中，论文报告该分层 planner 能在平均约 16 倍更快的速度下得到最优或 7% 以内近似最优解。</p></div>
     </section>
 
-
-    <section class="note-section ">
-      <div class="note-section-kicker">Reading Highlights</div>
-      <div class="note-section-body"><p>这篇综述最值得记住的是它对 GNN 定位的克制：工业级复杂规划里，GNN 不是独立决策者，而是传统算法的“超强辅助”。</p>
-<p>传统算法负责守规矩、给证明和保证可行性；GNN 负责凭结构直觉指路，让搜索更快、更聪明。</p></div>
-    </section>
 
 
     <section class="note-section risk">
       <div class="note-section-kicker">Limitations</div>
-      <div class="note-section-body"><p>综述本身不直接给出一个可复现的多机器人任务规划系统。它也没有解决 VLA/WAM 执行层的不确定性问题。对我们的仓库来说，它更像方法论底座，而不是直接可部署模块。</p></div>
+      <div class="note-section-body"><p>这篇论文不负责从自然语言中生成任务，也不解决场景语义 grounding。它假设多个区域任务已经给定，并且每个区域能被表示成 routing graph。</p>
+<p>它也不直接输出机器人具体路径。GNN 只估计耗时，实际路径仍由低层 MILP 计算。因此它更像 planner 的 cost model / heuristic，而不是完整执行策略。</p>
+<p>另外，论文的任务结构是静态 allocation，结论部分也明确说当前 planner 不能处理 routing tasks 之间可能存在的 temporal constraints。要接入更复杂任务图，还需要结合 RoboGNN 这类 STN scheduling 模块。</p></div>
     </section>
 
 
     <section class="note-section ">
       <div class="note-section-kicker">Reusable Modules</div>
-      <div class="note-section-body"><p>bipartite variable-constraint graph、task-agent graph、GNN-guided branching、warm-start assignment、constraint-aware decoding、hybrid solver loop。</p></div>
+      <div class="note-section-body"><p>subteam performance estimator、area inspection graph、UAV/UGV team encoding、learned makespan estimator、lazy MILP refinement、hierarchical task-routing planner。</p></div>
     </section>
 
 
     <section class="note-section risk">
       <div class="note-section-kicker">Evidence &amp; Risk</div>
-      <div class="note-section-body"><p>证据来自 JMLR 综述和大量 CO/GNN 文献归纳，适合作为方法论参考。风险是综述结论偏通用组合优化，落到多机器人系统时还需要加入实时状态、通信约束、执行失败反馈和 VLA/WAM 成功率估计。</p></div>
+      <div class="note-section-body"><p>证据强在任务形式和我们关心的多机器人子团队划分高度贴近：多区域、多机器人、异构 UAV/UGV、makespan 目标、MILP 低层求解。实验表明 GNN 估计器相比 greedy 和 MILP relaxation 在多类环境中有较好的质量-速度折中。</p>
+<p>风险是它依赖区域图和固定机器人类型，且训练目标是估计特定 routing MILP 的耗时。换成真实动态场景、更多机器人类型、通信限制、任务时间窗或执行失败反馈后，需要重新设计 graph feature 和反馈机制。</p></div>
     </section>
 
         <div id="relations">
@@ -533,26 +532,16 @@
       <div class="relation-columns">
         <div>
           <h3>当前论文 -> 关联论文 / 前序工作</h3>
-          <div class="relation-chip-grid"><div class="relation-empty">还没有指向关联论文或前序工作的 typed relation。</div></div>
+          <div class="relation-chip-grid">
+            <a class="relation-chip" style="--rel:#00a7c7" href="../notes/2023-combinatorial-optimization-gnn-reasoning.html">
+              <span>使用/依赖</span>
+              <strong>CO + GNN Survey</strong>
+            </a>
+          </div>
         </div>
         <div>
           <h3>下游论文 -> 当前论文</h3>
-          <div class="relation-chip-grid">
-            <a class="relation-chip incoming" style="--rel:#00a7c7" href="../notes/2020-robognn-multi-robot-scheduling-gat.html">
-              <span>使用/依赖</span>
-              <strong>RoboGNN Scheduler</strong>
-            </a>
-
-            <a class="relation-chip incoming" style="--rel:#00a7c7" href="../notes/2022-learned-subteam-performance-routing.html">
-              <span>使用/依赖</span>
-              <strong>Learned Subteam Performance</strong>
-            </a>
-
-            <a class="relation-chip incoming" style="--rel:#00a7c7" href="../notes/2023-grid-scene-graph-task-planning.html">
-              <span>使用/依赖</span>
-              <strong>GRID</strong>
-            </a>
-          </div>
+          <div class="relation-chip-grid"><div class="relation-empty">暂时没有下游论文连接到这篇。</div></div>
         </div>
       </div>
     </section>
@@ -560,14 +549,17 @@
 
     <section class="note-section ">
       <div class="note-section-kicker">Relation Notes</div>
-      <div class="note-section-body"><p>GMATANN 和 Heterogeneous MRTA RL 都是多智能体任务分配的具体模型；这篇综述提供更上层的组合优化视角，解释为什么 agent-task allocation 可以被写成图、为什么 GNN 更适合作为启发式分配器或求解器辅助模块。</p>
-<p>它也能解释 GenSwarm 之后为什么还需要一个结构化 planner：自然语言可以生成任务图，但任务图到机器人分配、路径、调度仍然需要组合优化推理。</p></div>
+      <div class="note-section-body"><p>和 CO + GNN Survey 相比，这篇是一个非常典型的“GNN 作为优化器启发式”的例子：GNN 不取代 MILP，而是估计 MILP 参数，减少高层搜索时的昂贵精算。</p>
+<p>和 RoboGNN Scheduler 相比，RoboGNN 学的是给定 STN 后的调度策略；本文学的是给定区域 routing graph 和子团队配置后的耗时估计。前者更像 scheduler，后者更像 cost estimator。</p>
+<p>和 GMATANN / Heterogeneous MRTA RL 相比，本文的异构性更明确地体现在 UAV/UGV 子团队数量和区域路由耗时上；它不做端到端 RL 分配，而是用 GNN 辅助 MILP。</p>
+<p>和 GRID 相比，GRID 可以把自然语言和场景图转成 grounded subtask；本文接在更后面，回答“哪些机器人子团队去哪个区域，以及这个选择大概要花多久”。</p></div>
     </section>
 
         <div id="open-question">
     <section class="note-section impact">
       <div class="note-section-kicker">Open Question</div>
-      <div class="note-section-body"><p>如何把多机器人任务规划统一表示成 variable-constraint graph 或 task-agent graph，并让 GNN 输出 planner 可用的启发式信号，而不是直接输出一个难以保证可行性的端到端计划。</p></div>
+      <div class="note-section-body"><p>如何把这个 GNN cost estimator 扩展成多模块 planner 的统一代价预测层：不仅估计区域检查耗时，还估计 VLA/WAM 执行成功率、通信风险、能源消耗和任务失败后的恢复成本。</p>
+<p>另一个问题是如何把本文的 ST-MR-IA 高层子团队划分，与整体 ST-MR-TA-ID 的时间扩展任务调度结合起来，避免只得到“谁去哪片区域”，却没有得到跨区域、跨团队的时间顺序和依赖约束。</p></div>
     </section>
   </div>
       </article>
@@ -575,19 +567,19 @@
       <aside class="note-aside">
         <section class="note-aside-panel">
           <h2>System Roles</h2>
-          <div class="pill-row"><span class="note-pill role-pill">图编码器</span><span class="note-pill role-pill">求解器启发式</span><span class="note-pill role-pill">规划基线</span></div>
+          <div class="pill-row"><span class="note-pill role-pill">任务分配器</span><span class="note-pill role-pill">调度器</span><span class="note-pill role-pill">图编码器</span><span class="note-pill role-pill">求解器启发式</span><span class="note-pill role-pill">规划基线</span></div>
         </section>
         <section class="note-aside-panel">
           <h2>Reusable Modules</h2>
-          <div class="pill-row"><span class="note-pill module-pill">变量-约束二分图</span><span class="note-pill module-pill">求解器引导策略</span><span class="note-pill module-pill">分支定界启发式</span><span class="note-pill module-pill">Warm-start 分配</span><span class="note-pill module-pill">约束感知解码</span></div>
+          <div class="pill-row"><span class="note-pill module-pill">子团队性能估计器</span><span class="note-pill module-pill">区域检查图</span><span class="note-pill module-pill">队伍规模编码</span><span class="note-pill module-pill">学习型 makespan 估计器</span><span class="note-pill module-pill">懒式 MILP 精化</span><span class="note-pill module-pill">分层任务-路由规划器</span></div>
         </section>
         <section class="note-aside-panel">
           <h2>Next Action</h2>
-          <div class="note-pill role-pill">抽取 GNN 求解器设计规则</div>
+          <div class="note-pill role-pill">抽取子团队性能估计器</div>
         </section>
         <section class="note-aside-panel">
           <h2>Tags</h2>
-          <div class="pill-row"><span class="note-pill">GNN</span><span class="note-pill">combinatorial optimization</span><span class="note-pill">operations research</span><span class="note-pill">algorithmic reasoning</span><span class="note-pill">hybrid solver</span><span class="note-pill">branch and bound</span></div>
+          <div class="pill-row"><span class="note-pill">GNN</span><span class="note-pill">heterogeneous robots</span><span class="note-pill">multi-robot routing</span><span class="note-pill">subteam allocation</span><span class="note-pill">MILP</span><span class="note-pill">makespan estimation</span><span class="note-pill">UAV</span><span class="note-pill">UGV</span></div>
         </section>
         <section class="note-aside-panel">
           <h2>Reading Map</h2>
@@ -602,7 +594,7 @@
     </section>
 
     <footer class="note-footer">
-      Generated from papers/2023-combinatorial-optimization-gnn-reasoning.md.
+      Generated from papers/2022-learned-subteam-performance-routing.md.
     </footer>
   </main>
 </body>
