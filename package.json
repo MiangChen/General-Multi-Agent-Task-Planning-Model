@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "build": "node scripts/build-dashboard.mjs",
+    "build:pages": "node scripts/build-pages-site.mjs",
     "dev": "node scripts/build-dashboard.mjs --watch"
   }
 }

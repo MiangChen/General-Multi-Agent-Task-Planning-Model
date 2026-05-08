@@ -34,7 +34,11 @@ const valueLabels = {
   learned_subteam_performance: "Learned Subteam Performance",
   scene_graph_task_planning: "Scene Graph Task Planning",
   scene_graph_navigation_policy: "Scene Graph Navigation Policy",
+  pythonic_llm_task_planning: "Pythonic LLM Task Planning",
+  dag_based_llm_task_decomposition: "DAG-based LLM Task Decomposition",
+  layerwise_diffusion_dag_generation: "Layerwise Diffusion DAG Generation",
   unsupervised_task_graph_generation: "Unsupervised Task Graph Generation",
+  llm_dependency_graph_planning: "LLM Dependency Graph Planning",
   semantic_grounding: "语义落地",
   action_representation: "动作表示",
   action_diffusion_policy: "动作扩散策略",
@@ -263,6 +267,10 @@ const valueLabels = {
   extract_graph_assignment_design: "抽取图分配设计",
   extract_magnnet_io_contract: "抽取 MAGNNET 输入输出契约",
   extract_task_graph_generation_pipeline: "抽取任务图生成流水线",
+  extract_lip_llm_task_graph_interface: "抽取 LiP-LLM 任务图接口",
+  extract_smart_llm_pythonic_planning_baseline: "抽取 SMART-LLM Pythonic 规划基线",
+  extract_dart_llm_json_dag_schema: "抽取 DART-LLM JSON-DAG schema",
+  adapt_layerdag_to_multi_robot_task_graph_schema: "适配 LayerDAG 到多机器人任务图 schema",
   extract_robognn_scheduler_baseline: "抽取 RoboGNN 调度基线",
   extract_subteam_performance_estimator: "抽取子团队性能估计器",
   extract_gnn_solver_design_rules: "抽取 GNN 求解器设计规则",
@@ -964,9 +972,8 @@ function renderAgentBoard() {
       <div class="section-head">
         <div>
           <h2>Agent 工作流</h2>
-          <p>把仓库维护拆成可复制的 agent 任务：新增论文、审计关系、精读升级、发现 gap、映射系统设计。prompt 原文放在仓库根目录。</p>
+          <p>把仓库维护拆成可复制的 agent 任务：新增论文、审计关系、精读升级、发现 gap、映射系统设计。</p>
         </div>
-        <a class="agent-prompt-link" data-agent-prompts href="AGENT_PROMPTS.md" target="_blank" rel="noreferrer">打开 AGENT_PROMPTS.md</a>
       </div>
       <div class="agent-grid">${cards}</div>
     </section>
@@ -1533,7 +1540,6 @@ function renderNoteLinks(paper) {
     paper.code_url ? `<a href="${escapeHtml(paper.code_url)}" target="_blank" rel="noreferrer">Code</a>` : "",
     paper.doi ? `<a href="https://doi.org/${escapeHtml(paper.doi)}" target="_blank" rel="noreferrer">DOI</a>` : "",
     paper.arxiv ? `<a href="https://arxiv.org/abs/${escapeHtml(paper.arxiv)}" target="_blank" rel="noreferrer">arXiv</a>` : "",
-    `<a href="../${escapeHtml(paper.file)}" target="_blank" rel="noreferrer">Markdown source</a>`,
   ].filter(Boolean);
   return links.join("");
 }
@@ -1608,6 +1614,7 @@ function renderNotePage(paper, papers) {
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex,nofollow,noarchive">
   <title>${escapeHtml(paper.short_title)} · Paper Note</title>
   <style>
     :root {
@@ -2118,9 +2125,6 @@ function renderNotePage(paper, papers) {
       </aside>
     </section>
 
-    <footer class="note-footer">
-      Generated from ${escapeHtml(paper.file)}.
-    </footer>
   </main>
 </body>
 </html>`;
@@ -2143,6 +2147,7 @@ function renderIndex(papers, teamRoadmap) {
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex,nofollow,noarchive">
   <title>通用多智能体任务规划模型知识库</title>
   <style>
     :root {
@@ -3663,10 +3668,6 @@ function renderIndex(papers, teamRoadmap) {
       const prefix = window.location.pathname.endsWith("/views/dashboard.html") ? "../" : "";
       return new URL(prefix + path, window.location.href).href;
     }
-
-    document.querySelectorAll("[data-agent-prompts]").forEach((link) => {
-      link.href = noteUrlFor("AGENT_PROMPTS.md");
-    });
 
     document.querySelectorAll("[data-note-link]").forEach((link) => {
       link.href = noteUrlFor(link.dataset.noteLink);
