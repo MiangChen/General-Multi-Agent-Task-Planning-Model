@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="robots" content="noindex,nofollow,noarchive">
-  <title>π0.7 · Paper Note</title>
+  <title>SMART-LLM · Paper Note</title>
   <style>
     :root {
       --bg: #eef4fb;
@@ -434,19 +434,19 @@
   <main class="note-shell" id="top">
     <section class="note-hero">
       <div class="hero-main">
-        <div class="note-kicker">2026-04 · arXiv / Physical Intelligence · VLA</div>
-        <h1>π0.7</h1>
-        <div class="full-title">π0.7: a Steerable Generalist Robotic Foundation Model with Emergent Capabilities</div>
-        <div class="note-summary"><p>π0.7 把 PI 系列推进到“可 steer 的通用机器人基础模型”，重点是用更丰富的上下文条件支持组合泛化和策略选择。</p></div>
+        <div class="note-kicker">2024-03 · IROS 2024 · Pythonic LLM Task Planning</div>
+        <h1>SMART-LLM</h1>
+        <div class="full-title">SMART-LLM: Smart Multi-Agent Robot Task Planning using Large Language Models</div>
+        <div class="note-summary"><p>SMART-LLM 可以暂时归档到 Task Graph 方向，但它不是严格的 task graph 方法：它没有显式 node/edge graph，而是用 Python code 的函数、threading 和 join 隐式存储任务结构、并行关系和执行顺序。</p></div>
       </div>
       <aside class="hero-side">
         <div class="metric-grid">
           <div class="metric">
-            <div class="metric-value">2026</div>
+            <div class="metric-value">2024</div>
             <div class="metric-label">Year</div>
           </div>
           <div class="metric">
-            <div class="metric-value">高</div>
+            <div class="metric-value">中</div>
             <div class="metric-label">Readiness</div>
           </div>
           <div class="metric">
@@ -454,19 +454,19 @@
             <div class="metric-label">Evidence</div>
           </div>
           <div class="metric">
-            <div class="metric-value">5</div>
+            <div class="metric-value">2</div>
             <div class="metric-label">Relations</div>
           </div>
         </div>
         <div>
           <div class="note-section-kicker">Authors</div>
-          <div>Physical Intelligence, Ai, Amin, Black, Driess, Finn, Hausman, Ichter, Levine, Pertsch</div>
+          <div>Shyam Sundar Kannan, Vishnunandan L. N. Venkatesh, Byung-Cheol Min</div>
         </div>
         <div>
           <div class="note-section-kicker">Institutions</div>
-          <div>Physical Intelligence</div>
+          <div>Purdue University</div>
         </div>
-        <div class="note-link-row"><a href="../pdfs/2026-04-01-pi07-vla-steerable.pdf" target="_blank" rel="noreferrer">PDF</a><a href="https://arxiv.org/abs/2604.15483" target="_blank" rel="noreferrer">Paper</a><a href="https://physicalintelligence.company/" target="_blank" rel="noreferrer">Project</a><a href="https://doi.org/10.48550/arXiv.2604.15483" target="_blank" rel="noreferrer">DOI</a><a href="https://arxiv.org/abs/2604.15483" target="_blank" rel="noreferrer">arXiv</a></div>
+        <div class="note-link-row"><a href="../pdfs/2024-03-23-SMART-LLM-multi-agent-robot-task-planning.pdf" target="_blank" rel="noreferrer">PDF</a><a href="https://arxiv.org/abs/2309.10062" target="_blank" rel="noreferrer">Paper</a><a href="https://sites.google.com/view/smart-llm/" target="_blank" rel="noreferrer">Project</a><a href="https://arxiv.org/abs/2309.10062" target="_blank" rel="noreferrer">arXiv</a></div>
       </aside>
     </section>
 
@@ -475,44 +475,48 @@
 
     <section class="note-section impact">
       <div class="note-section-kicker">For Our Model</div>
-      <div class="note-section-body"><p>对你的方向最有价值的是“上下文可控执行器”这个接口：多机器人 planner 可以为不同机器人生成不同上下文，例如角色、目标、路径约束、协作顺序和失败恢复策略。</p></div>
+      <div class="note-section-body"><p>SMART-LLM 提供了一个重要的早期信号：LLM 适合把自然语言任务转成结构化中间表示，但这个中间表示最好不要停留在代码层。</p>
+<p>对我们的 General Multi-Agent Task Planning Model 来说，更稳的演化方向是：</p>
+<p>```text<br>SMART-LLM-style Python plan<br>-&gt; explicit task graph nodes / edges<br>-&gt; graph validation and repair<br>-&gt; MILP / GNN / RL allocation<br>-&gt; executable skill calls<br>```</p>
+<p>也就是说，SMART-LLM 可以作为 idea 萌芽和 baseline，但真正可扩展的系统应该把代码里的隐式依赖显式化为 task graph。</p></div>
     </section>
 
 
     <section class="note-section ">
       <div class="note-section-kicker">Research Question</div>
-      <div class="note-section-body"><p>当训练数据包含多种策略和质量差异时，通用 VLA 如何避免平均化，并根据任务上下文选择正确执行方式。</p></div>
+      <div class="note-section-body"><p>多机器人任务规划需要同时解决任务分解、机器人能力匹配、子任务分配和执行顺序。传统方法往往依赖固定规则或特定任务建模，难以处理自然语言里的模糊指令。</p>
+<p>SMART-LLM 的想法是：利用 LLM 对自然语言和代码结构的理解能力，把高层任务指令转成 Python 风格的多机器人执行计划。这里的 Python code 不只是输出格式，也承担了任务结构表示的角色。</p></div>
     </section>
 
-
-    <section class="note-section ">
-      <div class="note-section-kicker">Method</div>
-      <div class="note-section-body"><p>论文使用 diverse context conditioning：不仅给语言命令，还给任务表现元数据、策略信息、子目标图像和记忆相关上下文等多模态条件。</p></div>
-    </section>
 
 
     <section class="note-section ">
       <div class="note-section-kicker">Key Contributions</div>
-      <div class="note-section-body"><p>π0.7 显示出更强的开箱表现、跨具身零样本泛化和多阶段任务能力，是目前 PI 系列中最接近“可由 planner 调用”的策略模型。</p></div>
+      <div class="note-section-body"><p>第一，它把多机器人任务规划拆成多个 LLM stage，而不是一次性让 LLM 直接输出完整计划。这样每个 stage 的 prompt 更清晰，分别处理 decomposition、coalition reasoning 和 allocation。</p>
+<p>第二，它用 Python code 作为结构化中间表示。函数、线程和 join 比纯自然语言计划更可执行，也能隐式表达并行和顺序依赖。</p>
+<p>第三，它证明 Pythonic prompt 可以从仿真任务迁移到真实机器人任务，只要底层 skill API 和环境/机器人能力描述保持一致。</p></div>
     </section>
 
 
 
     <section class="note-section risk">
       <div class="note-section-kicker">Limitations</div>
-      <div class="note-section-body"><p>论文展示的是通用机器人策略能力，不等于完整任务规划系统。多机器人中的协同、任务竞价、路径冲突和通信延迟仍需外部系统处理。</p></div>
+      <div class="note-section-body"><p>SMART-LLM 的最大局限是没有显式 task graph。由于没有 node/edge 表示，系统很难直接做 graph validation、cycle detection、dependency repair、MILP/GNN-based allocation 或对任务图进行局部重规划。</p>
+<p>它的 coalition formation 和 task allocation 都依赖 LLM reasoning。论文的 ablation 显示移除 coalition formation 会显著降低成功率，说明 Stage 2 的中间推理对后续分配很重要，但这个推理本身没有被形式化成可验证的数据结构。</p>
+<p>此外，Python code 表示虽然可执行，但不天然适合大规模任务图分析。如果任务数量、机器人数量和并行关系变复杂，单纯依靠代码生成会更难检查正确性。</p></div>
     </section>
 
 
     <section class="note-section ">
       <div class="note-section-kicker">Reusable Modules</div>
-      <div class="note-section-body"><p>context-conditioned policy、steerable executor interface、compositional generalization setup。适合作为最终 executor 形态的参考目标。</p></div>
+      <div class="note-section-body"><p>Pythonic prompting、task decomposition agent、coalition formation agent、task allocation agent、comments-as-reasoning-hints、threading-based parallel execution、skill API based code generation。</p></div>
     </section>
 
 
     <section class="note-section risk">
       <div class="note-section-kicker">Evidence &amp; Risk</div>
-      <div class="note-section-body"><p>证据来自 PI 系列最新路线；风险是仍以直接策略为主，缺少团队规划、显式世界模型和多机器人通信机制。</p></div>
+      <div class="note-section-body"><p>论文在 AI2-THOR benchmark 和真实机器人实验中测试了多类任务，并比较了 random allocation 和 rule-based allocation baseline。结果说明多 stage LLM prompting 在 heterogeneous robot team 中可以生成有效计划。</p>
+<p>风险是它依赖 few-shot prompt 和 LLM 代码生成质量，缺少结构化验证。对于高风险或大规模多机器人场景，仅靠生成代码不够，需要额外的 graph checker、planner 或 optimizer。</p></div>
     </section>
 
         <div id="relations">
@@ -522,35 +526,25 @@
         <div>
           <h3>当前论文 -> 关联论文 / 前序工作</h3>
           <div class="relation-chip-grid">
-            <a class="relation-chip" style="--rel:#246bfe" href="../notes/2026-mem-multi-scale-embodied-memory.html">
-              <span>继承/扩展</span>
-              <strong>MEM</strong>
+            <a class="relation-chip" style="--rel:#188aa6" href="../notes/2025-lip-llm-dependency-graph-planning.html">
+              <span>提供模块</span>
+              <strong>LiP-LLM</strong>
             </a>
 
-            <a class="relation-chip" style="--rel:#246bfe" href="../notes/2025-pistar06-recap.html">
-              <span>继承/扩展</span>
-              <strong>π*0.6 / RECAP</strong>
-            </a>
-
-            <a class="relation-chip" style="--rel:#246bfe" href="../notes/2025-pi06-model-card.html">
-              <span>继承/扩展</span>
-              <strong>π0.6</strong>
-            </a>
-
-            <a class="relation-chip" style="--rel:#00a7c7" href="../notes/2025-pi05-open-world-generalization.html">
-              <span>使用/依赖</span>
-              <strong>π0.5</strong>
-            </a>
-
-            <a class="relation-chip" style="--rel:#00a7c7" href="../notes/2024-pi0-vla-flow-model.html">
-              <span>使用/依赖</span>
-              <strong>π0</strong>
+            <a class="relation-chip" style="--rel:#d14d72" href="../notes/2025-lip-llm-dependency-graph-planning.html">
+              <span>对比路线</span>
+              <strong>LiP-LLM</strong>
             </a>
           </div>
         </div>
         <div>
           <h3>下游论文 -> 当前论文</h3>
-          <div class="relation-chip-grid"><div class="relation-empty">暂时没有下游论文连接到这篇。</div></div>
+          <div class="relation-chip-grid">
+            <a class="relation-chip incoming" style="--rel:#246bfe" href="../notes/2025-dart-llm-dependency-aware-task-graph.html">
+              <span>继承/扩展</span>
+              <strong>DART-LLM</strong>
+            </a>
+          </div>
         </div>
       </div>
     </section>
@@ -558,13 +552,16 @@
 
     <section class="note-section ">
       <div class="note-section-kicker">Relation Notes</div>
-      <div class="note-section-body"><p>相对 π0.5 的开放世界泛化、π*0.6 的经验学习和 MEM 的长程记忆，π0.7 更强调上下文条件对策略行为的可控性。它和 WAM 的区别在于：π0.7 仍偏直接策略，WAM 偏预测世界状态和动作。</p></div>
+      <div class="note-section-body"><p>和 LiP-LLM 相比，SMART-LLM 更早也更松散：SMART-LLM 用 Python code 隐式表达任务结构；LiP-LLM 则进一步把 skill dependency 显式转成 graph edge，并用规则检查是否有 cycle，再交给线性规划做分配。</p>
+<p>和 Unsupervised Task Graph Generation 相比，SMART-LLM 不从数据集中学习或归纳 task graph，而是在单次任务 prompt 中生成代码式计划。</p>
+<p>和 GenSwarm 相比，两者都利用 LLM 生成可执行代码结构；SMART-LLM 更关注多机器人 household / embodied task planning 的 decomposition 和 allocation，GenSwarm 更强调多机器人代码策略生成、仿真反馈和真实部署闭环。</p></div>
     </section>
 
         <div id="open-question">
     <section class="note-section impact">
       <div class="note-section-kicker">Open Question</div>
-      <div class="note-section-body"><p>如何设计标准化的 planner-to-VLA context schema，让多机器人任务规划器稳定调用不同 VLA，而不依赖脆弱的自然语言提示。</p></div>
+      <div class="note-section-body"><p>如何从 SMART-LLM 生成的 Python code 中自动反解析出显式 task graph：函数是 node，<code>join()</code> 和函数调用顺序是 edge，thread start 是并行结构。</p>
+<p>另一个问题是 coalition formation policy 如何转成机器可验证的约束，例如 required capabilities、team size、resource constraints、payload constraints、visibility constraints 和 execution duration。</p></div>
     </section>
   </div>
       </article>
@@ -572,19 +569,19 @@
       <aside class="note-aside">
         <section class="note-aside-panel">
           <h2>System Roles</h2>
-          <div class="pill-row"><span class="note-pill role-pill">执行器</span><span class="note-pill role-pill">基础策略</span><span class="note-pill role-pill">可控策略</span></div>
+          <div class="pill-row"><span class="note-pill role-pill">语义规划器</span><span class="note-pill role-pill">task decomposer</span><span class="note-pill role-pill">任务分配器</span><span class="note-pill role-pill">规划基线</span></div>
         </section>
         <section class="note-aside-panel">
           <h2>Reusable Modules</h2>
-          <div class="pill-row"><span class="note-pill module-pill">context conditioned policy</span><span class="note-pill module-pill">steerable executor interface</span><span class="note-pill module-pill">组合泛化</span></div>
+          <div class="pill-row"><span class="note-pill module-pill">pythonic prompting</span><span class="note-pill module-pill">task decomposition agent</span><span class="note-pill module-pill">coalition formation agent</span><span class="note-pill module-pill">task allocation agent</span><span class="note-pill module-pill">code structured execution plan</span><span class="note-pill module-pill">threading based parallelism</span></div>
         </section>
         <section class="note-aside-panel">
           <h2>Next Action</h2>
-          <div class="note-pill role-pill">作为执行器目标</div>
+          <div class="note-pill role-pill">抽取 SMART-LLM Pythonic 规划基线</div>
         </section>
         <section class="note-aside-panel">
           <h2>Tags</h2>
-          <div class="pill-row"><span class="note-pill">π0.7</span><span class="note-pill">VLA</span><span class="note-pill">compositional generalization</span><span class="note-pill">steerable policy</span><span class="note-pill">cross-embodiment</span></div>
+          <div class="pill-row"><span class="note-pill">SMART-LLM</span><span class="note-pill">LLM</span><span class="note-pill">Task Graph</span><span class="note-pill">Python code</span><span class="note-pill">task decomposition</span><span class="note-pill">coalition formation</span><span class="note-pill">task allocation</span><span class="note-pill">multi-robot planning</span></div>
         </section>
         <section class="note-aside-panel">
           <h2>Reading Map</h2>

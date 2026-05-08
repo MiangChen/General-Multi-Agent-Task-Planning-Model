@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="robots" content="noindex,nofollow,noarchive">
-  <title>π0.7 · Paper Note</title>
+  <title>LayerDAG · Paper Note</title>
   <style>
     :root {
       --bg: #eef4fb;
@@ -434,15 +434,15 @@
   <main class="note-shell" id="top">
     <section class="note-hero">
       <div class="hero-main">
-        <div class="note-kicker">2026-04 · arXiv / Physical Intelligence · VLA</div>
-        <h1>π0.7</h1>
-        <div class="full-title">π0.7: a Steerable Generalist Robotic Foundation Model with Emergent Capabilities</div>
-        <div class="note-summary"><p>π0.7 把 PI 系列推进到“可 steer 的通用机器人基础模型”，重点是用更丰富的上下文条件支持组合泛化和策略选择。</p></div>
+        <div class="note-kicker">2025-03 · ICLR 2025 · Layerwise Diffusion DAG Generation</div>
+        <h1>LayerDAG</h1>
+        <div class="full-title">LayerDAG: A Layerwise Autoregressive Diffusion Model for Directed Acyclic Graph Generation</div>
+        <div class="note-summary"><p>LayerDAG 是目前我们看到的、最接近“用 diffusion 生成 task graph”的方法论文：它不是机器人论文，但它直接研究如何生成有效 DAG，并且通过 layerwise autoregressive generation 保证方向性和无环结构。</p></div>
       </div>
       <aside class="hero-side">
         <div class="metric-grid">
           <div class="metric">
-            <div class="metric-value">2026</div>
+            <div class="metric-value">2025</div>
             <div class="metric-label">Year</div>
           </div>
           <div class="metric">
@@ -454,19 +454,19 @@
             <div class="metric-label">Evidence</div>
           </div>
           <div class="metric">
-            <div class="metric-value">5</div>
+            <div class="metric-value">3</div>
             <div class="metric-label">Relations</div>
           </div>
         </div>
         <div>
           <div class="note-section-kicker">Authors</div>
-          <div>Physical Intelligence, Ai, Amin, Black, Driess, Finn, Hausman, Ichter, Levine, Pertsch</div>
+          <div>Zhuo Li, Yifei Shen, Lei Chen, Mingming Sun, Wei Liu</div>
         </div>
         <div>
           <div class="note-section-kicker">Institutions</div>
-          <div>Physical Intelligence</div>
+          <div></div>
         </div>
-        <div class="note-link-row"><a href="../pdfs/2026-04-01-pi07-vla-steerable.pdf" target="_blank" rel="noreferrer">PDF</a><a href="https://arxiv.org/abs/2604.15483" target="_blank" rel="noreferrer">Paper</a><a href="https://physicalintelligence.company/" target="_blank" rel="noreferrer">Project</a><a href="https://doi.org/10.48550/arXiv.2604.15483" target="_blank" rel="noreferrer">DOI</a><a href="https://arxiv.org/abs/2604.15483" target="_blank" rel="noreferrer">arXiv</a></div>
+        <div class="note-link-row"><a href="../pdfs/2025-03-04-LayerDAG-layerwise-autoregressive-diffusion-dag-generation.pdf" target="_blank" rel="noreferrer">PDF</a><a href="https://arxiv.org/abs/2411.02322" target="_blank" rel="noreferrer">Paper</a><a href="https://github.com/Graph-COM/LayerDAG" target="_blank" rel="noreferrer">Project</a><a href="https://arxiv.org/abs/2411.02322" target="_blank" rel="noreferrer">arXiv</a></div>
       </aside>
     </section>
 
@@ -475,44 +475,50 @@
 
     <section class="note-section impact">
       <div class="note-section-kicker">For Our Model</div>
-      <div class="note-section-body"><p>对你的方向最有价值的是“上下文可控执行器”这个接口：多机器人 planner 可以为不同机器人生成不同上下文，例如角色、目标、路径约束、协作顺序和失败恢复策略。</p></div>
+      <div class="note-section-body"><p>我们可以把未来方向定义为：</p>
+<p>```text<br>Layerwise Diffusion Task Graph Generator<br>```</p>
+<p>系统形式：</p>
+<p>```text<br>instruction + scene graph + robot skills<br>-&gt; conditional LayerDAG generator<br>-&gt; valid task DAG<br>-&gt; task allocation / scheduling module<br>-&gt; execution feedback<br>-&gt; local re-denoising<br>```</p>
+<p>这个方向比单纯 LLM prompt 生成 task graph 更有研究空间，因为它可以学习领域内常见的 dependency pattern，并支持逐层、局部、可反馈的 task graph 生成。</p></div>
     </section>
 
 
     <section class="note-section ">
       <div class="note-section-kicker">Research Question</div>
-      <div class="note-section-body"><p>当训练数据包含多种策略和质量差异时，通用 VLA 如何避免平均化，并根据任务上下文选择正确执行方式。</p></div>
+      <div class="note-section-body"><p>DAG 广泛用于计算图、编译器 flow graph、硬件设计、项目依赖和任务依赖。普通 graph generation 方法往往不显式处理 DAG 的方向性和 partial order；纯 diffusion 一次性生成整张图，也不天然保证无环。</p>
+<p>LayerDAG 的核心问题是：如何生成具有强方向依赖和逻辑规则的大规模 DAG，同时保留生成模型的表达能力和泛化能力。</p></div>
     </section>
 
-
-    <section class="note-section ">
-      <div class="note-section-kicker">Method</div>
-      <div class="note-section-body"><p>论文使用 diverse context conditioning：不仅给语言命令，还给任务表现元数据、策略信息、子目标图像和记忆相关上下文等多模态条件。</p></div>
-    </section>
 
 
     <section class="note-section ">
       <div class="note-section-kicker">Key Contributions</div>
-      <div class="note-section-body"><p>π0.7 显示出更强的开箱表现、跨具身零样本泛化和多阶段任务能力，是目前 PI 系列中最接近“可由 planner 调用”的策略模型。</p></div>
+      <div class="note-section-body"><p>第一，它解决了通用 graph diffusion 不天然保证 DAG 的问题。通过 layerwise autoregressive generation，边只从前面层指向当前层，因此天然无环。</p>
+<p>第二，它避免了普通 topological ordering 不唯一的问题。LayerDAG 的 layerwise partition 是唯一的，能把一张 DAG 转成可逆的层级序列。</p>
+<p>第三，它把 autoregressive 和 diffusion 分工清楚：autoregressive 负责生成方向和层级，diffusion 负责每一层内部 node/edge 的多轮 refinement。</p>
+<p>第四，它支持 conditional generation，可以根据目标属性生成 DAG。这对应到我们的任务规划里，就是根据自然语言、scene graph、机器人能力和 deadline 生成符合条件的 task graph。</p></div>
     </section>
 
 
 
     <section class="note-section risk">
       <div class="note-section-kicker">Limitations</div>
-      <div class="note-section-body"><p>论文展示的是通用机器人策略能力，不等于完整任务规划系统。多机器人中的协同、任务竞价、路径冲突和通信延迟仍需外部系统处理。</p></div>
+      <div class="note-section-body"><p>LayerDAG 本身不是机器人任务规划模型。它没有处理自然语言 grounding、机器人 skill schema、执行反馈、资源约束、持续时间估计或多机器人 allocation。</p>
+<p>它生成的是 DAG，但 task graph 在真实系统里可能还需要非前置依赖边，例如通信关系、资源冲突、协同约束、时间窗和软约束。这些边需要区分清楚，否则会破坏 DAG layer 的定义。</p>
+<p>此外，迁移到开放世界任务规划需要训练数据：历史任务图、仿真生成任务图、人类修正任务图，或者 LLM/规则生成后再用执行反馈筛选的 task graph 数据。</p></div>
     </section>
 
 
     <section class="note-section ">
       <div class="note-section-kicker">Reusable Modules</div>
-      <div class="note-section-body"><p>context-conditioned policy、steerable executor interface、compositional generalization setup。适合作为最终 executor 形态的参考目标。</p></div>
+      <div class="note-section-body"><p>layerwise DAG partition、source task layer generation、discrete diffusion for node attributes、diffusion edge generation、conditional DAG generation、cross-layer dependency generation、local re-denoising。</p></div>
     </section>
 
 
     <section class="note-section risk">
       <div class="note-section-kicker">Evidence &amp; Risk</div>
-      <div class="note-section-body"><p>证据来自 PI 系列最新路线；风险是仍以直接策略为主，缺少团队规划、显式世界模型和多机器人通信机制。</p></div>
+      <div class="note-section-body"><p>论文在 synthetic DAG 和真实计算系统 DAG 数据上验证，能生成最多约 400 个节点的大规模 DAG，并在条件生成和 out-of-distribution label setting 中优于多个 baseline。</p>
+<p>风险是这些实验领域是计算图和硬件/编译器 flow graph，不是机器人任务图。迁移时最关键的是设计 task graph schema 和训练数据生成机制。</p></div>
     </section>
 
         <div id="relations">
@@ -522,29 +528,19 @@
         <div>
           <h3>当前论文 -> 关联论文 / 前序工作</h3>
           <div class="relation-chip-grid">
-            <a class="relation-chip" style="--rel:#246bfe" href="../notes/2026-mem-multi-scale-embodied-memory.html">
-              <span>继承/扩展</span>
-              <strong>MEM</strong>
+            <a class="relation-chip" style="--rel:#188aa6" href="../notes/2025-dart-llm-dependency-aware-task-graph.html">
+              <span>提供模块</span>
+              <strong>DART-LLM</strong>
             </a>
 
-            <a class="relation-chip" style="--rel:#246bfe" href="../notes/2025-pistar06-recap.html">
-              <span>继承/扩展</span>
-              <strong>π*0.6 / RECAP</strong>
+            <a class="relation-chip" style="--rel:#188aa6" href="../notes/2025-lip-llm-dependency-graph-planning.html">
+              <span>提供模块</span>
+              <strong>LiP-LLM</strong>
             </a>
 
-            <a class="relation-chip" style="--rel:#246bfe" href="../notes/2025-pi06-model-card.html">
-              <span>继承/扩展</span>
-              <strong>π0.6</strong>
-            </a>
-
-            <a class="relation-chip" style="--rel:#00a7c7" href="../notes/2025-pi05-open-world-generalization.html">
-              <span>使用/依赖</span>
-              <strong>π0.5</strong>
-            </a>
-
-            <a class="relation-chip" style="--rel:#00a7c7" href="../notes/2024-pi0-vla-flow-model.html">
-              <span>使用/依赖</span>
-              <strong>π0</strong>
+            <a class="relation-chip" style="--rel:#d14d72" href="../notes/2023-unsupervised-task-graph-generation.html">
+              <span>对比路线</span>
+              <strong>Unsupervised Task Graphs</strong>
             </a>
           </div>
         </div>
@@ -558,13 +554,17 @@
 
     <section class="note-section ">
       <div class="note-section-kicker">Relation Notes</div>
-      <div class="note-section-body"><p>相对 π0.5 的开放世界泛化、π*0.6 的经验学习和 MEM 的长程记忆，π0.7 更强调上下文条件对策略行为的可控性。它和 WAM 的区别在于：π0.7 仍偏直接策略，WAM 偏预测世界状态和动作。</p></div>
+      <div class="note-section-body"><p>和 DiGress 相比，LayerDAG 更适合 task graph，因为它直接面向 DAG generation，而不是一般 graph generation。</p>
+<p>和 DART-LLM / LiP-LLM 相比，LayerDAG 不是 prompt engineering，而是一个可训练的 DAG generative model。它提供了从“LLM 输出依赖 JSON”走向“训练模型生成 task graph”的方法路线。</p>
+<p>和 Diffusion-CCSP 相比，Diffusion-CCSP 的 graph 是输入的 constraint graph，diffusion 输出连续变量解；LayerDAG 的 diffusion 参与生成 DAG 本身。</p></div>
     </section>
 
         <div id="open-question">
     <section class="note-section impact">
       <div class="note-section-kicker">Open Question</div>
-      <div class="note-section-body"><p>如何设计标准化的 planner-to-VLA context schema，让多机器人任务规划器稳定调用不同 VLA，而不依赖脆弱的自然语言提示。</p></div>
+      <div class="note-section-body"><p>如何把自然语言、scene graph 和 robot skill library 编码成 LayerDAG 的 conditioning signal。</p>
+<p>如何把 task graph 的软约束和非 DAG 关系区分开：dependency edge 保持 DAG，coordination/resource/time-window edge 作为额外约束图交给 scheduler。</p>
+<p>如何在执行中只对受影响的局部 layer 进行 re-denoising，而不是重生成整张任务图。</p></div>
     </section>
   </div>
       </article>
@@ -572,19 +572,19 @@
       <aside class="note-aside">
         <section class="note-aside-panel">
           <h2>System Roles</h2>
-          <div class="pill-row"><span class="note-pill role-pill">执行器</span><span class="note-pill role-pill">基础策略</span><span class="note-pill role-pill">可控策略</span></div>
+          <div class="pill-row"><span class="note-pill role-pill">task graph generator</span><span class="note-pill role-pill">generative planner</span><span class="note-pill role-pill">graph prior model</span><span class="note-pill role-pill">planner research direction</span></div>
         </section>
         <section class="note-aside-panel">
           <h2>Reusable Modules</h2>
-          <div class="pill-row"><span class="note-pill module-pill">context conditioned policy</span><span class="note-pill module-pill">steerable executor interface</span><span class="note-pill module-pill">组合泛化</span></div>
+          <div class="pill-row"><span class="note-pill module-pill">layerwise dag partition</span><span class="note-pill module-pill">source task layer generation</span><span class="note-pill module-pill">discrete diffusion node attributes</span><span class="note-pill module-pill">diffusion edge generation</span><span class="note-pill module-pill">conditional dag generation</span><span class="note-pill module-pill">cross layer dependency generation</span></div>
         </section>
         <section class="note-aside-panel">
           <h2>Next Action</h2>
-          <div class="note-pill role-pill">作为执行器目标</div>
+          <div class="note-pill role-pill">适配 LayerDAG 到多机器人任务图 schema</div>
         </section>
         <section class="note-aside-panel">
           <h2>Tags</h2>
-          <div class="pill-row"><span class="note-pill">π0.7</span><span class="note-pill">VLA</span><span class="note-pill">compositional generalization</span><span class="note-pill">steerable policy</span><span class="note-pill">cross-embodiment</span></div>
+          <div class="pill-row"><span class="note-pill">LayerDAG</span><span class="note-pill">Diffusion</span><span class="note-pill">DAG generation</span><span class="note-pill">Task Graph</span><span class="note-pill">layerwise generation</span><span class="note-pill">autoregressive diffusion</span><span class="note-pill">discrete diffusion</span></div>
         </section>
         <section class="note-aside-panel">
           <h2>Reading Map</h2>

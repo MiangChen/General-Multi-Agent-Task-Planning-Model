@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="robots" content="noindex,nofollow,noarchive">
-  <title>π0.7 · Paper Note</title>
+  <title>LiP-LLM · Paper Note</title>
   <style>
     :root {
       --bg: #eef4fb;
@@ -434,15 +434,15 @@
   <main class="note-shell" id="top">
     <section class="note-hero">
       <div class="hero-main">
-        <div class="note-kicker">2026-04 · arXiv / Physical Intelligence · VLA</div>
-        <h1>π0.7</h1>
-        <div class="full-title">π0.7: a Steerable Generalist Robotic Foundation Model with Emergent Capabilities</div>
-        <div class="note-summary"><p>π0.7 把 PI 系列推进到“可 steer 的通用机器人基础模型”，重点是用更丰富的上下文条件支持组合泛化和策略选择。</p></div>
+        <div class="note-kicker">2025-02 · IEEE Robotics and Automation Letters · LLM Dependency Graph Planning</div>
+        <h1>LiP-LLM</h1>
+        <div class="full-title">LiP-LLM: Integrating Linear Programming and Dependency Graph with Large Language Models for Multi-Robot Task Planning</div>
+        <div class="note-summary"><p>LiP-LLM 是一篇很适合放在 Task Graph 方向的论文：它让 LLM 生成多机器人任务中的 skill list 和 skill dependency graph，再用线性规划/MILP 风格的优化器完成机器人-任务分配。</p></div>
       </div>
       <aside class="hero-side">
         <div class="metric-grid">
           <div class="metric">
-            <div class="metric-value">2026</div>
+            <div class="metric-value">2025</div>
             <div class="metric-label">Year</div>
           </div>
           <div class="metric">
@@ -454,19 +454,19 @@
             <div class="metric-label">Evidence</div>
           </div>
           <div class="metric">
-            <div class="metric-value">5</div>
+            <div class="metric-value">3</div>
             <div class="metric-label">Relations</div>
           </div>
         </div>
         <div>
           <div class="note-section-kicker">Authors</div>
-          <div>Physical Intelligence, Ai, Amin, Black, Driess, Finn, Hausman, Ichter, Levine, Pertsch</div>
+          <div>Koki Obata, Takeru Aoki, Takato Horii, Tadahiro Taniguchi, Takayuki Nagai</div>
         </div>
         <div>
           <div class="note-section-kicker">Institutions</div>
-          <div>Physical Intelligence</div>
+          <div></div>
         </div>
-        <div class="note-link-row"><a href="../pdfs/2026-04-01-pi07-vla-steerable.pdf" target="_blank" rel="noreferrer">PDF</a><a href="https://arxiv.org/abs/2604.15483" target="_blank" rel="noreferrer">Paper</a><a href="https://physicalintelligence.company/" target="_blank" rel="noreferrer">Project</a><a href="https://doi.org/10.48550/arXiv.2604.15483" target="_blank" rel="noreferrer">DOI</a><a href="https://arxiv.org/abs/2604.15483" target="_blank" rel="noreferrer">arXiv</a></div>
+        <div class="note-link-row"><a href="../pdfs/2025-02-01-LiP-LLM-linear-programming-dependency-graph.pdf" target="_blank" rel="noreferrer">PDF</a><a href="https://arxiv.org/abs/2410.21040" target="_blank" rel="noreferrer">Paper</a><a href="https://doi.org/10.1109/LRA.2024.3518105" target="_blank" rel="noreferrer">DOI</a><a href="https://arxiv.org/abs/2410.21040" target="_blank" rel="noreferrer">arXiv</a></div>
       </aside>
     </section>
 
@@ -475,44 +475,62 @@
 
     <section class="note-section impact">
       <div class="note-section-kicker">For Our Model</div>
-      <div class="note-section-body"><p>对你的方向最有价值的是“上下文可控执行器”这个接口：多机器人 planner 可以为不同机器人生成不同上下文，例如角色、目标、路径约束、协作顺序和失败恢复策略。</p></div>
+      <div class="note-section-body"><p>LiP-LLM 给我们的启发是：通用多机器人 planner 可以把 LLM 放在“结构生成器”位置，而不是“万能决策器”位置。</p>
+<p>一个更稳的系统接口可以是：</p>
+<p>```text<br>instruction + robot capabilities + scene state<br>-&gt; LLM selects skill list<br>-&gt; LLM generates dependency edges<br>-&gt; rule-based graph validation<br>-&gt; MILP / GNN / RL allocator<br>-&gt; executor<br>```</p>
+<p>这样既保留 LLM 对自然语言和常识依赖的理解，又把分配、调度和约束满足交给更可靠的结构化方法。</p></div>
     </section>
 
 
     <section class="note-section ">
       <div class="note-section-kicker">Research Question</div>
-      <div class="note-section-body"><p>当训练数据包含多种策略和质量差异时，通用 VLA 如何避免平均化，并根据任务上下文选择正确执行方式。</p></div>
+      <div class="note-section-body"><p>LLM 可以理解自然语言任务并拆解步骤，但如果让 LLM 同时负责任务分解、依赖判断和机器人分配，会有两个问题：一是 hallucination，二是 allocation 这类组合优化问题并不适合完全交给 LLM。</p>
+<p>LiP-LLM 的思路是把这两部分拆开：LLM 负责更语义化的部分，也就是从指令中选出需要的 skills，并判断 skills 之间的前后依赖；优化器负责更结构化的分配问题，也就是当前哪些任务可执行、每个机器人更适合执行哪个任务。</p></div>
     </section>
 
 
     <section class="note-section ">
       <div class="note-section-kicker">Method</div>
-      <div class="note-section-body"><p>论文使用 diverse context conditioning：不仅给语言命令，还给任务表现元数据、策略信息、子目标图像和记忆相关上下文等多模态条件。</p></div>
+      <div class="note-section-body"><p>整体流程是三步：</p>
+<ol><li><strong>Skill List Generation</strong></li></ol>
+<p>输入任务指令和预定义技能集合。LLM 对候选技能打分，逐步选择下一步 skill，直到输出 <code>done</code>。这样能减少 LLM 输出不存在技能的风险，因为系统只在已有 skill set 里选择。</p>
+<ol><li><strong>Dependency Graph Generation</strong></li></ol>
+<p>LLM 根据任务指令和 skill list 推断技能之间的依赖。论文描述的是先让 LLM 用文本说明依赖关系，再输出类似 Mermaid/edge-list 的边格式，然后系统把文本解析成 graph edge。</p>
+<p>这里的 LLM 调用不是每条 edge 问一次。理想情况下，一次 LLM 调用会生成整张依赖图中的所有 edges。如果最终有 10 条依赖边，通常不是问 10 次 AI，而是一次生成 10 条边。只有当图结构不合法，例如存在 cycle 时，才重新调用 LLM 生成。</p>
+<ol><li><strong>Task Allocation by Linear Programming</strong></li></ol>
+<p>系统从 dependency graph 中找 root nodes，也就是当前没有前置依赖、可以执行的 skills。然后根据 observation 计算每个机器人执行每个 skill 的权重 <code>w_jk</code>，再用线性规划求解分配：</p>
+<p>```text<br>maximize sum_j sum_k w_jk x_jk<br>```</p>
+<p>其中 <code>x_jk = 1</code> 表示机器人 <code>j</code> 执行 skill <code>k</code>。约束是每个机器人一次最多执行一个 skill，每个 skill 最多分配给一个机器人。执行完成后，从图里删除对应 node 和 edge，再继续处理新的 root nodes。</p></div>
     </section>
 
 
     <section class="note-section ">
       <div class="note-section-kicker">Key Contributions</div>
-      <div class="note-section-body"><p>π0.7 显示出更强的开箱表现、跨具身零样本泛化和多阶段任务能力，是目前 PI 系列中最接近“可由 planner 调用”的策略模型。</p></div>
+      <div class="note-section-body"><p>第一，LiP-LLM 把 LLM 的作用限制在任务分解和依赖关系生成上，而不是让 LLM 独立完成整个多机器人分配问题。</p>
+<p>第二，它显式把 skill 之间的依赖关系变成 edge，使得后续可以找 root nodes 并行执行。这比单纯输出一个线性 action sequence 更适合多机器人任务规划，因为没有依赖的任务可以同时分配给不同机器人。</p>
+<p>第三，它用规则方法检查 dependency graph 的结构，例如 cycle detection。这个检查不能保证每条边在语义上都完全正确，但能过滤掉循环依赖这种明显不可执行的图。</p></div>
     </section>
 
 
 
     <section class="note-section risk">
       <div class="note-section-kicker">Limitations</div>
-      <div class="note-section-body"><p>论文展示的是通用机器人策略能力，不等于完整任务规划系统。多机器人中的协同、任务竞价、路径冲突和通信延迟仍需外部系统处理。</p></div>
+      <div class="note-section-body"><p>LiP-LLM 依赖预定义 skill set。机器人类型、物体、地点越多，候选 skill 的规模越容易变大，prompt 和逐步打分成本都会上升。对于 UGV、UAV、机械臂混合系统，不能简单把所有机器人-动作-对象组合全部展开塞进 prompt，最好先用 capability 和场景状态过滤候选 skills。</p>
+<p>它的依赖图验证也比较基础。Cycle detection 能检查图是不是 DAG，但无法判断某条 edge 是否真的必要，或者是否漏掉了一个隐含前置条件。</p>
+<p>此外，论文中的任务分配约束比较接近“一台机器人一次执行一个 skill、一个 skill 最多给一个机器人”。如果任务需要多个机器人同时协作，或者有时间窗、通信约束、资源冲突，就需要扩展 optimization model。</p></div>
     </section>
 
 
     <section class="note-section ">
       <div class="note-section-kicker">Reusable Modules</div>
-      <div class="note-section-body"><p>context-conditioned policy、steerable executor interface、compositional generalization setup。适合作为最终 executor 形态的参考目标。</p></div>
+      <div class="note-section-body"><p>skill list generation、LLM dependency graph generation、edge-list parsing、cycle detection validation、root-node executable task selection、linear programming assignment、skill-weight calculation。</p></div>
     </section>
 
 
     <section class="note-section risk">
       <div class="note-section-kicker">Evidence &amp; Risk</div>
-      <div class="note-section-body"><p>证据来自 PI 系列最新路线；风险是仍以直接策略为主，缺少团队规划、显式世界模型和多机器人通信机制。</p></div>
+      <div class="note-section-body"><p>论文报告 LiP-LLM 在多机器人任务规划实验中相比完全基于 LLM 的 centralized/decentralized baseline 有更好的成功率和效率。证据支持“LLM 生成依赖图 + 优化器分配”这条路线。</p>
+<p>风险是实验场景和 skill set 规模有限。真实通用集群机器人里，skill prompt 的设计、候选 skill 过滤、图语义校验和多机器人协作约束会成为主要工程难点。</p></div>
     </section>
 
         <div id="relations">
@@ -522,35 +540,45 @@
         <div>
           <h3>当前论文 -> 关联论文 / 前序工作</h3>
           <div class="relation-chip-grid">
-            <a class="relation-chip" style="--rel:#246bfe" href="../notes/2026-mem-multi-scale-embodied-memory.html">
-              <span>继承/扩展</span>
-              <strong>MEM</strong>
-            </a>
-
-            <a class="relation-chip" style="--rel:#246bfe" href="../notes/2025-pistar06-recap.html">
-              <span>继承/扩展</span>
-              <strong>π*0.6 / RECAP</strong>
-            </a>
-
-            <a class="relation-chip" style="--rel:#246bfe" href="../notes/2025-pi06-model-card.html">
-              <span>继承/扩展</span>
-              <strong>π0.6</strong>
-            </a>
-
-            <a class="relation-chip" style="--rel:#00a7c7" href="../notes/2025-pi05-open-world-generalization.html">
+            <a class="relation-chip" style="--rel:#00a7c7" href="../notes/2023-unsupervised-task-graph-generation.html">
               <span>使用/依赖</span>
-              <strong>π0.5</strong>
+              <strong>Unsupervised Task Graphs</strong>
             </a>
 
-            <a class="relation-chip" style="--rel:#00a7c7" href="../notes/2024-pi0-vla-flow-model.html">
-              <span>使用/依赖</span>
-              <strong>π0</strong>
+            <a class="relation-chip" style="--rel:#d14d72" href="../notes/2023-grid-scene-graph-task-planning.html">
+              <span>对比路线</span>
+              <strong>GRID</strong>
+            </a>
+
+            <a class="relation-chip" style="--rel:#d14d72" href="../notes/2025-magnnet-decentralized-task-allocation.html">
+              <span>对比路线</span>
+              <strong>MAGNNET</strong>
             </a>
           </div>
         </div>
         <div>
           <h3>下游论文 -> 当前论文</h3>
-          <div class="relation-chip-grid"><div class="relation-empty">暂时没有下游论文连接到这篇。</div></div>
+          <div class="relation-chip-grid">
+            <a class="relation-chip incoming" style="--rel:#188aa6" href="../notes/2024-smart-llm-pythonic-task-planning.html">
+              <span>提供模块</span>
+              <strong>SMART-LLM</strong>
+            </a>
+
+            <a class="relation-chip incoming" style="--rel:#d14d72" href="../notes/2024-smart-llm-pythonic-task-planning.html">
+              <span>对比路线</span>
+              <strong>SMART-LLM</strong>
+            </a>
+
+            <a class="relation-chip incoming" style="--rel:#d14d72" href="../notes/2025-dart-llm-dependency-aware-task-graph.html">
+              <span>对比路线</span>
+              <strong>DART-LLM</strong>
+            </a>
+
+            <a class="relation-chip incoming" style="--rel:#188aa6" href="../notes/2025-layerdag-diffusion-dag-generation.html">
+              <span>提供模块</span>
+              <strong>LayerDAG</strong>
+            </a>
+          </div>
         </div>
       </div>
     </section>
@@ -558,13 +586,17 @@
 
     <section class="note-section ">
       <div class="note-section-kicker">Relation Notes</div>
-      <div class="note-section-body"><p>相对 π0.5 的开放世界泛化、π*0.6 的经验学习和 MEM 的长程记忆，π0.7 更强调上下文条件对策略行为的可控性。它和 WAM 的区别在于：π0.7 仍偏直接策略，WAM 偏预测世界状态和动作。</p></div>
+      <div class="note-section-body"><p>和 Unsupervised Task Graph Generation 相比，LiP-LLM 的输入不是大量 instructional transcripts，而是在线任务 prompt 和机器人 skill set。前者偏从人类教程中抽象任务知识，后者偏把当前机器人任务转成可执行依赖图。</p>
+<p>和 GRID 相比，LiP-LLM 的 task graph 主要表达 skill dependencies；GRID 更强调 scene graph grounding 和 instruction-conditioned GNN。两者可以串成：</p>
+<p>```text<br>instruction + scene/robot state<br>-&gt; skill list<br>-&gt; dependency graph<br>-&gt; scene grounding / allocation<br>-&gt; robot execution<br>```</p>
+<p>和 MAGNNET 相比，LiP-LLM 用 LLM 生成上游任务图，再用优化器分配；MAGNNET 则把 agent-task 关系图交给 GNN + PPO 做分布式任务认领。</p></div>
     </section>
 
         <div id="open-question">
     <section class="note-section impact">
       <div class="note-section-kicker">Open Question</div>
-      <div class="note-section-body"><p>如何设计标准化的 planner-to-VLA context schema，让多机器人任务规划器稳定调用不同 VLA，而不依赖脆弱的自然语言提示。</p></div>
+      <div class="note-section-body"><p>如何设计统一的 skill schema，让 UGV、UAV、机械臂、人形机器人等不同平台共享同一个 task graph 接口，同时又不让 prompt 因为所有技能组合展开而爆炸。</p>
+<p>另一个问题是如何从简单的 DAG edge 扩展到更丰富的任务图：AND/OR 依赖、多机器人同时执行、时间窗、资源占用、失败恢复和人类确认节点。</p></div>
     </section>
   </div>
       </article>
@@ -572,19 +604,19 @@
       <aside class="note-aside">
         <section class="note-aside-panel">
           <h2>System Roles</h2>
-          <div class="pill-row"><span class="note-pill role-pill">执行器</span><span class="note-pill role-pill">基础策略</span><span class="note-pill role-pill">可控策略</span></div>
+          <div class="pill-row"><span class="note-pill role-pill">语义规划器</span><span class="note-pill role-pill">task graph generator</span><span class="note-pill role-pill">任务分配器</span><span class="note-pill role-pill">规划基线</span></div>
         </section>
         <section class="note-aside-panel">
           <h2>Reusable Modules</h2>
-          <div class="pill-row"><span class="note-pill module-pill">context conditioned policy</span><span class="note-pill module-pill">steerable executor interface</span><span class="note-pill module-pill">组合泛化</span></div>
+          <div class="pill-row"><span class="note-pill module-pill">skill list generation</span><span class="note-pill module-pill">llm dependency graph generation</span><span class="note-pill module-pill">cycle detection validation</span><span class="note-pill module-pill">root node task selection</span><span class="note-pill module-pill">linear programming assignment</span><span class="note-pill module-pill">skill weight calculation</span></div>
         </section>
         <section class="note-aside-panel">
           <h2>Next Action</h2>
-          <div class="note-pill role-pill">作为执行器目标</div>
+          <div class="note-pill role-pill">抽取 LiP-LLM 任务图接口</div>
         </section>
         <section class="note-aside-panel">
           <h2>Tags</h2>
-          <div class="pill-row"><span class="note-pill">π0.7</span><span class="note-pill">VLA</span><span class="note-pill">compositional generalization</span><span class="note-pill">steerable policy</span><span class="note-pill">cross-embodiment</span></div>
+          <div class="pill-row"><span class="note-pill">LiP-LLM</span><span class="note-pill">Task Graph</span><span class="note-pill">LLM</span><span class="note-pill">dependency graph</span><span class="note-pill">skill list</span><span class="note-pill">linear programming</span><span class="note-pill">multi-robot task planning</span></div>
         </section>
         <section class="note-aside-panel">
           <h2>Reading Map</h2>

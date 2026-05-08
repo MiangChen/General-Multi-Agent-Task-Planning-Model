@@ -1002,6 +1002,105 @@
     "open_question": "如何把 LLM 生成的 reward 从离散代码生成，改造成可学习、可微或可被端到端系统持续更新的 reward representation。"
   },
   {
+    "id": "2024-smart-llm-pythonic-task-planning",
+    "title": "SMART-LLM: Smart Multi-Agent Robot Task Planning using Large Language Models",
+    "short_title": "SMART-LLM",
+    "year": 2024,
+    "published": "2024-03",
+    "venue": "IROS 2024",
+    "status": "read",
+    "scope": "in_scope",
+    "readiness": "medium",
+    "action": "build_note",
+    "tech_paradigm": "pythonic_llm_task_planning",
+    "primary_domain": "Task Graph",
+    "domains": [
+      "Task Graph",
+      "LLM",
+      "Planning"
+    ],
+    "primary_technical_layer": "task_graph_generation",
+    "primary_task_family": "python_code_implicit_task_structure",
+    "platform": "heterogeneous_multi_robot_systems",
+    "planning_relevance": "SMART-LLM 没有显式 task graph，但它用 Python code、threading 和 join 隐式保存任务分解、并行关系、执行顺序和机器人分配，是 LLM 生成任务结构的早期 idea 萌芽。",
+    "multi_robot_relevance": "论文用多个 LLM prompting stage 分别完成任务分解、coalition formation、task allocation 和执行代码生成，直接面向异构多机器人任务规划。",
+    "system_roles": [
+      "semantic_planner",
+      "task_decomposer",
+      "task_allocator",
+      "planner_baseline"
+    ],
+    "reusable_modules": [
+      "pythonic_prompting",
+      "task_decomposition_agent",
+      "coalition_formation_agent",
+      "task_allocation_agent",
+      "code_structured_execution_plan",
+      "threading_based_parallelism"
+    ],
+    "evidence_level": "paper_read",
+    "next_action": "extract_smart_llm_pythonic_planning_baseline",
+    "tags": [
+      "SMART-LLM",
+      "LLM",
+      "Task Graph",
+      "Python code",
+      "task decomposition",
+      "coalition formation",
+      "task allocation",
+      "multi-robot planning"
+    ],
+    "authors": [
+      "Shyam Sundar Kannan",
+      "Vishnunandan L. N. Venkatesh",
+      "Byung-Cheol Min"
+    ],
+    "institutions": [
+      "Purdue University"
+    ],
+    "doi": "",
+    "arxiv": "2309.10062",
+    "url": "https://arxiv.org/abs/2309.10062",
+    "project_url": "https://sites.google.com/view/smart-llm/",
+    "pdf_path": "pdfs/2024-03-23-SMART-LLM-multi-agent-robot-task-planning.pdf",
+    "image_url": "",
+    "zotero_key": "",
+    "citekey": "kannan2024smartllm",
+    "cites": [],
+    "extends": [],
+    "uses": [],
+    "enables": [
+      "2025-lip-llm-dependency-graph-planning"
+    ],
+    "contrasts": [
+      "2025-lip-llm-dependency-graph-planning"
+    ],
+    "published_value": 24290,
+    "relations": [
+      {
+        "type": "enables",
+        "target": "2025-lip-llm-dependency-graph-planning"
+      },
+      {
+        "type": "contrasts",
+        "target": "2025-lip-llm-dependency-graph-planning"
+      }
+    ],
+    "file": "papers/2024-smart-llm-pythonic-task-planning.md",
+    "note_html": "notes/2024-smart-llm-pythonic-task-planning.html",
+    "summary": "SMART-LLM 可以暂时归档到 Task Graph 方向，但它不是严格的 task graph 方法：它没有显式 node/edge graph，而是用 Python code 的函数、threading 和 join 隐式存储任务结构、并行关系和执行顺序。",
+    "research_question": "多机器人任务规划需要同时解决任务分解、机器人能力匹配、子任务分配和执行顺序。传统方法往往依赖固定规则或特定任务建模，难以处理自然语言里的模糊指令。\n\nSMART-LLM 的想法是：利用 LLM 对自然语言和代码结构的理解能力，把高层任务指令转成 Python 风格的多机器人执行计划。这里的 Python code 不只是输出格式，也承担了任务结构表示的角色。",
+    "method": "",
+    "contribution": "第一，它把多机器人任务规划拆成多个 LLM stage，而不是一次性让 LLM 直接输出完整计划。这样每个 stage 的 prompt 更清晰，分别处理 decomposition、coalition reasoning 和 allocation。\n\n第二，它用 Python code 作为结构化中间表示。函数、线程和 join 比纯自然语言计划更可执行，也能隐式表达并行和顺序依赖。\n\n第三，它证明 Pythonic prompt 可以从仿真任务迁移到真实机器人任务，只要底层 skill API 和环境/机器人能力描述保持一致。",
+    "reading_highlights": "",
+    "limitation": "SMART-LLM 的最大局限是没有显式 task graph。由于没有 node/edge 表示，系统很难直接做 graph validation、cycle detection、dependency repair、MILP/GNN-based allocation 或对任务图进行局部重规划。\n\n它的 coalition formation 和 task allocation 都依赖 LLM reasoning。论文的 ablation 显示移除 coalition formation 会显著降低成功率，说明 Stage 2 的中间推理对后续分配很重要，但这个推理本身没有被形式化成可验证的数据结构。\n\n此外，Python code 表示虽然可执行，但不天然适合大规模任务图分析。如果任务数量、机器人数量和并行关系变复杂，单纯依靠代码生成会更难检查正确性。",
+    "relation": "和 LiP-LLM 相比，SMART-LLM 更早也更松散：SMART-LLM 用 Python code 隐式表达任务结构；LiP-LLM 则进一步把 skill dependency 显式转成 graph edge，并用规则检查是否有 cycle，再交给线性规划做分配。\n\n和 Unsupervised Task Graph Generation 相比，SMART-LLM 不从数据集中学习或归纳 task graph，而是在单次任务 prompt 中生成代码式计划。\n\n和 GenSwarm 相比，两者都利用 LLM 生成可执行代码结构；SMART-LLM 更关注多机器人 household / embodied task planning 的 decomposition 和 allocation，GenSwarm 更强调多机器人代码策略生成、仿真反馈和真实部署闭环。",
+    "planning_insight": "SMART-LLM 提供了一个重要的早期信号：LLM 适合把自然语言任务转成结构化中间表示，但这个中间表示最好不要停留在代码层。\n\n对我们的 General Multi-Agent Task Planning Model 来说，更稳的演化方向是：\n\n```text\nSMART-LLM-style Python plan\n  -> explicit task graph nodes / edges\n  -> graph validation and repair\n  -> MILP / GNN / RL allocation\n  -> executable skill calls\n```\n\n也就是说，SMART-LLM 可以作为 idea 萌芽和 baseline，但真正可扩展的系统应该把代码里的隐式依赖显式化为 task graph。",
+    "reusable_module_text": "Pythonic prompting、task decomposition agent、coalition formation agent、task allocation agent、comments-as-reasoning-hints、threading-based parallel execution、skill API based code generation。",
+    "evidence_risk": "论文在 AI2-THOR benchmark 和真实机器人实验中测试了多类任务，并比较了 random allocation 和 rule-based allocation baseline。结果说明多 stage LLM prompting 在 heterogeneous robot team 中可以生成有效计划。\n\n风险是它依赖 few-shot prompt 和 LLM 代码生成质量，缺少结构化验证。对于高风险或大规模多机器人场景，仅靠生成代码不够，需要额外的 graph checker、planner 或 optimizer。",
+    "open_question": "如何从 SMART-LLM 生成的 Python code 中自动反解析出显式 task graph：函数是 node，`join()` 和函数调用顺序是 edge，thread start 是并行结构。\n\n另一个问题是 coalition formation policy 如何转成机器可验证的约束，例如 required capabilities、team size、resource constraints、payload constraints、visibility constraints 和 execution duration。"
+  },
+  {
     "id": "2024-pyramidal-flow-matching-video",
     "title": "Pyramidal Flow Matching for Efficient Video Generative Modeling",
     "short_title": "Pyramidal Flow",
@@ -1271,6 +1370,216 @@
     "open_question": "多机器人动作是否也需要类似 FAST 的“联合动作 tokenization”，把多个 agent 的动作序列压缩成可学习的协同动作表示。"
   },
   {
+    "id": "2025-lip-llm-dependency-graph-planning",
+    "title": "LiP-LLM: Integrating Linear Programming and Dependency Graph with Large Language Models for Multi-Robot Task Planning",
+    "short_title": "LiP-LLM",
+    "year": 2025,
+    "published": "2025-02",
+    "venue": "IEEE Robotics and Automation Letters",
+    "status": "read",
+    "scope": "in_scope",
+    "readiness": "high",
+    "action": "build_note",
+    "tech_paradigm": "llm_dependency_graph_planning",
+    "primary_domain": "Task Graph",
+    "domains": [
+      "Task Graph",
+      "LLM",
+      "Planning"
+    ],
+    "primary_technical_layer": "task_graph_generation",
+    "primary_task_family": "llm_to_dependency_graph_task_allocation",
+    "platform": "multi_robot_manipulation",
+    "planning_relevance": "LiP-LLM 用 LLM 先从任务指令和机器人技能状态中生成 skill list，再生成 skill dependency graph，最后把无依赖的 root skills 交给线性规划做多机器人任务分配，是 LLM 生成任务图后接优化器的直接参考。",
+    "multi_robot_relevance": "论文把多机器人任务规划拆成任务分解、依赖图生成和任务分配三步，避免完全依赖 LLM 做 allocation，同时保留 LLM 对自然语言任务和技能依赖的语义推理能力。",
+    "system_roles": [
+      "semantic_planner",
+      "task_graph_generator",
+      "task_allocator",
+      "planner_baseline"
+    ],
+    "reusable_modules": [
+      "skill_list_generation",
+      "llm_dependency_graph_generation",
+      "cycle_detection_validation",
+      "root_node_task_selection",
+      "linear_programming_assignment",
+      "skill_weight_calculation"
+    ],
+    "evidence_level": "paper_read",
+    "next_action": "extract_lip_llm_task_graph_interface",
+    "tags": [
+      "LiP-LLM",
+      "Task Graph",
+      "LLM",
+      "dependency graph",
+      "skill list",
+      "linear programming",
+      "multi-robot task planning"
+    ],
+    "authors": [
+      "Koki Obata",
+      "Takeru Aoki",
+      "Takato Horii",
+      "Tadahiro Taniguchi",
+      "Takayuki Nagai"
+    ],
+    "institutions": [],
+    "doi": "10.1109/LRA.2024.3518105",
+    "arxiv": "2410.21040",
+    "url": "https://arxiv.org/abs/2410.21040",
+    "project_url": "",
+    "pdf_path": "pdfs/2025-02-01-LiP-LLM-linear-programming-dependency-graph.pdf",
+    "image_url": "",
+    "zotero_key": "",
+    "citekey": "obata2025lipllm",
+    "cites": [],
+    "extends": [],
+    "uses": [
+      "2023-unsupervised-task-graph-generation"
+    ],
+    "enables": [],
+    "contrasts": [
+      "2023-grid-scene-graph-task-planning",
+      "2025-magnnet-decentralized-task-allocation"
+    ],
+    "published_value": 24301,
+    "relations": [
+      {
+        "type": "uses",
+        "target": "2023-unsupervised-task-graph-generation"
+      },
+      {
+        "type": "contrasts",
+        "target": "2023-grid-scene-graph-task-planning"
+      },
+      {
+        "type": "contrasts",
+        "target": "2025-magnnet-decentralized-task-allocation"
+      }
+    ],
+    "file": "papers/2025-lip-llm-dependency-graph-planning.md",
+    "note_html": "notes/2025-lip-llm-dependency-graph-planning.html",
+    "summary": "LiP-LLM 是一篇很适合放在 Task Graph 方向的论文：它让 LLM 生成多机器人任务中的 skill list 和 skill dependency graph，再用线性规划/MILP 风格的优化器完成机器人-任务分配。",
+    "research_question": "LLM 可以理解自然语言任务并拆解步骤，但如果让 LLM 同时负责任务分解、依赖判断和机器人分配，会有两个问题：一是 hallucination，二是 allocation 这类组合优化问题并不适合完全交给 LLM。\n\nLiP-LLM 的思路是把这两部分拆开：LLM 负责更语义化的部分，也就是从指令中选出需要的 skills，并判断 skills 之间的前后依赖；优化器负责更结构化的分配问题，也就是当前哪些任务可执行、每个机器人更适合执行哪个任务。",
+    "method": "整体流程是三步：\n\n1. **Skill List Generation**\n\n   输入任务指令和预定义技能集合。LLM 对候选技能打分，逐步选择下一步 skill，直到输出 `done`。这样能减少 LLM 输出不存在技能的风险，因为系统只在已有 skill set 里选择。\n\n2. **Dependency Graph Generation**\n\n   LLM 根据任务指令和 skill list 推断技能之间的依赖。论文描述的是先让 LLM 用文本说明依赖关系，再输出类似 Mermaid/edge-list 的边格式，然后系统把文本解析成 graph edge。\n\n   这里的 LLM 调用不是每条 edge 问一次。理想情况下，一次 LLM 调用会生成整张依赖图中的所有 edges。如果最终有 10 条依赖边，通常不是问 10 次 AI，而是一次生成 10 条边。只有当图结构不合法，例如存在 cycle 时，才重新调用 LLM 生成。\n\n3. **Task Allocation by Linear Programming**\n\n   系统从 dependency graph 中找 root nodes，也就是当前没有前置依赖、可以执行的 skills。然后根据 observation 计算每个机器人执行每个 skill 的权重 `w_jk`，再用线性规划求解分配：\n\n   ```text\n   maximize sum_j sum_k w_jk x_jk\n   ```\n\n   其中 `x_jk = 1` 表示机器人 `j` 执行 skill `k`。约束是每个机器人一次最多执行一个 skill，每个 skill 最多分配给一个机器人。执行完成后，从图里删除对应 node 和 edge，再继续处理新的 root nodes。",
+    "contribution": "第一，LiP-LLM 把 LLM 的作用限制在任务分解和依赖关系生成上，而不是让 LLM 独立完成整个多机器人分配问题。\n\n第二，它显式把 skill 之间的依赖关系变成 edge，使得后续可以找 root nodes 并行执行。这比单纯输出一个线性 action sequence 更适合多机器人任务规划，因为没有依赖的任务可以同时分配给不同机器人。\n\n第三，它用规则方法检查 dependency graph 的结构，例如 cycle detection。这个检查不能保证每条边在语义上都完全正确，但能过滤掉循环依赖这种明显不可执行的图。",
+    "reading_highlights": "",
+    "limitation": "LiP-LLM 依赖预定义 skill set。机器人类型、物体、地点越多，候选 skill 的规模越容易变大，prompt 和逐步打分成本都会上升。对于 UGV、UAV、机械臂混合系统，不能简单把所有机器人-动作-对象组合全部展开塞进 prompt，最好先用 capability 和场景状态过滤候选 skills。\n\n它的依赖图验证也比较基础。Cycle detection 能检查图是不是 DAG，但无法判断某条 edge 是否真的必要，或者是否漏掉了一个隐含前置条件。\n\n此外，论文中的任务分配约束比较接近“一台机器人一次执行一个 skill、一个 skill 最多给一个机器人”。如果任务需要多个机器人同时协作，或者有时间窗、通信约束、资源冲突，就需要扩展 optimization model。",
+    "relation": "和 Unsupervised Task Graph Generation 相比，LiP-LLM 的输入不是大量 instructional transcripts，而是在线任务 prompt 和机器人 skill set。前者偏从人类教程中抽象任务知识，后者偏把当前机器人任务转成可执行依赖图。\n\n和 GRID 相比，LiP-LLM 的 task graph 主要表达 skill dependencies；GRID 更强调 scene graph grounding 和 instruction-conditioned GNN。两者可以串成：\n\n```text\ninstruction + scene/robot state\n  -> skill list\n  -> dependency graph\n  -> scene grounding / allocation\n  -> robot execution\n```\n\n和 MAGNNET 相比，LiP-LLM 用 LLM 生成上游任务图，再用优化器分配；MAGNNET 则把 agent-task 关系图交给 GNN + PPO 做分布式任务认领。",
+    "planning_insight": "LiP-LLM 给我们的启发是：通用多机器人 planner 可以把 LLM 放在“结构生成器”位置，而不是“万能决策器”位置。\n\n一个更稳的系统接口可以是：\n\n```text\ninstruction + robot capabilities + scene state\n  -> LLM selects skill list\n  -> LLM generates dependency edges\n  -> rule-based graph validation\n  -> MILP / GNN / RL allocator\n  -> executor\n```\n\n这样既保留 LLM 对自然语言和常识依赖的理解，又把分配、调度和约束满足交给更可靠的结构化方法。",
+    "reusable_module_text": "skill list generation、LLM dependency graph generation、edge-list parsing、cycle detection validation、root-node executable task selection、linear programming assignment、skill-weight calculation。",
+    "evidence_risk": "论文报告 LiP-LLM 在多机器人任务规划实验中相比完全基于 LLM 的 centralized/decentralized baseline 有更好的成功率和效率。证据支持“LLM 生成依赖图 + 优化器分配”这条路线。\n\n风险是实验场景和 skill set 规模有限。真实通用集群机器人里，skill prompt 的设计、候选 skill 过滤、图语义校验和多机器人协作约束会成为主要工程难点。",
+    "open_question": "如何设计统一的 skill schema，让 UGV、UAV、机械臂、人形机器人等不同平台共享同一个 task graph 接口，同时又不让 prompt 因为所有技能组合展开而爆炸。\n\n另一个问题是如何从简单的 DAG edge 扩展到更丰富的任务图：AND/OR 依赖、多机器人同时执行、时间窗、资源占用、失败恢复和人类确认节点。"
+  },
+  {
+    "id": "2025-dart-llm-dependency-aware-task-graph",
+    "title": "DART-LLM: Dependency-Aware Multi-Robot Task Decomposition and Execution using Large Language Models",
+    "short_title": "DART-LLM",
+    "year": 2025,
+    "published": "2025-03",
+    "venue": "arXiv",
+    "status": "read",
+    "scope": "in_scope",
+    "readiness": "high",
+    "action": "build_note",
+    "tech_paradigm": "dag_based_llm_task_decomposition",
+    "primary_domain": "Task Graph",
+    "domains": [
+      "Task Graph",
+      "LLM",
+      "Planning"
+    ],
+    "primary_technical_layer": "task_graph_generation",
+    "primary_task_family": "dependency_aware_multi_robot_decomposition",
+    "platform": "construction_robotics",
+    "planning_relevance": "DART-LLM 用 LLM 把自然语言施工任务直接分解成结构化 JSON subtasks，每个 subtask 包含 atomic skill、dependencies、object keywords 和 robot assignment，再由规则模块把 dependencies 处理成 DAG 并按拓扑顺序执行，是 LLM 输出任务依赖后规则化成 task graph 的直接参考。",
+    "multi_robot_relevance": "论文面向挖掘机、运输车等移动施工机器人，强调多机器人协作中的任务依赖、机器人技能匹配、VLM object grounding 和 ROS2 执行闭环。",
+    "system_roles": [
+      "semantic_planner",
+      "task_graph_generator",
+      "task_allocator",
+      "execution_orchestrator",
+      "planner_baseline"
+    ],
+    "reusable_modules": [
+      "json_task_decomposition",
+      "dependency_list_to_dag",
+      "topological_execution",
+      "robot_skill_matching",
+      "object_keyword_grounding",
+      "construction_robot_skill_library"
+    ],
+    "evidence_level": "paper_read",
+    "next_action": "extract_dart_llm_json_dag_schema",
+    "tags": [
+      "DART-LLM",
+      "Task Graph",
+      "LLM",
+      "DAG",
+      "dependency-aware decomposition",
+      "construction robots",
+      "JSON planning",
+      "multi-robot execution"
+    ],
+    "authors": [
+      "Yongdong Wang",
+      "Runze Xiao",
+      "Jun Younes Louhi Kasahara",
+      "Ryosuke Yajima",
+      "Keiji Nagatani",
+      "Atsushi Yamashita",
+      "Hajime Asama"
+    ],
+    "institutions": [
+      "The University of Tokyo",
+      "University of Tsukuba"
+    ],
+    "doi": "",
+    "arxiv": "2411.09022",
+    "url": "https://arxiv.org/abs/2411.09022",
+    "project_url": "https://wyd0817.github.io/project-dart-llm/",
+    "pdf_path": "pdfs/2025-03-04-DART-LLM-dependency-aware-multi-robot-task-decomposition.pdf",
+    "image_url": "",
+    "zotero_key": "",
+    "citekey": "wang2025dartllm",
+    "cites": [
+      "2024-smart-llm-pythonic-task-planning"
+    ],
+    "extends": [
+      "2024-smart-llm-pythonic-task-planning"
+    ],
+    "uses": [],
+    "enables": [],
+    "contrasts": [
+      "2025-lip-llm-dependency-graph-planning"
+    ],
+    "published_value": 24302,
+    "relations": [
+      {
+        "type": "extends",
+        "target": "2024-smart-llm-pythonic-task-planning"
+      },
+      {
+        "type": "contrasts",
+        "target": "2025-lip-llm-dependency-graph-planning"
+      }
+    ],
+    "file": "papers/2025-dart-llm-dependency-aware-task-graph.md",
+    "note_html": "notes/2025-dart-llm-dependency-aware-task-graph.html",
+    "summary": "DART-LLM 是 Task Graph 方向非常直接的一篇：它让 LLM 从自然语言任务中输出结构化 subtasks 和 dependencies，然后用规则模块把 dependencies 转成 DAG，并按拓扑顺序调度多机器人执行。",
+    "research_question": "施工机器人任务往往有严格的前后依赖。例如运输车必须等挖掘机完成装载后才能离开，否则任务失败。SMART-LLM 这类方法用 Python code 隐式表达任务结构，但没有显式处理依赖关系，复杂任务下容易因为顺序错误而失败。\n\nDART-LLM 要解决的是：如何把自然语言施工任务拆成可执行 atomic skills，同时显式表达 subtasks 之间的依赖，使多机器人系统可以并行执行无依赖任务，并等待有前置条件的任务。",
+    "method": "",
+    "contribution": "第一，它比 SMART-LLM 更明确地把任务依赖显式化。SMART-LLM 用 Python code 存储任务结构；DART-LLM 用 JSON dependencies 和 DAG 存储任务结构。\n\n第二，它把 dependency-aware decomposition 和 robot skill library 对齐。每个 subtask 对应 atomic skill，后续可以由 parser 根据机器人能力分配。\n\n第三，它有一个小规模但有结构标注的数据集，适合作为我们设计 task graph schema 的参考。\n\n第四，它强调小模型部署。论文显示显式 DAG dependency modeling 能明显提升小模型在复杂任务上的表现，让 Llama-3.1-8B 这类模型在 response time reliability 上更适合边缘部署。",
+    "reading_highlights": "",
+    "limitation": "DART-LLM 仍然主要依赖通用 LLM 的 prompting / few-shot 生成，并没有真正训练一个持续学习的 task graph generator。虽然项目页提供 fine-tuned Llama-1B 相关资源，但论文核心机制仍是 LLM 结构化输出 + 规则后处理。\n\n它的 DAG 校验也主要围绕 dependencies 和执行顺序，未充分展开更复杂的语义校验，例如某条 edge 是否必要、是否漏掉隐含前置条件、是否存在资源冲突或时间窗约束。\n\n任务领域集中在 construction robotics，skill library 规模较小。迁移到通用集群机器人时，需要更大的 robot capability schema、scene grounding schema 和 failure recovery schema。",
+    "relation": "和 SMART-LLM 相比，DART-LLM 的进步是把 Python code 隐式结构改成 JSON + DAG 显式结构，因此更适合可视化、人类审核、拓扑排序和依赖满足率评估。\n\n和 LiP-LLM 相比，两者都用 LLM 处理 dependency。LiP-LLM 是先生成 skill list，再生成 dependency graph，并用线性规划分配任务；DART-LLM 是直接输出 subtasks、dependencies、object keywords 和 robot assignment，再由规则模块构图和执行。\n\n和 Unsupervised Task Graph Generation 相比，DART-LLM 是在线任务 prompt 到 task graph；Unsupervised Task Graph 是从 instructional transcripts 中归纳抽象 task graph。",
+    "planning_insight": "DART-LLM 给我们的 schema 很有参考价值。一个面向通用集群机器人的数据格式可以从它扩展：\n\n```json\n{\n  \"instruction\": \"...\",\n  \"robots\": [{\"id\": \"ugv1\", \"skills\": [\"navigate\", \"inspect\"]}],\n  \"tasks\": [\n    {\n      \"id\": \"t1\",\n      \"skill\": \"navigate\",\n      \"args\": {\"target\": \"soil_pile\"},\n      \"robot_ids\": [\"ugv1\"],\n      \"dependencies\": [],\n      \"object_keywords\": [\"soil_pile\"]\n    }\n  ]\n}\n```\n\n未来我们要做的关键不是只让 LLM 生成这个 JSON，而是用领域数据训练一个模型，让它更稳定地生成与 robot skill library 对齐的 task graph，并能随着新任务、新机器人技能和执行反馈持续更新。",
+    "reusable_module_text": "JSON task decomposition format、dependency list to DAG、topological execution、dependency satisfaction metric、robot skill matching、object keyword grounding、construction robot skill library。",
+    "evidence_risk": "论文在 102 条 construction robot instructions 上评估，指标包括 SR、Instruction Parsing Accuracy、Dependency Satisfaction Rate、Semantic Grounding Success Rate 和 Response Time Reliability。ablation 显示去掉 DAG dependencies 会显著降低复杂任务成功率，尤其对小模型影响更大。\n\n风险是 benchmark 规模较小，任务类型集中，且很多推理仍由 LLM 完成。对于通用集群机器人，仍需更丰富的数据集和更强的自动验证机制。",
+    "open_question": "如何把 DART-LLM 的 dependency list 扩展为更完整的 task graph edge type：precondition、resource conflict、same-agent continuity、synchronization、human approval、failure recovery。\n\n另一个问题是如何让 task graph generator 具备持续学习能力：从执行失败中更新 skill precondition/effect，从人类修正中更新 dependency pattern，从新机器人上线中更新 capability matching。"
+  },
+  {
     "id": "2025-heterogeneous-mrta-rl",
     "title": "Heterogeneous Multi-robot Task Allocation and Scheduling via Reinforcement Learning",
     "short_title": "Heterogeneous MRTA RL",
@@ -1352,6 +1661,109 @@
     "reusable_module_text": "heterogeneous agent-task graph、RL scheduler、allocation objective。适合作为多智能体任务规划模型的 baseline 和监督信号来源。",
     "evidence_risk": "证据直接来自多机器人任务分配；风险是语义任务理解和低层执行器接口较弱，需要和 VLA/WAM 结合。",
     "open_question": "如何把 VLA 执行成功率、WAM 预测风险和机器人实时状态一起输入到任务分配网络，而不只是使用静态能力和距离信息。"
+  },
+  {
+    "id": "2025-layerdag-diffusion-dag-generation",
+    "title": "LayerDAG: A Layerwise Autoregressive Diffusion Model for Directed Acyclic Graph Generation",
+    "short_title": "LayerDAG",
+    "year": 2025,
+    "published": "2025-03",
+    "venue": "ICLR 2025",
+    "status": "read",
+    "scope": "in_scope",
+    "readiness": "high",
+    "action": "build_note",
+    "tech_paradigm": "layerwise_diffusion_dag_generation",
+    "primary_domain": "Diffusion",
+    "domains": [
+      "Diffusion",
+      "Task Graph",
+      "Planning"
+    ],
+    "primary_technical_layer": "task_graph_generation",
+    "primary_task_family": "diffusion_dag_task_graph_generation",
+    "platform": "directed_acyclic_graph_generation",
+    "planning_relevance": "LayerDAG 不是机器人规划论文，但它提供了用 autoregressive diffusion 生成 DAG 的核心机制：把 DAG 唯一拆成 layerwise bipartite graphs，逐层预测 node count、用 diffusion 生成 node attributes 和 cross-layer edges。这正好可迁移到开放世界多机器人 task graph 生成。",
+    "multi_robot_relevance": "对多机器人任务规划来说，可以把 layer 理解为并行可执行的任务阶段，把 node attribute 映射为 robot skill / task intent，把 edge 映射为前置依赖或同步约束，再把生成出的有效 DAG 交给任务分配和调度模块。",
+    "system_roles": [
+      "task_graph_generator",
+      "generative_planner",
+      "graph_prior_model",
+      "planner_research_direction"
+    ],
+    "reusable_modules": [
+      "layerwise_dag_partition",
+      "source_task_layer_generation",
+      "discrete_diffusion_node_attributes",
+      "diffusion_edge_generation",
+      "conditional_dag_generation",
+      "cross_layer_dependency_generation"
+    ],
+    "evidence_level": "paper_read",
+    "next_action": "adapt_layerdag_to_multi_robot_task_graph_schema",
+    "tags": [
+      "LayerDAG",
+      "Diffusion",
+      "DAG generation",
+      "Task Graph",
+      "layerwise generation",
+      "autoregressive diffusion",
+      "discrete diffusion"
+    ],
+    "authors": [
+      "Zhuo Li",
+      "Yifei Shen",
+      "Lei Chen",
+      "Mingming Sun",
+      "Wei Liu"
+    ],
+    "institutions": [],
+    "doi": "",
+    "arxiv": "2411.02322",
+    "url": "https://arxiv.org/abs/2411.02322",
+    "project_url": "https://github.com/Graph-COM/LayerDAG",
+    "pdf_path": "pdfs/2025-03-04-LayerDAG-layerwise-autoregressive-diffusion-dag-generation.pdf",
+    "image_url": "",
+    "zotero_key": "",
+    "citekey": "li2025layerdag",
+    "cites": [],
+    "extends": [],
+    "uses": [],
+    "enables": [
+      "2025-dart-llm-dependency-aware-task-graph",
+      "2025-lip-llm-dependency-graph-planning"
+    ],
+    "contrasts": [
+      "2023-unsupervised-task-graph-generation"
+    ],
+    "published_value": 24302,
+    "relations": [
+      {
+        "type": "enables",
+        "target": "2025-dart-llm-dependency-aware-task-graph"
+      },
+      {
+        "type": "enables",
+        "target": "2025-lip-llm-dependency-graph-planning"
+      },
+      {
+        "type": "contrasts",
+        "target": "2023-unsupervised-task-graph-generation"
+      }
+    ],
+    "file": "papers/2025-layerdag-diffusion-dag-generation.md",
+    "note_html": "notes/2025-layerdag-diffusion-dag-generation.html",
+    "summary": "LayerDAG 是目前我们看到的、最接近“用 diffusion 生成 task graph”的方法论文：它不是机器人论文，但它直接研究如何生成有效 DAG，并且通过 layerwise autoregressive generation 保证方向性和无环结构。",
+    "research_question": "DAG 广泛用于计算图、编译器 flow graph、硬件设计、项目依赖和任务依赖。普通 graph generation 方法往往不显式处理 DAG 的方向性和 partial order；纯 diffusion 一次性生成整张图，也不天然保证无环。\n\nLayerDAG 的核心问题是：如何生成具有强方向依赖和逻辑规则的大规模 DAG，同时保留生成模型的表达能力和泛化能力。",
+    "method": "",
+    "contribution": "第一，它解决了通用 graph diffusion 不天然保证 DAG 的问题。通过 layerwise autoregressive generation，边只从前面层指向当前层，因此天然无环。\n\n第二，它避免了普通 topological ordering 不唯一的问题。LayerDAG 的 layerwise partition 是唯一的，能把一张 DAG 转成可逆的层级序列。\n\n第三，它把 autoregressive 和 diffusion 分工清楚：autoregressive 负责生成方向和层级，diffusion 负责每一层内部 node/edge 的多轮 refinement。\n\n第四，它支持 conditional generation，可以根据目标属性生成 DAG。这对应到我们的任务规划里，就是根据自然语言、scene graph、机器人能力和 deadline 生成符合条件的 task graph。",
+    "reading_highlights": "",
+    "limitation": "LayerDAG 本身不是机器人任务规划模型。它没有处理自然语言 grounding、机器人 skill schema、执行反馈、资源约束、持续时间估计或多机器人 allocation。\n\n它生成的是 DAG，但 task graph 在真实系统里可能还需要非前置依赖边，例如通信关系、资源冲突、协同约束、时间窗和软约束。这些边需要区分清楚，否则会破坏 DAG layer 的定义。\n\n此外，迁移到开放世界任务规划需要训练数据：历史任务图、仿真生成任务图、人类修正任务图，或者 LLM/规则生成后再用执行反馈筛选的 task graph 数据。",
+    "relation": "和 DiGress 相比，LayerDAG 更适合 task graph，因为它直接面向 DAG generation，而不是一般 graph generation。\n\n和 DART-LLM / LiP-LLM 相比，LayerDAG 不是 prompt engineering，而是一个可训练的 DAG generative model。它提供了从“LLM 输出依赖 JSON”走向“训练模型生成 task graph”的方法路线。\n\n和 Diffusion-CCSP 相比，Diffusion-CCSP 的 graph 是输入的 constraint graph，diffusion 输出连续变量解；LayerDAG 的 diffusion 参与生成 DAG 本身。",
+    "planning_insight": "我们可以把未来方向定义为：\n\n```text\nLayerwise Diffusion Task Graph Generator\n```\n\n系统形式：\n\n```text\ninstruction + scene graph + robot skills\n  -> conditional LayerDAG generator\n  -> valid task DAG\n  -> task allocation / scheduling module\n  -> execution feedback\n  -> local re-denoising\n```\n\n这个方向比单纯 LLM prompt 生成 task graph 更有研究空间，因为它可以学习领域内常见的 dependency pattern，并支持逐层、局部、可反馈的 task graph 生成。",
+    "reusable_module_text": "layerwise DAG partition、source task layer generation、discrete diffusion for node attributes、diffusion edge generation、conditional DAG generation、cross-layer dependency generation、local re-denoising。",
+    "evidence_risk": "论文在 synthetic DAG 和真实计算系统 DAG 数据上验证，能生成最多约 400 个节点的大规模 DAG，并在条件生成和 out-of-distribution label setting 中优于多个 baseline。\n\n风险是这些实验领域是计算图和硬件/编译器 flow graph，不是机器人任务图。迁移时最关键的是设计 task graph schema 和训练数据生成机制。",
+    "open_question": "如何把自然语言、scene graph 和 robot skill library 编码成 LayerDAG 的 conditioning signal。\n\n如何把 task graph 的软约束和非 DAG 关系区分开：dependency edge 保持 DAG，coordination/resource/time-window edge 作为额外约束图交给 scheduler。\n\n如何在执行中只对受影响的局部 layer 进行 re-denoising，而不是重生成整张任务图。"
   },
   {
     "id": "2025-pi05-open-world-generalization",

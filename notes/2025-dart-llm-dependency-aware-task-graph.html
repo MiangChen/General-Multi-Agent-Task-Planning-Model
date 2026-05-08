@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="robots" content="noindex,nofollow,noarchive">
-  <title>π0.7 · Paper Note</title>
+  <title>DART-LLM · Paper Note</title>
   <style>
     :root {
       --bg: #eef4fb;
@@ -434,15 +434,15 @@
   <main class="note-shell" id="top">
     <section class="note-hero">
       <div class="hero-main">
-        <div class="note-kicker">2026-04 · arXiv / Physical Intelligence · VLA</div>
-        <h1>π0.7</h1>
-        <div class="full-title">π0.7: a Steerable Generalist Robotic Foundation Model with Emergent Capabilities</div>
-        <div class="note-summary"><p>π0.7 把 PI 系列推进到“可 steer 的通用机器人基础模型”，重点是用更丰富的上下文条件支持组合泛化和策略选择。</p></div>
+        <div class="note-kicker">2025-03 · arXiv · DAG-based LLM Task Decomposition</div>
+        <h1>DART-LLM</h1>
+        <div class="full-title">DART-LLM: Dependency-Aware Multi-Robot Task Decomposition and Execution using Large Language Models</div>
+        <div class="note-summary"><p>DART-LLM 是 Task Graph 方向非常直接的一篇：它让 LLM 从自然语言任务中输出结构化 subtasks 和 dependencies，然后用规则模块把 dependencies 转成 DAG，并按拓扑顺序调度多机器人执行。</p></div>
       </div>
       <aside class="hero-side">
         <div class="metric-grid">
           <div class="metric">
-            <div class="metric-value">2026</div>
+            <div class="metric-value">2025</div>
             <div class="metric-label">Year</div>
           </div>
           <div class="metric">
@@ -454,19 +454,19 @@
             <div class="metric-label">Evidence</div>
           </div>
           <div class="metric">
-            <div class="metric-value">5</div>
+            <div class="metric-value">2</div>
             <div class="metric-label">Relations</div>
           </div>
         </div>
         <div>
           <div class="note-section-kicker">Authors</div>
-          <div>Physical Intelligence, Ai, Amin, Black, Driess, Finn, Hausman, Ichter, Levine, Pertsch</div>
+          <div>Yongdong Wang, Runze Xiao, Jun Younes Louhi Kasahara, Ryosuke Yajima, Keiji Nagatani, Atsushi Yamashita, Hajime Asama</div>
         </div>
         <div>
           <div class="note-section-kicker">Institutions</div>
-          <div>Physical Intelligence</div>
+          <div>The University of Tokyo · University of Tsukuba</div>
         </div>
-        <div class="note-link-row"><a href="../pdfs/2026-04-01-pi07-vla-steerable.pdf" target="_blank" rel="noreferrer">PDF</a><a href="https://arxiv.org/abs/2604.15483" target="_blank" rel="noreferrer">Paper</a><a href="https://physicalintelligence.company/" target="_blank" rel="noreferrer">Project</a><a href="https://doi.org/10.48550/arXiv.2604.15483" target="_blank" rel="noreferrer">DOI</a><a href="https://arxiv.org/abs/2604.15483" target="_blank" rel="noreferrer">arXiv</a></div>
+        <div class="note-link-row"><a href="../pdfs/2025-03-04-DART-LLM-dependency-aware-multi-robot-task-decomposition.pdf" target="_blank" rel="noreferrer">PDF</a><a href="https://arxiv.org/abs/2411.09022" target="_blank" rel="noreferrer">Paper</a><a href="https://wyd0817.github.io/project-dart-llm/" target="_blank" rel="noreferrer">Project</a><a href="https://arxiv.org/abs/2411.09022" target="_blank" rel="noreferrer">arXiv</a></div>
       </aside>
     </section>
 
@@ -475,44 +475,48 @@
 
     <section class="note-section impact">
       <div class="note-section-kicker">For Our Model</div>
-      <div class="note-section-body"><p>对你的方向最有价值的是“上下文可控执行器”这个接口：多机器人 planner 可以为不同机器人生成不同上下文，例如角色、目标、路径约束、协作顺序和失败恢复策略。</p></div>
+      <div class="note-section-body"><p>DART-LLM 给我们的 schema 很有参考价值。一个面向通用集群机器人的数据格式可以从它扩展：</p>
+<p>```json<br>{<br>&quot;instruction&quot;: &quot;...&quot;,<br>&quot;robots&quot;: [{&quot;id&quot;: &quot;ugv1&quot;, &quot;skills&quot;: [&quot;navigate&quot;, &quot;inspect&quot;]}],<br>&quot;tasks&quot;: [<br>{<br>&quot;id&quot;: &quot;t1&quot;,<br>&quot;skill&quot;: &quot;navigate&quot;,<br>&quot;args&quot;: {&quot;target&quot;: &quot;soil_pile&quot;},<br>&quot;robot_ids&quot;: [&quot;ugv1&quot;],<br>&quot;dependencies&quot;: [],<br>&quot;object_keywords&quot;: [&quot;soil_pile&quot;]<br>}<br>]<br>}<br>```</p>
+<p>未来我们要做的关键不是只让 LLM 生成这个 JSON，而是用领域数据训练一个模型，让它更稳定地生成与 robot skill library 对齐的 task graph，并能随着新任务、新机器人技能和执行反馈持续更新。</p></div>
     </section>
 
 
     <section class="note-section ">
       <div class="note-section-kicker">Research Question</div>
-      <div class="note-section-body"><p>当训练数据包含多种策略和质量差异时，通用 VLA 如何避免平均化，并根据任务上下文选择正确执行方式。</p></div>
+      <div class="note-section-body"><p>施工机器人任务往往有严格的前后依赖。例如运输车必须等挖掘机完成装载后才能离开，否则任务失败。SMART-LLM 这类方法用 Python code 隐式表达任务结构，但没有显式处理依赖关系，复杂任务下容易因为顺序错误而失败。</p>
+<p>DART-LLM 要解决的是：如何把自然语言施工任务拆成可执行 atomic skills，同时显式表达 subtasks 之间的依赖，使多机器人系统可以并行执行无依赖任务，并等待有前置条件的任务。</p></div>
     </section>
 
-
-    <section class="note-section ">
-      <div class="note-section-kicker">Method</div>
-      <div class="note-section-body"><p>论文使用 diverse context conditioning：不仅给语言命令，还给任务表现元数据、策略信息、子目标图像和记忆相关上下文等多模态条件。</p></div>
-    </section>
 
 
     <section class="note-section ">
       <div class="note-section-kicker">Key Contributions</div>
-      <div class="note-section-body"><p>π0.7 显示出更强的开箱表现、跨具身零样本泛化和多阶段任务能力，是目前 PI 系列中最接近“可由 planner 调用”的策略模型。</p></div>
+      <div class="note-section-body"><p>第一，它比 SMART-LLM 更明确地把任务依赖显式化。SMART-LLM 用 Python code 存储任务结构；DART-LLM 用 JSON dependencies 和 DAG 存储任务结构。</p>
+<p>第二，它把 dependency-aware decomposition 和 robot skill library 对齐。每个 subtask 对应 atomic skill，后续可以由 parser 根据机器人能力分配。</p>
+<p>第三，它有一个小规模但有结构标注的数据集，适合作为我们设计 task graph schema 的参考。</p>
+<p>第四，它强调小模型部署。论文显示显式 DAG dependency modeling 能明显提升小模型在复杂任务上的表现，让 Llama-3.1-8B 这类模型在 response time reliability 上更适合边缘部署。</p></div>
     </section>
 
 
 
     <section class="note-section risk">
       <div class="note-section-kicker">Limitations</div>
-      <div class="note-section-body"><p>论文展示的是通用机器人策略能力，不等于完整任务规划系统。多机器人中的协同、任务竞价、路径冲突和通信延迟仍需外部系统处理。</p></div>
+      <div class="note-section-body"><p>DART-LLM 仍然主要依赖通用 LLM 的 prompting / few-shot 生成，并没有真正训练一个持续学习的 task graph generator。虽然项目页提供 fine-tuned Llama-1B 相关资源，但论文核心机制仍是 LLM 结构化输出 + 规则后处理。</p>
+<p>它的 DAG 校验也主要围绕 dependencies 和执行顺序，未充分展开更复杂的语义校验，例如某条 edge 是否必要、是否漏掉隐含前置条件、是否存在资源冲突或时间窗约束。</p>
+<p>任务领域集中在 construction robotics，skill library 规模较小。迁移到通用集群机器人时，需要更大的 robot capability schema、scene grounding schema 和 failure recovery schema。</p></div>
     </section>
 
 
     <section class="note-section ">
       <div class="note-section-kicker">Reusable Modules</div>
-      <div class="note-section-body"><p>context-conditioned policy、steerable executor interface、compositional generalization setup。适合作为最终 executor 形态的参考目标。</p></div>
+      <div class="note-section-body"><p>JSON task decomposition format、dependency list to DAG、topological execution、dependency satisfaction metric、robot skill matching、object keyword grounding、construction robot skill library。</p></div>
     </section>
 
 
     <section class="note-section risk">
       <div class="note-section-kicker">Evidence &amp; Risk</div>
-      <div class="note-section-body"><p>证据来自 PI 系列最新路线；风险是仍以直接策略为主，缺少团队规划、显式世界模型和多机器人通信机制。</p></div>
+      <div class="note-section-body"><p>论文在 102 条 construction robot instructions 上评估，指标包括 SR、Instruction Parsing Accuracy、Dependency Satisfaction Rate、Semantic Grounding Success Rate 和 Response Time Reliability。ablation 显示去掉 DAG dependencies 会显著降低复杂任务成功率，尤其对小模型影响更大。</p>
+<p>风险是 benchmark 规模较小，任务类型集中，且很多推理仍由 LLM 完成。对于通用集群机器人，仍需更丰富的数据集和更强的自动验证机制。</p></div>
     </section>
 
         <div id="relations">
@@ -522,35 +526,25 @@
         <div>
           <h3>当前论文 -> 关联论文 / 前序工作</h3>
           <div class="relation-chip-grid">
-            <a class="relation-chip" style="--rel:#246bfe" href="../notes/2026-mem-multi-scale-embodied-memory.html">
+            <a class="relation-chip" style="--rel:#246bfe" href="../notes/2024-smart-llm-pythonic-task-planning.html">
               <span>继承/扩展</span>
-              <strong>MEM</strong>
+              <strong>SMART-LLM</strong>
             </a>
 
-            <a class="relation-chip" style="--rel:#246bfe" href="../notes/2025-pistar06-recap.html">
-              <span>继承/扩展</span>
-              <strong>π*0.6 / RECAP</strong>
-            </a>
-
-            <a class="relation-chip" style="--rel:#246bfe" href="../notes/2025-pi06-model-card.html">
-              <span>继承/扩展</span>
-              <strong>π0.6</strong>
-            </a>
-
-            <a class="relation-chip" style="--rel:#00a7c7" href="../notes/2025-pi05-open-world-generalization.html">
-              <span>使用/依赖</span>
-              <strong>π0.5</strong>
-            </a>
-
-            <a class="relation-chip" style="--rel:#00a7c7" href="../notes/2024-pi0-vla-flow-model.html">
-              <span>使用/依赖</span>
-              <strong>π0</strong>
+            <a class="relation-chip" style="--rel:#d14d72" href="../notes/2025-lip-llm-dependency-graph-planning.html">
+              <span>对比路线</span>
+              <strong>LiP-LLM</strong>
             </a>
           </div>
         </div>
         <div>
           <h3>下游论文 -> 当前论文</h3>
-          <div class="relation-chip-grid"><div class="relation-empty">暂时没有下游论文连接到这篇。</div></div>
+          <div class="relation-chip-grid">
+            <a class="relation-chip incoming" style="--rel:#188aa6" href="../notes/2025-layerdag-diffusion-dag-generation.html">
+              <span>提供模块</span>
+              <strong>LayerDAG</strong>
+            </a>
+          </div>
         </div>
       </div>
     </section>
@@ -558,13 +552,16 @@
 
     <section class="note-section ">
       <div class="note-section-kicker">Relation Notes</div>
-      <div class="note-section-body"><p>相对 π0.5 的开放世界泛化、π*0.6 的经验学习和 MEM 的长程记忆，π0.7 更强调上下文条件对策略行为的可控性。它和 WAM 的区别在于：π0.7 仍偏直接策略，WAM 偏预测世界状态和动作。</p></div>
+      <div class="note-section-body"><p>和 SMART-LLM 相比，DART-LLM 的进步是把 Python code 隐式结构改成 JSON + DAG 显式结构，因此更适合可视化、人类审核、拓扑排序和依赖满足率评估。</p>
+<p>和 LiP-LLM 相比，两者都用 LLM 处理 dependency。LiP-LLM 是先生成 skill list，再生成 dependency graph，并用线性规划分配任务；DART-LLM 是直接输出 subtasks、dependencies、object keywords 和 robot assignment，再由规则模块构图和执行。</p>
+<p>和 Unsupervised Task Graph Generation 相比，DART-LLM 是在线任务 prompt 到 task graph；Unsupervised Task Graph 是从 instructional transcripts 中归纳抽象 task graph。</p></div>
     </section>
 
         <div id="open-question">
     <section class="note-section impact">
       <div class="note-section-kicker">Open Question</div>
-      <div class="note-section-body"><p>如何设计标准化的 planner-to-VLA context schema，让多机器人任务规划器稳定调用不同 VLA，而不依赖脆弱的自然语言提示。</p></div>
+      <div class="note-section-body"><p>如何把 DART-LLM 的 dependency list 扩展为更完整的 task graph edge type：precondition、resource conflict、same-agent continuity、synchronization、human approval、failure recovery。</p>
+<p>另一个问题是如何让 task graph generator 具备持续学习能力：从执行失败中更新 skill precondition/effect，从人类修正中更新 dependency pattern，从新机器人上线中更新 capability matching。</p></div>
     </section>
   </div>
       </article>
@@ -572,19 +569,19 @@
       <aside class="note-aside">
         <section class="note-aside-panel">
           <h2>System Roles</h2>
-          <div class="pill-row"><span class="note-pill role-pill">执行器</span><span class="note-pill role-pill">基础策略</span><span class="note-pill role-pill">可控策略</span></div>
+          <div class="pill-row"><span class="note-pill role-pill">语义规划器</span><span class="note-pill role-pill">task graph generator</span><span class="note-pill role-pill">任务分配器</span><span class="note-pill role-pill">execution orchestrator</span><span class="note-pill role-pill">规划基线</span></div>
         </section>
         <section class="note-aside-panel">
           <h2>Reusable Modules</h2>
-          <div class="pill-row"><span class="note-pill module-pill">context conditioned policy</span><span class="note-pill module-pill">steerable executor interface</span><span class="note-pill module-pill">组合泛化</span></div>
+          <div class="pill-row"><span class="note-pill module-pill">json task decomposition</span><span class="note-pill module-pill">dependency list to dag</span><span class="note-pill module-pill">topological execution</span><span class="note-pill module-pill">robot skill matching</span><span class="note-pill module-pill">object keyword grounding</span><span class="note-pill module-pill">construction robot skill library</span></div>
         </section>
         <section class="note-aside-panel">
           <h2>Next Action</h2>
-          <div class="note-pill role-pill">作为执行器目标</div>
+          <div class="note-pill role-pill">抽取 DART-LLM JSON-DAG schema</div>
         </section>
         <section class="note-aside-panel">
           <h2>Tags</h2>
-          <div class="pill-row"><span class="note-pill">π0.7</span><span class="note-pill">VLA</span><span class="note-pill">compositional generalization</span><span class="note-pill">steerable policy</span><span class="note-pill">cross-embodiment</span></div>
+          <div class="pill-row"><span class="note-pill">DART-LLM</span><span class="note-pill">Task Graph</span><span class="note-pill">LLM</span><span class="note-pill">DAG</span><span class="note-pill">dependency-aware decomposition</span><span class="note-pill">construction robots</span><span class="note-pill">JSON planning</span><span class="note-pill">multi-robot execution</span></div>
         </section>
         <section class="note-aside-panel">
           <h2>Reading Map</h2>
