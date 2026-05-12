@@ -1472,9 +1472,9 @@ function renderDomainGraph(papers) {
     ),
   ].join("");
   const directionFilters = [
-    `<button class="relation-filter is-active" data-edge-direction="parent-child">父 → 子</button>`,
+    `<button class="relation-filter" data-edge-direction="parent-child">父 → 子</button>`,
     `<button class="relation-filter" data-edge-direction="child-parent">子 → 父</button>`,
-    `<button class="relation-filter" data-edge-direction="both">双向</button>`,
+    `<button class="relation-filter is-active" data-edge-direction="both">双向</button>`,
   ].join("");
 
   return `
@@ -1496,7 +1496,7 @@ function renderDomainGraph(papers) {
       </div>
       <div class="graph-workspace">
         <div class="graph-frame">
-          <div class="domain-graph" style="--graph-width:${width}px; --graph-height:${height}px; --node-width:${nodeWidth}px; --node-height:${nodeHeight}px">
+            <div class="domain-graph" data-edge-direction="both" style="--graph-width:${width}px; --graph-height:${height}px; --node-width:${nodeWidth}px; --node-height:${nodeHeight}px">
             ${columnGroups}
             ${columns}
             ${monthLabels}
@@ -3850,7 +3850,7 @@ function renderIndex(papers, teamRoadmap) {
     let selectedGraphNode = null;
     let selectedGraphNodeId = null;
     let activeRelationFilter = "all";
-    let activeEdgeDirection = "parent-child";
+    let activeEdgeDirection = "both";
 
     function noteUrlFor(path) {
       const prefix = window.location.pathname.endsWith("/views/dashboard.html") ? "../" : "";

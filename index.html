@@ -1438,7 +1438,7 @@
 
   <main class="page">
     <section class="hero">
-      <div class="eyebrow">Obsidian-first paper repository · generated 2026/5/12 21:54:38</div>
+      <div class="eyebrow">Obsidian-first paper repository · generated 2026/5/12 21:59:43</div>
       <h1>通用多智能体任务规划模型研究图谱</h1>
       <p>基于 Markdown note 的 typed relations 自动生成。当前版本聚焦 VLA、π 系列、World Action Model 和 Dreamer，把论文定位为端到端多智能体任务规划模型里的执行器、世界模拟器、planner critic、记忆模块或任务分配器。</p>
 
@@ -1477,12 +1477,12 @@
           <button class="relation-filter is-active" data-relation-filter="all">全部关系</button><button class="relation-filter" style="--rel:#246bfe" data-relation-filter="extends">继承/扩展</button><button class="relation-filter" style="--rel:#00a7c7" data-relation-filter="uses">使用/依赖</button><button class="relation-filter" style="--rel:#188aa6" data-relation-filter="enables">提供模块</button><button class="relation-filter" style="--rel:#d14d72" data-relation-filter="contrasts">对比路线</button><button class="relation-filter" style="--rel:#4b6f96" data-relation-filter="cites">引用/背景</button>
         </div>
         <div class="relation-filterbar direction-filterbar" aria-label="关系方向渲染">
-          <button class="relation-filter is-active" data-edge-direction="parent-child">父 → 子</button><button class="relation-filter" data-edge-direction="child-parent">子 → 父</button><button class="relation-filter" data-edge-direction="both">双向</button>
+          <button class="relation-filter" data-edge-direction="parent-child">父 → 子</button><button class="relation-filter" data-edge-direction="child-parent">子 → 父</button><button class="relation-filter is-active" data-edge-direction="both">双向</button>
         </div>
       </div>
       <div class="graph-workspace">
         <div class="graph-frame">
-          <div class="domain-graph" style="--graph-width:1262px; --graph-height:1842px; --node-width:86px; --node-height:28px">
+            <div class="domain-graph" data-edge-direction="both" style="--graph-width:1262px; --graph-height:1842px; --node-width:86px; --node-height:28px">
 
         <div class="graph-column-group" style="--x:162px; --w:106px; --group:#246bfe">
           <span>LLM</span>
@@ -8003,7 +8003,7 @@ psi-w0 则是动作条件世界模型。它输入图像、语言和动作轨迹�
     let selectedGraphNode = null;
     let selectedGraphNodeId = null;
     let activeRelationFilter = "all";
-    let activeEdgeDirection = "parent-child";
+    let activeEdgeDirection = "both";
 
     function noteUrlFor(path) {
       const prefix = window.location.pathname.endsWith("/views/dashboard.html") ? "../" : "";
