@@ -469,13 +469,12 @@ const benchmarkResources = [
 
 const relationFields = Object.keys(relationTypes).filter((type) => type !== "cites");
 
-// Relation direction rule for the paper graph:
-// Edges must be strong and directional. For a parent/child lineage, record only
-// child -> parent/context, e.g. pi0.5 -> pi0. Never author the reverse
-// parent -> child edge. Downstream/incoming links are derived at render time.
-// Soft "complementary" associations are intentionally not modeled as edges.
-// This keeps the graph readable: clicking a child reveals its ancestors/context,
-// while clicking a parent does not fan out to every descendant by default.
+// Relation storage rule for the paper graph:
+// Source notes keep a compact adjacency list in frontmatter. The dashboard
+// normalizes those authored links into undirected paper-pair edges, then derives
+// parent/child roles from publication time at render time.
+// Soft "complementary" associations are intentionally not modeled as graph
+// edges unless they become a strong typed relation.
 
 const systemRoleOrder = [
   "semantic_planner",
@@ -593,6 +592,77 @@ function buildRelations(meta) {
   }
 
   return relations;
+}
+
+function comparePaperTime(a, b) {
+  return (
+    (Number(a?.published_value) || 0) - (Number(b?.published_value) || 0) ||
+    String(a?.short_title || a?.id || "").localeCompare(String(b?.short_title || b?.id || ""), "zh-CN") ||
+    String(a?.id || "").localeCompare(String(b?.id || ""), "zh-CN")
+  );
+}
+
+function normalizeGraphEdges(papers) {
+  const byId = new Map(papers.map((paper) => [paper.id, paper]));
+  const edges = new Map();
+
+  for (const paper of papers) {
+    for (const relation of asList(paper.relations)) {
+      const other = byId.get(relation.target);
+      if (!other || paper.id === other.id) continue;
+      const endpoints = [paper, other].sort(comparePaperTime);
+      const key = `${endpoints[0].id}--${endpoints[1].id}--${relation.type}`;
+      const existing = edges.get(key);
+      const authors = existing?.authored_links ?? [];
+      authors.push({ source: paper.id, target: other.id });
+      edges.set(key, {
+        id: key,
+        type: relation.type,
+        a: endpoints[0].id,
+        b: endpoints[1].id,
+        parent: endpoints[0].id,
+        child: endpoints[1].id,
+        authored_links: authors,
+      });
+    }
+  }
+
+  return [...edges.values()];
+}
+
+function buildPaperGraphData(papers) {
+  const byId = new Map(papers.map((paper) => [paper.id, paper]));
+  const nodes = papers.map((paper) => ({
+    id: paper.id,
+    title: paper.title,
+    short_title: paper.short_title,
+    published: paper.published,
+    published_value: paper.published_value,
+    primary_domain: paper.primary_domain,
+    domains: asList(paper.domains),
+    note_html: paper.note_html,
+  }));
+  const edges = normalizeGraphEdges(papers).map((edge) => {
+    const parent = byId.get(edge.parent);
+    const child = byId.get(edge.child);
+    return {
+      id: edge.id,
+      type: edge.type,
+      endpoints: [edge.a, edge.b],
+      parent_id: edge.parent,
+      child_id: edge.child,
+      parent_title: parent?.short_title || edge.parent,
+      child_title: child?.short_title || edge.child,
+      authored_links: edge.authored_links,
+    };
+  });
+  return {
+    schema_version: "paper-graph.v1",
+    edge_semantics: "undirected typed paper-pair edge; parent_id and child_id are derived from publication time",
+    render_directions: ["parent-child", "child-parent", "both"],
+    nodes,
+    edges,
+  };
 }
 
 function label(value) {
@@ -1275,18 +1345,11 @@ function renderDomainGraph(papers) {
     })
     .join("\n");
 
-  const edges = graphPapers
-    .flatMap((paper) =>
-      // Render only authored outgoing edges. This is the visual counterpart of the
-      // child -> parent rule in buildRelations: selecting a node shows what that
-      // paper points back to, not every later paper that points to it.
-      asList(paper.relations)
-        .filter((relation) => byId.has(relation.target) && positions.has(paper.id) && positions.has(relation.target))
-        .map((relation) => ({ source: paper.id, target: relation.target, type: relation.type })),
-    )
-    .map(({ source, target, type }) => {
-      const from = positions.get(source);
-      const to = positions.get(target);
+  const edges = normalizeGraphEdges(graphPapers)
+    .filter((edge) => byId.has(edge.a) && byId.has(edge.b) && positions.has(edge.a) && positions.has(edge.b))
+    .map((edge) => {
+      const from = positions.get(edge.parent);
+      const to = positions.get(edge.child);
       const sameColumn = Math.abs(from.x - to.x) < 4;
       const direction = to.x >= from.x ? 1 : -1;
       let d = "";
@@ -1302,19 +1365,23 @@ function renderDomainGraph(papers) {
         const midX = (sx + tx) / 2;
         d = `M ${sx} ${from.y} C ${midX} ${from.y}, ${midX} ${to.y}, ${tx} ${to.y}`;
       }
-      const relation = relationTypes[type] ?? relationTypes.cites;
+      const relation = relationTypes[edge.type] ?? relationTypes.cites;
       return `<path class="graph-edge"
-        style="--edge-color:${relation.color}"
-        data-edge-source="${escapeHtml(source)}"
-        data-edge-target="${escapeHtml(target)}"
-        data-edge-type="${escapeHtml(type)}"
+        style="--edge-color:${relation.color}; --edge-marker:url(#arrowhead-${escapeHtml(edge.type)}); --edge-start-marker:url(#arrowhead-start-${escapeHtml(edge.type)})"
+        data-edge-a="${escapeHtml(edge.a)}"
+        data-edge-b="${escapeHtml(edge.b)}"
+        data-edge-parent="${escapeHtml(edge.parent)}"
+        data-edge-child="${escapeHtml(edge.child)}"
+        data-edge-type="${escapeHtml(edge.type)}"
         data-edge-label="${escapeHtml(relation.label)}"
         data-edge-short="${escapeHtml(relation.short)}"
         data-edge-description="${escapeHtml(relation.description)}"
-        data-edge-target-title="${escapeHtml(to.paper.short_title)}"
-        data-edge-target-note="${escapeHtml(to.paper.note_html)}"
+        data-edge-parent-title="${escapeHtml(from.paper.short_title)}"
+        data-edge-parent-note="${escapeHtml(from.paper.note_html)}"
+        data-edge-child-title="${escapeHtml(to.paper.short_title)}"
+        data-edge-child-note="${escapeHtml(to.paper.note_html)}"
         d="${d}"
-        marker-end="url(#arrowhead-${escapeHtml(type)})"></path>`;
+        marker-end="url(#arrowhead-${escapeHtml(edge.type)})"></path>`;
     })
     .join("\n");
 
@@ -1374,6 +1441,9 @@ function renderDomainGraph(papers) {
       ([type, relation]) => `
                 <marker id="arrowhead-${escapeHtml(type)}" markerWidth="4.5" markerHeight="4.5" refX="3.5" refY="2.25" orient="auto">
                   <path d="M 0 0 L 4.5 2.25 L 0 4.5 z" fill="${relation.color}"></path>
+                </marker>
+                <marker id="arrowhead-start-${escapeHtml(type)}" markerWidth="4.5" markerHeight="4.5" refX="3.5" refY="2.25" orient="auto-start-reverse">
+                  <path d="M 0 0 L 4.5 2.25 L 0 4.5 z" fill="${relation.color}"></path>
                 </marker>`,
     )
     .join("\n");
@@ -1383,6 +1453,11 @@ function renderDomainGraph(papers) {
       ([type, relation]) =>
         `<button class="relation-filter" style="--rel:${relation.color}" data-relation-filter="${escapeHtml(type)}">${escapeHtml(relation.label)}</button>`,
     ),
+  ].join("");
+  const directionFilters = [
+    `<button class="relation-filter is-active" data-edge-direction="parent-child">父 → 子</button>`,
+    `<button class="relation-filter" data-edge-direction="child-parent">子 → 父</button>`,
+    `<button class="relation-filter" data-edge-direction="both">双向</button>`,
   ].join("");
 
   return `
@@ -1421,8 +1496,13 @@ function renderDomainGraph(papers) {
           </div>
         </div>
       </div>
-      <div class="relation-filterbar" aria-label="关系类型过滤">
-        ${relationFilters}
+      <div class="relation-toolbar" aria-label="关系图渲染设置">
+        <div class="relation-filterbar" aria-label="关系类型过滤">
+          ${relationFilters}
+        </div>
+        <div class="relation-filterbar direction-filterbar" aria-label="关系方向渲染">
+          ${directionFilters}
+        </div>
       </div>
       <div class="graph-workspace">
         <div class="graph-frame">
@@ -1450,7 +1530,7 @@ function renderDomainGraph(papers) {
               <strong>Open</strong>
             </a>
           </div>
-          <p data-relation-summary>点击左侧节点后，这里只解释“当前论文 -> 关联论文/前序工作”的 typed relations。</p>
+          <p data-relation-summary>点击左侧节点后，这里会按当前方向显示与它相连的 typed relations。</p>
           <div class="relation-list" data-relation-list></div>
         </aside>
       </div>
@@ -2419,11 +2499,23 @@ function renderIndex(papers, teamRoadmap) {
       box-shadow: 0 12px 28px rgba(22, 50, 83, 0.08);
     }
 
+    .relation-toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px 18px;
+      align-items: center;
+      margin: -8px 0 18px;
+    }
+
     .relation-filterbar {
       display: flex;
       flex-wrap: wrap;
       gap: 8px;
-      margin: -8px 0 18px;
+    }
+
+    .direction-filterbar {
+      padding-left: 14px;
+      border-left: 1px solid var(--soft-line);
     }
 
     .relation-filter {
@@ -2693,6 +2785,16 @@ function renderIndex(papers, teamRoadmap) {
       stroke-width: 0.75;
       opacity: 0;
       transition: opacity 0.16s ease, stroke 0.16s ease, stroke-width 0.16s ease;
+    }
+
+    .domain-graph[data-edge-direction="child-parent"] .graph-edge {
+      marker-start: var(--edge-start-marker);
+      marker-end: none;
+    }
+
+    .domain-graph[data-edge-direction="both"] .graph-edge {
+      marker-start: var(--edge-start-marker);
+      marker-end: var(--edge-marker);
     }
 
     .graph-node {
@@ -3832,6 +3934,8 @@ function renderIndex(papers, teamRoadmap) {
     const graphNodes = Array.from(document.querySelectorAll(".graph-node"));
     const graphEdges = Array.from(document.querySelectorAll(".graph-edge"));
     const relationFilterButtons = Array.from(document.querySelectorAll("[data-relation-filter]"));
+    const directionFilterButtons = Array.from(document.querySelectorAll("[data-edge-direction]"));
+    const domainGraph = document.querySelector(".domain-graph");
     const graphNoteButtons = Array.from(document.querySelectorAll("[data-open-note]"));
     const relationTitle = document.querySelector("[data-relation-title]");
     const relationSummary = document.querySelector("[data-relation-summary]");
@@ -3839,6 +3943,7 @@ function renderIndex(papers, teamRoadmap) {
     let selectedGraphNode = null;
     let selectedGraphNodeId = null;
     let activeRelationFilter = "all";
+    let activeEdgeDirection = "parent-child";
 
     function noteUrlFor(path) {
       const prefix = window.location.pathname.endsWith("/views/dashboard.html") ? "../" : "";
@@ -3857,24 +3962,27 @@ function renderIndex(papers, teamRoadmap) {
       if (!relationTitle || !relationSummary || !relationList) return;
       relationTitle.textContent = node.dataset.nodeTitle;
       relationSummary.textContent = activeEdges.length
-        ? "当前只显示这篇论文指向关联论文或前序工作的关系。可以用上方关系类型过滤。"
+        ? "当前按所选方向显示与这篇论文相连的关系。可以用上方关系类型和方向过滤。"
         : "当前过滤条件下没有指向关系。切回“全部关系”可以检查是否还有其他关系。";
       relationList.replaceChildren();
 
       for (const edge of activeEdges) {
+        const targetRole = edge.dataset.edgeTargetRole || "child";
+        const targetTitle = edge.dataset.edgeTargetTitle || "";
+        const targetNote = edge.dataset.edgeTargetNote || "";
         const item = document.createElement("div");
         item.className = "relation-item";
         item.style.setProperty("--rel", edge.style.getPropertyValue("--edge-color") || "#246bfe");
 
         const type = document.createElement("div");
         type.className = "relation-type";
-        type.textContent = edge.dataset.edgeLabel + " · " + edge.dataset.edgeShort;
+        type.textContent = edge.dataset.edgeLabel + " · " + edge.dataset.edgeShort + " · " + (targetRole === "parent" ? "父节点" : "子节点");
 
-        const target = document.createElement(edge.dataset.edgeTargetNote ? "a" : "div");
+        const target = document.createElement(targetNote ? "a" : "div");
         target.className = "relation-target";
-        target.textContent = edge.dataset.edgeTargetTitle;
-        if (edge.dataset.edgeTargetNote) {
-          target.href = noteUrlFor(edge.dataset.edgeTargetNote);
+        target.textContent = targetTitle;
+        if (targetNote) {
+          target.href = noteUrlFor(targetNote);
           target.target = "_blank";
           target.rel = "noreferrer";
           target.title = "打开关联论文 Note";
@@ -3894,6 +4002,7 @@ function renderIndex(papers, teamRoadmap) {
       selectedGraphNodeId = null;
       graphEdges.forEach((edge) => {
         edge.classList.remove("is-active", "is-dimmed");
+        edge.removeAttribute("data-edge-target-role");
       });
       graphNodes.forEach((node) => {
         node.classList.remove("is-active", "is-related", "is-dimmed");
@@ -3910,12 +4019,28 @@ function renderIndex(papers, teamRoadmap) {
         }
       });
       if (relationTitle) relationTitle.textContent = "选择一篇论文";
-      if (relationSummary) relationSummary.textContent = "点击左侧节点后，这里只解释“当前论文 -> 关联论文/前序工作”的 typed relations。";
+      if (relationSummary) relationSummary.textContent = "点击左侧节点后，这里会按当前方向显示与它相连的 typed relations。";
       if (relationList) relationList.replaceChildren();
     }
 
-    function selectGraphNode(id) {
-      if (selectedGraphNodeId === id) {
+    function edgeConnectsSelection(edge, id) {
+      if (activeEdgeDirection === "parent-child") return edge.dataset.edgeParent === id;
+      if (activeEdgeDirection === "child-parent") return edge.dataset.edgeChild === id;
+      return edge.dataset.edgeParent === id || edge.dataset.edgeChild === id;
+    }
+
+    function decorateEdgeTarget(edge, id) {
+      const targetRole = edge.dataset.edgeParent === id ? "child" : "parent";
+      edge.dataset.edgeTargetRole = targetRole;
+      edge.dataset.edgeTargetTitle =
+        targetRole === "child" ? edge.dataset.edgeChildTitle : edge.dataset.edgeParentTitle;
+      edge.dataset.edgeTargetNote =
+        targetRole === "child" ? edge.dataset.edgeChildNote : edge.dataset.edgeParentNote;
+      return targetRole === "child" ? edge.dataset.edgeChild : edge.dataset.edgeParent;
+    }
+
+    function selectGraphNode(id, options = {}) {
+      if (selectedGraphNodeId === id && !options.force) {
         resetGraphSelection();
         return;
       }
@@ -3924,8 +4049,8 @@ function renderIndex(papers, teamRoadmap) {
       const activeEdges = [];
       for (const edge of graphEdges) {
         const passesFilter = activeRelationFilter === "all" || edge.dataset.edgeType === activeRelationFilter;
-        if (edge.dataset.edgeSource === id && passesFilter) {
-          connected.add(edge.dataset.edgeTarget);
+        if (edgeConnectsSelection(edge, id) && passesFilter) {
+          connected.add(decorateEdgeTarget(edge, id));
           edge.classList.add("is-active");
           edge.classList.remove("is-dimmed");
           activeEdges.push(edge);
@@ -3972,7 +4097,16 @@ function renderIndex(papers, teamRoadmap) {
       button.addEventListener("click", () => {
         activeRelationFilter = button.dataset.relationFilter;
         relationFilterButtons.forEach((item) => item.classList.toggle("is-active", item === button));
-        if (selectedGraphNodeId) selectGraphNode(selectedGraphNodeId);
+        if (selectedGraphNodeId) selectGraphNode(selectedGraphNodeId, { force: true });
+      });
+    });
+
+    directionFilterButtons.forEach((button) => {
+      button.addEventListener("click", () => {
+        activeEdgeDirection = button.dataset.edgeDirection;
+        directionFilterButtons.forEach((item) => item.classList.toggle("is-active", item === button));
+        if (domainGraph) domainGraph.dataset.edgeDirection = activeEdgeDirection;
+        if (selectedGraphNodeId) selectGraphNode(selectedGraphNodeId, { force: true });
       });
     });
 
@@ -3995,9 +4129,11 @@ async function build() {
   await mkdir(notesDir, { recursive: true });
 
   const papers = await readPapers();
+  const paperGraph = buildPaperGraphData(papers);
   const teamRoadmap = await readTeamRoadmap();
   const dashboardHtml = stripTrailingWhitespace(renderIndex(papers, teamRoadmap));
   await writeFile(join(dataDir, "papers.json"), `${JSON.stringify(papers, null, 2)}\n`, "utf8");
+  await writeFile(join(dataDir, "paper-graph.json"), `${JSON.stringify(paperGraph, null, 2)}\n`, "utf8");
   await writeFile(join(rootDir, "index.html"), dashboardHtml, "utf8");
   await writeFile(join(viewsDir, "dashboard.html"), dashboardHtml, "utf8");
   for (const paper of papers) {
@@ -4005,6 +4141,7 @@ async function build() {
   }
 
   console.log(`Generated ${relative(rootDir, join(dataDir, "papers.json"))}`);
+  console.log(`Generated ${relative(rootDir, join(dataDir, "paper-graph.json"))}`);
   console.log(`Generated ${relative(rootDir, join(rootDir, "index.html"))}`);
   console.log(`Generated ${relative(rootDir, join(viewsDir, "dashboard.html"))}`);
   console.log(`Generated ${papers.length} rendered note pages`);

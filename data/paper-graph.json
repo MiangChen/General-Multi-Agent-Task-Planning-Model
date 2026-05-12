@@ -1,0 +1,1656 @@
+{
+  "schema_version": "paper-graph.v1",
+  "edge_semantics": "undirected typed paper-pair edge; parent_id and child_id are derived from publication time",
+  "render_directions": [
+    "parent-child",
+    "child-parent",
+    "both"
+  ],
+  "nodes": [
+    {
+      "id": "2020-alphafold-potentials-deep-learning",
+      "title": "Improved protein structure prediction using potentials from deep learning",
+      "short_title": "AlphaFold1",
+      "published": "2020-01",
+      "published_value": 24240,
+      "primary_domain": "Structure Generation",
+      "domains": [
+        "Structure Generation",
+        "Scientific AI",
+        "Pair Representation"
+      ],
+      "note_html": "notes/2020-alphafold-potentials-deep-learning.html"
+    },
+    {
+      "id": "2020-ddpm-denoising-diffusion-probabilistic-models",
+      "title": "Denoising Diffusion Probabilistic Models",
+      "short_title": "DDPM",
+      "published": "2020-06",
+      "published_value": 24245,
+      "primary_domain": "Diffusion",
+      "domains": [
+        "Diffusion",
+        "Generative Model",
+        "Denoising",
+        "Score Matching"
+      ],
+      "note_html": "notes/2020-ddpm-denoising-diffusion-probabilistic-models.html"
+    },
+    {
+      "id": "2020-robognn-multi-robot-scheduling-gat",
+      "title": "Learning Scheduling Policies for Multi-Robot Coordination With Graph Attention Networks",
+      "short_title": "RoboGNN Scheduler",
+      "published": "2020-07",
+      "published_value": 24246,
+      "primary_domain": "GNN",
+      "domains": [
+        "GNN",
+        "Planning",
+        "RL"
+      ],
+      "note_html": "notes/2020-robognn-multi-robot-scheduling-gat.html"
+    },
+    {
+      "id": "2021-hierarchical-scene-graph-navigation-gnn",
+      "title": "Hierarchical Representations and Explicit Memory: Learning Effective Navigation Policies on 3D Scene Graphs using Graph Neural Networks",
+      "short_title": "3DSG Navigation",
+      "published": "2021-08",
+      "published_value": 24259,
+      "primary_domain": "Scene Graph",
+      "domains": [
+        "Scene Graph",
+        "GNN",
+        "RL"
+      ],
+      "note_html": "notes/2021-hierarchical-scene-graph-navigation-gnn.html"
+    },
+    {
+      "id": "2021-alphafold2-highly-accurate-structure-prediction",
+      "title": "Highly accurate protein structure prediction with AlphaFold",
+      "short_title": "AlphaFold2",
+      "published": "2021-08",
+      "published_value": 24259,
+      "primary_domain": "Structure Generation",
+      "domains": [
+        "Structure Generation",
+        "Scientific AI",
+        "Pair Representation",
+        "Transformer"
+      ],
+      "note_html": "notes/2021-alphafold2-highly-accurate-structure-prediction.html"
+    },
+    {
+      "id": "2022-learned-subteam-performance-routing",
+      "title": "Hierarchical Planning for Heterogeneous Multi-Robot Routing Problems via Learned Subteam Performance",
+      "short_title": "Learned Subteam Performance",
+      "published": "2022-04",
+      "published_value": 24267,
+      "primary_domain": "GNN",
+      "domains": [
+        "GNN",
+        "Planning"
+      ],
+      "note_html": "notes/2022-learned-subteam-performance-routing.html"
+    },
+    {
+      "id": "2023-daydreamer-world-models-for-physical-robot-learning",
+      "title": "DayDreamer: World Models for Physical Robot Learning",
+      "short_title": "DayDreamer",
+      "published": "2022-06",
+      "published_value": 24269,
+      "primary_domain": "World Model",
+      "domains": [
+        "World Model",
+        "RL"
+      ],
+      "note_html": "notes/2023-daydreamer-world-models-for-physical-robot-learning.html"
+    },
+    {
+      "id": "2023-dreamerv3-world-models",
+      "title": "Mastering Diverse Control Tasks through World Models",
+      "short_title": "DreamerV3",
+      "published": "2023-01",
+      "published_value": 24276,
+      "primary_domain": "World Model",
+      "domains": [
+        "World Model",
+        "RL"
+      ],
+      "note_html": "notes/2023-dreamerv3-world-models.html"
+    },
+    {
+      "id": "2023-diffusion-policy-action-diffusion",
+      "title": "Diffusion Policy: Visuomotor Policy Learning via Action Diffusion",
+      "short_title": "Diffusion Policy",
+      "published": "2023-03",
+      "published_value": 24278,
+      "primary_domain": "Diffusion",
+      "domains": [
+        "Diffusion",
+        "VLA",
+        "World Action Model",
+        "RL"
+      ],
+      "note_html": "notes/2023-diffusion-policy-action-diffusion.html"
+    },
+    {
+      "id": "2023-combinatorial-optimization-gnn-reasoning",
+      "title": "Combinatorial Optimization and Reasoning with Graph Neural Networks",
+      "short_title": "CO + GNN Survey",
+      "published": "2023-04",
+      "published_value": 24279,
+      "primary_domain": "GNN",
+      "domains": [
+        "GNN",
+        "Planning"
+      ],
+      "note_html": "notes/2023-combinatorial-optimization-gnn-reasoning.html"
+    },
+    {
+      "id": "2023-rfdiffusion-protein-structure-function",
+      "title": "De novo design of protein structure and function with RFdiffusion",
+      "short_title": "RFdiffusion",
+      "published": "2023-07",
+      "published_value": 24282,
+      "primary_domain": "Structure Generation",
+      "domains": [
+        "Structure Generation",
+        "Scientific AI",
+        "Diffusion",
+        "Pair Representation"
+      ],
+      "note_html": "notes/2023-rfdiffusion-protein-structure-function.html"
+    },
+    {
+      "id": "2023-rt-2-vla",
+      "title": "RT-2: Vision-Language-Action Models Transfer Web Knowledge to Robotic Control",
+      "short_title": "RT-2",
+      "published": "2023-07",
+      "published_value": 24282,
+      "primary_domain": "VLA",
+      "domains": [
+        "LLM",
+        "VLA"
+      ],
+      "note_html": "notes/2023-rt-2-vla.html"
+    },
+    {
+      "id": "2023-unsupervised-task-graph-generation",
+      "title": "Unsupervised Task Graph Generation from Instructional Video Transcripts",
+      "short_title": "Unsupervised Task Graphs",
+      "published": "2023-07",
+      "published_value": 24282,
+      "primary_domain": "Task Graph",
+      "domains": [
+        "Task Graph",
+        "Planning"
+      ],
+      "note_html": "notes/2023-unsupervised-task-graph-generation.html"
+    },
+    {
+      "id": "2023-grid-scene-graph-task-planning",
+      "title": "GRID: Scene-Graph-based Instruction-driven Robotic Task Planning",
+      "short_title": "GRID",
+      "published": "2023-09",
+      "published_value": 24284,
+      "primary_domain": "Scene Graph",
+      "domains": [
+        "Scene Graph",
+        "GNN",
+        "LLM"
+      ],
+      "note_html": "notes/2023-grid-scene-graph-task-planning.html"
+    },
+    {
+      "id": "2023-eureka-reward-design-llm",
+      "title": "Eureka: Human-Level Reward Design via Coding Large Language Models",
+      "short_title": "Eureka",
+      "published": "2023-10",
+      "published_value": 24285,
+      "primary_domain": "RL",
+      "domains": [
+        "LLM",
+        "RL",
+        "Planning"
+      ],
+      "note_html": "notes/2023-eureka-reward-design-llm.html"
+    },
+    {
+      "id": "2024-smart-llm-pythonic-task-planning",
+      "title": "SMART-LLM: Smart Multi-Agent Robot Task Planning using Large Language Models",
+      "short_title": "SMART-LLM",
+      "published": "2024-03",
+      "published_value": 24290,
+      "primary_domain": "Task Graph",
+      "domains": [
+        "Task Graph",
+        "LLM",
+        "Planning"
+      ],
+      "note_html": "notes/2024-smart-llm-pythonic-task-planning.html"
+    },
+    {
+      "id": "2024-alphafold3-biomolecular-interactions",
+      "title": "Accurate structure prediction of biomolecular interactions with AlphaFold 3",
+      "short_title": "AlphaFold3",
+      "published": "2024-06",
+      "published_value": 24293,
+      "primary_domain": "Structure Generation",
+      "domains": [
+        "Structure Generation",
+        "Scientific AI",
+        "Diffusion",
+        "Pair Representation"
+      ],
+      "note_html": "notes/2024-alphafold3-biomolecular-interactions.html"
+    },
+    {
+      "id": "2024-pyramidal-flow-matching-video",
+      "title": "Pyramidal Flow Matching for Efficient Video Generative Modeling",
+      "short_title": "Pyramidal Flow",
+      "published": "2024-10",
+      "published_value": 24297,
+      "primary_domain": "World Action Model",
+      "domains": [
+        "World Action Model",
+        "World Model"
+      ],
+      "note_html": "notes/2024-pyramidal-flow-matching-video.html"
+    },
+    {
+      "id": "2024-pi0-vla-flow-model",
+      "title": "π0: A Vision-Language-Action Flow Model for General Robot Control",
+      "short_title": "π0",
+      "published": "2024-10",
+      "published_value": 24297,
+      "primary_domain": "VLA",
+      "domains": [
+        "LLM",
+        "VLA"
+      ],
+      "note_html": "notes/2024-pi0-vla-flow-model.html"
+    },
+    {
+      "id": "2025-fast-action-tokenization-vla",
+      "title": "FAST: Efficient Action Tokenization for Vision-Language-Action Models",
+      "short_title": "FAST",
+      "published": "2025-01",
+      "published_value": 24300,
+      "primary_domain": "VLA",
+      "domains": [
+        "VLA"
+      ],
+      "note_html": "notes/2025-fast-action-tokenization-vla.html"
+    },
+    {
+      "id": "2025-lip-llm-dependency-graph-planning",
+      "title": "LiP-LLM: Integrating Linear Programming and Dependency Graph with Large Language Models for Multi-Robot Task Planning",
+      "short_title": "LiP-LLM",
+      "published": "2025-02",
+      "published_value": 24301,
+      "primary_domain": "Task Graph",
+      "domains": [
+        "Task Graph",
+        "LLM",
+        "Planning"
+      ],
+      "note_html": "notes/2025-lip-llm-dependency-graph-planning.html"
+    },
+    {
+      "id": "2025-dart-llm-dependency-aware-task-graph",
+      "title": "DART-LLM: Dependency-Aware Multi-Robot Task Decomposition and Execution using Large Language Models",
+      "short_title": "DART-LLM",
+      "published": "2025-03",
+      "published_value": 24302,
+      "primary_domain": "Task Graph",
+      "domains": [
+        "Task Graph",
+        "LLM",
+        "Planning"
+      ],
+      "note_html": "notes/2025-dart-llm-dependency-aware-task-graph.html"
+    },
+    {
+      "id": "2025-heterogeneous-mrta-rl",
+      "title": "Heterogeneous Multi-robot Task Allocation and Scheduling via Reinforcement Learning",
+      "short_title": "Heterogeneous MRTA RL",
+      "published": "2025-03",
+      "published_value": 24302,
+      "primary_domain": "GNN",
+      "domains": [
+        "GNN",
+        "RL",
+        "Planning"
+      ],
+      "note_html": "notes/2025-heterogeneous-mrta-rl.html"
+    },
+    {
+      "id": "2025-layerdag-diffusion-dag-generation",
+      "title": "LayerDAG: A Layerwise Autoregressive Diffusion Model for Directed Acyclic Graph Generation",
+      "short_title": "LayerDAG",
+      "published": "2025-03",
+      "published_value": 24302,
+      "primary_domain": "Diffusion",
+      "domains": [
+        "Diffusion",
+        "Task Graph",
+        "Planning"
+      ],
+      "note_html": "notes/2025-layerdag-diffusion-dag-generation.html"
+    },
+    {
+      "id": "2025-pi05-open-world-generalization",
+      "title": "π0.5: a Vision-Language-Action Model with Open-World Generalization",
+      "short_title": "π0.5",
+      "published": "2025-04",
+      "published_value": 24303,
+      "primary_domain": "VLA",
+      "domains": [
+        "LLM",
+        "VLA",
+        "Planning"
+      ],
+      "note_html": "notes/2025-pi05-open-world-generalization.html"
+    },
+    {
+      "id": "2025-gmatann-heterogeneous-task-allocation",
+      "title": "Heterogeneous Multi-Agent Task Allocation Based on Graph-Based Convolutional Assignment Neural Network",
+      "short_title": "GMATANN",
+      "published": "2025-06",
+      "published_value": 24305,
+      "primary_domain": "GNN",
+      "domains": [
+        "GNN",
+        "Planning",
+        "RL"
+      ],
+      "note_html": "notes/2025-gmatann-heterogeneous-task-allocation.html"
+    },
+    {
+      "id": "2025-magnnet-decentralized-task-allocation",
+      "title": "MAGNNET: Multi-Agent Graph Neural Network-based Efficient Task Allocation for Autonomous Vehicles with Deep Reinforcement Learning",
+      "short_title": "MAGNNET",
+      "published": "2025-06",
+      "published_value": 24305,
+      "primary_domain": "GNN",
+      "domains": [
+        "GNN",
+        "RL",
+        "Planning"
+      ],
+      "note_html": "notes/2025-magnnet-decentralized-task-allocation.html"
+    },
+    {
+      "id": "2025-pistar06-recap",
+      "title": "π*0.6: a VLA That Learns From Experience",
+      "short_title": "π*0.6 / RECAP",
+      "published": "2025-11",
+      "published_value": 24310,
+      "primary_domain": "RL",
+      "domains": [
+        "VLA",
+        "RL"
+      ],
+      "note_html": "notes/2025-pistar06-recap.html"
+    },
+    {
+      "id": "2025-pi06-model-card",
+      "title": "π0.6 Model Card",
+      "short_title": "π0.6",
+      "published": "2025-11",
+      "published_value": 24310,
+      "primary_domain": "VLA",
+      "domains": [
+        "VLA",
+        "Planning"
+      ],
+      "note_html": "notes/2025-pi06-model-card.html"
+    },
+    {
+      "id": "2026-genswarm-multi-robot-code-policy",
+      "title": "GenSwarm: Scalable Multi-Robot Code-Policy Generation and Deployment via Language Models",
+      "short_title": "GenSwarm",
+      "published": "2026-01",
+      "published_value": 24312,
+      "primary_domain": "LLM",
+      "domains": [
+        "LLM",
+        "Planning"
+      ],
+      "note_html": "notes/2026-genswarm-multi-robot-code-policy.html"
+    },
+    {
+      "id": "2026-world-action-models-zero-shot-policies",
+      "title": "World Action Models are Zero-shot Policies",
+      "short_title": "DreamZero / WAM",
+      "published": "2026-02",
+      "published_value": 24313,
+      "primary_domain": "World Action Model",
+      "domains": [
+        "World Action Model",
+        "VLA",
+        "World Model"
+      ],
+      "note_html": "notes/2026-world-action-models-zero-shot-policies.html"
+    },
+    {
+      "id": "2026-lap-language-action-pretraining",
+      "title": "LAP: Language-Action Pre-Training Enables Zero-shot Cross-Embodiment Transfer",
+      "short_title": "LAP-3B",
+      "published": "2026-02",
+      "published_value": 24313,
+      "primary_domain": "VLA",
+      "domains": [
+        "LLM",
+        "VLA"
+      ],
+      "note_html": "notes/2026-lap-language-action-pretraining.html"
+    },
+    {
+      "id": "2026-fast-wam-test-time-future-imagination",
+      "title": "Fast-WAM: Do World Action Models Need Test-time Future Imagination?",
+      "short_title": "Fast-WAM",
+      "published": "2026-03",
+      "published_value": 24314,
+      "primary_domain": "World Action Model",
+      "domains": [
+        "World Action Model",
+        "VLA",
+        "World Model"
+      ],
+      "note_html": "notes/2026-fast-wam-test-time-future-imagination.html"
+    },
+    {
+      "id": "2026-mem-multi-scale-embodied-memory",
+      "title": "MEM: Multi-Scale Embodied Memory for Vision Language Action Models",
+      "short_title": "MEM",
+      "published": "2026-03",
+      "published_value": 24314,
+      "primary_domain": "VLA",
+      "domains": [
+        "VLA",
+        "Planning"
+      ],
+      "note_html": "notes/2026-mem-multi-scale-embodied-memory.html"
+    },
+    {
+      "id": "2026-psibot-from-human-skill-to-robotic-mastery",
+      "title": "From Human Skill to Robotic Mastery",
+      "short_title": "Psi-R2 / Psi-W0",
+      "published": "2026-03",
+      "published_value": 24314,
+      "primary_domain": "World Action Model",
+      "domains": [
+        "World Action Model",
+        "VLA",
+        "World Model",
+        "RL"
+      ],
+      "note_html": "notes/2026-psibot-from-human-skill-to-robotic-mastery.html"
+    },
+    {
+      "id": "2026-foundation-models-robot-swarms",
+      "title": "How Foundation Models Will Revolutionize Robot Swarms",
+      "short_title": "FM Swarms Viewpoint",
+      "published": "2026-04",
+      "published_value": 24315,
+      "primary_domain": "Overview / Foundation",
+      "domains": [
+        "Overview / Foundation",
+        "LLM",
+        "Planning"
+      ],
+      "note_html": "notes/2026-foundation-models-robot-swarms.html"
+    },
+    {
+      "id": "2026-pi07-steerable-generalist-robotic-foundation-model",
+      "title": "π0.7: a Steerable Generalist Robotic Foundation Model with Emergent Capabilities",
+      "short_title": "π0.7",
+      "published": "2026-04",
+      "published_value": 24315,
+      "primary_domain": "VLA",
+      "domains": [
+        "LLM",
+        "VLA",
+        "Planning"
+      ],
+      "note_html": "notes/2026-pi07-steerable-generalist-robotic-foundation-model.html"
+    }
+  ],
+  "edges": [
+    {
+      "id": "2020-alphafold-potentials-deep-learning--2021-alphafold2-highly-accurate-structure-prediction--enables",
+      "type": "enables",
+      "endpoints": [
+        "2020-alphafold-potentials-deep-learning",
+        "2021-alphafold2-highly-accurate-structure-prediction"
+      ],
+      "parent_id": "2020-alphafold-potentials-deep-learning",
+      "child_id": "2021-alphafold2-highly-accurate-structure-prediction",
+      "parent_title": "AlphaFold1",
+      "child_title": "AlphaFold2",
+      "authored_links": [
+        {
+          "source": "2020-alphafold-potentials-deep-learning",
+          "target": "2021-alphafold2-highly-accurate-structure-prediction"
+        }
+      ]
+    },
+    {
+      "id": "2020-ddpm-denoising-diffusion-probabilistic-models--2023-diffusion-policy-action-diffusion--enables",
+      "type": "enables",
+      "endpoints": [
+        "2020-ddpm-denoising-diffusion-probabilistic-models",
+        "2023-diffusion-policy-action-diffusion"
+      ],
+      "parent_id": "2020-ddpm-denoising-diffusion-probabilistic-models",
+      "child_id": "2023-diffusion-policy-action-diffusion",
+      "parent_title": "DDPM",
+      "child_title": "Diffusion Policy",
+      "authored_links": [
+        {
+          "source": "2020-ddpm-denoising-diffusion-probabilistic-models",
+          "target": "2023-diffusion-policy-action-diffusion"
+        }
+      ]
+    },
+    {
+      "id": "2020-ddpm-denoising-diffusion-probabilistic-models--2023-rfdiffusion-protein-structure-function--enables",
+      "type": "enables",
+      "endpoints": [
+        "2020-ddpm-denoising-diffusion-probabilistic-models",
+        "2023-rfdiffusion-protein-structure-function"
+      ],
+      "parent_id": "2020-ddpm-denoising-diffusion-probabilistic-models",
+      "child_id": "2023-rfdiffusion-protein-structure-function",
+      "parent_title": "DDPM",
+      "child_title": "RFdiffusion",
+      "authored_links": [
+        {
+          "source": "2020-ddpm-denoising-diffusion-probabilistic-models",
+          "target": "2023-rfdiffusion-protein-structure-function"
+        }
+      ]
+    },
+    {
+      "id": "2020-ddpm-denoising-diffusion-probabilistic-models--2025-layerdag-diffusion-dag-generation--enables",
+      "type": "enables",
+      "endpoints": [
+        "2020-ddpm-denoising-diffusion-probabilistic-models",
+        "2025-layerdag-diffusion-dag-generation"
+      ],
+      "parent_id": "2020-ddpm-denoising-diffusion-probabilistic-models",
+      "child_id": "2025-layerdag-diffusion-dag-generation",
+      "parent_title": "DDPM",
+      "child_title": "LayerDAG",
+      "authored_links": [
+        {
+          "source": "2020-ddpm-denoising-diffusion-probabilistic-models",
+          "target": "2025-layerdag-diffusion-dag-generation"
+        }
+      ]
+    },
+    {
+      "id": "2020-robognn-multi-robot-scheduling-gat--2023-combinatorial-optimization-gnn-reasoning--uses",
+      "type": "uses",
+      "endpoints": [
+        "2020-robognn-multi-robot-scheduling-gat",
+        "2023-combinatorial-optimization-gnn-reasoning"
+      ],
+      "parent_id": "2020-robognn-multi-robot-scheduling-gat",
+      "child_id": "2023-combinatorial-optimization-gnn-reasoning",
+      "parent_title": "RoboGNN Scheduler",
+      "child_title": "CO + GNN Survey",
+      "authored_links": [
+        {
+          "source": "2020-robognn-multi-robot-scheduling-gat",
+          "target": "2023-combinatorial-optimization-gnn-reasoning"
+        }
+      ]
+    },
+    {
+      "id": "2020-alphafold-potentials-deep-learning--2021-alphafold2-highly-accurate-structure-prediction--extends",
+      "type": "extends",
+      "endpoints": [
+        "2020-alphafold-potentials-deep-learning",
+        "2021-alphafold2-highly-accurate-structure-prediction"
+      ],
+      "parent_id": "2020-alphafold-potentials-deep-learning",
+      "child_id": "2021-alphafold2-highly-accurate-structure-prediction",
+      "parent_title": "AlphaFold1",
+      "child_title": "AlphaFold2",
+      "authored_links": [
+        {
+          "source": "2021-alphafold2-highly-accurate-structure-prediction",
+          "target": "2020-alphafold-potentials-deep-learning"
+        }
+      ]
+    },
+    {
+      "id": "2021-alphafold2-highly-accurate-structure-prediction--2024-alphafold3-biomolecular-interactions--enables",
+      "type": "enables",
+      "endpoints": [
+        "2021-alphafold2-highly-accurate-structure-prediction",
+        "2024-alphafold3-biomolecular-interactions"
+      ],
+      "parent_id": "2021-alphafold2-highly-accurate-structure-prediction",
+      "child_id": "2024-alphafold3-biomolecular-interactions",
+      "parent_title": "AlphaFold2",
+      "child_title": "AlphaFold3",
+      "authored_links": [
+        {
+          "source": "2021-alphafold2-highly-accurate-structure-prediction",
+          "target": "2024-alphafold3-biomolecular-interactions"
+        }
+      ]
+    },
+    {
+      "id": "2022-learned-subteam-performance-routing--2023-combinatorial-optimization-gnn-reasoning--uses",
+      "type": "uses",
+      "endpoints": [
+        "2022-learned-subteam-performance-routing",
+        "2023-combinatorial-optimization-gnn-reasoning"
+      ],
+      "parent_id": "2022-learned-subteam-performance-routing",
+      "child_id": "2023-combinatorial-optimization-gnn-reasoning",
+      "parent_title": "Learned Subteam Performance",
+      "child_title": "CO + GNN Survey",
+      "authored_links": [
+        {
+          "source": "2022-learned-subteam-performance-routing",
+          "target": "2023-combinatorial-optimization-gnn-reasoning"
+        }
+      ]
+    },
+    {
+      "id": "2023-daydreamer-world-models-for-physical-robot-learning--2023-dreamerv3-world-models--cites",
+      "type": "cites",
+      "endpoints": [
+        "2023-daydreamer-world-models-for-physical-robot-learning",
+        "2023-dreamerv3-world-models"
+      ],
+      "parent_id": "2023-daydreamer-world-models-for-physical-robot-learning",
+      "child_id": "2023-dreamerv3-world-models",
+      "parent_title": "DayDreamer",
+      "child_title": "DreamerV3",
+      "authored_links": [
+        {
+          "source": "2023-dreamerv3-world-models",
+          "target": "2023-daydreamer-world-models-for-physical-robot-learning"
+        }
+      ]
+    },
+    {
+      "id": "2023-diffusion-policy-action-diffusion--2024-pi0-vla-flow-model--enables",
+      "type": "enables",
+      "endpoints": [
+        "2023-diffusion-policy-action-diffusion",
+        "2024-pi0-vla-flow-model"
+      ],
+      "parent_id": "2023-diffusion-policy-action-diffusion",
+      "child_id": "2024-pi0-vla-flow-model",
+      "parent_title": "Diffusion Policy",
+      "child_title": "π0",
+      "authored_links": [
+        {
+          "source": "2023-diffusion-policy-action-diffusion",
+          "target": "2024-pi0-vla-flow-model"
+        }
+      ]
+    },
+    {
+      "id": "2023-diffusion-policy-action-diffusion--2026-world-action-models-zero-shot-policies--enables",
+      "type": "enables",
+      "endpoints": [
+        "2023-diffusion-policy-action-diffusion",
+        "2026-world-action-models-zero-shot-policies"
+      ],
+      "parent_id": "2023-diffusion-policy-action-diffusion",
+      "child_id": "2026-world-action-models-zero-shot-policies",
+      "parent_title": "Diffusion Policy",
+      "child_title": "DreamZero / WAM",
+      "authored_links": [
+        {
+          "source": "2023-diffusion-policy-action-diffusion",
+          "target": "2026-world-action-models-zero-shot-policies"
+        }
+      ]
+    },
+    {
+      "id": "2023-diffusion-policy-action-diffusion--2026-fast-wam-test-time-future-imagination--enables",
+      "type": "enables",
+      "endpoints": [
+        "2023-diffusion-policy-action-diffusion",
+        "2026-fast-wam-test-time-future-imagination"
+      ],
+      "parent_id": "2023-diffusion-policy-action-diffusion",
+      "child_id": "2026-fast-wam-test-time-future-imagination",
+      "parent_title": "Diffusion Policy",
+      "child_title": "Fast-WAM",
+      "authored_links": [
+        {
+          "source": "2023-diffusion-policy-action-diffusion",
+          "target": "2026-fast-wam-test-time-future-imagination"
+        }
+      ]
+    },
+    {
+      "id": "2023-diffusion-policy-action-diffusion--2023-rt-2-vla--contrasts",
+      "type": "contrasts",
+      "endpoints": [
+        "2023-diffusion-policy-action-diffusion",
+        "2023-rt-2-vla"
+      ],
+      "parent_id": "2023-diffusion-policy-action-diffusion",
+      "child_id": "2023-rt-2-vla",
+      "parent_title": "Diffusion Policy",
+      "child_title": "RT-2",
+      "authored_links": [
+        {
+          "source": "2023-diffusion-policy-action-diffusion",
+          "target": "2023-rt-2-vla"
+        }
+      ]
+    },
+    {
+      "id": "2021-alphafold2-highly-accurate-structure-prediction--2023-rfdiffusion-protein-structure-function--uses",
+      "type": "uses",
+      "endpoints": [
+        "2021-alphafold2-highly-accurate-structure-prediction",
+        "2023-rfdiffusion-protein-structure-function"
+      ],
+      "parent_id": "2021-alphafold2-highly-accurate-structure-prediction",
+      "child_id": "2023-rfdiffusion-protein-structure-function",
+      "parent_title": "AlphaFold2",
+      "child_title": "RFdiffusion",
+      "authored_links": [
+        {
+          "source": "2023-rfdiffusion-protein-structure-function",
+          "target": "2021-alphafold2-highly-accurate-structure-prediction"
+        }
+      ]
+    },
+    {
+      "id": "2023-rfdiffusion-protein-structure-function--2024-alphafold3-biomolecular-interactions--enables",
+      "type": "enables",
+      "endpoints": [
+        "2023-rfdiffusion-protein-structure-function",
+        "2024-alphafold3-biomolecular-interactions"
+      ],
+      "parent_id": "2023-rfdiffusion-protein-structure-function",
+      "child_id": "2024-alphafold3-biomolecular-interactions",
+      "parent_title": "RFdiffusion",
+      "child_title": "AlphaFold3",
+      "authored_links": [
+        {
+          "source": "2023-rfdiffusion-protein-structure-function",
+          "target": "2024-alphafold3-biomolecular-interactions"
+        }
+      ]
+    },
+    {
+      "id": "2021-hierarchical-scene-graph-navigation-gnn--2023-grid-scene-graph-task-planning--uses",
+      "type": "uses",
+      "endpoints": [
+        "2021-hierarchical-scene-graph-navigation-gnn",
+        "2023-grid-scene-graph-task-planning"
+      ],
+      "parent_id": "2021-hierarchical-scene-graph-navigation-gnn",
+      "child_id": "2023-grid-scene-graph-task-planning",
+      "parent_title": "3DSG Navigation",
+      "child_title": "GRID",
+      "authored_links": [
+        {
+          "source": "2023-grid-scene-graph-task-planning",
+          "target": "2021-hierarchical-scene-graph-navigation-gnn"
+        }
+      ]
+    },
+    {
+      "id": "2023-combinatorial-optimization-gnn-reasoning--2023-grid-scene-graph-task-planning--uses",
+      "type": "uses",
+      "endpoints": [
+        "2023-combinatorial-optimization-gnn-reasoning",
+        "2023-grid-scene-graph-task-planning"
+      ],
+      "parent_id": "2023-combinatorial-optimization-gnn-reasoning",
+      "child_id": "2023-grid-scene-graph-task-planning",
+      "parent_title": "CO + GNN Survey",
+      "child_title": "GRID",
+      "authored_links": [
+        {
+          "source": "2023-grid-scene-graph-task-planning",
+          "target": "2023-combinatorial-optimization-gnn-reasoning"
+        }
+      ]
+    },
+    {
+      "id": "2024-smart-llm-pythonic-task-planning--2025-lip-llm-dependency-graph-planning--enables",
+      "type": "enables",
+      "endpoints": [
+        "2024-smart-llm-pythonic-task-planning",
+        "2025-lip-llm-dependency-graph-planning"
+      ],
+      "parent_id": "2024-smart-llm-pythonic-task-planning",
+      "child_id": "2025-lip-llm-dependency-graph-planning",
+      "parent_title": "SMART-LLM",
+      "child_title": "LiP-LLM",
+      "authored_links": [
+        {
+          "source": "2024-smart-llm-pythonic-task-planning",
+          "target": "2025-lip-llm-dependency-graph-planning"
+        }
+      ]
+    },
+    {
+      "id": "2024-smart-llm-pythonic-task-planning--2025-lip-llm-dependency-graph-planning--contrasts",
+      "type": "contrasts",
+      "endpoints": [
+        "2024-smart-llm-pythonic-task-planning",
+        "2025-lip-llm-dependency-graph-planning"
+      ],
+      "parent_id": "2024-smart-llm-pythonic-task-planning",
+      "child_id": "2025-lip-llm-dependency-graph-planning",
+      "parent_title": "SMART-LLM",
+      "child_title": "LiP-LLM",
+      "authored_links": [
+        {
+          "source": "2024-smart-llm-pythonic-task-planning",
+          "target": "2025-lip-llm-dependency-graph-planning"
+        }
+      ]
+    },
+    {
+      "id": "2021-alphafold2-highly-accurate-structure-prediction--2024-alphafold3-biomolecular-interactions--extends",
+      "type": "extends",
+      "endpoints": [
+        "2021-alphafold2-highly-accurate-structure-prediction",
+        "2024-alphafold3-biomolecular-interactions"
+      ],
+      "parent_id": "2021-alphafold2-highly-accurate-structure-prediction",
+      "child_id": "2024-alphafold3-biomolecular-interactions",
+      "parent_title": "AlphaFold2",
+      "child_title": "AlphaFold3",
+      "authored_links": [
+        {
+          "source": "2024-alphafold3-biomolecular-interactions",
+          "target": "2021-alphafold2-highly-accurate-structure-prediction"
+        }
+      ]
+    },
+    {
+      "id": "2024-alphafold3-biomolecular-interactions--2025-layerdag-diffusion-dag-generation--contrasts",
+      "type": "contrasts",
+      "endpoints": [
+        "2024-alphafold3-biomolecular-interactions",
+        "2025-layerdag-diffusion-dag-generation"
+      ],
+      "parent_id": "2024-alphafold3-biomolecular-interactions",
+      "child_id": "2025-layerdag-diffusion-dag-generation",
+      "parent_title": "AlphaFold3",
+      "child_title": "LayerDAG",
+      "authored_links": [
+        {
+          "source": "2024-alphafold3-biomolecular-interactions",
+          "target": "2025-layerdag-diffusion-dag-generation"
+        }
+      ]
+    },
+    {
+      "id": "2023-rt-2-vla--2024-pi0-vla-flow-model--extends",
+      "type": "extends",
+      "endpoints": [
+        "2023-rt-2-vla",
+        "2024-pi0-vla-flow-model"
+      ],
+      "parent_id": "2023-rt-2-vla",
+      "child_id": "2024-pi0-vla-flow-model",
+      "parent_title": "RT-2",
+      "child_title": "π0",
+      "authored_links": [
+        {
+          "source": "2024-pi0-vla-flow-model",
+          "target": "2023-rt-2-vla"
+        }
+      ]
+    },
+    {
+      "id": "2024-pi0-vla-flow-model--2025-fast-action-tokenization-vla--cites",
+      "type": "cites",
+      "endpoints": [
+        "2024-pi0-vla-flow-model",
+        "2025-fast-action-tokenization-vla"
+      ],
+      "parent_id": "2024-pi0-vla-flow-model",
+      "child_id": "2025-fast-action-tokenization-vla",
+      "parent_title": "π0",
+      "child_title": "FAST",
+      "authored_links": [
+        {
+          "source": "2025-fast-action-tokenization-vla",
+          "target": "2024-pi0-vla-flow-model"
+        }
+      ]
+    },
+    {
+      "id": "2023-unsupervised-task-graph-generation--2025-lip-llm-dependency-graph-planning--uses",
+      "type": "uses",
+      "endpoints": [
+        "2023-unsupervised-task-graph-generation",
+        "2025-lip-llm-dependency-graph-planning"
+      ],
+      "parent_id": "2023-unsupervised-task-graph-generation",
+      "child_id": "2025-lip-llm-dependency-graph-planning",
+      "parent_title": "Unsupervised Task Graphs",
+      "child_title": "LiP-LLM",
+      "authored_links": [
+        {
+          "source": "2025-lip-llm-dependency-graph-planning",
+          "target": "2023-unsupervised-task-graph-generation"
+        }
+      ]
+    },
+    {
+      "id": "2023-grid-scene-graph-task-planning--2025-lip-llm-dependency-graph-planning--contrasts",
+      "type": "contrasts",
+      "endpoints": [
+        "2023-grid-scene-graph-task-planning",
+        "2025-lip-llm-dependency-graph-planning"
+      ],
+      "parent_id": "2023-grid-scene-graph-task-planning",
+      "child_id": "2025-lip-llm-dependency-graph-planning",
+      "parent_title": "GRID",
+      "child_title": "LiP-LLM",
+      "authored_links": [
+        {
+          "source": "2025-lip-llm-dependency-graph-planning",
+          "target": "2023-grid-scene-graph-task-planning"
+        }
+      ]
+    },
+    {
+      "id": "2025-lip-llm-dependency-graph-planning--2025-magnnet-decentralized-task-allocation--contrasts",
+      "type": "contrasts",
+      "endpoints": [
+        "2025-lip-llm-dependency-graph-planning",
+        "2025-magnnet-decentralized-task-allocation"
+      ],
+      "parent_id": "2025-lip-llm-dependency-graph-planning",
+      "child_id": "2025-magnnet-decentralized-task-allocation",
+      "parent_title": "LiP-LLM",
+      "child_title": "MAGNNET",
+      "authored_links": [
+        {
+          "source": "2025-lip-llm-dependency-graph-planning",
+          "target": "2025-magnnet-decentralized-task-allocation"
+        }
+      ]
+    },
+    {
+      "id": "2024-smart-llm-pythonic-task-planning--2025-dart-llm-dependency-aware-task-graph--extends",
+      "type": "extends",
+      "endpoints": [
+        "2024-smart-llm-pythonic-task-planning",
+        "2025-dart-llm-dependency-aware-task-graph"
+      ],
+      "parent_id": "2024-smart-llm-pythonic-task-planning",
+      "child_id": "2025-dart-llm-dependency-aware-task-graph",
+      "parent_title": "SMART-LLM",
+      "child_title": "DART-LLM",
+      "authored_links": [
+        {
+          "source": "2025-dart-llm-dependency-aware-task-graph",
+          "target": "2024-smart-llm-pythonic-task-planning"
+        }
+      ]
+    },
+    {
+      "id": "2025-lip-llm-dependency-graph-planning--2025-dart-llm-dependency-aware-task-graph--contrasts",
+      "type": "contrasts",
+      "endpoints": [
+        "2025-lip-llm-dependency-graph-planning",
+        "2025-dart-llm-dependency-aware-task-graph"
+      ],
+      "parent_id": "2025-lip-llm-dependency-graph-planning",
+      "child_id": "2025-dart-llm-dependency-aware-task-graph",
+      "parent_title": "LiP-LLM",
+      "child_title": "DART-LLM",
+      "authored_links": [
+        {
+          "source": "2025-dart-llm-dependency-aware-task-graph",
+          "target": "2025-lip-llm-dependency-graph-planning"
+        }
+      ]
+    },
+    {
+      "id": "2025-dart-llm-dependency-aware-task-graph--2025-layerdag-diffusion-dag-generation--enables",
+      "type": "enables",
+      "endpoints": [
+        "2025-dart-llm-dependency-aware-task-graph",
+        "2025-layerdag-diffusion-dag-generation"
+      ],
+      "parent_id": "2025-dart-llm-dependency-aware-task-graph",
+      "child_id": "2025-layerdag-diffusion-dag-generation",
+      "parent_title": "DART-LLM",
+      "child_title": "LayerDAG",
+      "authored_links": [
+        {
+          "source": "2025-layerdag-diffusion-dag-generation",
+          "target": "2025-dart-llm-dependency-aware-task-graph"
+        }
+      ]
+    },
+    {
+      "id": "2025-lip-llm-dependency-graph-planning--2025-layerdag-diffusion-dag-generation--enables",
+      "type": "enables",
+      "endpoints": [
+        "2025-lip-llm-dependency-graph-planning",
+        "2025-layerdag-diffusion-dag-generation"
+      ],
+      "parent_id": "2025-lip-llm-dependency-graph-planning",
+      "child_id": "2025-layerdag-diffusion-dag-generation",
+      "parent_title": "LiP-LLM",
+      "child_title": "LayerDAG",
+      "authored_links": [
+        {
+          "source": "2025-layerdag-diffusion-dag-generation",
+          "target": "2025-lip-llm-dependency-graph-planning"
+        }
+      ]
+    },
+    {
+      "id": "2023-unsupervised-task-graph-generation--2025-layerdag-diffusion-dag-generation--contrasts",
+      "type": "contrasts",
+      "endpoints": [
+        "2023-unsupervised-task-graph-generation",
+        "2025-layerdag-diffusion-dag-generation"
+      ],
+      "parent_id": "2023-unsupervised-task-graph-generation",
+      "child_id": "2025-layerdag-diffusion-dag-generation",
+      "parent_title": "Unsupervised Task Graphs",
+      "child_title": "LayerDAG",
+      "authored_links": [
+        {
+          "source": "2025-layerdag-diffusion-dag-generation",
+          "target": "2023-unsupervised-task-graph-generation"
+        }
+      ]
+    },
+    {
+      "id": "2024-pi0-vla-flow-model--2025-pi05-open-world-generalization--extends",
+      "type": "extends",
+      "endpoints": [
+        "2024-pi0-vla-flow-model",
+        "2025-pi05-open-world-generalization"
+      ],
+      "parent_id": "2024-pi0-vla-flow-model",
+      "child_id": "2025-pi05-open-world-generalization",
+      "parent_title": "π0",
+      "child_title": "π0.5",
+      "authored_links": [
+        {
+          "source": "2025-pi05-open-world-generalization",
+          "target": "2024-pi0-vla-flow-model"
+        }
+      ]
+    },
+    {
+      "id": "2025-fast-action-tokenization-vla--2025-pi05-open-world-generalization--uses",
+      "type": "uses",
+      "endpoints": [
+        "2025-fast-action-tokenization-vla",
+        "2025-pi05-open-world-generalization"
+      ],
+      "parent_id": "2025-fast-action-tokenization-vla",
+      "child_id": "2025-pi05-open-world-generalization",
+      "parent_title": "FAST",
+      "child_title": "π0.5",
+      "authored_links": [
+        {
+          "source": "2025-pi05-open-world-generalization",
+          "target": "2025-fast-action-tokenization-vla"
+        }
+      ]
+    },
+    {
+      "id": "2025-heterogeneous-mrta-rl--2025-magnnet-decentralized-task-allocation--uses",
+      "type": "uses",
+      "endpoints": [
+        "2025-heterogeneous-mrta-rl",
+        "2025-magnnet-decentralized-task-allocation"
+      ],
+      "parent_id": "2025-heterogeneous-mrta-rl",
+      "child_id": "2025-magnnet-decentralized-task-allocation",
+      "parent_title": "Heterogeneous MRTA RL",
+      "child_title": "MAGNNET",
+      "authored_links": [
+        {
+          "source": "2025-magnnet-decentralized-task-allocation",
+          "target": "2025-heterogeneous-mrta-rl"
+        }
+      ]
+    },
+    {
+      "id": "2023-combinatorial-optimization-gnn-reasoning--2025-magnnet-decentralized-task-allocation--uses",
+      "type": "uses",
+      "endpoints": [
+        "2023-combinatorial-optimization-gnn-reasoning",
+        "2025-magnnet-decentralized-task-allocation"
+      ],
+      "parent_id": "2023-combinatorial-optimization-gnn-reasoning",
+      "child_id": "2025-magnnet-decentralized-task-allocation",
+      "parent_title": "CO + GNN Survey",
+      "child_title": "MAGNNET",
+      "authored_links": [
+        {
+          "source": "2025-magnnet-decentralized-task-allocation",
+          "target": "2023-combinatorial-optimization-gnn-reasoning"
+        }
+      ]
+    },
+    {
+      "id": "2025-pistar06-recap--2025-pi06-model-card--extends",
+      "type": "extends",
+      "endpoints": [
+        "2025-pistar06-recap",
+        "2025-pi06-model-card"
+      ],
+      "parent_id": "2025-pistar06-recap",
+      "child_id": "2025-pi06-model-card",
+      "parent_title": "π*0.6 / RECAP",
+      "child_title": "π0.6",
+      "authored_links": [
+        {
+          "source": "2025-pistar06-recap",
+          "target": "2025-pi06-model-card"
+        }
+      ]
+    },
+    {
+      "id": "2025-pi05-open-world-generalization--2025-pistar06-recap--uses",
+      "type": "uses",
+      "endpoints": [
+        "2025-pi05-open-world-generalization",
+        "2025-pistar06-recap"
+      ],
+      "parent_id": "2025-pi05-open-world-generalization",
+      "child_id": "2025-pistar06-recap",
+      "parent_title": "π0.5",
+      "child_title": "π*0.6 / RECAP",
+      "authored_links": [
+        {
+          "source": "2025-pistar06-recap",
+          "target": "2025-pi05-open-world-generalization"
+        }
+      ]
+    },
+    {
+      "id": "2024-pi0-vla-flow-model--2025-pistar06-recap--uses",
+      "type": "uses",
+      "endpoints": [
+        "2024-pi0-vla-flow-model",
+        "2025-pistar06-recap"
+      ],
+      "parent_id": "2024-pi0-vla-flow-model",
+      "child_id": "2025-pistar06-recap",
+      "parent_title": "π0",
+      "child_title": "π*0.6 / RECAP",
+      "authored_links": [
+        {
+          "source": "2025-pistar06-recap",
+          "target": "2024-pi0-vla-flow-model"
+        }
+      ]
+    },
+    {
+      "id": "2025-pi05-open-world-generalization--2025-pi06-model-card--extends",
+      "type": "extends",
+      "endpoints": [
+        "2025-pi05-open-world-generalization",
+        "2025-pi06-model-card"
+      ],
+      "parent_id": "2025-pi05-open-world-generalization",
+      "child_id": "2025-pi06-model-card",
+      "parent_title": "π0.5",
+      "child_title": "π0.6",
+      "authored_links": [
+        {
+          "source": "2025-pi06-model-card",
+          "target": "2025-pi05-open-world-generalization"
+        }
+      ]
+    },
+    {
+      "id": "2024-pi0-vla-flow-model--2025-pi06-model-card--extends",
+      "type": "extends",
+      "endpoints": [
+        "2024-pi0-vla-flow-model",
+        "2025-pi06-model-card"
+      ],
+      "parent_id": "2024-pi0-vla-flow-model",
+      "child_id": "2025-pi06-model-card",
+      "parent_title": "π0",
+      "child_title": "π0.6",
+      "authored_links": [
+        {
+          "source": "2025-pi06-model-card",
+          "target": "2024-pi0-vla-flow-model"
+        }
+      ]
+    },
+    {
+      "id": "2024-pyramidal-flow-matching-video--2026-world-action-models-zero-shot-policies--uses",
+      "type": "uses",
+      "endpoints": [
+        "2024-pyramidal-flow-matching-video",
+        "2026-world-action-models-zero-shot-policies"
+      ],
+      "parent_id": "2024-pyramidal-flow-matching-video",
+      "child_id": "2026-world-action-models-zero-shot-policies",
+      "parent_title": "Pyramidal Flow",
+      "child_title": "DreamZero / WAM",
+      "authored_links": [
+        {
+          "source": "2026-world-action-models-zero-shot-policies",
+          "target": "2024-pyramidal-flow-matching-video"
+        }
+      ]
+    },
+    {
+      "id": "2023-dreamerv3-world-models--2026-world-action-models-zero-shot-policies--uses",
+      "type": "uses",
+      "endpoints": [
+        "2023-dreamerv3-world-models",
+        "2026-world-action-models-zero-shot-policies"
+      ],
+      "parent_id": "2023-dreamerv3-world-models",
+      "child_id": "2026-world-action-models-zero-shot-policies",
+      "parent_title": "DreamerV3",
+      "child_title": "DreamZero / WAM",
+      "authored_links": [
+        {
+          "source": "2026-world-action-models-zero-shot-policies",
+          "target": "2023-dreamerv3-world-models"
+        }
+      ]
+    },
+    {
+      "id": "2025-pi05-open-world-generalization--2026-world-action-models-zero-shot-policies--contrasts",
+      "type": "contrasts",
+      "endpoints": [
+        "2025-pi05-open-world-generalization",
+        "2026-world-action-models-zero-shot-policies"
+      ],
+      "parent_id": "2025-pi05-open-world-generalization",
+      "child_id": "2026-world-action-models-zero-shot-policies",
+      "parent_title": "π0.5",
+      "child_title": "DreamZero / WAM",
+      "authored_links": [
+        {
+          "source": "2026-world-action-models-zero-shot-policies",
+          "target": "2025-pi05-open-world-generalization"
+        }
+      ]
+    },
+    {
+      "id": "2024-pi0-vla-flow-model--2026-world-action-models-zero-shot-policies--contrasts",
+      "type": "contrasts",
+      "endpoints": [
+        "2024-pi0-vla-flow-model",
+        "2026-world-action-models-zero-shot-policies"
+      ],
+      "parent_id": "2024-pi0-vla-flow-model",
+      "child_id": "2026-world-action-models-zero-shot-policies",
+      "parent_title": "π0",
+      "child_title": "DreamZero / WAM",
+      "authored_links": [
+        {
+          "source": "2026-world-action-models-zero-shot-policies",
+          "target": "2024-pi0-vla-flow-model"
+        }
+      ]
+    },
+    {
+      "id": "2023-rt-2-vla--2026-world-action-models-zero-shot-policies--contrasts",
+      "type": "contrasts",
+      "endpoints": [
+        "2023-rt-2-vla",
+        "2026-world-action-models-zero-shot-policies"
+      ],
+      "parent_id": "2023-rt-2-vla",
+      "child_id": "2026-world-action-models-zero-shot-policies",
+      "parent_title": "RT-2",
+      "child_title": "DreamZero / WAM",
+      "authored_links": [
+        {
+          "source": "2026-world-action-models-zero-shot-policies",
+          "target": "2023-rt-2-vla"
+        }
+      ]
+    },
+    {
+      "id": "2025-fast-action-tokenization-vla--2026-lap-language-action-pretraining--contrasts",
+      "type": "contrasts",
+      "endpoints": [
+        "2025-fast-action-tokenization-vla",
+        "2026-lap-language-action-pretraining"
+      ],
+      "parent_id": "2025-fast-action-tokenization-vla",
+      "child_id": "2026-lap-language-action-pretraining",
+      "parent_title": "FAST",
+      "child_title": "LAP-3B",
+      "authored_links": [
+        {
+          "source": "2026-lap-language-action-pretraining",
+          "target": "2025-fast-action-tokenization-vla"
+        }
+      ]
+    },
+    {
+      "id": "2024-pi0-vla-flow-model--2026-lap-language-action-pretraining--contrasts",
+      "type": "contrasts",
+      "endpoints": [
+        "2024-pi0-vla-flow-model",
+        "2026-lap-language-action-pretraining"
+      ],
+      "parent_id": "2024-pi0-vla-flow-model",
+      "child_id": "2026-lap-language-action-pretraining",
+      "parent_title": "π0",
+      "child_title": "LAP-3B",
+      "authored_links": [
+        {
+          "source": "2026-lap-language-action-pretraining",
+          "target": "2024-pi0-vla-flow-model"
+        }
+      ]
+    },
+    {
+      "id": "2025-pi05-open-world-generalization--2026-lap-language-action-pretraining--contrasts",
+      "type": "contrasts",
+      "endpoints": [
+        "2025-pi05-open-world-generalization",
+        "2026-lap-language-action-pretraining"
+      ],
+      "parent_id": "2025-pi05-open-world-generalization",
+      "child_id": "2026-lap-language-action-pretraining",
+      "parent_title": "π0.5",
+      "child_title": "LAP-3B",
+      "authored_links": [
+        {
+          "source": "2026-lap-language-action-pretraining",
+          "target": "2025-pi05-open-world-generalization"
+        }
+      ]
+    },
+    {
+      "id": "2026-world-action-models-zero-shot-policies--2026-fast-wam-test-time-future-imagination--contrasts",
+      "type": "contrasts",
+      "endpoints": [
+        "2026-world-action-models-zero-shot-policies",
+        "2026-fast-wam-test-time-future-imagination"
+      ],
+      "parent_id": "2026-world-action-models-zero-shot-policies",
+      "child_id": "2026-fast-wam-test-time-future-imagination",
+      "parent_title": "DreamZero / WAM",
+      "child_title": "Fast-WAM",
+      "authored_links": [
+        {
+          "source": "2026-fast-wam-test-time-future-imagination",
+          "target": "2026-world-action-models-zero-shot-policies"
+        }
+      ]
+    },
+    {
+      "id": "2024-pi0-vla-flow-model--2026-fast-wam-test-time-future-imagination--contrasts",
+      "type": "contrasts",
+      "endpoints": [
+        "2024-pi0-vla-flow-model",
+        "2026-fast-wam-test-time-future-imagination"
+      ],
+      "parent_id": "2024-pi0-vla-flow-model",
+      "child_id": "2026-fast-wam-test-time-future-imagination",
+      "parent_title": "π0",
+      "child_title": "Fast-WAM",
+      "authored_links": [
+        {
+          "source": "2026-fast-wam-test-time-future-imagination",
+          "target": "2024-pi0-vla-flow-model"
+        }
+      ]
+    },
+    {
+      "id": "2025-pi05-open-world-generalization--2026-fast-wam-test-time-future-imagination--contrasts",
+      "type": "contrasts",
+      "endpoints": [
+        "2025-pi05-open-world-generalization",
+        "2026-fast-wam-test-time-future-imagination"
+      ],
+      "parent_id": "2025-pi05-open-world-generalization",
+      "child_id": "2026-fast-wam-test-time-future-imagination",
+      "parent_title": "π0.5",
+      "child_title": "Fast-WAM",
+      "authored_links": [
+        {
+          "source": "2026-fast-wam-test-time-future-imagination",
+          "target": "2025-pi05-open-world-generalization"
+        }
+      ]
+    },
+    {
+      "id": "2025-pi06-model-card--2026-mem-multi-scale-embodied-memory--extends",
+      "type": "extends",
+      "endpoints": [
+        "2025-pi06-model-card",
+        "2026-mem-multi-scale-embodied-memory"
+      ],
+      "parent_id": "2025-pi06-model-card",
+      "child_id": "2026-mem-multi-scale-embodied-memory",
+      "parent_title": "π0.6",
+      "child_title": "MEM",
+      "authored_links": [
+        {
+          "source": "2026-mem-multi-scale-embodied-memory",
+          "target": "2025-pi06-model-card"
+        }
+      ]
+    },
+    {
+      "id": "2025-pi05-open-world-generalization--2026-mem-multi-scale-embodied-memory--uses",
+      "type": "uses",
+      "endpoints": [
+        "2025-pi05-open-world-generalization",
+        "2026-mem-multi-scale-embodied-memory"
+      ],
+      "parent_id": "2025-pi05-open-world-generalization",
+      "child_id": "2026-mem-multi-scale-embodied-memory",
+      "parent_title": "π0.5",
+      "child_title": "MEM",
+      "authored_links": [
+        {
+          "source": "2026-mem-multi-scale-embodied-memory",
+          "target": "2025-pi05-open-world-generalization"
+        }
+      ]
+    },
+    {
+      "id": "2024-pi0-vla-flow-model--2026-mem-multi-scale-embodied-memory--uses",
+      "type": "uses",
+      "endpoints": [
+        "2024-pi0-vla-flow-model",
+        "2026-mem-multi-scale-embodied-memory"
+      ],
+      "parent_id": "2024-pi0-vla-flow-model",
+      "child_id": "2026-mem-multi-scale-embodied-memory",
+      "parent_title": "π0",
+      "child_title": "MEM",
+      "authored_links": [
+        {
+          "source": "2026-mem-multi-scale-embodied-memory",
+          "target": "2024-pi0-vla-flow-model"
+        }
+      ]
+    },
+    {
+      "id": "2026-fast-wam-test-time-future-imagination--2026-psibot-from-human-skill-to-robotic-mastery--contrasts",
+      "type": "contrasts",
+      "endpoints": [
+        "2026-fast-wam-test-time-future-imagination",
+        "2026-psibot-from-human-skill-to-robotic-mastery"
+      ],
+      "parent_id": "2026-fast-wam-test-time-future-imagination",
+      "child_id": "2026-psibot-from-human-skill-to-robotic-mastery",
+      "parent_title": "Fast-WAM",
+      "child_title": "Psi-R2 / Psi-W0",
+      "authored_links": [
+        {
+          "source": "2026-psibot-from-human-skill-to-robotic-mastery",
+          "target": "2026-fast-wam-test-time-future-imagination"
+        }
+      ]
+    },
+    {
+      "id": "2026-world-action-models-zero-shot-policies--2026-psibot-from-human-skill-to-robotic-mastery--cites",
+      "type": "cites",
+      "endpoints": [
+        "2026-world-action-models-zero-shot-policies",
+        "2026-psibot-from-human-skill-to-robotic-mastery"
+      ],
+      "parent_id": "2026-world-action-models-zero-shot-policies",
+      "child_id": "2026-psibot-from-human-skill-to-robotic-mastery",
+      "parent_title": "DreamZero / WAM",
+      "child_title": "Psi-R2 / Psi-W0",
+      "authored_links": [
+        {
+          "source": "2026-psibot-from-human-skill-to-robotic-mastery",
+          "target": "2026-world-action-models-zero-shot-policies"
+        }
+      ]
+    },
+    {
+      "id": "2023-dreamerv3-world-models--2026-psibot-from-human-skill-to-robotic-mastery--cites",
+      "type": "cites",
+      "endpoints": [
+        "2023-dreamerv3-world-models",
+        "2026-psibot-from-human-skill-to-robotic-mastery"
+      ],
+      "parent_id": "2023-dreamerv3-world-models",
+      "child_id": "2026-psibot-from-human-skill-to-robotic-mastery",
+      "parent_title": "DreamerV3",
+      "child_title": "Psi-R2 / Psi-W0",
+      "authored_links": [
+        {
+          "source": "2026-psibot-from-human-skill-to-robotic-mastery",
+          "target": "2023-dreamerv3-world-models"
+        }
+      ]
+    },
+    {
+      "id": "2026-genswarm-multi-robot-code-policy--2026-foundation-models-robot-swarms--cites",
+      "type": "cites",
+      "endpoints": [
+        "2026-genswarm-multi-robot-code-policy",
+        "2026-foundation-models-robot-swarms"
+      ],
+      "parent_id": "2026-genswarm-multi-robot-code-policy",
+      "child_id": "2026-foundation-models-robot-swarms",
+      "parent_title": "GenSwarm",
+      "child_title": "FM Swarms Viewpoint",
+      "authored_links": [
+        {
+          "source": "2026-foundation-models-robot-swarms",
+          "target": "2026-genswarm-multi-robot-code-policy"
+        }
+      ]
+    },
+    {
+      "id": "2026-mem-multi-scale-embodied-memory--2026-pi07-steerable-generalist-robotic-foundation-model--extends",
+      "type": "extends",
+      "endpoints": [
+        "2026-mem-multi-scale-embodied-memory",
+        "2026-pi07-steerable-generalist-robotic-foundation-model"
+      ],
+      "parent_id": "2026-mem-multi-scale-embodied-memory",
+      "child_id": "2026-pi07-steerable-generalist-robotic-foundation-model",
+      "parent_title": "MEM",
+      "child_title": "π0.7",
+      "authored_links": [
+        {
+          "source": "2026-pi07-steerable-generalist-robotic-foundation-model",
+          "target": "2026-mem-multi-scale-embodied-memory"
+        }
+      ]
+    },
+    {
+      "id": "2025-pistar06-recap--2026-pi07-steerable-generalist-robotic-foundation-model--extends",
+      "type": "extends",
+      "endpoints": [
+        "2025-pistar06-recap",
+        "2026-pi07-steerable-generalist-robotic-foundation-model"
+      ],
+      "parent_id": "2025-pistar06-recap",
+      "child_id": "2026-pi07-steerable-generalist-robotic-foundation-model",
+      "parent_title": "π*0.6 / RECAP",
+      "child_title": "π0.7",
+      "authored_links": [
+        {
+          "source": "2026-pi07-steerable-generalist-robotic-foundation-model",
+          "target": "2025-pistar06-recap"
+        }
+      ]
+    },
+    {
+      "id": "2025-pi06-model-card--2026-pi07-steerable-generalist-robotic-foundation-model--extends",
+      "type": "extends",
+      "endpoints": [
+        "2025-pi06-model-card",
+        "2026-pi07-steerable-generalist-robotic-foundation-model"
+      ],
+      "parent_id": "2025-pi06-model-card",
+      "child_id": "2026-pi07-steerable-generalist-robotic-foundation-model",
+      "parent_title": "π0.6",
+      "child_title": "π0.7",
+      "authored_links": [
+        {
+          "source": "2026-pi07-steerable-generalist-robotic-foundation-model",
+          "target": "2025-pi06-model-card"
+        }
+      ]
+    },
+    {
+      "id": "2025-pi05-open-world-generalization--2026-pi07-steerable-generalist-robotic-foundation-model--uses",
+      "type": "uses",
+      "endpoints": [
+        "2025-pi05-open-world-generalization",
+        "2026-pi07-steerable-generalist-robotic-foundation-model"
+      ],
+      "parent_id": "2025-pi05-open-world-generalization",
+      "child_id": "2026-pi07-steerable-generalist-robotic-foundation-model",
+      "parent_title": "π0.5",
+      "child_title": "π0.7",
+      "authored_links": [
+        {
+          "source": "2026-pi07-steerable-generalist-robotic-foundation-model",
+          "target": "2025-pi05-open-world-generalization"
+        }
+      ]
+    },
+    {
+      "id": "2024-pi0-vla-flow-model--2026-pi07-steerable-generalist-robotic-foundation-model--uses",
+      "type": "uses",
+      "endpoints": [
+        "2024-pi0-vla-flow-model",
+        "2026-pi07-steerable-generalist-robotic-foundation-model"
+      ],
+      "parent_id": "2024-pi0-vla-flow-model",
+      "child_id": "2026-pi07-steerable-generalist-robotic-foundation-model",
+      "parent_title": "π0",
+      "child_title": "π0.7",
+      "authored_links": [
+        {
+          "source": "2026-pi07-steerable-generalist-robotic-foundation-model",
+          "target": "2024-pi0-vla-flow-model"
+        }
+      ]
+    }
+  ]
+}
