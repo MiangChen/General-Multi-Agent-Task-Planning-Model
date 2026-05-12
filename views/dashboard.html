@@ -1438,7 +1438,7 @@
 
   <main class="page">
     <section class="hero">
-      <div class="eyebrow">Obsidian-first paper repository · generated 2026/5/12 21:59:43</div>
+      <div class="eyebrow">Obsidian-first paper repository · generated 2026/5/12 22:14:57</div>
       <h1>通用多智能体任务规划模型研究图谱</h1>
       <p>基于 Markdown note 的 typed relations 自动生成。当前版本聚焦 VLA、π 系列、World Action Model 和 Dreamer，把论文定位为端到端多智能体任务规划模型里的执行器、世界模拟器、planner critic、记忆模块或任务分配器。</p>
 
@@ -3234,15 +3234,15 @@
       <div class="section-head">
         <div>
           <h2>团队甘特图</h2>
-          <p>当前节奏：前两周全员读论文，目标是形成路线判断、论文索引标准和研究问题；暂时不安排复现任务。GenSwarm 已经做过，不再作为当前甘特图任务。 数据源是 <code>team/roadmap.json</code>，后续改排期只需要更新结构化任务。</p>
+          <p>当前节奏：陈明阳从 2026-05-11 起按 DDPM 主线 -&gt; guidance / score 理论 -&gt; 离散 graph diffusion -&gt; planning diffusion -&gt; 阶段性总结推进。目标是判断 diffusion 是否能作为任务规划图生成器，而不是只停留在连续动作生成。 数据源是 <code>team/roadmap.json</code>，后续改排期只需要更新结构化任务。</p>
         </div>
-        <div class="team-range">2026-05-01 -&gt; 2026-06-05</div>
+        <div class="team-range">2026-05-11 -&gt; 2026-05-16</div>
       </div>
       <div class="team-summary">
         <span>6 人团队</span>
         <span>1 人当前排期</span>
-        <span>4 个任务</span>
-        <span>36 天窗口</span>
+        <span>6 个任务</span>
+        <span>6 天窗口</span>
       </div>
 
       <div class="team-roster">
@@ -3256,92 +3256,106 @@
               <h3>陈明阳</h3>
               <p>总工程：研究问题、技术路线、仓库架构与团队节奏</p>
             </div>
-            <span>4 个任务</span>
+            <span>6 个任务</span>
           </div>
           <div class="gantt-grid">
             <div class="gantt-axis-label">任务</div>
             <div class="gantt-axis">
         <span class="gantt-tick" style="--x:0%">
-          <i></i><b>05/01</b>
+          <i></i><b>05/11</b>
         </span>
 
-        <span class="gantt-tick" style="--x:19.444444444444446%">
-          <i></i><b>05/08</b>
-        </span>
-
-        <span class="gantt-tick" style="--x:38.88888888888889%">
-          <i></i><b>05/15</b>
-        </span>
-
-        <span class="gantt-tick" style="--x:58.333333333333336%">
-          <i></i><b>05/22</b>
-        </span>
-
-        <span class="gantt-tick" style="--x:77.77777777777779%">
-          <i></i><b>05/29</b>
-        </span>
-
-        <span class="gantt-tick" style="--x:97.22222222222221%">
-          <i></i><b>06/05</b>
+        <span class="gantt-tick" style="--x:100%">
+          <i></i><b>05/16</b>
         </span>
       </div>
 
             <div class="gantt-row">
               <div class="gantt-task-label">
-                <strong>前两周全员读论文</strong>
-                <span>VLA / Diffusion / WAM / World Model / Swarm overview 读书判断</span>
+                <strong>DDPM -&gt; DDIM</strong>
+                <span>理解 DDPM forward/reverse process、DDIM 少步采样与确定性采样</span>
               </div>
               <div class="gantt-track">
                 <div class="gantt-bar status-active"
-                  style="--left:0%; --width:38.88888888888889%"
-                  title="前两周全员读论文 · 2026-05-01 - 2026-05-14">
-                  <span>前两周全员读论文</span>
-                  <em>05/01-05/14</em>
+                  style="--left:0%; --width:16.666666666666664%"
+                  title="DDPM -&gt; DDIM · 2026-05-11 - 2026-05-11">
+                  <span>DDPM -&gt; DDIM</span>
+                  <em>05/11-05/11</em>
                 </div>
               </div>
             </div>
 
             <div class="gantt-row">
               <div class="gantt-task-label">
-                <strong>No.1 仓库标准与索引规范</strong>
-                <span>论文 note 标准、关系图规则、证据等级规则</span>
+                <strong>Improved DDPM 与 guidance</strong>
+                <span>梳理 variance、noise schedule、训练目标；对比 classifier guidance 与 CFG</span>
               </div>
               <div class="gantt-track">
                 <div class="gantt-bar status-active"
-                  style="--left:11.11111111111111%; --width:27.77777777777778%"
-                  title="No.1 仓库标准与索引规范 · 2026-05-05 - 2026-05-14">
-                  <span>No.1 仓库标准与索引规范</span>
-                  <em>05/05-05/14</em>
+                  style="--left:16.666666666666664%; --width:16.666666666666664%"
+                  title="Improved DDPM 与 guidance · 2026-05-12 - 2026-05-12">
+                  <span>Improved DDPM 与 guidance</span>
+                  <em>05/12-05/12</em>
                 </div>
               </div>
             </div>
 
             <div class="gantt-row">
               <div class="gantt-task-label">
-                <strong>总工程架构草案</strong>
-                <span>general multi-agent model 模块图与数据流</span>
+                <strong>Score SDE 理论补线</strong>
+                <span>用 Score SDE 统一 epsilon prediction、score、SDE / ODE sampler；NCSN 作为背景快读</span>
               </div>
               <div class="gantt-track">
-                <div class="gantt-bar status-planned"
-                  style="--left:38.88888888888889%; --width:22.22222222222222%"
-                  title="总工程架构草案 · 2026-05-15 - 2026-05-22">
-                  <span>总工程架构草案</span>
-                  <em>05/15-05/22</em>
+                <div class="gantt-bar status-active"
+                  style="--left:33.33333333333333%; --width:16.666666666666664%"
+                  title="Score SDE 理论补线 · 2026-05-13 - 2026-05-13">
+                  <span>Score SDE 理论补线</span>
+                  <em>05/13-05/13</em>
                 </div>
               </div>
             </div>
 
             <div class="gantt-row">
               <div class="gantt-task-label">
-                <strong>研究问题与实验路线收敛</strong>
-                <span>问题定义、核心假设、后续实验优先级</span>
+                <strong>离散 Graph Diffusion</strong>
+                <span>D3PM / DiGress / LayerDAG：节点、边、categorical noise、graph validity 与 DAG 约束</span>
               </div>
               <div class="gantt-track">
                 <div class="gantt-bar status-planned"
-                  style="--left:61.111111111111114%; --width:38.88888888888889%"
-                  title="研究问题与实验路线收敛 · 2026-05-23 - 2026-06-05">
-                  <span>研究问题与实验路线收敛</span>
-                  <em>05/23-06/05</em>
+                  style="--left:50%; --width:16.666666666666664%"
+                  title="离散 Graph Diffusion · 2026-05-14 - 2026-05-14">
+                  <span>离散 Graph Diffusion</span>
+                  <em>05/14-05/14</em>
+                </div>
+              </div>
+            </div>
+
+            <div class="gantt-row">
+              <div class="gantt-task-label">
+                <strong>Planning Diffusion -&gt; Task Graph</strong>
+                <span>读 Diffuser / Decision Diffuser，并把 trajectory diffusion 改写为 task node / dependency edge / constraint graph schema</span>
+              </div>
+              <div class="gantt-track">
+                <div class="gantt-bar status-planned"
+                  style="--left:66.66666666666666%; --width:16.666666666666664%"
+                  title="Planning Diffusion -&gt; Task Graph · 2026-05-15 - 2026-05-15">
+                  <span>Planning Diffusion -&gt; Task Graph</span>
+                  <em>05/15-05/15</em>
+                </div>
+              </div>
+            </div>
+
+            <div class="gantt-row">
+              <div class="gantt-task-label">
+                <strong>阶段性总结 PDF</strong>
+                <span>输出一份 PDF：diffusion 到离散 task graph generation 的技术路线、论文依据、风险和下一步实验</span>
+              </div>
+              <div class="gantt-track">
+                <div class="gantt-bar status-review"
+                  style="--left:83.33333333333334%; --width:16.666666666666664%"
+                  title="阶段性总结 PDF · 2026-05-16 - 2026-05-16">
+                  <span>阶段性总结 PDF</span>
+                  <em>05/16-05/16</em>
                 </div>
               </div>
             </div>
