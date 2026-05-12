@@ -20,6 +20,8 @@ tags: [multi-agent, task planning, VLA, world model, end-to-end model]
 
 ## 相关论文
 
+- [[scene-task-graphs]]
+- [[structure-generation]]
 - [[2026-foundation-models-robot-swarms]]
 - [[2026-genswarm-multi-robot-code-policy]]
 - [[2025-heterogeneous-mrta-rl]]

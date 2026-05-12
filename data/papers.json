@@ -1,5 +1,109 @@
 [
   {
+    "id": "2020-alphafold-potentials-deep-learning",
+    "title": "Improved protein structure prediction using potentials from deep learning",
+    "short_title": "AlphaFold1",
+    "year": 2020,
+    "published": "2020-01",
+    "venue": "Nature",
+    "status": "skimmed",
+    "scope": "candidate",
+    "readiness": "medium",
+    "action": "build_note",
+    "tech_paradigm": "protein_structure_prediction_potentials",
+    "primary_domain": "Structure Generation",
+    "domains": [
+      "Structure Generation",
+      "Scientific AI",
+      "Pair Representation"
+    ],
+    "primary_technical_layer": "structure_prediction",
+    "primary_task_family": "protein_structure_prediction",
+    "platform": "protein_folding",
+    "planning_relevance": "AlphaFold1 是从 pairwise distance/contact 预测到结构优化的早期路线。对 TOPG 的价值主要是说明 pair relation 可以作为结构生成的中间约束，但它还不是 AF2/AF3 那种端到端 trunk + structure module 范式。",
+    "multi_robot_relevance": "间接相关。它提示 TOPG 不一定要直接输出完整计划，可以先预测节点对之间的约束势能或关系分布，再通过后续优化/生成模块形成结构。",
+    "system_roles": [
+      "structure_predictor",
+      "pair_relation_prior"
+    ],
+    "reusable_modules": [
+      "distance_distribution_prediction",
+      "pairwise_constraint_potential",
+      "structure_refinement_from_pair_constraints"
+    ],
+    "evidence_level": "skimmed",
+    "next_action": "compare_af1_af2_architecture_shift",
+    "tags": [
+      "AlphaFold",
+      "AlphaFold1",
+      "protein structure prediction",
+      "pairwise distance",
+      "potentials",
+      "CASP13"
+    ],
+    "authors": [
+      "Andrew W. Senior",
+      "Richard Evans",
+      "John Jumper",
+      "James Kirkpatrick",
+      "Laurent Sifre",
+      "Tim Green",
+      "Chongli Qin",
+      "Augustin Žídek",
+      "Alexander W. R. Nelson",
+      "Alex Bridgland",
+      "Hugo Penedones",
+      "Stig Petersen",
+      "Karen Simonyan",
+      "Steve Crossan",
+      "Pushmeet Kohli",
+      "David T. Jones",
+      "David Silver",
+      "Koray Kavukcuoglu",
+      "Demis Hassabis"
+    ],
+    "institutions": [
+      "DeepMind",
+      "Francis Crick Institute",
+      "University College London"
+    ],
+    "doi": "10.1038/s41586-019-1923-7",
+    "arxiv": "",
+    "url": "https://www.nature.com/articles/s41586-019-1923-7",
+    "project_url": "https://github.com/deepmind/deepmind-research/tree/master/alphafold_casp13",
+    "image_url": "",
+    "zotero_key": "",
+    "citekey": "senior2020alphafold",
+    "cites": [],
+    "extends": [],
+    "uses": [],
+    "enables": [
+      "2021-alphafold2-highly-accurate-structure-prediction"
+    ],
+    "complements": [],
+    "contrasts": [],
+    "published_value": 24240,
+    "relations": [
+      {
+        "type": "enables",
+        "target": "2021-alphafold2-highly-accurate-structure-prediction"
+      }
+    ],
+    "file": "papers/2020-alphafold-potentials-deep-learning.md",
+    "note_html": "notes/2020-alphafold-potentials-deep-learning.html",
+    "summary": "AlphaFold1 是 AlphaFold 系列的历史起点：它用深度网络预测残基间距离分布，并把这些 pairwise predictions 转成结构优化的势能函数。对 TOPG 的启发是 “先预测关系约束，再生成结构”，但它还不是我们最想参考的 AF3-style 结构生成架构。",
+    "research_question": "给定蛋白质氨基酸序列，能否不依赖昂贵实验测定，预测蛋白质三维结构。传统方法严重依赖模板、物理采样和共进化分析；AlphaFold1 的问题意识是用深度学习直接学习残基对之间的距离约束。",
+    "method": "模型预测 residue-residue distance distribution，而不是只预测 contact map。然后把预测出的距离信息转换成 potential of mean force，并结合梯度下降等结构优化过程得到 3D protein model。",
+    "contribution": "第一，AlphaFold1 把深度学习预测的 pairwise distance 从辅助信号提升为结构优化的核心约束。\n\n第二，它在 CASP13 中显著超过传统方法，证明 learned pair constraints 可以带来结构预测跃迁。\n\n第三，它为后续 AF2 的 pair representation 和端到端结构模块奠定了问题表述基础。",
+    "reading_highlights": "",
+    "limitation": "AlphaFold1 仍然是 “预测约束 + 优化结构” 的路线，模块之间不如 AF2/AF3 端到端。对我们做 TOPG 来说，它更像历史铺垫，不是直接可复用主架构。",
+    "relation": "AlphaFold2 继承了 pairwise relation 的重要性，但把模型改造成 end-to-end differentiable 的 single/pair representation、Evoformer 和 structure module。AlphaFold3 进一步扩展到多分子 token、Pairformer 和 diffusion-based structure generation。",
+    "planning_insight": "TOPG 可以从 AlphaFold1 借鉴 “关系约束先行” 的思想：先预测 task-task、task-skill、task-location、agent-skill 等 pairwise compatibility 或 dependency potential，再由生成/优化模块形成完整 task graph。",
+    "reusable_module_text": "distance_distribution_prediction、pairwise_constraint_potential、structure_refinement_from_pair_constraints。",
+    "evidence_risk": "Nature 论文报告 AlphaFold 在 CASP13 中对 free modelling domains 有明显领先。风险是这个证据来自蛋白结构预测，不能直接推出 TOPG 规划成功；迁移时只能借鉴表示和优化范式。",
+    "open_question": "TOPG 的 pairwise potential 是否应该显式建成可解释的打分矩阵，还是作为 neural pair representation 留在模型内部。"
+  },
+  {
     "id": "2020-robognn-multi-robot-scheduling-gat",
     "title": "Learning Scheduling Policies for Multi-Robot Coordination With Graph Attention Networks",
     "short_title": "RoboGNN Scheduler",
@@ -178,6 +282,138 @@
     "reusable_module_text": "hierarchical 3D scene graph pruning、8-direction action layer、collision-checked action nodes、10D node feature schema、explicit visit memory、3-step GNN message passing、action-node readout policy。",
     "evidence_risk": "论文在 multi-object search 任务中和常见 visuomotor policy 对比，展示了 3D Scene Graph 表示、层级信息和 explicit memory 对搜索效率和泛化的提升。消融结果也支持 room / object 等高层节点对导航目标选择有帮助。\n\n风险在于实验仍然是导航类任务，且依赖模拟环境和 DSG 构建流程。要用于真实多机器人任务规划，还需要补充动态图更新、跨机器人 map fusion、通信延迟、行动冲突和执行失败反馈。",
     "open_question": "- action node 是否只能是 8 个方向，还是可以扩展成导航、抓取、观察、等待等多类型 action layer？\n- 多机器人系统中，每个机器人独立生成 action layer，还是共享一个联合 action graph？\n- explicit visit memory 如何区分“我访问过”和“队友访问过”？\n- 如果 scene graph 中的语义节点错误，GNN policy 是否有纠错机制？"
+  },
+  {
+    "id": "2021-alphafold2-highly-accurate-structure-prediction",
+    "title": "Highly accurate protein structure prediction with AlphaFold",
+    "short_title": "AlphaFold2",
+    "year": 2021,
+    "published": "2021-08",
+    "venue": "Nature",
+    "status": "read",
+    "scope": "candidate",
+    "readiness": "high",
+    "action": "extract_system_architecture",
+    "tech_paradigm": "protein_structure_prediction_pairformer_precursor",
+    "primary_domain": "Structure Generation",
+    "domains": [
+      "Structure Generation",
+      "Scientific AI",
+      "Pair Representation",
+      "Transformer"
+    ],
+    "primary_technical_layer": "structure_prediction",
+    "primary_task_family": "protein_structure_prediction",
+    "platform": "protein_folding",
+    "planning_relevance": "AlphaFold2 的 single representation、pair representation、Evoformer、recycling 和 confidence heads 是 TOPG-Pairformer 的核心参考。它说明复杂结构生成可以通过 token 表示和 pair relation 表示共同更新，而不是只靠序列模型。",
+    "multi_robot_relevance": "间接但重要。TOPG 可把 scene、agent、skill、task-slot 都当 token，并把 task-task、task-skill、task-scene、agent-skill 关系放入 pair representation，形成规划结构生成模型。",
+    "system_roles": [
+      "structure_predictor",
+      "pair_representation_encoder",
+      "confidence_estimator",
+      "architecture_reference"
+    ],
+    "reusable_modules": [
+      "single_representation",
+      "pair_representation",
+      "evoformer_trunk",
+      "recycling_loop",
+      "structure_module",
+      "confidence_head"
+    ],
+    "evidence_level": "paper_read",
+    "next_action": "map_af2_single_pair_to_topg_schema",
+    "tags": [
+      "AlphaFold2",
+      "protein structure prediction",
+      "single representation",
+      "pair representation",
+      "Evoformer",
+      "recycling",
+      "confidence"
+    ],
+    "authors": [
+      "John Jumper",
+      "Richard Evans",
+      "Alexander Pritzel",
+      "Tim Green",
+      "Michael Figurnov",
+      "Olaf Ronneberger",
+      "Kathryn Tunyasuvunakool",
+      "Russ Bates",
+      "Augustin Žídek",
+      "Anna Potapenko",
+      "Alex Bridgland",
+      "Clemens Meyer",
+      "Simon A. A. Kohl",
+      "Andrew J. Ballard",
+      "Andrew Cowie",
+      "Bernardino Romera-Paredes",
+      "Stanislav Nikolov",
+      "Rishub Jain",
+      "Jonas Adler",
+      "Trevor Back",
+      "Stig Petersen",
+      "David Reiman",
+      "Ellen Clancy",
+      "Michal Zielinski",
+      "Martin Steinegger",
+      "Michalina Pacholska",
+      "Tamas Berghammer",
+      "Sebastian Bodenstein",
+      "David Silver",
+      "Oriol Vinyals",
+      "Andrew W. Senior",
+      "Koray Kavukcuoglu",
+      "Pushmeet Kohli",
+      "Demis Hassabis"
+    ],
+    "institutions": [
+      "DeepMind"
+    ],
+    "doi": "10.1038/s41586-021-03819-2",
+    "arxiv": "",
+    "url": "https://www.nature.com/articles/s41586-021-03819-2",
+    "project_url": "https://github.com/google-deepmind/alphafold",
+    "image_url": "",
+    "zotero_key": "",
+    "citekey": "jumper2021alphafold",
+    "cites": [
+      "2020-alphafold-potentials-deep-learning"
+    ],
+    "extends": [
+      "2020-alphafold-potentials-deep-learning"
+    ],
+    "uses": [],
+    "enables": [
+      "2024-alphafold3-biomolecular-interactions"
+    ],
+    "complements": [],
+    "contrasts": [],
+    "published_value": 24259,
+    "relations": [
+      {
+        "type": "extends",
+        "target": "2020-alphafold-potentials-deep-learning"
+      },
+      {
+        "type": "enables",
+        "target": "2024-alphafold3-biomolecular-interactions"
+      }
+    ],
+    "file": "papers/2021-alphafold2-highly-accurate-structure-prediction.md",
+    "note_html": "notes/2021-alphafold2-highly-accurate-structure-prediction.html",
+    "summary": "AlphaFold2 是 TOPG 架构最重要的前序参考之一：它把蛋白结构预测变成 single representation 和 pair representation 的共同更新问题，并通过 Evoformer、structure module、recycling 和 confidence head 形成端到端结构预测系统。",
+    "research_question": "如何从氨基酸序列以及同源序列信息中预测接近实验精度的蛋白质三维结构。\n\n对我们来说，论文真正有价值的问题不是蛋白质本身，而是：复杂结构对象能否通过 token 表示、pair relation 表示和 iterative refinement 被模型化。",
+    "method": "AlphaFold2 使用 MSA representation 和 pair representation 作为核心状态。Evoformer 在 MSA 维度和 residue pair 维度上反复交换信息，structure module 输出 3D structure，recycling 机制把预测结果反馈回模型继续 refine。\n\n模型还输出 pLDDT、PAE 等置信度指标，用来判断预测结构局部和全局是否可靠。",
+    "contribution": "第一，pair representation 成为结构预测的中心对象。模型不是只看每个 residue 的独立 token，而是显式维护 residue-residue 的关系状态。\n\n第二，Evoformer 提供了 single/MSA 与 pair 信息交互的强 trunk，使结构关系可以层层 refine。\n\n第三，confidence head 让模型输出不仅是结构，还包含可用于筛选和解释的可信度。",
+    "reading_highlights": "",
+    "limitation": "AlphaFold2 强依赖 MSA 和蛋白质领域先验。TOPG 没有天然 MSA，不能照搬。TOPG 的节点类型更杂、语义更多、规模可能更大，因此 pair representation 需要 typed block 或 sparse/dense hybrid 设计。",
+    "relation": "AlphaFold2 是 AlphaFold1 的端到端重构：从 “pair distance potential + optimization” 升级到 “single/pair trunk + structure module”。AlphaFold3 则在 AF2 基础上去掉对蛋白单一类型的限制，转向统一 biomolecular tokens、Pairformer 和 diffusion structure module。",
+    "planning_insight": "TOPG 可以把开放任务规划建模为结构生成：\n\n```text\nintent / scene / agent / skill / feedback / task-slot tokens\n  -> single node representation\n  -> typed pair representation\n  -> TOPG-Pairformer refinement\n  -> plan graph decoder / confidence head\n```\n\n其中 pair representation 对应 task-skill、task-scene、task-agent、task-task、feedback-task 等关系。",
+    "reusable_module_text": "single_representation、pair_representation、evoformer_trunk、recycling_loop、structure_module、confidence_head。",
+    "evidence_risk": "论文在 CASP14 中展示了接近实验结构的预测精度，Nature 论文将其作为蛋白结构预测的重要突破。风险是 TOPG 没有 MSA，也没有连续三维几何作为强归纳偏置；迁移时应保留 single/pair/refinement/confidence 的架构思想，而不是复制蛋白质特定模块。",
+    "open_question": "TOPG 的 pair representation 是否应该全连接。H100 允许 1000 节点级 dense pair 实验，但最终主干可能仍需要 typed block + sparse candidate decoder，避免语义噪声和类别不平衡。"
   },
   {
     "id": "2022-learned-subteam-performance-routing",
@@ -648,6 +884,134 @@
     "open_question": "如何把多机器人任务规划统一表示成 variable-constraint graph 或 task-agent graph，并让 GNN 输出 planner 可用的启发式信号，而不是直接输出一个难以保证可行性的端到端计划。"
   },
   {
+    "id": "2023-rfdiffusion-protein-structure-function",
+    "title": "De novo design of protein structure and function with RFdiffusion",
+    "short_title": "RFdiffusion",
+    "year": 2023,
+    "published": "2023-07",
+    "venue": "Nature",
+    "status": "read",
+    "scope": "candidate",
+    "readiness": "high",
+    "action": "extract_structure_first_generation",
+    "tech_paradigm": "protein_backbone_diffusion_generation",
+    "primary_domain": "Structure Generation",
+    "domains": [
+      "Structure Generation",
+      "Scientific AI",
+      "Diffusion",
+      "Pair Representation"
+    ],
+    "primary_technical_layer": "structure_generation",
+    "primary_task_family": "de_novo_protein_backbone_design",
+    "platform": "protein_design",
+    "planning_relevance": "RFdiffusion 是 TOPG “先生成结构，再补全执行细节” 思路的重要参考。它从约束、motif 或噪声 backbone 出发，用 diffusion 生成可设计的蛋白结构；TOPG 可类比为从 intent/scene/agent/skill 条件出发生成 task graph scaffold，再补全 skill、agent、location 和 temporal fields。",
+    "multi_robot_relevance": "间接但架构价值高。它提示多机器人任务规划可以先生成满足约束的任务图骨架，再由 allocation/scheduling/executor 模块补全具体机器人、时间和动作参数。",
+    "system_roles": [
+      "structure_generator",
+      "diffusion_generator",
+      "architecture_reference",
+      "graph_prior_model"
+    ],
+    "reusable_modules": [
+      "structure_first_generation",
+      "motif_conditioned_diffusion",
+      "scaffold_generation",
+      "denoising_trajectory",
+      "constraint_conditioning"
+    ],
+    "evidence_level": "paper_read",
+    "next_action": "map_rfdiffusion_scaffold_to_topg_task_graph_scaffold",
+    "tags": [
+      "RFdiffusion",
+      "RoseTTAFold",
+      "protein design",
+      "diffusion",
+      "structure generation",
+      "scaffold generation",
+      "motif conditioning"
+    ],
+    "authors": [
+      "Joseph L. Watson",
+      "David Juergens",
+      "Nathaniel R. Bennett",
+      "Brian L. Trippe",
+      "Jason Yim",
+      "Helen E. Eisenach",
+      "Woody Ahern",
+      "Andrew J. Borst",
+      "Robert J. Ragotte",
+      "Lukas F. Milles",
+      "Basile I. M. Wicky",
+      "Nikita Hanikel",
+      "Samuel J. Pellock",
+      "Alexis Courbet",
+      "William Sheffler",
+      "Jue Wang",
+      "Preetham Venkatesh",
+      "Iva Sappington",
+      "Susana Vázquez Torres",
+      "Anna Lauko",
+      "Valentin De Bortoli",
+      "Emile Mathieu",
+      "Regina Barzilay",
+      "Tommi S. Jaakkola",
+      "Frank DiMaio",
+      "Minkyung Baek",
+      "David Baker"
+    ],
+    "institutions": [
+      "University of Washington",
+      "Institute for Protein Design",
+      "Massachusetts Institute of Technology"
+    ],
+    "doi": "10.1038/s41586-023-06415-8",
+    "arxiv": "",
+    "url": "https://www.nature.com/articles/s41586-023-06415-8",
+    "project_url": "https://github.com/RosettaCommons/RFdiffusion",
+    "image_url": "",
+    "zotero_key": "",
+    "citekey": "watson2023rfdiffusion",
+    "cites": [
+      "2021-alphafold2-highly-accurate-structure-prediction"
+    ],
+    "extends": [],
+    "uses": [
+      "2021-alphafold2-highly-accurate-structure-prediction"
+    ],
+    "enables": [
+      "2024-alphafold3-biomolecular-interactions"
+    ],
+    "complements": [
+      "2025-layerdag-diffusion-dag-generation"
+    ],
+    "contrasts": [],
+    "published_value": 24282,
+    "relations": [
+      {
+        "type": "uses",
+        "target": "2021-alphafold2-highly-accurate-structure-prediction"
+      },
+      {
+        "type": "enables",
+        "target": "2024-alphafold3-biomolecular-interactions"
+      }
+    ],
+    "file": "papers/2023-rfdiffusion-protein-structure-function.md",
+    "note_html": "notes/2023-rfdiffusion-protein-structure-function.html",
+    "summary": "RFdiffusion 是 “结构先行” 生成范式的关键参考：它不是先生成蛋白序列，而是先用 diffusion 生成满足 motif、拓扑或功能约束的 protein backbone，再把序列设计和实验验证接在后面。",
+    "research_question": "蛋白设计不只是预测一个已知序列会折叠成什么结构，还要从功能目标出发设计一个新的结构。传统路线依赖人工 scaffold 搜索、物理采样和大量筛选，难以稳定生成复杂拓扑或功能位点约束下的新结构。\n\nRFdiffusion 关心的问题是：能不能把 RoseTTAFold 学到的结构先验转成 diffusion 生成器，让模型从噪声结构逐步去噪，生成满足条件的新蛋白 backbone。",
+    "method": "RFdiffusion 在蛋白 backbone 结构上做去噪生成。输入可以是纯噪声，也可以包含固定 motif、对称约束、binder target 或 partial structure。模型在多个 diffusion step 中逐步修正坐标和结构关系，最终输出一个 protein backbone scaffold。\n\n生成 backbone 后，系统通常再用 ProteinMPNN 等序列设计模型为 backbone 填充 amino acid sequence，并通过 AlphaFold/RoseTTAFold 预测和实验筛选验证结构是否可靠。",
+    "contribution": "第一，它把 RoseTTAFold 的结构建模能力转成 de novo protein structure generator，而不只是 structure predictor。\n\n第二，它让 motif scaffolding、binder design、symmetric oligomer design 等任务进入统一 diffusion 框架。\n\n第三，它展示了 “先生成结构 scaffold，再补全序列和功能细节” 的实用路线，这一点对 TOPG 很重要。",
+    "reading_highlights": "",
+    "limitation": "RFdiffusion 的输出是三维蛋白 backbone，强依赖蛋白几何、氨基酸物理约束和训练数据。TOPG 的输出是离散 typed planning graph，不能照搬坐标扩散和蛋白结构约束。\n\n此外，RFdiffusion 后面仍需要序列设计、结构预测和实验筛选。类比到 TOPG，生成 task graph scaffold 后也必须接 allocation、scheduling、constraint checking 和 execution feedback。",
+    "relation": "和 AlphaFold2 相比，RFdiffusion 更偏生成而不是预测：AF2 从序列到结构，RFdiffusion 从约束/噪声到新结构 scaffold。\n\n和 AlphaFold3 相比，RFdiffusion 更早地展示了 diffusion 在结构生成里的设计能力；AF3 则把 diffusion structure module 放进更统一的 biomolecular interaction prediction 框架。\n\n和 LayerDAG 相比，RFdiffusion 生成连续几何 scaffold，LayerDAG 生成离散 DAG。TOPG 可以把两者结合：RFdiffusion-style structure-first denoising + LayerDAG-style valid dependency graph generation。",
+    "planning_insight": "TOPG 可以借鉴 RFdiffusion 的两阶段思想：\n\n```text\nlanguage / scene / agent / skill constraints\n  -> generate task graph scaffold\n  -> fill skill, agent, location, duration fields\n  -> allocation / scheduling / constraint checking\n  -> execution feedback and local re-denoising\n```\n\n也就是说，第一阶段不急着预测每个机器人和每个时间点，而是先生成一个可解释、可修复、可评估的任务结构骨架。",
+    "reusable_module_text": "structure_first_generation、motif_conditioned_diffusion、scaffold_generation、constraint_conditioning、denoising_trajectory。",
+    "evidence_risk": "Nature 论文展示 RFdiffusion 可用于多类蛋白设计任务，并结合后续设计与验证流程得到可工作的结构。风险是证据来自蛋白工程，不代表 TOPG 一定能提升任务规划成功率；迁移价值主要在结构先行、约束条件化和多步去噪生成范式。",
+    "open_question": "TOPG 的 “motif” 应该是什么：固定关键任务节点、必须保留的 scene grounding、用户指定的安全约束，还是 repair_context 中不能改动的 previous plan fragment。"
+  },
+  {
     "id": "2023-rt-2-vla",
     "title": "RT-2: Vision-Language-Action Models Transfer Web Knowledge to Robotic Control",
     "short_title": "RT-2",
@@ -1099,6 +1463,154 @@
     "reusable_module_text": "Pythonic prompting、task decomposition agent、coalition formation agent、task allocation agent、comments-as-reasoning-hints、threading-based parallel execution、skill API based code generation。",
     "evidence_risk": "论文在 AI2-THOR benchmark 和真实机器人实验中测试了多类任务，并比较了 random allocation 和 rule-based allocation baseline。结果说明多 stage LLM prompting 在 heterogeneous robot team 中可以生成有效计划。\n\n风险是它依赖 few-shot prompt 和 LLM 代码生成质量，缺少结构化验证。对于高风险或大规模多机器人场景，仅靠生成代码不够，需要额外的 graph checker、planner 或 optimizer。",
     "open_question": "如何从 SMART-LLM 生成的 Python code 中自动反解析出显式 task graph：函数是 node，`join()` 和函数调用顺序是 edge，thread start 是并行结构。\n\n另一个问题是 coalition formation policy 如何转成机器可验证的约束，例如 required capabilities、team size、resource constraints、payload constraints、visibility constraints 和 execution duration。"
+  },
+  {
+    "id": "2024-alphafold3-biomolecular-interactions",
+    "title": "Accurate structure prediction of biomolecular interactions with AlphaFold 3",
+    "short_title": "AlphaFold3",
+    "year": 2024,
+    "published": "2024-06",
+    "venue": "Nature",
+    "status": "read",
+    "scope": "candidate",
+    "readiness": "high",
+    "action": "extract_system_architecture",
+    "tech_paradigm": "biomolecular_structure_generation_diffusion",
+    "primary_domain": "Structure Generation",
+    "domains": [
+      "Structure Generation",
+      "Scientific AI",
+      "Diffusion",
+      "Pair Representation"
+    ],
+    "primary_technical_layer": "structure_generation",
+    "primary_task_family": "biomolecular_complex_structure_prediction",
+    "platform": "biomolecular_interactions",
+    "planning_relevance": "AlphaFold3 是 AF3-inspired TOPG Planner 的主要参考。它把多种生物分子统一 token 化，用 single/pair representations 和 Pairformer-style trunk 编码上下文，再用 diffusion module 生成结构，并用 confidence/ranking 评估结果。",
+    "multi_robot_relevance": "间接但架构价值很高。TOPG 可把 language、scene、agent、skill、feedback 和 task slots 统一成 typed tokens，用 pair representation 建模规划关系，再用 graph diffusion/denoising 生成或修复 task graph。",
+    "system_roles": [
+      "structure_generator",
+      "pair_representation_encoder",
+      "diffusion_generator",
+      "confidence_estimator",
+      "architecture_reference"
+    ],
+    "reusable_modules": [
+      "unified_tokenization",
+      "single_representation",
+      "pair_representation",
+      "pairformer_trunk",
+      "diffusion_structure_module",
+      "confidence_ranking"
+    ],
+    "evidence_level": "paper_read",
+    "next_action": "design_af3_inspired_topg_pairdiffuser",
+    "tags": [
+      "AlphaFold3",
+      "biomolecular interaction",
+      "Pairformer",
+      "diffusion",
+      "structure generation",
+      "confidence",
+      "scientific AI"
+    ],
+    "authors": [
+      "Josh Abramson",
+      "Jonas Adler",
+      "Jack Dunger",
+      "Richard Evans",
+      "Tim Green",
+      "Alexander Pritzel",
+      "Olaf Ronneberger",
+      "Lindsay Willmore",
+      "Andrew J. Ballard",
+      "Joshua Bambrick",
+      "Sebastian W. Bodenstein",
+      "David A. Evans",
+      "Chia-Chun Hung",
+      "Michael O'Neill",
+      "David Reiman",
+      "Kathryn Tunyasuvunakool",
+      "Zachary Wu",
+      "Akvilė Žemgulytė",
+      "Eirini Arvaniti",
+      "Charles Beattie",
+      "Ottavia Bertolli",
+      "Alex Bridgland",
+      "Alexey Cherepanov",
+      "Miles Congreve",
+      "Alexander I. Cowen-Rivers",
+      "Andrew Cowie",
+      "Michael Figurnov",
+      "Fabian B. Fuchs",
+      "Hannah Gladman",
+      "Rishub Jain",
+      "Yousuf A. Khan",
+      "Caroline M. R. Low",
+      "Kuba Perlin",
+      "Anna Potapenko",
+      "Pascal Savy",
+      "Sukhdeep Singh",
+      "Adrian Stecula",
+      "Ashok Thillaisundaram",
+      "Catherine Tong",
+      "Sergei Yakneen",
+      "Ellen D. Zhong",
+      "Michal Zielinski",
+      "Augustin Žídek",
+      "Victor Bapst",
+      "Pushmeet Kohli",
+      "Max Jaderberg",
+      "Demis Hassabis",
+      "John M. Jumper"
+    ],
+    "institutions": [
+      "Google DeepMind",
+      "Isomorphic Labs"
+    ],
+    "doi": "10.1038/s41586-024-07487-w",
+    "arxiv": "",
+    "url": "https://www.nature.com/articles/s41586-024-07487-w",
+    "project_url": "https://github.com/google-deepmind/alphafold3",
+    "image_url": "",
+    "zotero_key": "",
+    "citekey": "abramson2024alphafold3",
+    "cites": [
+      "2021-alphafold2-highly-accurate-structure-prediction"
+    ],
+    "extends": [
+      "2021-alphafold2-highly-accurate-structure-prediction"
+    ],
+    "uses": [],
+    "enables": [],
+    "complements": [],
+    "contrasts": [
+      "2025-layerdag-diffusion-dag-generation"
+    ],
+    "published_value": 24293,
+    "relations": [
+      {
+        "type": "extends",
+        "target": "2021-alphafold2-highly-accurate-structure-prediction"
+      },
+      {
+        "type": "contrasts",
+        "target": "2025-layerdag-diffusion-dag-generation"
+      }
+    ],
+    "file": "papers/2024-alphafold3-biomolecular-interactions.md",
+    "note_html": "notes/2024-alphafold3-biomolecular-interactions.html",
+    "summary": "AlphaFold3 是我们做 TOPG 结构生成最值得参考的论文：它不是普通 graph generation，而是把复杂多实体系统统一 token 化，通过 pair representation 与 Pairformer-style trunk 建模关系，再用 diffusion 生成结构并输出 confidence。",
+    "research_question": "AlphaFold2 主要解决蛋白结构预测。AlphaFold3 想解决更一般的 biomolecular interactions：蛋白、DNA、RNA、小分子、离子、修饰残基等多类实体组成的复合体结构。\n\n这个问题与 TOPG 的相似点在于：输入实体类型多、关系类型多，输出不是一串文字，而是一个必须满足约束的结构对象。",
+    "method": "AlphaFold3 将不同分子实体统一成 tokens，维护 single representation 和 pair representation。上下文编码由 Pairformer-style trunk 处理。最终结构生成使用 diffusion module，从 noisy atom coordinates 逐步去噪得到结构预测。\n\n模型还输出 confidence，用于判断预测结构、相互作用和局部区域是否可靠。",
+    "contribution": "第一，统一多实体 tokenization。AF3 不再只面向蛋白残基，而是把多种生物分子纳入同一结构预测框架。\n\n第二，Pairformer-style trunk 强化了 pair relation 的中心地位。复杂系统不是只靠单节点 embedding，而是依赖 token-token relation 的持续更新。\n\n第三，diffusion module 让结构生成更接近从噪声到结构的生成范式，这对 TOPG 的 noised plan hypothesis view 很有启发。",
+    "reading_highlights": "",
+    "limitation": "AlphaFold3 的开源与复现条件、训练数据规模和领域特化先验都不是 TOPG 可以直接复制的。TOPG 也没有原子坐标这样的连续几何输出，生成对象是离散 typed task graph。",
+    "relation": "AlphaFold3 继承 AlphaFold2 的 single/pair representation 思想，但在实体类型、结构生成方式和相互作用建模上更通用。\n\n和 LayerDAG 这类任务 DAG 生成相比，AF3 更强调 pair representation 和结构生成 trunk；LayerDAG 更直接处理离散 DAG。TOPG 可以把两者结合：AF3-style pair trunk + task graph denoising decoder。",
+    "planning_insight": "TOPG-PairDiffuser 可以直接借鉴 AF3 的抽象范式：\n\n```text\nlanguage / scene / agent / skill / feedback\n  -> typed TOPG tokens\n  -> single node representation\n  -> pair representation\n  -> TOPG-Pairformer trunk\n  -> graph diffusion / denoising decoder\n  -> task graph + allocation hints + confidence\n```\n\n区别是 AF3 生成 biomolecular structure，TOPG 生成 task planning graph。",
+    "reusable_module_text": "unified_tokenization、single_representation、pair_representation、pairformer_trunk、diffusion_structure_module、confidence_ranking。",
+    "evidence_risk": "Nature 论文报告 AF3 可以预测包含多种分子类型的复合体结构，并在多个相互作用类型上提升准确性。风险是这是生物结构预测证据，不是任务规划证据；迁移到 TOPG 时需要小规模 ablation 来验证 pair representation、diffusion 和 confidence 是否真的提升规划图质量。",
+    "open_question": "TOPG 是否需要 full pair representation。H100 80GB 让 1000 节点 dense pair 可实验，但考虑规划边稀疏、语义类型复杂，主架构可能应采用 block-dense pair + sparse candidate decoder。"
   },
   {
     "id": "2024-pyramidal-flow-matching-video",

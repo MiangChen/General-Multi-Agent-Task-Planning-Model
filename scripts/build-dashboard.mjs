@@ -15,6 +15,7 @@ const valueLabels = {
   "Overview / Foundation": "Overview / Foundation",
   "Scene Graph": "Scene Graph",
   "Task Graph": "Task Graph",
+  "Structure Generation": "Structure Generation",
   Diffusion: "Diffusion",
   vla: "VLA",
   llm_code_policy: "LLM Code Policy",
@@ -302,6 +303,7 @@ const domainColumns = [
   "GNN",
   "Scene Graph",
   "Task Graph",
+  "Structure Generation",
 ];
 
 const domainColors = {
@@ -315,6 +317,7 @@ const domainColors = {
   GNN: "#4b6f96",
   "Scene Graph": "#2f80ed",
   "Task Graph": "#4a56b8",
+  "Structure Generation": "#8b5cf6",
 };
 
 const relationTypes = {

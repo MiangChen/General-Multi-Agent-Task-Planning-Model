@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="robots" content="noindex,nofollow,noarchive">
-  <title>LayerDAG · Paper Note</title>
+  <title>AlphaFold1 · Paper Note</title>
   <style>
     :root {
       --bg: #eef4fb;
@@ -434,39 +434,39 @@
   <main class="note-shell" id="top">
     <section class="note-hero">
       <div class="hero-main">
-        <div class="note-kicker">2025-03 · ICLR 2025 · Layerwise Diffusion DAG Generation</div>
-        <h1>LayerDAG</h1>
-        <div class="full-title">LayerDAG: A Layerwise Autoregressive Diffusion Model for Directed Acyclic Graph Generation</div>
-        <div class="note-summary"><p>LayerDAG 是目前我们看到的、最接近“用 diffusion 生成 task graph”的方法论文：它不是机器人论文，但它直接研究如何生成有效 DAG，并且通过 layerwise autoregressive generation 保证方向性和无环结构。</p></div>
+        <div class="note-kicker">2020-01 · Nature · protein_structure_prediction_potentials</div>
+        <h1>AlphaFold1</h1>
+        <div class="full-title">Improved protein structure prediction using potentials from deep learning</div>
+        <div class="note-summary"><p>AlphaFold1 是 AlphaFold 系列的历史起点：它用深度网络预测残基间距离分布，并把这些 pairwise predictions 转成结构优化的势能函数。对 TOPG 的启发是 “先预测关系约束，再生成结构”，但它还不是我们最想参考的 AF3-style 结构生成架构。</p></div>
       </div>
       <aside class="hero-side">
         <div class="metric-grid">
           <div class="metric">
-            <div class="metric-value">2025</div>
+            <div class="metric-value">2020</div>
             <div class="metric-label">Year</div>
           </div>
           <div class="metric">
-            <div class="metric-value">高</div>
+            <div class="metric-value">中</div>
             <div class="metric-label">Readiness</div>
           </div>
           <div class="metric">
-            <div class="metric-value">已读论文</div>
+            <div class="metric-value">略读</div>
             <div class="metric-label">Evidence</div>
           </div>
           <div class="metric">
-            <div class="metric-value">3</div>
+            <div class="metric-value">1</div>
             <div class="metric-label">Relations</div>
           </div>
         </div>
         <div>
           <div class="note-section-kicker">Authors</div>
-          <div>Zhuo Li, Yifei Shen, Lei Chen, Mingming Sun, Wei Liu</div>
+          <div>Andrew W. Senior, Richard Evans, John Jumper, James Kirkpatrick, Laurent Sifre, Tim Green, Chongli Qin, Augustin Žídek, Alexander W. R. Nelson, Alex Bridgland, Hugo Penedones, Stig Petersen, Karen Simonyan, Steve Crossan, Pushmeet Kohli, David T. Jones, David Silver, Koray Kavukcuoglu, Demis Hassabis</div>
         </div>
         <div>
           <div class="note-section-kicker">Institutions</div>
-          <div></div>
+          <div>DeepMind · Francis Crick Institute · University College London</div>
         </div>
-        <div class="note-link-row"><a href="../pdfs/2025-03-04-LayerDAG-layerwise-autoregressive-diffusion-dag-generation.pdf" target="_blank" rel="noreferrer">PDF</a><a href="https://arxiv.org/abs/2411.02322" target="_blank" rel="noreferrer">Paper</a><a href="https://github.com/Graph-COM/LayerDAG" target="_blank" rel="noreferrer">Project</a><a href="https://arxiv.org/abs/2411.02322" target="_blank" rel="noreferrer">arXiv</a></div>
+        <div class="note-link-row"><a href="https://www.nature.com/articles/s41586-019-1923-7" target="_blank" rel="noreferrer">Paper</a><a href="https://github.com/deepmind/deepmind-research/tree/master/alphafold_casp13" target="_blank" rel="noreferrer">Project</a><a href="https://doi.org/10.1038/s41586-019-1923-7" target="_blank" rel="noreferrer">DOI</a></div>
       </aside>
     </section>
 
@@ -475,50 +475,46 @@
 
     <section class="note-section impact">
       <div class="note-section-kicker">For Our Model</div>
-      <div class="note-section-body"><p>我们可以把未来方向定义为：</p>
-<p>```text<br>Layerwise Diffusion Task Graph Generator<br>```</p>
-<p>系统形式：</p>
-<p>```text<br>instruction + scene graph + robot skills<br>-&gt; conditional LayerDAG generator<br>-&gt; valid task DAG<br>-&gt; task allocation / scheduling module<br>-&gt; execution feedback<br>-&gt; local re-denoising<br>```</p>
-<p>这个方向比单纯 LLM prompt 生成 task graph 更有研究空间，因为它可以学习领域内常见的 dependency pattern，并支持逐层、局部、可反馈的 task graph 生成。</p></div>
+      <div class="note-section-body"><p>TOPG 可以从 AlphaFold1 借鉴 “关系约束先行” 的思想：先预测 task-task、task-skill、task-location、agent-skill 等 pairwise compatibility 或 dependency potential，再由生成/优化模块形成完整 task graph。</p></div>
     </section>
 
 
     <section class="note-section ">
       <div class="note-section-kicker">Research Question</div>
-      <div class="note-section-body"><p>DAG 广泛用于计算图、编译器 flow graph、硬件设计、项目依赖和任务依赖。普通 graph generation 方法往往不显式处理 DAG 的方向性和 partial order；纯 diffusion 一次性生成整张图，也不天然保证无环。</p>
-<p>LayerDAG 的核心问题是：如何生成具有强方向依赖和逻辑规则的大规模 DAG，同时保留生成模型的表达能力和泛化能力。</p></div>
+      <div class="note-section-body"><p>给定蛋白质氨基酸序列，能否不依赖昂贵实验测定，预测蛋白质三维结构。传统方法严重依赖模板、物理采样和共进化分析；AlphaFold1 的问题意识是用深度学习直接学习残基对之间的距离约束。</p></div>
     </section>
 
+
+    <section class="note-section ">
+      <div class="note-section-kicker">Method</div>
+      <div class="note-section-body"><p>模型预测 residue-residue distance distribution，而不是只预测 contact map。然后把预测出的距离信息转换成 potential of mean force，并结合梯度下降等结构优化过程得到 3D protein model。</p></div>
+    </section>
 
 
     <section class="note-section ">
       <div class="note-section-kicker">Key Contributions</div>
-      <div class="note-section-body"><p>第一，它解决了通用 graph diffusion 不天然保证 DAG 的问题。通过 layerwise autoregressive generation，边只从前面层指向当前层，因此天然无环。</p>
-<p>第二，它避免了普通 topological ordering 不唯一的问题。LayerDAG 的 layerwise partition 是唯一的，能把一张 DAG 转成可逆的层级序列。</p>
-<p>第三，它把 autoregressive 和 diffusion 分工清楚：autoregressive 负责生成方向和层级，diffusion 负责每一层内部 node/edge 的多轮 refinement。</p>
-<p>第四，它支持 conditional generation，可以根据目标属性生成 DAG。这对应到我们的任务规划里，就是根据自然语言、scene graph、机器人能力和 deadline 生成符合条件的 task graph。</p></div>
+      <div class="note-section-body"><p>第一，AlphaFold1 把深度学习预测的 pairwise distance 从辅助信号提升为结构优化的核心约束。</p>
+<p>第二，它在 CASP13 中显著超过传统方法，证明 learned pair constraints 可以带来结构预测跃迁。</p>
+<p>第三，它为后续 AF2 的 pair representation 和端到端结构模块奠定了问题表述基础。</p></div>
     </section>
 
 
 
     <section class="note-section risk">
       <div class="note-section-kicker">Limitations</div>
-      <div class="note-section-body"><p>LayerDAG 本身不是机器人任务规划模型。它没有处理自然语言 grounding、机器人 skill schema、执行反馈、资源约束、持续时间估计或多机器人 allocation。</p>
-<p>它生成的是 DAG，但 task graph 在真实系统里可能还需要非前置依赖边，例如通信关系、资源冲突、协同约束、时间窗和软约束。这些边需要区分清楚，否则会破坏 DAG layer 的定义。</p>
-<p>此外，迁移到开放世界任务规划需要训练数据：历史任务图、仿真生成任务图、人类修正任务图，或者 LLM/规则生成后再用执行反馈筛选的 task graph 数据。</p></div>
+      <div class="note-section-body"><p>AlphaFold1 仍然是 “预测约束 + 优化结构” 的路线，模块之间不如 AF2/AF3 端到端。对我们做 TOPG 来说，它更像历史铺垫，不是直接可复用主架构。</p></div>
     </section>
 
 
     <section class="note-section ">
       <div class="note-section-kicker">Reusable Modules</div>
-      <div class="note-section-body"><p>layerwise DAG partition、source task layer generation、discrete diffusion for node attributes、diffusion edge generation、conditional DAG generation、cross-layer dependency generation、local re-denoising。</p></div>
+      <div class="note-section-body"><p>distance_distribution_prediction、pairwise_constraint_potential、structure_refinement_from_pair_constraints。</p></div>
     </section>
 
 
     <section class="note-section risk">
       <div class="note-section-kicker">Evidence &amp; Risk</div>
-      <div class="note-section-body"><p>论文在 synthetic DAG 和真实计算系统 DAG 数据上验证，能生成最多约 400 个节点的大规模 DAG，并在条件生成和 out-of-distribution label setting 中优于多个 baseline。</p>
-<p>风险是这些实验领域是计算图和硬件/编译器 flow graph，不是机器人任务图。迁移时最关键的是设计 task graph schema 和训练数据生成机制。</p></div>
+      <div class="note-section-body"><p>Nature 论文报告 AlphaFold 在 CASP13 中对 free modelling domains 有明显领先。风险是这个证据来自蛋白结构预测，不能直接推出 TOPG 规划成功；迁移时只能借鉴表示和优化范式。</p></div>
     </section>
 
         <div id="relations">
@@ -528,28 +524,18 @@
         <div>
           <h3>当前论文 -> 关联论文 / 前序工作</h3>
           <div class="relation-chip-grid">
-            <a class="relation-chip" style="--rel:#188aa6" href="../notes/2025-dart-llm-dependency-aware-task-graph.html">
+            <a class="relation-chip" style="--rel:#188aa6" href="../notes/2021-alphafold2-highly-accurate-structure-prediction.html">
               <span>提供模块</span>
-              <strong>DART-LLM</strong>
-            </a>
-
-            <a class="relation-chip" style="--rel:#188aa6" href="../notes/2025-lip-llm-dependency-graph-planning.html">
-              <span>提供模块</span>
-              <strong>LiP-LLM</strong>
-            </a>
-
-            <a class="relation-chip" style="--rel:#d14d72" href="../notes/2023-unsupervised-task-graph-generation.html">
-              <span>对比路线</span>
-              <strong>Unsupervised Task Graphs</strong>
+              <strong>AlphaFold2</strong>
             </a>
           </div>
         </div>
         <div>
           <h3>下游论文 -> 当前论文</h3>
           <div class="relation-chip-grid">
-            <a class="relation-chip incoming" style="--rel:#d14d72" href="../notes/2024-alphafold3-biomolecular-interactions.html">
-              <span>对比路线</span>
-              <strong>AlphaFold3</strong>
+            <a class="relation-chip incoming" style="--rel:#246bfe" href="../notes/2021-alphafold2-highly-accurate-structure-prediction.html">
+              <span>继承/扩展</span>
+              <strong>AlphaFold2</strong>
             </a>
           </div>
         </div>
@@ -559,17 +545,13 @@
 
     <section class="note-section ">
       <div class="note-section-kicker">Relation Notes</div>
-      <div class="note-section-body"><p>和 DiGress 相比，LayerDAG 更适合 task graph，因为它直接面向 DAG generation，而不是一般 graph generation。</p>
-<p>和 DART-LLM / LiP-LLM 相比，LayerDAG 不是 prompt engineering，而是一个可训练的 DAG generative model。它提供了从“LLM 输出依赖 JSON”走向“训练模型生成 task graph”的方法路线。</p>
-<p>和 Diffusion-CCSP 相比，Diffusion-CCSP 的 graph 是输入的 constraint graph，diffusion 输出连续变量解；LayerDAG 的 diffusion 参与生成 DAG 本身。</p></div>
+      <div class="note-section-body"><p>AlphaFold2 继承了 pairwise relation 的重要性，但把模型改造成 end-to-end differentiable 的 single/pair representation、Evoformer 和 structure module。AlphaFold3 进一步扩展到多分子 token、Pairformer 和 diffusion-based structure generation。</p></div>
     </section>
 
         <div id="open-question">
     <section class="note-section impact">
       <div class="note-section-kicker">Open Question</div>
-      <div class="note-section-body"><p>如何把自然语言、scene graph 和 robot skill library 编码成 LayerDAG 的 conditioning signal。</p>
-<p>如何把 task graph 的软约束和非 DAG 关系区分开：dependency edge 保持 DAG，coordination/resource/time-window edge 作为额外约束图交给 scheduler。</p>
-<p>如何在执行中只对受影响的局部 layer 进行 re-denoising，而不是重生成整张任务图。</p></div>
+      <div class="note-section-body"><p>TOPG 的 pairwise potential 是否应该显式建成可解释的打分矩阵，还是作为 neural pair representation 留在模型内部。</p></div>
     </section>
   </div>
       </article>
@@ -577,19 +559,19 @@
       <aside class="note-aside">
         <section class="note-aside-panel">
           <h2>System Roles</h2>
-          <div class="pill-row"><span class="note-pill role-pill">task graph generator</span><span class="note-pill role-pill">generative planner</span><span class="note-pill role-pill">graph prior model</span><span class="note-pill role-pill">planner research direction</span></div>
+          <div class="pill-row"><span class="note-pill role-pill">structure predictor</span><span class="note-pill role-pill">pair relation prior</span></div>
         </section>
         <section class="note-aside-panel">
           <h2>Reusable Modules</h2>
-          <div class="pill-row"><span class="note-pill module-pill">layerwise dag partition</span><span class="note-pill module-pill">source task layer generation</span><span class="note-pill module-pill">discrete diffusion node attributes</span><span class="note-pill module-pill">diffusion edge generation</span><span class="note-pill module-pill">conditional dag generation</span><span class="note-pill module-pill">cross layer dependency generation</span></div>
+          <div class="pill-row"><span class="note-pill module-pill">distance distribution prediction</span><span class="note-pill module-pill">pairwise constraint potential</span><span class="note-pill module-pill">structure refinement from pair constraints</span></div>
         </section>
         <section class="note-aside-panel">
           <h2>Next Action</h2>
-          <div class="note-pill role-pill">适配 LayerDAG 到多机器人任务图 schema</div>
+          <div class="note-pill role-pill">compare af1 af2 architecture shift</div>
         </section>
         <section class="note-aside-panel">
           <h2>Tags</h2>
-          <div class="pill-row"><span class="note-pill">LayerDAG</span><span class="note-pill">Diffusion</span><span class="note-pill">DAG generation</span><span class="note-pill">Task Graph</span><span class="note-pill">layerwise generation</span><span class="note-pill">autoregressive diffusion</span><span class="note-pill">discrete diffusion</span></div>
+          <div class="pill-row"><span class="note-pill">AlphaFold</span><span class="note-pill">AlphaFold1</span><span class="note-pill">protein structure prediction</span><span class="note-pill">pairwise distance</span><span class="note-pill">potentials</span><span class="note-pill">CASP13</span></div>
         </section>
         <section class="note-aside-panel">
           <h2>Reading Map</h2>
