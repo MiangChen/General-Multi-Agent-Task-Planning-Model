@@ -1227,7 +1227,7 @@ function renderDomainGraph(papers) {
 
   const byId = new Map(graphPapers.map((paper) => [paper.id, paper]));
   const left = 56;
-  const top = 48;
+  const top = 124;
   const bottom = 78;
   const colWidth = 106;
   const nodeWidth = 86;
@@ -2564,16 +2564,16 @@ function renderIndex(papers, teamRoadmap) {
     .graph-column {
       position: absolute;
       left: var(--x);
-      top: 34px;
+      top: 46px;
       width: var(--w);
-      height: calc(var(--graph-height) - 45px);
+      height: calc(var(--graph-height) - 56px);
       border-left: 1px solid color-mix(in srgb, var(--domain), transparent 68%);
       background: linear-gradient(180deg, color-mix(in srgb, var(--domain), transparent 92%), transparent 9rem);
     }
 
     .graph-column span {
-      position: sticky;
-      top: 34px;
+      position: absolute;
+      top: 9px;
       z-index: 3;
       display: inline-flex;
       align-items: center;
@@ -2588,6 +2588,7 @@ function renderIndex(papers, teamRoadmap) {
       font-size: 6px;
       font-weight: 700;
       box-shadow: 0 5px 13px rgba(22, 50, 83, 0.09);
+      pointer-events: none;
     }
 
     .graph-column-group {
