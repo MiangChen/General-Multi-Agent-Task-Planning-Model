@@ -320,6 +320,17 @@ const domainColors = {
   "Structure Generation": "#8b5cf6",
 };
 
+const domainColumnGroups = [
+  {
+    label: "LLM",
+    domains: ["LLM"],
+  },
+  {
+    label: "GNN",
+    domains: ["GNN", "Scene Graph", "Task Graph", "Structure Generation"],
+  },
+];
+
 const relationTypes = {
   extends: {
     label: "继承/扩展",
@@ -1339,6 +1350,24 @@ function renderDomainGraph(papers) {
       `;
     })
     .join("\n");
+  const columnGroups = domainColumnGroups
+    .map((group) => {
+      const indices = group.domains
+        .map((domain) => domainColumns.indexOf(domain))
+        .filter((index) => index >= 0);
+      if (!indices.length) return "";
+      const start = Math.min(...indices);
+      const end = Math.max(...indices);
+      const x = left + start * colWidth;
+      const width = (end - start + 1) * colWidth;
+      const color = domainColors[group.domains[0]] ?? palette[0];
+      return `
+        <div class="graph-column-group" style="--x:${x}px; --w:${width}px; --group:${color}">
+          <span>${escapeHtml(group.label)}</span>
+        </div>
+      `;
+    })
+    .join("\n");
 
   const relationMarkers = Object.entries(relationTypes)
     .map(
@@ -1365,12 +1394,40 @@ function renderDomainGraph(papers) {
           <p>纵向按论文发表年月排序，但采用压缩时间轴：只给有论文的月份分配主刻度，长空档用 gap marker 标出；同月同领域论文会自动错层，并用细线回连真实月份。</p>
         </div>
       </div>
+      <div class="graph-taxonomy-map" aria-label="二级文献栏目">
+        <div class="taxonomy-card taxonomy-llm">
+          <strong>LLM</strong>
+          <span>language planning / code policy</span>
+        </div>
+        <div class="taxonomy-arrow">→</div>
+        <div class="taxonomy-gnn-stack">
+          <div class="taxonomy-card taxonomy-gnn">
+            <strong>GNN / Graph Models</strong>
+            <span>graph representation, relation reasoning, structure generation</span>
+          </div>
+          <div class="taxonomy-subgrid">
+            <div class="taxonomy-card taxonomy-scene">
+              <strong>Scene Graph</strong>
+              <span>3D scene graph / grounding</span>
+            </div>
+            <div class="taxonomy-card taxonomy-task">
+              <strong>Task Graph</strong>
+              <span>DAG / dependency planning</span>
+            </div>
+            <div class="taxonomy-card taxonomy-structure">
+              <strong>Structure Generation</strong>
+              <span>AF2 / AF3 / RFdiffusion</span>
+            </div>
+          </div>
+        </div>
+      </div>
       <div class="relation-filterbar" aria-label="关系类型过滤">
         ${relationFilters}
       </div>
       <div class="graph-workspace">
         <div class="graph-frame">
           <div class="domain-graph" style="--graph-width:${width}px; --graph-height:${height}px; --node-width:${nodeWidth}px; --node-height:${nodeHeight}px">
+            ${columnGroups}
             ${columns}
             ${monthLabels}
             ${gapMarkers}
@@ -2408,6 +2465,96 @@ function renderIndex(papers, teamRoadmap) {
       backdrop-filter: blur(18px);
     }
 
+    .graph-taxonomy-map {
+      display: grid;
+      grid-template-columns: minmax(120px, 0.85fr) 28px minmax(360px, 3fr);
+      gap: 10px;
+      align-items: stretch;
+      margin: 2px 0 14px;
+    }
+
+    .taxonomy-gnn-stack {
+      display: grid;
+      grid-template-rows: minmax(46px, auto) minmax(58px, auto);
+      border: 1px solid rgba(75, 111, 150, 0.28);
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.62);
+      overflow: hidden;
+      box-shadow: 0 10px 22px rgba(22, 50, 83, 0.08);
+    }
+
+    .taxonomy-subgrid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      border-top: 1px solid rgba(75, 111, 150, 0.24);
+    }
+
+    .taxonomy-card {
+      display: grid;
+      align-content: center;
+      min-height: 68px;
+      border: 1px solid rgba(100, 116, 139, 0.18);
+      background: #fff;
+      padding: 11px 12px;
+    }
+
+    .taxonomy-card strong {
+      color: #0f172a;
+      font-family: var(--mono);
+      font-size: 11px;
+      line-height: 1.1;
+    }
+
+    .taxonomy-card span {
+      display: block;
+      margin-top: 5px;
+      color: #64748b;
+      font-size: 9px;
+      line-height: 1.35;
+    }
+
+    .taxonomy-llm {
+      min-height: 126px;
+      border-color: rgba(36, 107, 254, 0.35);
+      border-radius: 10px;
+      background: linear-gradient(180deg, #eff6ff, #ffffff);
+      box-shadow: 0 10px 22px rgba(36, 107, 254, 0.1);
+    }
+
+    .taxonomy-arrow {
+      display: grid;
+      place-items: center;
+      color: #64748b;
+      font-family: var(--mono);
+      font-size: 14px;
+      font-weight: 900;
+    }
+
+    .taxonomy-gnn {
+      min-height: 46px;
+      border: 0;
+      border-radius: 0;
+      background: linear-gradient(180deg, #eef6ff, #ffffff);
+      text-align: center;
+    }
+
+    .taxonomy-scene {
+      border: 0;
+      border-right: 1px solid rgba(75, 111, 150, 0.18);
+      background: #f0fdf4;
+    }
+
+    .taxonomy-task {
+      border: 0;
+      border-right: 1px solid rgba(75, 111, 150, 0.18);
+      background: #eef2ff;
+    }
+
+    .taxonomy-structure {
+      border: 0;
+      background: #f5f3ff;
+    }
+
     .domain-graph {
       position: relative;
       width: var(--graph-width);
@@ -2417,16 +2564,16 @@ function renderIndex(papers, teamRoadmap) {
     .graph-column {
       position: absolute;
       left: var(--x);
-      top: 10px;
+      top: 34px;
       width: var(--w);
-      height: calc(var(--graph-height) - 21px);
+      height: calc(var(--graph-height) - 45px);
       border-left: 1px solid color-mix(in srgb, var(--domain), transparent 68%);
       background: linear-gradient(180deg, color-mix(in srgb, var(--domain), transparent 92%), transparent 9rem);
     }
 
     .graph-column span {
       position: sticky;
-      top: 6px;
+      top: 34px;
       z-index: 3;
       display: inline-flex;
       align-items: center;
@@ -2441,6 +2588,31 @@ function renderIndex(papers, teamRoadmap) {
       font-size: 6px;
       font-weight: 700;
       box-shadow: 0 5px 13px rgba(22, 50, 83, 0.09);
+    }
+
+    .graph-column-group {
+      position: absolute;
+      left: var(--x);
+      top: 9px;
+      z-index: 4;
+      width: var(--w);
+      height: 27px;
+      border: 1px solid color-mix(in srgb, var(--group), transparent 48%);
+      border-bottom-width: 2px;
+      border-radius: 8px 8px 0 0;
+      background: linear-gradient(180deg, color-mix(in srgb, var(--group), white 83%), rgba(255, 255, 255, 0.9));
+      box-shadow: 0 7px 18px rgba(22, 50, 83, 0.08);
+    }
+
+    .graph-column-group span {
+      display: grid;
+      height: 100%;
+      place-items: center;
+      color: color-mix(in srgb, var(--group), #0f172a 34%);
+      font-family: var(--mono);
+      font-size: 8px;
+      font-weight: 800;
+      letter-spacing: 0.02em;
     }
 
     .graph-month {
