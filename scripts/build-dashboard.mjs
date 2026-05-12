@@ -693,6 +693,15 @@ function escapeHtml(value) {
     .replaceAll("'", "&#39;");
 }
 
+function isExternalUrl(value) {
+  return /^https?:\/\//.test(String(value || ""));
+}
+
+function assetHref(value, prefix = "") {
+  if (!value) return "";
+  return isExternalUrl(value) ? String(value) : `${prefix}${value}`;
+}
+
 function stripTrailingWhitespace(text) {
   return text.replace(/[ \t]+$/gm, "");
 }
@@ -1534,9 +1543,14 @@ function renderPapers(papers) {
         .join("");
       const authors = asList(paper.authors).slice(0, 6).join(", ");
       const institutions = asList(paper.institutions).join(" · ");
+      const pdfHref = assetHref(paper.pdf_path);
+      const pdfDataLink =
+        paper.pdf_path && !isExternalUrl(paper.pdf_path)
+          ? ` data-pdf-link="${escapeHtml(paper.pdf_path)}"`
+          : "";
       const links = [
         paper.pdf_path
-          ? `<a href="${escapeHtml(paper.pdf_path)}" data-pdf-link="${escapeHtml(paper.pdf_path)}" target="_blank" rel="noreferrer">PDF</a>`
+          ? `<a href="${escapeHtml(pdfHref)}"${pdfDataLink} target="_blank" rel="noreferrer">PDF</a>`
           : "",
         `<a href="${escapeHtml(paper.note_html)}" data-note-link="${escapeHtml(paper.note_html)}" target="_blank" rel="noreferrer">Note</a>`,
         paper.url ? `<a href="${escapeHtml(paper.url)}" target="_blank" rel="noreferrer">论文</a>` : "",
@@ -1653,7 +1667,9 @@ function renderNoteSection(title, body, tone = "") {
 
 function renderNoteLinks(paper) {
   const links = [
-    paper.pdf_path ? `<a href="../${escapeHtml(paper.pdf_path)}" target="_blank" rel="noreferrer">PDF</a>` : "",
+    paper.pdf_path
+      ? `<a href="${escapeHtml(assetHref(paper.pdf_path, "../"))}" target="_blank" rel="noreferrer">PDF</a>`
+      : "",
     paper.url ? `<a href="${escapeHtml(paper.url)}" target="_blank" rel="noreferrer">Paper</a>` : "",
     paper.project_url
       ? `<a href="${escapeHtml(paper.project_url)}" target="_blank" rel="noreferrer">Project</a>`

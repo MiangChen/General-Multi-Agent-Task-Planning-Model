@@ -28,6 +28,7 @@ DDPM 是这一类方法的基础来源：它先把数据逐步加噪，再训练
 ## 关键论文
 
 - [[2020-ddpm-denoising-diffusion-probabilistic-models]]
+- [[2022-classifier-free-diffusion-guidance]]
 - [[2023-diffusion-policy-action-diffusion]]
 - [[2025-layerdag-diffusion-dag-generation]]
 

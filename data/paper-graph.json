@@ -106,6 +106,21 @@
       "note_html": "notes/2023-daydreamer-world-models-for-physical-robot-learning.html"
     },
     {
+      "id": "2022-classifier-free-diffusion-guidance",
+      "title": "Classifier-Free Diffusion Guidance",
+      "short_title": "CFG",
+      "published": "2022-07",
+      "published_value": 24270,
+      "primary_domain": "Diffusion",
+      "domains": [
+        "Diffusion",
+        "Generative Model",
+        "Conditional Generation",
+        "Guidance"
+      ],
+      "note_html": "notes/2022-classifier-free-diffusion-guidance.html"
+    },
+    {
       "id": "2023-dreamerv3-world-models",
       "title": "Mastering Diverse Control Tasks through World Models",
       "short_title": "DreamerV3",
@@ -659,6 +674,78 @@
         {
           "source": "2022-learned-subteam-performance-routing",
           "target": "2023-combinatorial-optimization-gnn-reasoning"
+        }
+      ]
+    },
+    {
+      "id": "2020-ddpm-denoising-diffusion-probabilistic-models--2022-classifier-free-diffusion-guidance--extends",
+      "type": "extends",
+      "endpoints": [
+        "2020-ddpm-denoising-diffusion-probabilistic-models",
+        "2022-classifier-free-diffusion-guidance"
+      ],
+      "parent_id": "2020-ddpm-denoising-diffusion-probabilistic-models",
+      "child_id": "2022-classifier-free-diffusion-guidance",
+      "parent_title": "DDPM",
+      "child_title": "CFG",
+      "authored_links": [
+        {
+          "source": "2022-classifier-free-diffusion-guidance",
+          "target": "2020-ddpm-denoising-diffusion-probabilistic-models"
+        }
+      ]
+    },
+    {
+      "id": "2022-classifier-free-diffusion-guidance--2023-diffusion-policy-action-diffusion--enables",
+      "type": "enables",
+      "endpoints": [
+        "2022-classifier-free-diffusion-guidance",
+        "2023-diffusion-policy-action-diffusion"
+      ],
+      "parent_id": "2022-classifier-free-diffusion-guidance",
+      "child_id": "2023-diffusion-policy-action-diffusion",
+      "parent_title": "CFG",
+      "child_title": "Diffusion Policy",
+      "authored_links": [
+        {
+          "source": "2022-classifier-free-diffusion-guidance",
+          "target": "2023-diffusion-policy-action-diffusion"
+        }
+      ]
+    },
+    {
+      "id": "2022-classifier-free-diffusion-guidance--2023-rfdiffusion-protein-structure-function--enables",
+      "type": "enables",
+      "endpoints": [
+        "2022-classifier-free-diffusion-guidance",
+        "2023-rfdiffusion-protein-structure-function"
+      ],
+      "parent_id": "2022-classifier-free-diffusion-guidance",
+      "child_id": "2023-rfdiffusion-protein-structure-function",
+      "parent_title": "CFG",
+      "child_title": "RFdiffusion",
+      "authored_links": [
+        {
+          "source": "2022-classifier-free-diffusion-guidance",
+          "target": "2023-rfdiffusion-protein-structure-function"
+        }
+      ]
+    },
+    {
+      "id": "2022-classifier-free-diffusion-guidance--2025-layerdag-diffusion-dag-generation--enables",
+      "type": "enables",
+      "endpoints": [
+        "2022-classifier-free-diffusion-guidance",
+        "2025-layerdag-diffusion-dag-generation"
+      ],
+      "parent_id": "2022-classifier-free-diffusion-guidance",
+      "child_id": "2025-layerdag-diffusion-dag-generation",
+      "parent_title": "CFG",
+      "child_title": "LayerDAG",
+      "authored_links": [
+        {
+          "source": "2022-classifier-free-diffusion-guidance",
+          "target": "2025-layerdag-diffusion-dag-generation"
         }
       ]
     },
