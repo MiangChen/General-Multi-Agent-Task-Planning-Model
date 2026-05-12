@@ -295,8 +295,8 @@ const palette = [
 const domainColumns = [
   "Overview / Foundation",
   "LLM",
-  "VLA",
   "Diffusion",
+  "VLA",
   "World Model",
   "World Action Model",
   "RL",
@@ -326,7 +326,15 @@ const domainColumnGroups = [
     domains: ["LLM"],
   },
   {
-    label: "GNN",
+    label: "Vision",
+    domains: ["VLA", "World Model", "World Action Model"],
+  },
+  {
+    label: "RL",
+    domains: ["RL"],
+  },
+  {
+    label: "Graph Struct",
     domains: ["GNN", "Scene Graph", "Task Graph", "Structure Generation"],
   },
 ];
@@ -1474,10 +1482,17 @@ function renderDomainGraph(papers) {
           <strong>LLM</strong>
           <span>language planning / code policy</span>
         </div>
-        <div class="taxonomy-arrow">→</div>
-        <div class="taxonomy-gnn-stack">
-          <div class="taxonomy-card taxonomy-gnn">
-            <strong>GNN / Graph Models</strong>
+        <div class="taxonomy-card taxonomy-vision">
+          <strong>Vision</strong>
+          <span>VLA / world model / WAM</span>
+        </div>
+        <div class="taxonomy-card taxonomy-rl">
+          <strong>RL</strong>
+          <span>reward, policy learning, allocation</span>
+        </div>
+        <div class="taxonomy-struct-stack">
+          <div class="taxonomy-card taxonomy-struct">
+            <strong>Graph Struct</strong>
             <span>graph representation, relation reasoning, structure generation</span>
           </div>
           <div class="taxonomy-subgrid">
@@ -2559,13 +2574,13 @@ function renderIndex(papers, teamRoadmap) {
 
     .graph-taxonomy-map {
       display: grid;
-      grid-template-columns: minmax(120px, 0.85fr) 28px minmax(360px, 3fr);
+      grid-template-columns: minmax(112px, 0.75fr) minmax(170px, 1.12fr) minmax(112px, 0.75fr) minmax(360px, 2.5fr);
       gap: 10px;
       align-items: stretch;
       margin: 2px 0 14px;
     }
 
-    .taxonomy-gnn-stack {
+    .taxonomy-struct-stack {
       display: grid;
       grid-template-rows: minmax(46px, auto) minmax(58px, auto);
       border: 1px solid rgba(75, 111, 150, 0.28);
@@ -2613,16 +2628,23 @@ function renderIndex(papers, teamRoadmap) {
       box-shadow: 0 10px 22px rgba(36, 107, 254, 0.1);
     }
 
-    .taxonomy-arrow {
-      display: grid;
-      place-items: center;
-      color: #64748b;
-      font-family: var(--mono);
-      font-size: 14px;
-      font-weight: 900;
+    .taxonomy-vision {
+      min-height: 126px;
+      border-color: rgba(0, 167, 199, 0.35);
+      border-radius: 10px;
+      background: linear-gradient(180deg, #ecfeff, #ffffff);
+      box-shadow: 0 10px 22px rgba(0, 167, 199, 0.09);
     }
 
-    .taxonomy-gnn {
+    .taxonomy-rl {
+      min-height: 126px;
+      border-color: rgba(24, 138, 166, 0.35);
+      border-radius: 10px;
+      background: linear-gradient(180deg, #f0fdfa, #ffffff);
+      box-shadow: 0 10px 22px rgba(24, 138, 166, 0.08);
+    }
+
+    .taxonomy-struct {
       min-height: 46px;
       border: 0;
       border-radius: 0;

@@ -275,13 +275,13 @@
 
     .graph-taxonomy-map {
       display: grid;
-      grid-template-columns: minmax(120px, 0.85fr) 28px minmax(360px, 3fr);
+      grid-template-columns: minmax(112px, 0.75fr) minmax(170px, 1.12fr) minmax(112px, 0.75fr) minmax(360px, 2.5fr);
       gap: 10px;
       align-items: stretch;
       margin: 2px 0 14px;
     }
 
-    .taxonomy-gnn-stack {
+    .taxonomy-struct-stack {
       display: grid;
       grid-template-rows: minmax(46px, auto) minmax(58px, auto);
       border: 1px solid rgba(75, 111, 150, 0.28);
@@ -329,16 +329,23 @@
       box-shadow: 0 10px 22px rgba(36, 107, 254, 0.1);
     }
 
-    .taxonomy-arrow {
-      display: grid;
-      place-items: center;
-      color: #64748b;
-      font-family: var(--mono);
-      font-size: 14px;
-      font-weight: 900;
+    .taxonomy-vision {
+      min-height: 126px;
+      border-color: rgba(0, 167, 199, 0.35);
+      border-radius: 10px;
+      background: linear-gradient(180deg, #ecfeff, #ffffff);
+      box-shadow: 0 10px 22px rgba(0, 167, 199, 0.09);
     }
 
-    .taxonomy-gnn {
+    .taxonomy-rl {
+      min-height: 126px;
+      border-color: rgba(24, 138, 166, 0.35);
+      border-radius: 10px;
+      background: linear-gradient(180deg, #f0fdfa, #ffffff);
+      box-shadow: 0 10px 22px rgba(24, 138, 166, 0.08);
+    }
+
+    .taxonomy-struct {
       min-height: 46px;
       border: 0;
       border-radius: 0;
@@ -1528,7 +1535,7 @@
 
   <main class="page">
     <section class="hero">
-      <div class="eyebrow">Obsidian-first paper repository · generated 2026/5/12 18:22:29</div>
+      <div class="eyebrow">Obsidian-first paper repository · generated 2026/5/12 21:19:04</div>
       <h1>通用多智能体任务规划模型研究图谱</h1>
       <p>基于 Markdown note 的 typed relations 自动生成。当前版本聚焦 VLA、π 系列、World Action Model 和 Dreamer，把论文定位为端到端多智能体任务规划模型里的执行器、世界模拟器、planner critic、记忆模块或任务分配器。</p>
 
@@ -1567,10 +1574,17 @@
           <strong>LLM</strong>
           <span>language planning / code policy</span>
         </div>
-        <div class="taxonomy-arrow">→</div>
-        <div class="taxonomy-gnn-stack">
-          <div class="taxonomy-card taxonomy-gnn">
-            <strong>GNN / Graph Models</strong>
+        <div class="taxonomy-card taxonomy-vision">
+          <strong>Vision</strong>
+          <span>VLA / world model / WAM</span>
+        </div>
+        <div class="taxonomy-card taxonomy-rl">
+          <strong>RL</strong>
+          <span>reward, policy learning, allocation</span>
+        </div>
+        <div class="taxonomy-struct-stack">
+          <div class="taxonomy-card taxonomy-struct">
+            <strong>Graph Struct</strong>
             <span>graph representation, relation reasoning, structure generation</span>
           </div>
           <div class="taxonomy-subgrid">
@@ -1606,8 +1620,18 @@
         </div>
 
 
+        <div class="graph-column-group" style="--x:374px; --w:318px; --group:#00a7c7">
+          <span>Vision</span>
+        </div>
+
+
+        <div class="graph-column-group" style="--x:692px; --w:106px; --group:#188aa6">
+          <span>RL</span>
+        </div>
+
+
         <div class="graph-column-group" style="--x:798px; --w:424px; --group:#4b6f96">
-          <span>GNN</span>
+          <span>Graph Struct</span>
         </div>
 
 
@@ -1621,13 +1645,13 @@
         </div>
 
 
-        <div class="graph-column" style="--x:268px; --w:106px; --domain:#00a7c7">
-          <span>VLA</span>
+        <div class="graph-column" style="--x:268px; --w:106px; --domain:#16a085">
+          <span>Diffusion</span>
         </div>
 
 
-        <div class="graph-column" style="--x:374px; --w:106px; --domain:#16a085">
-          <span>Diffusion</span>
+        <div class="graph-column" style="--x:374px; --w:106px; --domain:#00a7c7">
+          <span>VLA</span>
         </div>
 
 
@@ -1786,7 +1810,7 @@
         data-edge-parent-note="notes/2020-ddpm-denoising-diffusion-probabilistic-models.html"
         data-edge-child-title="Diffusion Policy"
         data-edge-child-note="notes/2023-diffusion-policy-action-diffusion.html"
-        d="M 478 190 C 512 190, 512 634, 478 634"
+        d="M 372 190 C 406 190, 406 634, 372 634"
         marker-end="url(#arrowhead-enables)"></path>
 <path class="graph-edge"
         style="--edge-color:#188aa6; --edge-marker:url(#arrowhead-enables); --edge-start-marker:url(#arrowhead-start-enables)"
@@ -1802,7 +1826,7 @@
         data-edge-parent-note="notes/2020-ddpm-denoising-diffusion-probabilistic-models.html"
         data-edge-child-title="RFdiffusion"
         data-edge-child-note="notes/2023-rfdiffusion-protein-structure-function.html"
-        d="M 472 190 C 798 190, 798 754, 1124 754"
+        d="M 366 190 C 745 190, 745 754, 1124 754"
         marker-end="url(#arrowhead-enables)"></path>
 <path class="graph-edge"
         style="--edge-color:#188aa6; --edge-marker:url(#arrowhead-enables); --edge-start-marker:url(#arrowhead-start-enables)"
@@ -1818,7 +1842,7 @@
         data-edge-parent-note="notes/2020-ddpm-denoising-diffusion-probabilistic-models.html"
         data-edge-child-title="LayerDAG"
         data-edge-child-note="notes/2025-layerdag-diffusion-dag-generation.html"
-        d="M 478 190 C 512 190, 512 1274, 478 1274"
+        d="M 372 190 C 406 190, 406 1274, 372 1274"
         marker-end="url(#arrowhead-enables)"></path>
 <path class="graph-edge"
         style="--edge-color:#00a7c7; --edge-marker:url(#arrowhead-uses); --edge-start-marker:url(#arrowhead-start-uses)"
@@ -1914,7 +1938,7 @@
         data-edge-parent-note="notes/2023-diffusion-policy-action-diffusion.html"
         data-edge-child-title="π0"
         data-edge-child-note="notes/2024-pi0-vla-flow-model.html"
-        d="M 382 634 C 374 634, 374 1080, 366 1080"
+        d="M 366 634 C 374 634, 374 1080, 382 1080"
         marker-end="url(#arrowhead-enables)"></path>
 <path class="graph-edge"
         style="--edge-color:#188aa6; --edge-marker:url(#arrowhead-enables); --edge-start-marker:url(#arrowhead-start-enables)"
@@ -1930,7 +1954,7 @@
         data-edge-parent-note="notes/2023-diffusion-policy-action-diffusion.html"
         data-edge-child-title="DreamZero / WAM"
         data-edge-child-note="notes/2026-world-action-models-zero-shot-policies.html"
-        d="M 472 634 C 533 634, 533 1592, 594 1592"
+        d="M 366 634 C 480 634, 480 1592, 594 1592"
         marker-end="url(#arrowhead-enables)"></path>
 <path class="graph-edge"
         style="--edge-color:#188aa6; --edge-marker:url(#arrowhead-enables); --edge-start-marker:url(#arrowhead-start-enables)"
@@ -1946,7 +1970,7 @@
         data-edge-parent-note="notes/2023-diffusion-policy-action-diffusion.html"
         data-edge-child-title="Fast-WAM"
         data-edge-child-note="notes/2026-fast-wam-test-time-future-imagination.html"
-        d="M 472 634 C 533 634, 533 1632.5, 594 1632.5"
+        d="M 366 634 C 480 634, 480 1632.5, 594 1632.5"
         marker-end="url(#arrowhead-enables)"></path>
 <path class="graph-edge"
         style="--edge-color:#d14d72; --edge-marker:url(#arrowhead-contrasts); --edge-start-marker:url(#arrowhead-start-contrasts)"
@@ -1962,7 +1986,7 @@
         data-edge-parent-note="notes/2023-diffusion-policy-action-diffusion.html"
         data-edge-child-title="RT-2"
         data-edge-child-note="notes/2023-rt-2-vla.html"
-        d="M 382 634 C 374 634, 374 754, 366 754"
+        d="M 366 634 C 374 634, 374 754, 382 754"
         marker-end="url(#arrowhead-contrasts)"></path>
 <path class="graph-edge"
         style="--edge-color:#00a7c7; --edge-marker:url(#arrowhead-uses); --edge-start-marker:url(#arrowhead-start-uses)"
@@ -2090,7 +2114,7 @@
         data-edge-parent-note="notes/2024-alphafold3-biomolecular-interactions.html"
         data-edge-child-title="LayerDAG"
         data-edge-child-note="notes/2025-layerdag-diffusion-dag-generation.html"
-        d="M 1124 1016 C 798 1016, 798 1274, 472 1274"
+        d="M 1124 1016 C 745 1016, 745 1274, 366 1274"
         marker-end="url(#arrowhead-contrasts)"></path>
 <path class="graph-edge"
         style="--edge-color:#246bfe; --edge-marker:url(#arrowhead-extends); --edge-start-marker:url(#arrowhead-start-extends)"
@@ -2106,7 +2130,7 @@
         data-edge-parent-note="notes/2023-rt-2-vla.html"
         data-edge-child-title="π0"
         data-edge-child-note="notes/2024-pi0-vla-flow-model.html"
-        d="M 372 754 C 406 754, 406 1080, 372 1080"
+        d="M 478 754 C 512 754, 512 1080, 478 1080"
         marker-end="url(#arrowhead-extends)"></path>
 <path class="graph-edge"
         style="--edge-color:#4b6f96; --edge-marker:url(#arrowhead-cites); --edge-start-marker:url(#arrowhead-start-cites)"
@@ -2122,7 +2146,7 @@
         data-edge-parent-note="notes/2024-pi0-vla-flow-model.html"
         data-edge-child-title="FAST"
         data-edge-child-note="notes/2025-fast-action-tokenization-vla.html"
-        d="M 372 1080 C 406 1080, 406 1158, 372 1158"
+        d="M 478 1080 C 512 1080, 512 1158, 478 1158"
         marker-end="url(#arrowhead-cites)"></path>
 <path class="graph-edge"
         style="--edge-color:#00a7c7; --edge-marker:url(#arrowhead-uses); --edge-start-marker:url(#arrowhead-start-uses)"
@@ -2186,7 +2210,7 @@
         data-edge-parent-note="notes/2025-dart-llm-dependency-aware-task-graph.html"
         data-edge-child-title="LayerDAG"
         data-edge-child-note="notes/2025-layerdag-diffusion-dag-generation.html"
-        d="M 1018 1274 C 745 1274, 745 1274, 472 1274"
+        d="M 1018 1274 C 692 1274, 692 1274, 366 1274"
         marker-end="url(#arrowhead-enables)"></path>
 <path class="graph-edge"
         style="--edge-color:#188aa6; --edge-marker:url(#arrowhead-enables); --edge-start-marker:url(#arrowhead-start-enables)"
@@ -2202,7 +2226,7 @@
         data-edge-parent-note="notes/2025-lip-llm-dependency-graph-planning.html"
         data-edge-child-title="LayerDAG"
         data-edge-child-note="notes/2025-layerdag-diffusion-dag-generation.html"
-        d="M 1018 1216 C 745 1216, 745 1274, 472 1274"
+        d="M 1018 1216 C 692 1216, 692 1274, 366 1274"
         marker-end="url(#arrowhead-enables)"></path>
 <path class="graph-edge"
         style="--edge-color:#d14d72; --edge-marker:url(#arrowhead-contrasts); --edge-start-marker:url(#arrowhead-start-contrasts)"
@@ -2218,7 +2242,7 @@
         data-edge-parent-note="notes/2023-unsupervised-task-graph-generation.html"
         data-edge-child-title="LayerDAG"
         data-edge-child-note="notes/2025-layerdag-diffusion-dag-generation.html"
-        d="M 1018 754 C 745 754, 745 1274, 472 1274"
+        d="M 1018 754 C 692 754, 692 1274, 366 1274"
         marker-end="url(#arrowhead-contrasts)"></path>
 <path class="graph-edge"
         style="--edge-color:#246bfe; --edge-marker:url(#arrowhead-extends); --edge-start-marker:url(#arrowhead-start-extends)"
@@ -2266,7 +2290,7 @@
         data-edge-parent-note="notes/2024-pi0-vla-flow-model.html"
         data-edge-child-title="π0.5"
         data-edge-child-note="notes/2025-pi05-open-world-generalization.html"
-        d="M 372 1080 C 406 1080, 406 1332, 372 1332"
+        d="M 478 1080 C 512 1080, 512 1332, 478 1332"
         marker-end="url(#arrowhead-extends)"></path>
 <path class="graph-edge"
         style="--edge-color:#00a7c7; --edge-marker:url(#arrowhead-uses); --edge-start-marker:url(#arrowhead-start-uses)"
@@ -2282,7 +2306,7 @@
         data-edge-parent-note="notes/2025-fast-action-tokenization-vla.html"
         data-edge-child-title="π0.5"
         data-edge-child-note="notes/2025-pi05-open-world-generalization.html"
-        d="M 372 1158 C 406 1158, 406 1332, 372 1332"
+        d="M 478 1158 C 512 1158, 512 1332, 478 1332"
         marker-end="url(#arrowhead-uses)"></path>
 <path class="graph-edge"
         style="--edge-color:#00a7c7; --edge-marker:url(#arrowhead-uses); --edge-start-marker:url(#arrowhead-start-uses)"
@@ -2330,7 +2354,7 @@
         data-edge-parent-note="notes/2025-pistar06-recap.html"
         data-edge-child-title="π0.6"
         data-edge-child-note="notes/2025-pi06-model-card.html"
-        d="M 700 1458 C 533 1458, 533 1458, 366 1458"
+        d="M 700 1458 C 586 1458, 586 1458, 472 1458"
         marker-end="url(#arrowhead-extends)"></path>
 <path class="graph-edge"
         style="--edge-color:#00a7c7; --edge-marker:url(#arrowhead-uses); --edge-start-marker:url(#arrowhead-start-uses)"
@@ -2346,7 +2370,7 @@
         data-edge-parent-note="notes/2025-pi05-open-world-generalization.html"
         data-edge-child-title="π*0.6 / RECAP"
         data-edge-child-note="notes/2025-pistar06-recap.html"
-        d="M 366 1332 C 533 1332, 533 1458, 700 1458"
+        d="M 472 1332 C 586 1332, 586 1458, 700 1458"
         marker-end="url(#arrowhead-uses)"></path>
 <path class="graph-edge"
         style="--edge-color:#00a7c7; --edge-marker:url(#arrowhead-uses); --edge-start-marker:url(#arrowhead-start-uses)"
@@ -2362,7 +2386,7 @@
         data-edge-parent-note="notes/2024-pi0-vla-flow-model.html"
         data-edge-child-title="π*0.6 / RECAP"
         data-edge-child-note="notes/2025-pistar06-recap.html"
-        d="M 366 1080 C 533 1080, 533 1458, 700 1458"
+        d="M 472 1080 C 586 1080, 586 1458, 700 1458"
         marker-end="url(#arrowhead-uses)"></path>
 <path class="graph-edge"
         style="--edge-color:#246bfe; --edge-marker:url(#arrowhead-extends); --edge-start-marker:url(#arrowhead-start-extends)"
@@ -2378,7 +2402,7 @@
         data-edge-parent-note="notes/2025-pi05-open-world-generalization.html"
         data-edge-child-title="π0.6"
         data-edge-child-note="notes/2025-pi06-model-card.html"
-        d="M 372 1332 C 406 1332, 406 1458, 372 1458"
+        d="M 478 1332 C 512 1332, 512 1458, 478 1458"
         marker-end="url(#arrowhead-extends)"></path>
 <path class="graph-edge"
         style="--edge-color:#246bfe; --edge-marker:url(#arrowhead-extends); --edge-start-marker:url(#arrowhead-start-extends)"
@@ -2394,7 +2418,7 @@
         data-edge-parent-note="notes/2024-pi0-vla-flow-model.html"
         data-edge-child-title="π0.6"
         data-edge-child-note="notes/2025-pi06-model-card.html"
-        d="M 372 1080 C 406 1080, 406 1458, 372 1458"
+        d="M 478 1080 C 512 1080, 512 1458, 478 1458"
         marker-end="url(#arrowhead-extends)"></path>
 <path class="graph-edge"
         style="--edge-color:#d14d72; --edge-marker:url(#arrowhead-contrasts); --edge-start-marker:url(#arrowhead-start-contrasts)"
@@ -2410,7 +2434,7 @@
         data-edge-parent-note="notes/2025-fast-action-tokenization-vla.html"
         data-edge-child-title="LAP-3B"
         data-edge-child-note="notes/2026-lap-language-action-pretraining.html"
-        d="M 372 1158 C 406 1158, 406 1592, 372 1592"
+        d="M 478 1158 C 512 1158, 512 1592, 478 1592"
         marker-end="url(#arrowhead-contrasts)"></path>
 <path class="graph-edge"
         style="--edge-color:#d14d72; --edge-marker:url(#arrowhead-contrasts); --edge-start-marker:url(#arrowhead-start-contrasts)"
@@ -2426,7 +2450,7 @@
         data-edge-parent-note="notes/2024-pi0-vla-flow-model.html"
         data-edge-child-title="LAP-3B"
         data-edge-child-note="notes/2026-lap-language-action-pretraining.html"
-        d="M 372 1080 C 406 1080, 406 1592, 372 1592"
+        d="M 478 1080 C 512 1080, 512 1592, 478 1592"
         marker-end="url(#arrowhead-contrasts)"></path>
 <path class="graph-edge"
         style="--edge-color:#d14d72; --edge-marker:url(#arrowhead-contrasts); --edge-start-marker:url(#arrowhead-start-contrasts)"
@@ -2442,7 +2466,7 @@
         data-edge-parent-note="notes/2025-pi05-open-world-generalization.html"
         data-edge-child-title="LAP-3B"
         data-edge-child-note="notes/2026-lap-language-action-pretraining.html"
-        d="M 372 1332 C 406 1332, 406 1592, 372 1592"
+        d="M 478 1332 C 512 1332, 512 1592, 478 1592"
         marker-end="url(#arrowhead-contrasts)"></path>
 <path class="graph-edge"
         style="--edge-color:#00a7c7; --edge-marker:url(#arrowhead-uses); --edge-start-marker:url(#arrowhead-start-uses)"
@@ -2490,7 +2514,7 @@
         data-edge-parent-note="notes/2025-pi05-open-world-generalization.html"
         data-edge-child-title="DreamZero / WAM"
         data-edge-child-note="notes/2026-world-action-models-zero-shot-policies.html"
-        d="M 366 1332 C 480 1332, 480 1592, 594 1592"
+        d="M 472 1332 C 533 1332, 533 1592, 594 1592"
         marker-end="url(#arrowhead-contrasts)"></path>
 <path class="graph-edge"
         style="--edge-color:#d14d72; --edge-marker:url(#arrowhead-contrasts); --edge-start-marker:url(#arrowhead-start-contrasts)"
@@ -2506,7 +2530,7 @@
         data-edge-parent-note="notes/2024-pi0-vla-flow-model.html"
         data-edge-child-title="DreamZero / WAM"
         data-edge-child-note="notes/2026-world-action-models-zero-shot-policies.html"
-        d="M 366 1080 C 480 1080, 480 1592, 594 1592"
+        d="M 472 1080 C 533 1080, 533 1592, 594 1592"
         marker-end="url(#arrowhead-contrasts)"></path>
 <path class="graph-edge"
         style="--edge-color:#d14d72; --edge-marker:url(#arrowhead-contrasts); --edge-start-marker:url(#arrowhead-start-contrasts)"
@@ -2522,7 +2546,7 @@
         data-edge-parent-note="notes/2023-rt-2-vla.html"
         data-edge-child-title="DreamZero / WAM"
         data-edge-child-note="notes/2026-world-action-models-zero-shot-policies.html"
-        d="M 366 754 C 480 754, 480 1592, 594 1592"
+        d="M 472 754 C 533 754, 533 1592, 594 1592"
         marker-end="url(#arrowhead-contrasts)"></path>
 <path class="graph-edge"
         style="--edge-color:#246bfe; --edge-marker:url(#arrowhead-extends); --edge-start-marker:url(#arrowhead-start-extends)"
@@ -2538,7 +2562,7 @@
         data-edge-parent-note="notes/2025-pi06-model-card.html"
         data-edge-child-title="MEM"
         data-edge-child-note="notes/2026-mem-multi-scale-embodied-memory.html"
-        d="M 372 1458 C 406 1458, 406 1650, 372 1650"
+        d="M 478 1458 C 512 1458, 512 1650, 478 1650"
         marker-end="url(#arrowhead-extends)"></path>
 <path class="graph-edge"
         style="--edge-color:#00a7c7; --edge-marker:url(#arrowhead-uses); --edge-start-marker:url(#arrowhead-start-uses)"
@@ -2554,7 +2578,7 @@
         data-edge-parent-note="notes/2025-pi05-open-world-generalization.html"
         data-edge-child-title="MEM"
         data-edge-child-note="notes/2026-mem-multi-scale-embodied-memory.html"
-        d="M 372 1332 C 406 1332, 406 1650, 372 1650"
+        d="M 478 1332 C 512 1332, 512 1650, 478 1650"
         marker-end="url(#arrowhead-uses)"></path>
 <path class="graph-edge"
         style="--edge-color:#00a7c7; --edge-marker:url(#arrowhead-uses); --edge-start-marker:url(#arrowhead-start-uses)"
@@ -2570,7 +2594,7 @@
         data-edge-parent-note="notes/2024-pi0-vla-flow-model.html"
         data-edge-child-title="MEM"
         data-edge-child-note="notes/2026-mem-multi-scale-embodied-memory.html"
-        d="M 372 1080 C 406 1080, 406 1650, 372 1650"
+        d="M 478 1080 C 512 1080, 512 1650, 478 1650"
         marker-end="url(#arrowhead-uses)"></path>
 <path class="graph-edge"
         style="--edge-color:#d14d72; --edge-marker:url(#arrowhead-contrasts); --edge-start-marker:url(#arrowhead-start-contrasts)"
@@ -2602,7 +2626,7 @@
         data-edge-parent-note="notes/2024-pi0-vla-flow-model.html"
         data-edge-child-title="Fast-WAM"
         data-edge-child-note="notes/2026-fast-wam-test-time-future-imagination.html"
-        d="M 366 1080 C 480 1080, 480 1632.5, 594 1632.5"
+        d="M 472 1080 C 533 1080, 533 1632.5, 594 1632.5"
         marker-end="url(#arrowhead-contrasts)"></path>
 <path class="graph-edge"
         style="--edge-color:#d14d72; --edge-marker:url(#arrowhead-contrasts); --edge-start-marker:url(#arrowhead-start-contrasts)"
@@ -2618,7 +2642,7 @@
         data-edge-parent-note="notes/2025-pi05-open-world-generalization.html"
         data-edge-child-title="Fast-WAM"
         data-edge-child-note="notes/2026-fast-wam-test-time-future-imagination.html"
-        d="M 366 1332 C 480 1332, 480 1632.5, 594 1632.5"
+        d="M 472 1332 C 533 1332, 533 1632.5, 594 1632.5"
         marker-end="url(#arrowhead-contrasts)"></path>
 <path class="graph-edge"
         style="--edge-color:#d14d72; --edge-marker:url(#arrowhead-contrasts); --edge-start-marker:url(#arrowhead-start-contrasts)"
@@ -2698,7 +2722,7 @@
         data-edge-parent-note="notes/2026-mem-multi-scale-embodied-memory.html"
         data-edge-child-title="π0.7"
         data-edge-child-note="notes/2026-pi07-steerable-generalist-robotic-foundation-model.html"
-        d="M 372 1650 C 406 1650, 406 1708, 372 1708"
+        d="M 478 1650 C 512 1650, 512 1708, 478 1708"
         marker-end="url(#arrowhead-extends)"></path>
 <path class="graph-edge"
         style="--edge-color:#246bfe; --edge-marker:url(#arrowhead-extends); --edge-start-marker:url(#arrowhead-start-extends)"
@@ -2714,7 +2738,7 @@
         data-edge-parent-note="notes/2025-pistar06-recap.html"
         data-edge-child-title="π0.7"
         data-edge-child-note="notes/2026-pi07-steerable-generalist-robotic-foundation-model.html"
-        d="M 700 1458 C 533 1458, 533 1708, 366 1708"
+        d="M 700 1458 C 586 1458, 586 1708, 472 1708"
         marker-end="url(#arrowhead-extends)"></path>
 <path class="graph-edge"
         style="--edge-color:#246bfe; --edge-marker:url(#arrowhead-extends); --edge-start-marker:url(#arrowhead-start-extends)"
@@ -2730,7 +2754,7 @@
         data-edge-parent-note="notes/2025-pi06-model-card.html"
         data-edge-child-title="π0.7"
         data-edge-child-note="notes/2026-pi07-steerable-generalist-robotic-foundation-model.html"
-        d="M 372 1458 C 406 1458, 406 1708, 372 1708"
+        d="M 478 1458 C 512 1458, 512 1708, 478 1708"
         marker-end="url(#arrowhead-extends)"></path>
 <path class="graph-edge"
         style="--edge-color:#00a7c7; --edge-marker:url(#arrowhead-uses); --edge-start-marker:url(#arrowhead-start-uses)"
@@ -2746,7 +2770,7 @@
         data-edge-parent-note="notes/2025-pi05-open-world-generalization.html"
         data-edge-child-title="π0.7"
         data-edge-child-note="notes/2026-pi07-steerable-generalist-robotic-foundation-model.html"
-        d="M 372 1332 C 406 1332, 406 1708, 372 1708"
+        d="M 478 1332 C 512 1332, 512 1708, 478 1708"
         marker-end="url(#arrowhead-uses)"></path>
 <path class="graph-edge"
         style="--edge-color:#00a7c7; --edge-marker:url(#arrowhead-uses); --edge-start-marker:url(#arrowhead-start-uses)"
@@ -2762,7 +2786,7 @@
         data-edge-parent-note="notes/2024-pi0-vla-flow-model.html"
         data-edge-child-title="π0.7"
         data-edge-child-note="notes/2026-pi07-steerable-generalist-robotic-foundation-model.html"
-        d="M 372 1080 C 406 1080, 406 1708, 372 1708"
+        d="M 478 1080 C 512 1080, 512 1708, 478 1708"
         marker-end="url(#arrowhead-uses)"></path>
             </svg>
 
@@ -2779,7 +2803,7 @@
 
 
         <button class="graph-node"
-          style="--x:427px; --y:190px; --node:#16a085"
+          style="--x:321px; --y:190px; --node:#16a085"
           data-node-id="2020-ddpm-denoising-diffusion-probabilistic-models"
           data-node-title="DDPM"
           data-note-path="notes/2020-ddpm-denoising-diffusion-probabilistic-models.html"
@@ -2863,7 +2887,7 @@
 
 
         <button class="graph-node"
-          style="--x:427px; --y:634px; --node:#16a085"
+          style="--x:321px; --y:634px; --node:#16a085"
           data-node-id="2023-diffusion-policy-action-diffusion"
           data-node-title="Diffusion Policy"
           data-note-path="notes/2023-diffusion-policy-action-diffusion.html"
@@ -2911,7 +2935,7 @@
 
 
         <button class="graph-node"
-          style="--x:321px; --y:754px; --node:#00a7c7"
+          style="--x:427px; --y:754px; --node:#00a7c7"
           data-node-id="2023-rt-2-vla"
           data-node-title="RT-2"
           data-note-path="notes/2023-rt-2-vla.html"
@@ -2971,7 +2995,7 @@
 
 
         <button class="graph-node"
-          style="--x:321px; --y:1080px; --node:#00a7c7"
+          style="--x:427px; --y:1080px; --node:#00a7c7"
           data-node-id="2024-pi0-vla-flow-model"
           data-node-title="π0"
           data-note-path="notes/2024-pi0-vla-flow-model.html"
@@ -2995,7 +3019,7 @@
 
 
         <button class="graph-node"
-          style="--x:321px; --y:1158px; --node:#00a7c7"
+          style="--x:427px; --y:1158px; --node:#00a7c7"
           data-node-id="2025-fast-action-tokenization-vla"
           data-node-title="FAST"
           data-note-path="notes/2025-fast-action-tokenization-vla.html"
@@ -3019,7 +3043,7 @@
 
 
         <button class="graph-node"
-          style="--x:427px; --y:1274px; --node:#16a085"
+          style="--x:321px; --y:1274px; --node:#16a085"
           data-node-id="2025-layerdag-diffusion-dag-generation"
           data-node-title="LayerDAG"
           data-note-path="notes/2025-layerdag-diffusion-dag-generation.html"
@@ -3055,7 +3079,7 @@
 
 
         <button class="graph-node"
-          style="--x:321px; --y:1332px; --node:#00a7c7"
+          style="--x:427px; --y:1332px; --node:#00a7c7"
           data-node-id="2025-pi05-open-world-generalization"
           data-node-title="π0.5"
           data-note-path="notes/2025-pi05-open-world-generalization.html"
@@ -3103,7 +3127,7 @@
 
 
         <button class="graph-node"
-          style="--x:321px; --y:1458px; --node:#00a7c7"
+          style="--x:427px; --y:1458px; --node:#00a7c7"
           data-node-id="2025-pi06-model-card"
           data-node-title="π0.6"
           data-note-path="notes/2025-pi06-model-card.html"
@@ -3127,7 +3151,7 @@
 
 
         <button class="graph-node"
-          style="--x:321px; --y:1592px; --node:#00a7c7"
+          style="--x:427px; --y:1592px; --node:#00a7c7"
           data-node-id="2026-lap-language-action-pretraining"
           data-node-title="LAP-3B"
           data-note-path="notes/2026-lap-language-action-pretraining.html"
@@ -3151,7 +3175,7 @@
 
 
         <button class="graph-node"
-          style="--x:321px; --y:1650px; --node:#00a7c7"
+          style="--x:427px; --y:1650px; --node:#00a7c7"
           data-node-id="2026-mem-multi-scale-embodied-memory"
           data-node-title="MEM"
           data-note-path="notes/2026-mem-multi-scale-embodied-memory.html"
@@ -3199,7 +3223,7 @@
 
 
         <button class="graph-node"
-          style="--x:321px; --y:1708px; --node:#00a7c7"
+          style="--x:427px; --y:1708px; --node:#00a7c7"
           data-node-id="2026-pi07-steerable-generalist-robotic-foundation-model"
           data-node-title="π0.7"
           data-note-path="notes/2026-pi07-steerable-generalist-robotic-foundation-model.html"
