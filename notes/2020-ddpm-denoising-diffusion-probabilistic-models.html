@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="robots" content="noindex,nofollow,noarchive">
-  <title>Diffusion Policy · Paper Note</title>
+  <title>DDPM · Paper Note</title>
   <style>
     :root {
       --bg: #eef4fb;
@@ -434,15 +434,15 @@
   <main class="note-shell" id="top">
     <section class="note-hero">
       <div class="hero-main">
-        <div class="note-kicker">2023-03 · RSS 2023 / IJRR 2024 · Robot Diffusion Policy</div>
-        <h1>Diffusion Policy</h1>
-        <div class="full-title">Diffusion Policy: Visuomotor Policy Learning via Action Diffusion</div>
-        <div class="note-summary"><p>Diffusion Policy 把机器人策略从“直接回归下一步动作”改成“条件扩散生成一段连续动作轨迹”，是独立于 VLA 语义路线之外的机器人动作生成根路线，也是后续 flow/diffusion action policy 和 WAM 低层动作生成的重要源头。</p></div>
+        <div class="note-kicker">2020-06 · NeurIPS 2020 · denoising_diffusion_probabilistic_model</div>
+        <h1>DDPM</h1>
+        <div class="full-title">Denoising Diffusion Probabilistic Models</div>
+        <div class="note-summary"><p>DDPM 是现代 diffusion 生成模型的基础节点：它把生成过程写成“正向逐步加噪 + 反向逐步去噪”，并用简化的噪声预测目标让模型学会从噪声中恢复数据结构。</p></div>
       </div>
       <aside class="hero-side">
         <div class="metric-grid">
           <div class="metric">
-            <div class="metric-value">2023</div>
+            <div class="metric-value">2020</div>
             <div class="metric-label">Year</div>
           </div>
           <div class="metric">
@@ -450,23 +450,23 @@
             <div class="metric-label">Readiness</div>
           </div>
           <div class="metric">
-            <div class="metric-value">已读论文</div>
+            <div class="metric-value">略读</div>
             <div class="metric-label">Evidence</div>
           </div>
           <div class="metric">
-            <div class="metric-value">4</div>
+            <div class="metric-value">3</div>
             <div class="metric-label">Relations</div>
           </div>
         </div>
         <div>
           <div class="note-section-kicker">Authors</div>
-          <div>Cheng Chi, Zhenjia Xu, Siyuan Feng, Eric Cousineau, Yilun Du, Benjamin Burchfiel, Russ Tedrake, Shuran Song</div>
+          <div>Jonathan Ho, Ajay Jain, Pieter Abbeel</div>
         </div>
         <div>
           <div class="note-section-kicker">Institutions</div>
-          <div>Columbia University · Toyota Research Institute · MIT · Stanford University</div>
+          <div>UC Berkeley · Google Research</div>
         </div>
-        <div class="note-link-row"><a href="../pdfs/2023-03-01-Diffusion-Policy-robot-diffusion.pdf" target="_blank" rel="noreferrer">PDF</a><a href="https://arxiv.org/abs/2303.04137" target="_blank" rel="noreferrer">Paper</a><a href="https://diffusion-policy.cs.columbia.edu/" target="_blank" rel="noreferrer">Project</a><a href="https://doi.org/10.48550/arXiv.2303.04137" target="_blank" rel="noreferrer">DOI</a><a href="https://arxiv.org/abs/2303.04137" target="_blank" rel="noreferrer">arXiv</a></div>
+        <div class="note-link-row"><a href="https://arxiv.org/abs/2006.11239" target="_blank" rel="noreferrer">Paper</a><a href="https://github.com/hojonathanho/diffusion" target="_blank" rel="noreferrer">Project</a><a href="https://doi.org/10.48550/arXiv.2006.11239" target="_blank" rel="noreferrer">DOI</a><a href="https://arxiv.org/abs/2006.11239" target="_blank" rel="noreferrer">arXiv</a></div>
       </aside>
     </section>
 
@@ -475,52 +475,51 @@
 
     <section class="note-section impact">
       <div class="note-section-kicker">For Our Model</div>
-      <div class="note-section-body"><p>对我们的 General Multi-Agent Task Planning Model 来说，Diffusion Policy 更适合放在低层 executor，而不是高层 planner。高层 planner 负责子任务分解、机器人分配、约束和协作时序；每个机器人本地可以用 diffusion policy 接收结构化子目标和局部观测，输出可执行 action chunk。</p>
-<p>真正值得借鉴的是接口形式：planner 不应该只调用“下一步动作”，而应该调用“带前置条件、目标、禁区、期望后置状态和失败反馈的 action chunk executor”。如果未来要做 multi-agent diffusion policy，可以把联合动作表示成多个机器人 action chunk 的组合，再加入 collision、resource occupancy 和 communication action 约束。</p></div>
+      <div class="note-section-body"><p>DDPM 给 TOPG 的最小迁移形式是：</p>
+<p>```text<br>clean task graph<br>-&gt; add node / edge / attribute noise<br>-&gt; condition on language + scene + agents + skills + feedback<br>-&gt; denoise into a valid plan graph<br>-&gt; check constraints and optionally denoise again<br>```</p>
+<p>这说明 TOPG 生成器不一定要一次性输出完整计划。它可以先产生一个 noised / masked plan hypothesis view，再逐步修正 task count、skill label、location grounding、dependency edge 和 allocation hints。</p></div>
     </section>
 
 
     <section class="note-section ">
       <div class="note-section-kicker">Research Question</div>
-      <div class="note-section-body"><p>传统 visuomotor imitation learning 常把策略写成确定性回归或简单混合分布：输入图像和机器人状态，直接输出下一步动作。这在机器人操作里会遇到三个问题。第一，同一个视觉状态下可能有多种合理动作，比如从左边绕或从右边绕，均值回归会把多峰动作压成一个不可执行的平均动作。第二，复杂操作需要连续、平滑、高维的动作序列，而不是孤立的一步动作。第三，真实机器人控制需要稳定训练和闭环重规划，不能只生成离线轨迹。</p>
-<p>这篇论文的核心问题是：能否把扩散模型的强分布建模能力搬到机器人动作空间，让策略学习的是 action distribution，而不是单点动作回归。</p></div>
+      <div class="note-section-body"><p>传统生成模型在高质量图像生成上常依赖 GAN、VAE 或 autoregressive decoder。DDPM 关心的问题是：能否用一个清晰的概率扩散过程，把复杂数据分布逐步扰动成高斯噪声，再训练一个神经网络学习反向去噪链，从噪声生成样本。</p>
+<p>对我们做 TOPG 来说，真正重要的不是图像任务，而是“结构可以被逐步破坏，也可以被条件模型逐步修复”这个范式。</p></div>
     </section>
 
 
     <section class="note-section ">
       <div class="note-section-kicker">Method</div>
-      <div class="note-section-body"><p>Diffusion Policy 的基本设计可以拆成四步。</p>
-<p>第一，把动作当成生成对象。模型不是生成图片，而是生成未来一小段动作序列，也就是 action chunk。训练数据来自专家示教轨迹，标签是一段连续的末端位姿、关节或夹爪动作。</p>
-<p>第二，对专家动作加噪声。训练时从真实 action chunk 采样一个扩散时间步，把高斯噪声加到动作序列上，让网络在视觉观测、机器人状态和扩散时间步条件下预测噪声或干净动作。这样学到的是条件动作分布 <code>p(action_chunk | observation)</code>。</p>
-<p>第三，推理时从噪声里“去噪出动作”。部署时先采样一段随机噪声动作，再经过多步 denoising / Langevin-style refinement，把噪声逐渐变成一段平滑、可执行、符合当前观测的动作 chunk。这个过程可以理解成：策略不是一次性吐出答案，而是在动作空间里迭代优化一个候选轨迹。</p>
-<p>第四，只执行前几步，然后重新规划。论文把 diffusion action chunk 和 receding horizon control 结合起来：每次生成一段未来动作，但机器人只执行最靠前的一小段，随后读取新观测再次生成下一段动作。这样既保留了动作序列的时间一致性，又能在执行中对扰动、遮挡和偏差做闭环修正。</p>
-<p>架构上，论文强调 visual conditioning 和 time-series diffusion transformer：视觉编码器负责把图像变成条件特征，时序扩散模型负责在动作序列维度上建模多步动作之间的依赖。</p></div>
+      <div class="note-section-body"><p>DDPM 定义两个过程。</p>
+<p>第一，forward process 从真实样本 <code>x_0</code> 开始，按照预设噪声日程逐步加入高斯噪声，得到 <code>x_t</code>。当 <code>t</code> 足够大时，样本接近标准高斯噪声。</p>
+<p>第二，reverse process 训练神经网络估计每个时间步应该如何去噪。实践中常用 U-Net 接收 noisy sample 和 timestep embedding，并预测噪声项。推理时从随机噪声开始，反复调用去噪网络，逐步得到干净样本。</p>
+<p>论文还把 weighted variational bound、denoising score matching 和 Langevin-style sampling 联系起来，使 diffusion 不只是经验技巧，而是有概率建模解释的生成框架。</p></div>
     </section>
 
 
     <section class="note-section ">
       <div class="note-section-kicker">Key Contributions</div>
-      <div class="note-section-body"><ul><li>把 diffusion model 明确引入真实机器人 visuomotor policy learning，而不是只用于图像、视频或离线轨迹生成。</li><li>用 action chunk diffusion 替代单步动作回归，使策略天然适合连续、高维、平滑的机器人控制。</li><li>用 receding horizon control 解决闭环部署问题：生成长一点，只执行短一点，再根据新观测重规划。</li><li>展示 diffusion policy 对多峰动作分布更友好：同一状态下有多个可行动作模式时，模型可以在一次 rollout 中选择并坚持其中一个模式，而不是输出模式平均值。</li><li>证明 diffusion 形式在机器人策略训练中具备较好的稳定性，并在多类仿真和真实操作任务上优于当时的模仿学习基线。</li></ul></div>
+      <div class="note-section-body"><ul><li>把扩散概率模型推进到高质量图像生成，成为后续 diffusion family 的关键起点之一。</li><li>给出了可操作的训练目标：预测加到数据上的噪声，而不是直接建模复杂数据分布。</li><li>明确了 timestep-conditioned denoising 的工程形式，让后续模型可以把图像、视频、动作、结构或图都放进同一“加噪-去噪”框架。</li><li>为后续 DDIM、score-based diffusion、latent diffusion、action diffusion、video diffusion 和 graph diffusion 提供了共同语言。</li></ul></div>
     </section>
 
 
 
     <section class="note-section risk">
       <div class="note-section-kicker">Limitations</div>
-      <div class="note-section-body"><p>Diffusion Policy 主要解决低层连续控制和 imitation learning，不解决高层任务规划、语言分解、多机器人任务分配或世界状态预测。它也不像 DreamZero / WAM 那样显式预测未来视频或世界状态，因此严格说它不是 WAM；它也不是 VLA，因为没有把语言语义作为核心建模目标。更准确的定位是：机器人 Diffusion/生成式动作策略，是 VLA 和 WAM 都可以调用或继承的低层动作生成路线。</p>
-<p>扩散采样需要多步去噪，实时性会成为工程瓶颈。后来的 flow matching、consistency、action tokenization、单步生成和缓存优化，本质上都在回答同一个问题：如何保留生成式动作分布的表达能力，同时把推理速度压到机器人闭环控制可接受的范围。</p></div>
+      <div class="note-section-body"><p>DDPM 本身主要验证无条件图像生成，不处理语言条件、机器人状态、任务图约束或多机器人协作。原始采样通常需要很多去噪步，推理速度慢；后续大量工作才围绕采样加速、条件控制、离散结构生成和实时执行展开。</p>
+<p>对 TOPG 而言，不能直接照搬连续像素扩散。任务图包含离散节点类型、边类型、约束、可执行性和拓扑合法性，因此需要把 DDPM 的连续去噪思想改造成 typed graph denoising。</p></div>
     </section>
 
 
     <section class="note-section ">
       <div class="note-section-kicker">Reusable Modules</div>
-      <div class="note-section-body"><p>conditional action diffusion、action chunk diffusion、visual conditioning、time-series diffusion transformer、receding horizon control、multimodal action distribution modeling、Langevin-style action sampling。适合作为多机器人系统里每个机器人本地执行器的动作生成核心，也适合作为后续 WAM action head 的历史源头。</p></div>
+      <div class="note-section-body"><p>forward noise process、reverse denoising process、timestep conditioning、noise prediction objective、iterative refinement sampling。</p></div>
     </section>
 
 
     <section class="note-section risk">
       <div class="note-section-kicker">Evidence &amp; Risk</div>
-      <div class="note-section-body"><p>证据强在多个机器人操作 benchmark 和真实任务，且项目页公开代码、数据和训练细节。风险是它没有解决世界模型、任务规划和多智能体协同；如果直接把它当成多机器人 planner，会缺少任务级记忆、角色分配、长期后果评估和失败恢复机制。</p></div>
+      <div class="note-section-body"><p>证据来自 NeurIPS 2020 论文和公开实现，DDPM 已成为 diffusion 系列方法的基础参考。风险是原始证据来自图像生成；迁移到 TOPG 必须重新定义噪声空间、合法性约束、离散边预测和 planner confidence，不能只把图像 U-Net 换成 GNN 就期待规划成功。</p></div>
     </section>
 
         <div id="relations">
@@ -530,35 +529,25 @@
         <div>
           <h3>当前论文 -> 关联论文 / 前序工作</h3>
           <div class="relation-chip-grid">
-            <a class="relation-chip" style="--rel:#188aa6" href="../notes/2024-pi0-vla-flow-model.html">
+            <a class="relation-chip" style="--rel:#188aa6" href="../notes/2023-diffusion-policy-action-diffusion.html">
               <span>提供模块</span>
-              <strong>π0</strong>
+              <strong>Diffusion Policy</strong>
             </a>
 
-            <a class="relation-chip" style="--rel:#188aa6" href="../notes/2026-world-action-models-zero-shot-policies.html">
+            <a class="relation-chip" style="--rel:#188aa6" href="../notes/2023-rfdiffusion-protein-structure-function.html">
               <span>提供模块</span>
-              <strong>DreamZero / WAM</strong>
+              <strong>RFdiffusion</strong>
             </a>
 
-            <a class="relation-chip" style="--rel:#188aa6" href="../notes/2026-fast-wam-test-time-future-imagination.html">
+            <a class="relation-chip" style="--rel:#188aa6" href="../notes/2025-layerdag-diffusion-dag-generation.html">
               <span>提供模块</span>
-              <strong>Fast-WAM</strong>
-            </a>
-
-            <a class="relation-chip" style="--rel:#d14d72" href="../notes/2023-rt-2-vla.html">
-              <span>对比路线</span>
-              <strong>RT-2</strong>
+              <strong>LayerDAG</strong>
             </a>
           </div>
         </div>
         <div>
           <h3>下游论文 -> 当前论文</h3>
-          <div class="relation-chip-grid">
-            <a class="relation-chip incoming" style="--rel:#188aa6" href="../notes/2020-ddpm-denoising-diffusion-probabilistic-models.html">
-              <span>提供模块</span>
-              <strong>DDPM</strong>
-            </a>
-          </div>
+          <div class="relation-chip-grid"><div class="relation-empty">暂时没有下游论文连接到这篇。</div></div>
         </div>
       </div>
     </section>
@@ -566,14 +555,15 @@
 
     <section class="note-section ">
       <div class="note-section-kicker">Relation Notes</div>
-      <div class="note-section-body"><p>Diffusion Policy 和 RT-2 代表 2023 年机器人策略的两条根路线：RT-2 属于 VLA，核心是把互联网 VLM 知识迁移到离散动作 token；Diffusion Policy 属于 Diffusion 动作生成路线，核心是把连续机器人动作建模成条件生成分布。前者强调语义泛化，后者强调连续控制和多峰动作分布。</p>
-<p>π0 把这个思想进一步推广到 robot foundation model：不用扩散而用 flow matching 生成连续 action chunk，但核心问题仍然是如何从视觉语言上下文生成稳定的连续动作段。DreamZero / WAM 则在 Diffusion Policy 的动作生成思想上再往前走一步：不只生成动作，还联合建模未来视频世界状态。Fast-WAM 继续追问测试时是否真的需要显式未来视觉想象，但它仍然继承了“生成式动作模型可以作为机器人策略”的大方向。</p></div>
+      <div class="note-section-body"><p>Diffusion Policy 把 DDPM 的去噪生成思想从图像迁移到机器人 action chunk：目标不再是像素，而是一段连续控制序列。</p>
+<p>RFdiffusion 把去噪生成从图像迁移到 protein backbone scaffold：目标不再是图片，而是满足 motif/结构约束的三维骨架。</p>
+<p>LayerDAG 则把 diffusion 进一步放到离散 DAG 生成里，接近我们要做的 task graph denoising。它不是直接使用原始 DDPM 生成整张图，而是把 DDPM-style iterative refinement 用在 layer 内节点属性和边生成上。</p></div>
     </section>
 
         <div id="open-question">
     <section class="note-section impact">
       <div class="note-section-kicker">Open Question</div>
-      <div class="note-section-body"><p>多机器人场景中，diffusion policy 应该给每个机器人单独生成 action chunk，还是一次生成联合 action chunk？如果采用联合扩散，如何避免联合动作空间随机器人数量指数增长，并让模型显式满足碰撞、遮挡、共享资源和通信时序约束。</p></div>
+      <div class="note-section-body"><p>TOPG 的 noise schedule 应该破坏什么：任务节点数量、任务技能、location grounding、dependency edge，还是 allocation hint。第一版可以从 mask-denoising 开始，后续再扩展到 multi-step discrete diffusion。</p></div>
     </section>
   </div>
       </article>
@@ -581,19 +571,19 @@
       <aside class="note-aside">
         <section class="note-aside-panel">
           <h2>System Roles</h2>
-          <div class="pill-row"><span class="note-pill role-pill">执行器</span><span class="note-pill role-pill">基础策略</span><span class="note-pill role-pill">执行接口</span></div>
+          <div class="pill-row"><span class="note-pill role-pill">diffusion foundation</span><span class="note-pill role-pill">denoising generator</span><span class="note-pill role-pill">architecture reference</span></div>
         </section>
         <section class="note-aside-panel">
           <h2>Reusable Modules</h2>
-          <div class="pill-row"><span class="note-pill module-pill">条件动作扩散</span><span class="note-pill module-pill">动作块扩散</span><span class="note-pill module-pill">滚动时域控制</span><span class="note-pill module-pill">视觉条件控制</span><span class="note-pill module-pill">时序扩散 Transformer</span><span class="note-pill module-pill">多峰动作分布</span><span class="note-pill module-pill">Langevin 动作采样</span></div>
+          <div class="pill-row"><span class="note-pill module-pill">forward noise process</span><span class="note-pill module-pill">reverse denoising process</span><span class="note-pill module-pill">timestep conditioning</span><span class="note-pill module-pill">noise prediction objective</span><span class="note-pill module-pill">iterative refinement sampling</span></div>
         </section>
         <section class="note-aside-panel">
           <h2>Next Action</h2>
-          <div class="note-pill role-pill">抽取机器人扩散策略设计</div>
+          <div class="note-pill role-pill">map ddpm to graph denoising</div>
         </section>
         <section class="note-aside-panel">
           <h2>Tags</h2>
-          <div class="pill-row"><span class="note-pill">Diffusion Policy</span><span class="note-pill">action diffusion</span><span class="note-pill">visuomotor policy</span><span class="note-pill">imitation learning</span><span class="note-pill">robot manipulation</span><span class="note-pill">receding horizon control</span></div>
+          <div class="pill-row"><span class="note-pill">DDPM</span><span class="note-pill">diffusion model</span><span class="note-pill">denoising</span><span class="note-pill">score matching</span><span class="note-pill">generative model</span><span class="note-pill">iterative refinement</span></div>
         </section>
         <section class="note-aside-panel">
           <h2>Reading Map</h2>

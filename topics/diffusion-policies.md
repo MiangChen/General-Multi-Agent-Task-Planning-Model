@@ -9,6 +9,8 @@ tags: [Diffusion Policy, action diffusion, robot policy, action chunk]
 
 Diffusion 路线的核心不是语言语义，而是连续动作分布建模：给定视觉、状态或任务条件，在动作空间里从噪声逐步去噪出一段可执行 action chunk。
 
+DDPM 是这一类方法的基础来源：它先把数据逐步加噪，再训练模型学习反向去噪。Diffusion Policy 把这个过程从图像迁移到机器人动作序列；LayerDAG / TOPG 则可以把同一个思想迁移到离散任务图和依赖边生成。
+
 ## 和 VLA / World Model / WAM 的区别
 
 - VLA：重点是视觉语言语义 grounding，把自然语言目标接到机器人动作接口。
@@ -25,7 +27,9 @@ Diffusion 路线的核心不是语言语义，而是连续动作分布建模：�
 
 ## 关键论文
 
+- [[2020-ddpm-denoising-diffusion-probabilistic-models]]
 - [[2023-diffusion-policy-action-diffusion]]
+- [[2025-layerdag-diffusion-dag-generation]]
 
 ## 需要补的空白
 
