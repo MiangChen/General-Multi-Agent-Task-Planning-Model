@@ -1,0 +1,626 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex,nofollow,noarchive">
+  <title>Score SDE · Paper Note</title>
+  <style>
+    :root {
+      --bg: #eef4fb;
+      --paper: rgba(255, 255, 255, 0.82);
+      --paper-strong: rgba(255, 255, 255, 0.94);
+      --ink: #111827;
+      --muted: #61748d;
+      --line: rgba(74, 112, 154, 0.34);
+      --soft-line: rgba(133, 163, 196, 0.24);
+      --blue: #246bfe;
+      --cyan: #00a7c7;
+      --purple: #6a7dff;
+      --shadow: 0 18px 45px rgba(22, 50, 83, 0.12);
+      --sans: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      font-family: var(--sans);
+      line-height: 1.72;
+      background:
+        radial-gradient(circle at 16% 12%, rgba(36, 107, 254, 0.14), transparent 28rem),
+        radial-gradient(circle at 88% 16%, rgba(0, 167, 199, 0.16), transparent 26rem),
+        linear-gradient(var(--soft-line) 1px, transparent 1px),
+        linear-gradient(90deg, var(--soft-line) 1px, transparent 1px),
+        var(--bg);
+      background-size: auto, auto, 32px 32px, 32px 32px, auto;
+    }
+
+    a { color: inherit; }
+
+    .note-topbar {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      padding: 13px 28px;
+      border-bottom: 1px solid var(--soft-line);
+      background: rgba(248, 251, 255, 0.86);
+      backdrop-filter: blur(18px);
+      box-shadow: 0 14px 35px rgba(31, 76, 128, 0.08);
+    }
+
+    .note-brand,
+    .note-nav a,
+    .note-kicker,
+    .note-section-kicker,
+    .metric-label,
+    .note-pill,
+    .relation-chip span {
+      font-family: var(--mono);
+    }
+
+    .note-brand {
+      color: var(--blue);
+      font-weight: 800;
+      text-decoration: none;
+    }
+
+    .note-nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .note-nav a {
+      text-decoration: none;
+    }
+
+    .note-nav a:hover {
+      color: var(--blue);
+    }
+
+    .note-shell {
+      width: min(1500px, calc(100% - 48px));
+      margin: 0 auto;
+      padding: 38px 0 70px;
+    }
+
+    .note-hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1.6fr) 360px;
+      gap: 24px;
+      align-items: stretch;
+      margin-bottom: 24px;
+    }
+
+    .hero-main,
+    .hero-side,
+    .note-section,
+    .note-aside-panel {
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: var(--paper);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(18px);
+    }
+
+    .hero-main {
+      padding: 34px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .hero-main::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-top: 2px solid rgba(36, 107, 254, 0.42);
+      background: linear-gradient(135deg, rgba(36, 107, 254, 0.08), transparent 42%);
+      pointer-events: none;
+    }
+
+    .note-kicker {
+      position: relative;
+      color: var(--blue);
+      font-size: 12px;
+      margin-bottom: 14px;
+    }
+
+    h1, h2, h3 {
+      margin: 0;
+      line-height: 1.14;
+    }
+
+    h1 {
+      position: relative;
+      max-width: 980px;
+      color: #0f172a;
+      font-size: 56px;
+      font-weight: 820;
+    }
+
+    .full-title {
+      position: relative;
+      max-width: 940px;
+      margin-top: 14px;
+      color: var(--muted);
+      font-size: 18px;
+    }
+
+    .note-summary {
+      position: relative;
+      max-width: 980px;
+      margin-top: 28px;
+      padding-left: 18px;
+      border-left: 3px solid var(--blue);
+      font-size: 22px;
+      color: #16233a;
+    }
+
+    .note-summary p {
+      margin: 0;
+    }
+
+    .hero-side {
+      display: grid;
+      gap: 14px;
+      padding: 22px;
+    }
+
+    .metric-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+    }
+
+    .metric {
+      min-height: 84px;
+      padding: 14px;
+      border: 1px solid var(--soft-line);
+      border-radius: 8px;
+      background: rgba(247, 251, 255, 0.76);
+    }
+
+    .metric-value {
+      color: var(--blue);
+      font-size: 22px;
+      font-weight: 800;
+    }
+
+    .metric-label {
+      color: var(--muted);
+      font-size: 11px;
+    }
+
+    .note-link-row,
+    .pill-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .note-link-row a {
+      min-height: 30px;
+      display: inline-flex;
+      align-items: center;
+      padding: 0 10px;
+      border: 1px solid rgba(36, 107, 254, 0.28);
+      border-radius: 5px;
+      background: linear-gradient(135deg, #1e63ff, #0aa3c2);
+      color: #fff;
+      text-decoration: none;
+      font-size: 13px;
+      box-shadow: 0 10px 22px rgba(36, 107, 254, 0.16);
+    }
+
+    .note-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 320px;
+      gap: 24px;
+      align-items: start;
+    }
+
+    .note-main {
+      display: grid;
+      gap: 16px;
+    }
+
+    .note-section {
+      padding: 24px;
+      background: var(--paper-strong);
+    }
+
+    .note-section.impact {
+      border-color: rgba(36, 107, 254, 0.44);
+      background:
+        linear-gradient(135deg, rgba(36, 107, 254, 0.08), rgba(0, 167, 199, 0.05)),
+        var(--paper-strong);
+    }
+
+    .note-section.risk {
+      border-color: rgba(209, 77, 114, 0.26);
+    }
+
+    .note-section-kicker {
+      color: var(--blue);
+      font-size: 12px;
+      margin-bottom: 10px;
+    }
+
+    .note-section-body {
+      color: #172033;
+      font-size: 16px;
+    }
+
+    .note-section-body p,
+    .note-section-body ul,
+    .note-section-body ol {
+      margin: 0 0 12px;
+    }
+
+    .note-section-body :last-child {
+      margin-bottom: 0;
+    }
+
+    .note-section-body ul,
+    .note-section-body ol {
+      padding-left: 22px;
+    }
+
+    .note-section-body li {
+      margin: 7px 0;
+    }
+
+    code {
+      padding: 1px 5px;
+      border: 1px solid var(--soft-line);
+      border-radius: 4px;
+      background: rgba(236, 246, 255, 0.82);
+      font-family: var(--mono);
+      font-size: 0.92em;
+    }
+
+    .note-aside {
+      position: sticky;
+      top: 82px;
+      display: grid;
+      gap: 14px;
+    }
+
+    .note-aside-panel {
+      padding: 18px;
+    }
+
+    .note-aside-panel h2 {
+      margin-bottom: 12px;
+      font-size: 18px;
+    }
+
+    .note-pill {
+      display: inline-flex;
+      align-items: center;
+      min-height: 25px;
+      padding: 0 8px;
+      border: 1px solid var(--soft-line);
+      border-radius: 999px;
+      background: rgba(247, 251, 255, 0.84);
+      color: #415a77;
+      font-size: 11px;
+    }
+
+    .role-pill {
+      border-color: rgba(36, 107, 254, 0.32);
+      color: #1f4fd6;
+    }
+
+    .module-pill {
+      border-color: rgba(0, 167, 199, 0.32);
+      color: #0f7894;
+    }
+
+    .relation-columns {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+    }
+
+    .relation-columns h3 {
+      margin-bottom: 10px;
+      font-size: 16px;
+    }
+
+    .relation-chip-grid {
+      display: grid;
+      gap: 8px;
+    }
+
+    .relation-chip {
+      display: grid;
+      gap: 3px;
+      padding: 10px 12px;
+      border: 1px solid var(--soft-line);
+      border-left: 3px solid var(--rel);
+      border-radius: 6px;
+      background: rgba(247, 251, 255, 0.86);
+      text-decoration: none;
+    }
+
+    .relation-chip span {
+      color: color-mix(in srgb, var(--rel), #111827 30%);
+      font-size: 11px;
+      font-weight: 800;
+    }
+
+    .relation-chip strong {
+      color: #142033;
+      font-size: 14px;
+    }
+
+    .relation-empty {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .toc-list {
+      display: grid;
+      gap: 8px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      font-size: 13px;
+    }
+
+    .toc-list a {
+      color: var(--muted);
+      text-decoration: none;
+    }
+
+    .toc-list a:hover {
+      color: var(--blue);
+    }
+
+    .note-footer {
+      padding: 34px 0 0;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    @media (max-width: 980px) {
+      .note-topbar {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .note-shell {
+        width: min(100% - 28px, 760px);
+      }
+
+      .note-hero,
+      .note-layout,
+      .relation-columns {
+        grid-template-columns: 1fr;
+      }
+
+      h1 {
+        font-size: 40px;
+      }
+
+      .note-aside {
+        position: static;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="note-topbar">
+    <a class="note-brand" href="../index.html#domain-graph">General Multi-Agent Model</a>
+    <nav class="note-nav">
+      <a href="../index.html#domain-graph">关系图</a>
+      <a href="../index.html#roles">系统角色</a>
+      <a href="../index.html#papers">论文索引</a>
+      <a href="#relations">关系</a>
+      <a href="#open-question">开放问题</a>
+    </nav>
+  </header>
+
+  <main class="note-shell" id="top">
+    <section class="note-hero">
+      <div class="hero-main">
+        <div class="note-kicker">2020-11 · ICLR 2021 Oral · score_based_sde_diffusion</div>
+        <h1>Score SDE</h1>
+        <div class="full-title">Score-Based Generative Modeling through Stochastic Differential Equations</div>
+        <div class="note-summary"><p>Score SDE 是 diffusion 理论线的关键统一论文：它把 DDPM、score matching、Langevin dynamics、随机 SDE 采样和确定性 probability flow ODE 放到同一个连续时间框架里。</p>
+<p>正式发表信息：论文 arXiv 版本是 <code>2011.13456</code>，正式会议为 <strong>ICLR 2021 Oral</strong>。</p></div>
+      </div>
+      <aside class="hero-side">
+        <div class="metric-grid">
+          <div class="metric">
+            <div class="metric-value">2020</div>
+            <div class="metric-label">Year</div>
+          </div>
+          <div class="metric">
+            <div class="metric-value">高</div>
+            <div class="metric-label">Readiness</div>
+          </div>
+          <div class="metric">
+            <div class="metric-value">已读论文</div>
+            <div class="metric-label">Evidence</div>
+          </div>
+          <div class="metric">
+            <div class="metric-value">6</div>
+            <div class="metric-label">Relations</div>
+          </div>
+        </div>
+        <div>
+          <div class="note-section-kicker">Authors</div>
+          <div>Yang Song, Jascha Sohl-Dickstein, Diederik P. Kingma, Abhishek Kumar, Stefano Ermon, Ben Poole</div>
+        </div>
+        <div>
+          <div class="note-section-kicker">Institutions</div>
+          <div>Stanford University · Google Research</div>
+        </div>
+        <div class="note-link-row"><a href="../pdfs/2020-11-01-Score-SDE-score-based-generative-modeling-sde.pdf" target="_blank" rel="noreferrer">PDF</a><a href="https://openreview.net/forum?id=PxTIG12RRHS" target="_blank" rel="noreferrer">Paper</a><a href="https://github.com/yang-song/score_sde" target="_blank" rel="noreferrer">Project</a><a href="https://doi.org/10.48550/arXiv.2011.13456" target="_blank" rel="noreferrer">DOI</a><a href="https://arxiv.org/abs/2011.13456" target="_blank" rel="noreferrer">arXiv</a></div>
+      </aside>
+    </section>
+
+    <section class="note-layout">
+      <article class="note-main">
+
+    <section class="note-section impact">
+      <div class="note-section-kicker">For Our Model</div>
+      <div class="note-section-body"><p>TOPG 可以把 Score SDE 的思想迁移成：</p>
+<p>```text<br>noisy task graph state<br>-&gt; graph score / denoising direction<br>-&gt; sampler updates graph hypothesis<br>-&gt; validity checker / constraint repair<br>-&gt; clean executable task graph<br>```</p>
+<p>如果用连续 latent graph representation，可以更直接借鉴 SDE / ODE sampler。如果用离散节点和边，则需要把 score 改写成 categorical logits、mask prediction 或 edge transition probability。</p>
+<p>最重要的启发是：采样器可以成为可替换模块。随机 reverse process 用于探索多个候选计划；deterministic ODE-like sampler 用于调试和稳定复现；corrector step 可以对应 constraint repair 或 planner critic feedback。</p></div>
+    </section>
+
+
+    <section class="note-section ">
+      <div class="note-section-kicker">Research Question</div>
+      <div class="note-section-body"><p>DDPM、NCSN / score matching、Langevin dynamics 看起来像不同路线：有的讲逐步加噪，有的讲估计 <code>score = grad_x log p(x)</code>，有的讲从噪声里用随机动力学采样。Score SDE 关心的问题是：这些方法能不能被统一成同一个连续时间生成建模框架。</p>
+<p>对 TOPG 来说，这个问题很关键。我们不只想知道“怎么训练一个去噪网络”，还想知道采样器、随机性、确定性路径、条件引导和概率流之间是什么关系。</p></div>
+    </section>
+
+
+    <section class="note-section ">
+      <div class="note-section-kicker">Method</div>
+      <div class="note-section-body"><p>Score SDE 把数据到噪声的过程写成一个 forward SDE：</p>
+<p>```text<br>dx = f(x, t) dt + g(t) dw<br>```</p>
+<p>这个过程把真实数据逐渐扰动成简单噪声分布。生成时，则使用 reverse-time SDE 从噪声走回数据：</p>
+<p>```text<br>dx = [f(x, t) - g(t)^2 score_t(x)] dt + g(t) d\bar{w}<br>```</p>
+<p>这里最核心的是 <code>score_t(x)</code>：</p>
+<p>```text<br>score_t(x) = grad_x log p_t(x)<br>```</p>
+<p>也就是在每个噪声强度下，模型估计当前 noisy sample 应该往哪个方向移动，才能更接近数据分布。</p>
+<p>论文还给出了对应的 probability flow ODE。它和 reverse SDE 有相同的边际分布，但采样路径是确定性的：</p>
+<p>```text<br>dx = [f(x, t) - 1/2 g(t)^2 score_t(x)] dt<br>```</p>
+<p>这就把 stochastic sampling 和 deterministic sampling 接到了一起。</p></div>
+    </section>
+
+
+    <section class="note-section ">
+      <div class="note-section-kicker">Key Contributions</div>
+      <div class="note-section-body"><ul><li>把 score-based generative modeling 和 diffusion probabilistic modeling 统一成连续时间 SDE 框架。</li><li>明确指出 reverse-time SDE 可以用 learned score 从噪声分布生成数据。</li><li>引入 probability flow ODE，让同一个 score model 支持确定性采样和 likelihood computation。</li><li>提出 predictor-corrector sampler，把数值 SDE predictor 和 Langevin corrector 组合起来提升采样质量。</li><li>给后续 DDIM、采样器设计、ODE/SDE 解释、conditional guidance 和 diffusion likelihood 提供共同语言。</li></ul></div>
+    </section>
+
+
+
+    <section class="note-section risk">
+      <div class="note-section-kicker">Limitations</div>
+      <div class="note-section-body"><p>Score SDE 的理论框架主要在连续空间里展开，图像是主要实验对象。离散 graph diffusion 不能直接套用连续 SDE，需要决定离散节点、边和属性的 score 如何定义，或者用 categorical diffusion / score-like logits 近似。</p>
+<p>它也不直接解决 task graph validity、DAG constraint、resource constraint 或多机器人执行反馈。它更像 diffusion 的“物理学语言”，不是任务规划系统本身。</p></div>
+    </section>
+
+
+    <section class="note-section ">
+      <div class="note-section-kicker">Reusable Modules</div>
+      <div class="note-section-body"><p>score matching objective、forward SDE noise process、reverse-time SDE sampling、probability flow ODE、predictor-corrector sampler、continuous-time diffusion。</p></div>
+    </section>
+
+
+    <section class="note-section risk">
+      <div class="note-section-kicker">Evidence &amp; Risk</div>
+      <div class="note-section-body"><p>证据来自 ICLR 2021 Oral 正式发表论文、OpenReview 页面和 arXiv <code>2011.13456</code>。PDF 已保存为本地 arXiv 版本：<code>pdfs/2020-11-01-Score-SDE-score-based-generative-modeling-sde.pdf</code>。</p>
+<p>风险在于：SDE / ODE 统一视角很强，但它可能让我们过早沉入连续数学细节。对 TOPG 来说，关键不是复刻图像生成的 SDE，而是把“不同噪声水平下的修复方向”和“可替换采样器”迁移到 typed task graph。</p></div>
+    </section>
+
+        <div id="relations">
+    <section class="note-section relation-section">
+      <div class="note-section-kicker">Typed Relations</div>
+      <div class="relation-columns">
+        <div>
+          <h3>当前论文 -> 关联论文 / 前序工作</h3>
+          <div class="relation-chip-grid">
+            <a class="relation-chip" style="--rel:#246bfe" href="../notes/2020-ddpm-denoising-diffusion-probabilistic-models.html">
+              <span>继承/扩展</span>
+              <strong>DDPM</strong>
+            </a>
+
+            <a class="relation-chip" style="--rel:#188aa6" href="../notes/2020-ddim-denoising-diffusion-implicit-models.html">
+              <span>提供模块</span>
+              <strong>DDIM</strong>
+            </a>
+
+            <a class="relation-chip" style="--rel:#188aa6" href="../notes/2021-improved-ddpm-improved-denoising-diffusion-probabilistic-models.html">
+              <span>提供模块</span>
+              <strong>Improved DDPM</strong>
+            </a>
+
+            <a class="relation-chip" style="--rel:#188aa6" href="../notes/2022-classifier-free-diffusion-guidance.html">
+              <span>提供模块</span>
+              <strong>CFG</strong>
+            </a>
+
+            <a class="relation-chip" style="--rel:#188aa6" href="../notes/2023-diffusion-policy-action-diffusion.html">
+              <span>提供模块</span>
+              <strong>Diffusion Policy</strong>
+            </a>
+
+            <a class="relation-chip" style="--rel:#188aa6" href="../notes/2025-layerdag-diffusion-dag-generation.html">
+              <span>提供模块</span>
+              <strong>LayerDAG</strong>
+            </a>
+          </div>
+        </div>
+        <div>
+          <h3>下游论文 -> 当前论文</h3>
+          <div class="relation-chip-grid"><div class="relation-empty">暂时没有下游论文连接到这篇。</div></div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+    <section class="note-section ">
+      <div class="note-section-kicker">Relation Notes</div>
+      <div class="note-section-body"><p>DDPM 可以看成 Score SDE 框架下的一种离散时间扩散模型。DDIM 和 probability flow ODE 在直觉上相近：都强调同一个模型可以走更确定、更少步的生成路径。</p>
+<p>Improved DDPM 更偏训练和噪声日程优化；Score SDE 更偏统一理论和采样解释。CFG 等 guidance 方法可以被理解成修改 score / denoising direction，使采样更贴近条件分布。</p>
+<p>LayerDAG / TOPG 如果要做离散 graph diffusion，Score SDE 不会直接给出图算法，但它能帮助我们理解：模型预测的不是“答案”，而是在不同噪声水平下指向 clean graph manifold 的方向。</p></div>
+    </section>
+
+        <div id="open-question">
+    <section class="note-section impact">
+      <div class="note-section-kicker">Open Question</div>
+      <div class="note-section-body"><p>TOPG 应该先做连续 latent graph score model，还是直接做离散 categorical graph denoising。前者更贴近 Score SDE，后者更贴近 LayerDAG / DiGress 和真实任务图 schema。</p></div>
+    </section>
+  </div>
+      </article>
+
+      <aside class="note-aside">
+        <section class="note-aside-panel">
+          <h2>System Roles</h2>
+          <div class="pill-row"><span class="note-pill role-pill">diffusion foundation</span><span class="note-pill role-pill">score model reference</span><span class="note-pill role-pill">sampler theory</span><span class="note-pill role-pill">planner sampling strategy</span></div>
+        </section>
+        <section class="note-aside-panel">
+          <h2>Reusable Modules</h2>
+          <div class="pill-row"><span class="note-pill module-pill">score matching objective</span><span class="note-pill module-pill">forward sde noise process</span><span class="note-pill module-pill">reverse time sde sampling</span><span class="note-pill module-pill">probability flow ode</span><span class="note-pill module-pill">predictor corrector sampler</span><span class="note-pill module-pill">continuous time diffusion</span></div>
+        </section>
+        <section class="note-aside-panel">
+          <h2>Next Action</h2>
+          <div class="note-pill role-pill">map score sde to discrete graph diffusion</div>
+        </section>
+        <section class="note-aside-panel">
+          <h2>Tags</h2>
+          <div class="pill-row"><span class="note-pill">Score SDE</span><span class="note-pill">score matching</span><span class="note-pill">diffusion theory</span><span class="note-pill">reverse SDE</span><span class="note-pill">probability flow ODE</span><span class="note-pill">ICLR 2021</span></div>
+        </section>
+        <section class="note-aside-panel">
+          <h2>Reading Map</h2>
+          <ul class="toc-list">
+            <li><a href="#top">Summary</a></li>
+            <li><a href="#relations">Typed relations</a></li>
+            <li><a href="#open-question">Open question</a></li>
+            <li><a href="../index.html#domain-graph">Back to graph</a></li>
+          </ul>
+        </section>
+      </aside>
+    </section>
+
+  </main>
+</body>
+</html>

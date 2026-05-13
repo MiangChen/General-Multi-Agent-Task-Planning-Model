@@ -299,6 +299,353 @@
     "open_question": "如何把 RoboGNN 的 STN 调度图和 GRID/GMATANN 这类上游任务图连接起来：scene graph 产生 grounded task，task allocator 处理能力匹配，scheduler 再根据时间、地点和资源约束安排执行顺序。\n\n另一个关键问题是：如果加入 VLA/WAM 执行成功率、机器人电量、通信延迟和动态失败恢复，这些信息应该进入 node feature、edge weight，还是进入 Q network 的 state embedding。"
   },
   {
+    "id": "2020-ddim-denoising-diffusion-implicit-models",
+    "title": "Denoising Diffusion Implicit Models",
+    "short_title": "DDIM",
+    "year": 2020,
+    "published": "2020-10",
+    "venue": "ICLR 2021",
+    "status": "read",
+    "scope": "in_scope",
+    "readiness": "high",
+    "action": "build_note",
+    "tech_paradigm": "denoising_diffusion_implicit_model",
+    "primary_domain": "Diffusion",
+    "domains": [
+      "Diffusion",
+      "Generative Model",
+      "Sampling",
+      "Score Matching"
+    ],
+    "primary_technical_layer": "diffusion_sampling",
+    "primary_task_family": "fast_diffusion_sampling",
+    "platform": "image_generation",
+    "planning_relevance": "DDIM 说明 diffusion 模型的训练目标和采样路径可以解耦：在不重新训练 DDPM denoiser 的情况下，可以通过非马尔可夫采样、跳步时间序列和确定性路径更快生成样本。对 TOPG 来说，这意味着 task graph denoiser 也可以先训练一个通用去噪模型，再为快速规划、确定性复现或候选多样性选择不同采样器。",
+    "multi_robot_relevance": "间接但重要。多机器人任务规划需要实时性和可复现性，DDIM 的少步采样与 deterministic sampling 给 graph plan generation 提供了速度和调试友好的采样参考。",
+    "system_roles": [
+      "diffusion_foundation",
+      "fast_sampler",
+      "deterministic_generator",
+      "planner_sampling_strategy"
+    ],
+    "reusable_modules": [
+      "non_markovian_forward_process",
+      "marginal_preserving_sampling",
+      "predicted_x0_reconstruction",
+      "eta_or_sigma_stochasticity_control",
+      "timestep_subsampling",
+      "deterministic_ddim_sampling"
+    ],
+    "evidence_level": "paper_read",
+    "next_action": "map_ddim_sampler_to_task_graph_denoising",
+    "tags": [
+      "DDIM",
+      "diffusion sampling",
+      "non-Markovian diffusion",
+      "deterministic sampling",
+      "fast sampling",
+      "DDPM"
+    ],
+    "authors": [
+      "Jiaming Song",
+      "Chenlin Meng",
+      "Stefano Ermon"
+    ],
+    "institutions": [
+      "Stanford University"
+    ],
+    "doi": "10.48550/arXiv.2010.02502",
+    "arxiv": "2010.02502",
+    "url": "https://arxiv.org/abs/2010.02502",
+    "project_url": "https://github.com/ermongroup/ddim",
+    "pdf_path": "pdfs/2020-10-01-DDIM-denoising-diffusion-implicit-models.pdf",
+    "image_url": "",
+    "zotero_key": "",
+    "citekey": "song2020ddim",
+    "cites": [
+      "2020-ddpm-denoising-diffusion-probabilistic-models"
+    ],
+    "extends": [
+      "2020-ddpm-denoising-diffusion-probabilistic-models"
+    ],
+    "uses": [],
+    "enables": [
+      "2023-diffusion-policy-action-diffusion",
+      "2025-layerdag-diffusion-dag-generation"
+    ],
+    "complements": [
+      "2022-classifier-free-diffusion-guidance"
+    ],
+    "contrasts": [],
+    "published_value": 24249,
+    "relations": [
+      {
+        "type": "extends",
+        "target": "2020-ddpm-denoising-diffusion-probabilistic-models"
+      },
+      {
+        "type": "enables",
+        "target": "2023-diffusion-policy-action-diffusion"
+      },
+      {
+        "type": "enables",
+        "target": "2025-layerdag-diffusion-dag-generation"
+      }
+    ],
+    "file": "papers/2020-ddim-denoising-diffusion-implicit-models.md",
+    "note_html": "notes/2020-ddim-denoising-diffusion-implicit-models.html",
+    "summary": "DDIM 的核心贡献是：在不重新训练 DDPM 模型的情况下，构造一族保持相同边际分布的非马尔可夫采样过程，让同一个噪声预测模型可以更快、甚至确定性地生成样本。\n\n正式发表信息：论文 arXiv 版本是 `2010.02502`，正式会议为 **ICLR 2021**。",
+    "research_question": "DDPM 的生成质量很强，但原始采样过程通常需要很多步，并且每一步都按马尔可夫链随机去噪。论文关心的问题是：如果训练好的 DDPM denoiser 已经学会预测噪声，是否必须沿用原始随机马尔可夫采样链，还是可以换一条更短、更快、更可控的采样路径。\n\n对 TOPG 来说，对应问题是：如果我们训练了一个 task graph denoiser，能不能在不重训模型的前提下，用不同采样器切换“快速出图”“稳定复现”“多候选探索”等模式。",
+    "method": "DDIM 不是简单地“用了 `x_0`”。它做了三件关键事。\n\n第一，引入非马尔可夫的 forward / inference process。DDPM 通常把扩散链写成：\n\n```text\nx_t 只依赖 x_{t-1}\n```\n\nDDIM 构造的是：\n\n```text\nq_sigma(x_{t-1} | x_t, x_0)\n```\n\n也就是每一步还显式依赖 `x_0`。这里的 `x_0` 是理论推导中定义路径用的真实干净样本；真正生成时没有真实 `x_0`，而是用模型根据当前 `x_t` 估计：\n\n```text\nx_hat_0 = f_theta(x_t)\n```\n\n所以 DDIM 的关键不是“直接拿真实 `x_0` 来生成”，而是训练/推导时用 `x_0` 定义合理路径，生成时用预测的 `x_hat_0` 替代它。\n\n第二，保持和 DDPM 相同的边际分布。DDIM 改了路径，但不乱改每个时间步单独看时的数据分布：\n\n```text\nq(x_t | x_0) = N(sqrt(alpha_t) x_0, (1 - alpha_t) I)\n```\n\n这很关键，因为 DDPM 的噪声预测训练目标主要依赖这些边际分布。只要边际不变，原来训练好的 `epsilon_theta` 仍然可用。\n\n第三，用 `sigma_t` 控制随机性。DDIM 给采样过程加了一个旋钮：\n\n```text\nsigma_t\n```\n\n当 `sigma_t` 取特定值时，可以恢复 DDPM 式随机采样；当 `sigma_t = 0` 时，采样变成确定性路径，也就是经典 DDIM sampling。再配合跳步时间序列，模型可以用更少步数生成样本。",
+    "contribution": "- 证明 diffusion 的训练过程和采样过程可以解耦：不重新训练模型，也能换采样路径。\n- 构造了一族保持相同 `q(x_t | x_0)` 边际的非马尔可夫过程，因此原 DDPM 噪声预测模型仍然可用。\n- 用 `sigma_t` / `eta` 控制采样随机性，在 DDPM 式随机采样和 DDIM 确定性采样之间切换。\n- 支持少步采样，让 diffusion 从“必须慢慢采很多步”走向更实用的快速生成。\n- 提供 deterministic sampling，使同一个初始噪声和条件可以复现同一个生成路径，方便调试和插值。",
+    "reading_highlights": "",
+    "limitation": "DDIM 主要解决采样速度和采样路径问题，不直接解决条件遵循、离散结构合法性、图拓扑约束或规划可执行性。它的实验语境仍以图像生成为主，迁移到 task graph generation 时需要重新定义 `x_t`、`x_hat_0`、噪声类型和合法性检查。\n\n确定性采样虽然更快、更稳定，但也可能降低候选多样性。TOPG 如果只用确定性 DDIM 采样，可能得到可复现但单一的计划；如果需要多个可替代计划，仍需要保留随机性、不同初始噪声或多条件 guidance。",
+    "relation": "DDPM 提供基础训练目标：把干净样本加噪，再训练 `epsilon_theta` 预测噪声。DDIM 接在 DDPM 后面，回答“同一个训练好的 `epsilon_theta` 能不能更快采样”。\n\nClassifier-Free Guidance 解决条件强度控制，DDIM 解决采样路径和速度。二者可以组合：CFG 调整条件方向，DDIM 调整从噪声到样本的路径和步数。\n\nDiffusion Policy、LayerDAG 和未来 TOPG graph diffusion 都会遇到采样效率问题。DDIM 的价值不是图像本身，而是提醒我们：训练 graph denoiser 后，可以把 sampler 当成独立模块优化。",
+    "planning_insight": "TOPG 可以把 DDIM 映射成一个 planner sampler 设计：\n\n```text\nnoisy / masked task graph\n  -> graph denoiser predicts clean graph x_hat_0\n  -> sampler chooses next graph state\n  -> repeat over selected timesteps\n  -> output task graph + confidence + validity checks\n```\n\n其中不同模式可以对应不同采样策略：\n\n```text\nfast mode: fewer timesteps\ndebug mode: deterministic DDIM\nexploration mode: stochastic sampler / multiple seeds\nrepair mode: keep executed subgraph fixed, denoise only failed or unknown parts\n```\n\n这对多机器人规划尤其重要：如果每次生成的 plan graph 都不可复现，调试失败恢复会很痛苦；如果采样太慢，在线重规划又不可用。DDIM 提供了速度、随机性和可复现性之间的基本旋钮。",
+    "reusable_module_text": "non-Markovian forward process、marginal-preserving sampling、predicted `x_0` reconstruction、`sigma_t` / `eta` stochasticity control、timestep subsampling、deterministic DDIM sampling。",
+    "evidence_risk": "证据来自 ICLR 2021 正式发表论文和 arXiv `2010.02502`。PDF 已保存到本地 `pdfs/2020-10-01-DDIM-denoising-diffusion-implicit-models.pdf`。DDIM 后续成为 diffusion sampler 设计的重要基础之一。\n\n风险在于：DDIM 的数学对象是连续图像空间里的采样过程。TOPG 的 task graph 是离散 typed graph，必须决定如何表示 noisy graph state、如何预测 `x_hat_0`、如何处理节点数变化、如何保持 DAG / constraint validity，以及确定性采样是否会让计划候选过少。",
+    "open_question": "TOPG 的 DDIM-like sampler 应该在什么空间里跳步：节点类型 logits、边类型 logits、masked graph slots、layerwise DAG state，还是完整 task graph latent。第一版可以先用 fixed-slot graph denoising 做确定性少步采样，再评估它和随机采样在 plan validity、diversity、repair success 上的差异。"
+  },
+  {
+    "id": "2020-score-sde-score-based-generative-modeling-sde",
+    "title": "Score-Based Generative Modeling through Stochastic Differential Equations",
+    "short_title": "Score SDE",
+    "year": 2020,
+    "published": "2020-11",
+    "venue": "ICLR 2021 Oral",
+    "status": "read",
+    "scope": "in_scope",
+    "readiness": "high",
+    "action": "build_note",
+    "tech_paradigm": "score_based_sde_diffusion",
+    "primary_domain": "Diffusion",
+    "domains": [
+      "Diffusion",
+      "Score Matching",
+      "SDE",
+      "Generative Model"
+    ],
+    "primary_technical_layer": "diffusion_theory_and_sampling",
+    "primary_task_family": "score_based_generative_modeling",
+    "platform": "image_generation",
+    "planning_relevance": "Score SDE 把 DDPM、score matching、Langevin dynamics、SDE / ODE sampler 统一到一个连续时间框架里。对 TOPG 来说，它提供的是理论接口：graph denoiser 不只是预测噪声，也可以被理解成估计数据分布的 score，从而把采样、概率流 ODE 和条件引导放到同一个语言里。",
+    "multi_robot_relevance": "间接但基础。多机器人 task graph generation 如果要比较随机采样、确定性采样、少步采样和 guidance，需要 Score SDE 这种统一视角来解释 sampler 的差别和风险。",
+    "system_roles": [
+      "diffusion_foundation",
+      "score_model_reference",
+      "sampler_theory",
+      "planner_sampling_strategy"
+    ],
+    "reusable_modules": [
+      "score_matching_objective",
+      "forward_sde_noise_process",
+      "reverse_time_sde_sampling",
+      "probability_flow_ode",
+      "predictor_corrector_sampler",
+      "continuous_time_diffusion"
+    ],
+    "evidence_level": "paper_read",
+    "next_action": "map_score_sde_to_discrete_graph_diffusion",
+    "tags": [
+      "Score SDE",
+      "score matching",
+      "diffusion theory",
+      "reverse SDE",
+      "probability flow ODE",
+      "ICLR 2021"
+    ],
+    "authors": [
+      "Yang Song",
+      "Jascha Sohl-Dickstein",
+      "Diederik P. Kingma",
+      "Abhishek Kumar",
+      "Stefano Ermon",
+      "Ben Poole"
+    ],
+    "institutions": [
+      "Stanford University",
+      "Google Research"
+    ],
+    "doi": "10.48550/arXiv.2011.13456",
+    "arxiv": "2011.13456",
+    "url": "https://openreview.net/forum?id=PxTIG12RRHS",
+    "project_url": "https://github.com/yang-song/score_sde",
+    "pdf_path": "pdfs/2020-11-01-Score-SDE-score-based-generative-modeling-sde.pdf",
+    "image_url": "",
+    "zotero_key": "",
+    "citekey": "song2020scoresde",
+    "cites": [
+      "2020-ddpm-denoising-diffusion-probabilistic-models"
+    ],
+    "extends": [
+      "2020-ddpm-denoising-diffusion-probabilistic-models"
+    ],
+    "uses": [],
+    "enables": [
+      "2020-ddim-denoising-diffusion-implicit-models",
+      "2021-improved-ddpm-improved-denoising-diffusion-probabilistic-models",
+      "2022-classifier-free-diffusion-guidance",
+      "2023-diffusion-policy-action-diffusion",
+      "2025-layerdag-diffusion-dag-generation"
+    ],
+    "complements": [],
+    "contrasts": [],
+    "published_value": 24250,
+    "relations": [
+      {
+        "type": "extends",
+        "target": "2020-ddpm-denoising-diffusion-probabilistic-models"
+      },
+      {
+        "type": "enables",
+        "target": "2020-ddim-denoising-diffusion-implicit-models"
+      },
+      {
+        "type": "enables",
+        "target": "2021-improved-ddpm-improved-denoising-diffusion-probabilistic-models"
+      },
+      {
+        "type": "enables",
+        "target": "2022-classifier-free-diffusion-guidance"
+      },
+      {
+        "type": "enables",
+        "target": "2023-diffusion-policy-action-diffusion"
+      },
+      {
+        "type": "enables",
+        "target": "2025-layerdag-diffusion-dag-generation"
+      }
+    ],
+    "file": "papers/2020-score-sde-score-based-generative-modeling-sde.md",
+    "note_html": "notes/2020-score-sde-score-based-generative-modeling-sde.html",
+    "summary": "Score SDE 是 diffusion 理论线的关键统一论文：它把 DDPM、score matching、Langevin dynamics、随机 SDE 采样和确定性 probability flow ODE 放到同一个连续时间框架里。\n\n正式发表信息：论文 arXiv 版本是 `2011.13456`，正式会议为 **ICLR 2021 Oral**。",
+    "research_question": "DDPM、NCSN / score matching、Langevin dynamics 看起来像不同路线：有的讲逐步加噪，有的讲估计 `score = grad_x log p(x)`，有的讲从噪声里用随机动力学采样。Score SDE 关心的问题是：这些方法能不能被统一成同一个连续时间生成建模框架。\n\n对 TOPG 来说，这个问题很关键。我们不只想知道“怎么训练一个去噪网络”，还想知道采样器、随机性、确定性路径、条件引导和概率流之间是什么关系。",
+    "method": "Score SDE 把数据到噪声的过程写成一个 forward SDE：\n\n```text\ndx = f(x, t) dt + g(t) dw\n```\n\n这个过程把真实数据逐渐扰动成简单噪声分布。生成时，则使用 reverse-time SDE 从噪声走回数据：\n\n```text\ndx = [f(x, t) - g(t)^2 score_t(x)] dt + g(t) d\\bar{w}\n```\n\n这里最核心的是 `score_t(x)`：\n\n```text\nscore_t(x) = grad_x log p_t(x)\n```\n\n也就是在每个噪声强度下，模型估计当前 noisy sample 应该往哪个方向移动，才能更接近数据分布。\n\n论文还给出了对应的 probability flow ODE。它和 reverse SDE 有相同的边际分布，但采样路径是确定性的：\n\n```text\ndx = [f(x, t) - 1/2 g(t)^2 score_t(x)] dt\n```\n\n这就把 stochastic sampling 和 deterministic sampling 接到了一起。",
+    "contribution": "- 把 score-based generative modeling 和 diffusion probabilistic modeling 统一成连续时间 SDE 框架。\n- 明确指出 reverse-time SDE 可以用 learned score 从噪声分布生成数据。\n- 引入 probability flow ODE，让同一个 score model 支持确定性采样和 likelihood computation。\n- 提出 predictor-corrector sampler，把数值 SDE predictor 和 Langevin corrector 组合起来提升采样质量。\n- 给后续 DDIM、采样器设计、ODE/SDE 解释、conditional guidance 和 diffusion likelihood 提供共同语言。",
+    "reading_highlights": "",
+    "limitation": "Score SDE 的理论框架主要在连续空间里展开，图像是主要实验对象。离散 graph diffusion 不能直接套用连续 SDE，需要决定离散节点、边和属性的 score 如何定义，或者用 categorical diffusion / score-like logits 近似。\n\n它也不直接解决 task graph validity、DAG constraint、resource constraint 或多机器人执行反馈。它更像 diffusion 的“物理学语言”，不是任务规划系统本身。",
+    "relation": "DDPM 可以看成 Score SDE 框架下的一种离散时间扩散模型。DDIM 和 probability flow ODE 在直觉上相近：都强调同一个模型可以走更确定、更少步的生成路径。\n\nImproved DDPM 更偏训练和噪声日程优化；Score SDE 更偏统一理论和采样解释。CFG 等 guidance 方法可以被理解成修改 score / denoising direction，使采样更贴近条件分布。\n\nLayerDAG / TOPG 如果要做离散 graph diffusion，Score SDE 不会直接给出图算法，但它能帮助我们理解：模型预测的不是“答案”，而是在不同噪声水平下指向 clean graph manifold 的方向。",
+    "planning_insight": "TOPG 可以把 Score SDE 的思想迁移成：\n\n```text\nnoisy task graph state\n  -> graph score / denoising direction\n  -> sampler updates graph hypothesis\n  -> validity checker / constraint repair\n  -> clean executable task graph\n```\n\n如果用连续 latent graph representation，可以更直接借鉴 SDE / ODE sampler。如果用离散节点和边，则需要把 score 改写成 categorical logits、mask prediction 或 edge transition probability。\n\n最重要的启发是：采样器可以成为可替换模块。随机 reverse process 用于探索多个候选计划；deterministic ODE-like sampler 用于调试和稳定复现；corrector step 可以对应 constraint repair 或 planner critic feedback。",
+    "reusable_module_text": "score matching objective、forward SDE noise process、reverse-time SDE sampling、probability flow ODE、predictor-corrector sampler、continuous-time diffusion。",
+    "evidence_risk": "证据来自 ICLR 2021 Oral 正式发表论文、OpenReview 页面和 arXiv `2011.13456`。PDF 已保存为本地 arXiv 版本：`pdfs/2020-11-01-Score-SDE-score-based-generative-modeling-sde.pdf`。\n\n风险在于：SDE / ODE 统一视角很强，但它可能让我们过早沉入连续数学细节。对 TOPG 来说，关键不是复刻图像生成的 SDE，而是把“不同噪声水平下的修复方向”和“可替换采样器”迁移到 typed task graph。",
+    "open_question": "TOPG 应该先做连续 latent graph score model，还是直接做离散 categorical graph denoising。前者更贴近 Score SDE，后者更贴近 LayerDAG / DiGress 和真实任务图 schema。"
+  },
+  {
+    "id": "2021-improved-ddpm-improved-denoising-diffusion-probabilistic-models",
+    "title": "Improved Denoising Diffusion Probabilistic Models",
+    "short_title": "Improved DDPM",
+    "year": 2021,
+    "published": "2021-02",
+    "venue": "ICML 2021",
+    "status": "read",
+    "scope": "in_scope",
+    "readiness": "high",
+    "action": "build_note",
+    "tech_paradigm": "improved_diffusion_modeling",
+    "primary_domain": "Diffusion",
+    "domains": [
+      "Diffusion",
+      "Generative Model",
+      "Sampling",
+      "Training Objective"
+    ],
+    "primary_technical_layer": "diffusion_training_and_sampling",
+    "primary_task_family": "improved_diffusion_modeling",
+    "platform": "image_generation",
+    "planning_relevance": "Improved DDPM 对现在 diffusion 的最大贡献主要有两点：第一，把噪声日程从线性扩散改成更合理的非线性 schedule，尤其是 cosine 风格的累积噪声设计；第二，引入按时刻重要性采样的训练方式，让 loss 大的 timestep 被更频繁地学习。对 TOPG 来说，这意味着 graph diffusion 不只要考虑怎么去噪，还要考虑在哪些时间步破坏、在哪些时间步重点训练。",
+    "multi_robot_relevance": "间接但很实用。多机器人任务图生成如果要稳定训练，必须知道哪些时间步最容易学坏、哪些状态最常出错，因此 Improved DDPM 的 timestep weighting 和 schedule design 可以直接借鉴到离散图规划模型里。",
+    "system_roles": [
+      "diffusion_foundation",
+      "training_objective_refiner",
+      "sampler_optimizer"
+    ],
+    "reusable_modules": [
+      "nonlinear_noise_schedule",
+      "cosine_alpha_bar_schedule",
+      "timestep_importance_sampling",
+      "hybrid_loss_objective",
+      "learned_variance_modeling",
+      "diffusion_training_reweighting"
+    ],
+    "evidence_level": "paper_read",
+    "next_action": "map_improved_ddpm_schedule_and_sampling_to_graph_diffusion",
+    "tags": [
+      "Improved DDPM",
+      "diffusion schedule",
+      "importance sampling",
+      "noise schedule",
+      "ICML 2021",
+      "DDPM"
+    ],
+    "authors": [
+      "Alexander Quinn Nichol",
+      "Prafulla Dhariwal"
+    ],
+    "institutions": [
+      "OpenAI"
+    ],
+    "doi": "10.48550/arXiv.2102.09672",
+    "arxiv": "2102.09672",
+    "url": "https://proceedings.mlr.press/v139/nichol21a.html",
+    "project_url": "",
+    "pdf_path": "pdfs/2021-02-01-Improved-DDPM-improved-denoising-diffusion-probabilistic-models.pdf",
+    "image_url": "",
+    "zotero_key": "",
+    "citekey": "nichol2021improved",
+    "cites": [
+      "2020-ddpm-denoising-diffusion-probabilistic-models"
+    ],
+    "extends": [
+      "2020-ddpm-denoising-diffusion-probabilistic-models"
+    ],
+    "uses": [],
+    "enables": [
+      "2020-ddim-denoising-diffusion-implicit-models",
+      "2022-classifier-free-diffusion-guidance",
+      "2023-diffusion-policy-action-diffusion",
+      "2025-layerdag-diffusion-dag-generation"
+    ],
+    "complements": [],
+    "contrasts": [],
+    "published_value": 24253,
+    "relations": [
+      {
+        "type": "extends",
+        "target": "2020-ddpm-denoising-diffusion-probabilistic-models"
+      },
+      {
+        "type": "enables",
+        "target": "2020-ddim-denoising-diffusion-implicit-models"
+      },
+      {
+        "type": "enables",
+        "target": "2022-classifier-free-diffusion-guidance"
+      },
+      {
+        "type": "enables",
+        "target": "2023-diffusion-policy-action-diffusion"
+      },
+      {
+        "type": "enables",
+        "target": "2025-layerdag-diffusion-dag-generation"
+      }
+    ],
+    "file": "papers/2021-improved-ddpm-improved-denoising-diffusion-probabilistic-models.md",
+    "note_html": "notes/2021-improved-ddpm-improved-denoising-diffusion-probabilistic-models.html",
+    "summary": "Improved DDPM 的核心贡献不是“又发明了一种新的 diffusion”，而是把 DDPM 训练得更稳、更省步、更容易扩展：一方面改进噪声日程，让不同时间步的加噪更符合学习难度分布；另一方面用 timestep importance sampling 让训练更关注 loss 高、最难学的时刻。\n\n正式发表信息：论文 arXiv 版本是 `2102.09672`，正式会议为 **ICML 2021**。",
+    "research_question": "原始 DDPM 已经证明 diffusion 可以做出高质量样本，但它的训练和采样设计还有很多空间：噪声日程是不是太粗糙，某些时间步是不是太容易、某些时间步是不是太难，训练是不是把太多预算浪费在低价值时刻上。\n\nImproved DDPM 关心的问题是：如何让 diffusion 的训练目标和时间步分配更合理，从而在不改变整体框架的前提下，提升样本质量、似然和采样效率。",
+    "method": "这篇论文最重要的两点，可以直接记成你说的那版。\n\n第一，非线性的 noise schedule。原始 DDPM 常见的是比较机械的线性加噪日程，但 Improved DDPM 发现不同时间步的破坏强度不应该平均铺开，而应该用更平滑、更符合生成难度分布的 schedule，代表性做法就是 cosine 风格的 `alpha_bar(t)` 设计。直觉上，模型不应该在每个时间步都被同样程度地“折磨”；有些阶段应该保留更多语义，有些阶段再慢慢推向噪声。\n\n第二，timestep importance sampling。不是所有时间步都同等重要。论文观察到某些 timestep 的 loss 更大、学习更难，于是训练时对这些时刻采样更频繁，相当于把训练预算向难点倾斜。这样模型不会被简单时间步“刷分”掩盖真实困难。\n\n除了这两点，论文还讨论了 learned variances 和 hybrid objective 等工程改进，但如果只抓主线，最值得记住的就是：\n\n```text\n更合理的 noise schedule\n+ 更聪明的 timestep sampling\n= 更稳的 DDPM\n```",
+    "contribution": "- 把 noise schedule 从朴素线性思路推进到更合理的非线性设计，代表性是 cosine 风格的累积噪声日程。\n- 引入 timestep importance sampling，让训练更关注 loss 大、学习难的时间步，而不是平均分配预算。\n- 通过这些改动，在不改变 DDPM 主体框架的情况下提升样本质量和训练效率。\n- 说明 diffusion 的成败不只取决于网络结构，也取决于时间步怎么安排、怎么采样、怎么分配训练资源。",
+    "reading_highlights": "",
+    "limitation": "Improved DDPM 仍然是图像生成语境里的方法，核心对象是连续像素空间，不直接处理离散图、任务图合法性、条件约束或多机器人规划。\n\n它也不是把 diffusion 从根上改成另一种模型，而是在 DDPM 框架内部做训练和 schedule 层面的增强。对后续任务图 diffusion 来说，它更像“训练策略的参考”，不是最终结构答案。",
+    "relation": "DDPM 是基础骨架，Improved DDPM 是把这副骨架调得更顺手、更稳的版本。\n\nDDIM 关注采样路径和速度，Improved DDPM 关注训练日程和 timestep 预算。一个偏 sampler，一个偏 trainer，但二者都在回答“同一个 diffusion 模型怎么变得更实用”。\n\nClassifier-Free Guidance 继续把条件控制做强；Diffusion Policy 和 LayerDAG 则把这个更稳的 DDPM 训练范式迁移到动作和离散图上。",
+    "planning_insight": "对 TOPG 来说，Improved DDPM 最有价值的不是图像质量，而是训练哲学。\n\n第一，任务图生成的噪声日程不该均匀。比如任务数量、依赖边、技能标签、位置 grounding、资源约束，这些对象在不同阶段的破坏难度并不一样，应该设计不同的 schedule。\n\n第二，训练时要对难时刻加权。某些 graph denoising timestep 会更容易出错，应该像 importance sampling 一样更频繁地训练这些时刻，而不是让 easy timestep 冲掉梯度预算。\n\n第三，TOPG 的 graph denoiser 以后也许不只是“会去噪”，而是“知道该重点学哪一段噪声过程”。",
+    "reusable_module_text": "nonlinear noise schedule、cosine alpha_bar schedule、timestep importance sampling、hybrid loss objective、learned variance modeling、diffusion training reweighting。",
+    "evidence_risk": "证据来自 ICML 2021 正式发表论文和 arXiv `2102.09672`。PDF 已保存为 ICML proceedings 版本：`pdfs/2021-02-01-Improved-DDPM-improved-denoising-diffusion-probabilistic-models.pdf`，正式 venue 是 **ICML 2021**。\n\n风险在于：Improved DDPM 的改进主要针对连续高维生成，迁移到离散图时需要重新定义 schedule 和 importance 的对象。对 task graph 来说，`timestep` 不一定还是像素噪声步，可能是节点/边破坏步、layerwise graph corruption step，或者 mask ratio step。",
+    "open_question": "TOPG 应该把 importance sampling 挂在什么上：训练时的扩散时间步、graph corruption 强度、还是不同类型的结构对象。第一版可以先把 `timestep` 直接映射到离散图的噪声步，再根据每个 step 的 loss 分布做重采样。"
+  },
+  {
     "id": "2021-hierarchical-scene-graph-navigation-gnn",
     "title": "Hierarchical Representations and Explicit Memory: Learning Effective Navigation Policies on 3D Scene Graphs using Graph Neural Networks",
     "short_title": "3DSG Navigation",

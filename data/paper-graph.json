@@ -51,6 +51,51 @@
       "note_html": "notes/2020-robognn-multi-robot-scheduling-gat.html"
     },
     {
+      "id": "2020-ddim-denoising-diffusion-implicit-models",
+      "title": "Denoising Diffusion Implicit Models",
+      "short_title": "DDIM",
+      "published": "2020-10",
+      "published_value": 24249,
+      "primary_domain": "Diffusion",
+      "domains": [
+        "Diffusion",
+        "Generative Model",
+        "Sampling",
+        "Score Matching"
+      ],
+      "note_html": "notes/2020-ddim-denoising-diffusion-implicit-models.html"
+    },
+    {
+      "id": "2020-score-sde-score-based-generative-modeling-sde",
+      "title": "Score-Based Generative Modeling through Stochastic Differential Equations",
+      "short_title": "Score SDE",
+      "published": "2020-11",
+      "published_value": 24250,
+      "primary_domain": "Diffusion",
+      "domains": [
+        "Diffusion",
+        "Score Matching",
+        "SDE",
+        "Generative Model"
+      ],
+      "note_html": "notes/2020-score-sde-score-based-generative-modeling-sde.html"
+    },
+    {
+      "id": "2021-improved-ddpm-improved-denoising-diffusion-probabilistic-models",
+      "title": "Improved Denoising Diffusion Probabilistic Models",
+      "short_title": "Improved DDPM",
+      "published": "2021-02",
+      "published_value": 24253,
+      "primary_domain": "Diffusion",
+      "domains": [
+        "Diffusion",
+        "Generative Model",
+        "Sampling",
+        "Training Objective"
+      ],
+      "note_html": "notes/2021-improved-ddpm-improved-denoising-diffusion-probabilistic-models.html"
+    },
+    {
       "id": "2021-hierarchical-scene-graph-navigation-gnn",
       "title": "Hierarchical Representations and Explicit Memory: Learning Effective Navigation Policies on 3D Scene Graphs using Graph Neural Networks",
       "short_title": "3DSG Navigation",
@@ -620,6 +665,258 @@
         {
           "source": "2020-robognn-multi-robot-scheduling-gat",
           "target": "2023-combinatorial-optimization-gnn-reasoning"
+        }
+      ]
+    },
+    {
+      "id": "2020-ddpm-denoising-diffusion-probabilistic-models--2020-ddim-denoising-diffusion-implicit-models--extends",
+      "type": "extends",
+      "endpoints": [
+        "2020-ddpm-denoising-diffusion-probabilistic-models",
+        "2020-ddim-denoising-diffusion-implicit-models"
+      ],
+      "parent_id": "2020-ddpm-denoising-diffusion-probabilistic-models",
+      "child_id": "2020-ddim-denoising-diffusion-implicit-models",
+      "parent_title": "DDPM",
+      "child_title": "DDIM",
+      "authored_links": [
+        {
+          "source": "2020-ddim-denoising-diffusion-implicit-models",
+          "target": "2020-ddpm-denoising-diffusion-probabilistic-models"
+        }
+      ]
+    },
+    {
+      "id": "2020-ddim-denoising-diffusion-implicit-models--2023-diffusion-policy-action-diffusion--enables",
+      "type": "enables",
+      "endpoints": [
+        "2020-ddim-denoising-diffusion-implicit-models",
+        "2023-diffusion-policy-action-diffusion"
+      ],
+      "parent_id": "2020-ddim-denoising-diffusion-implicit-models",
+      "child_id": "2023-diffusion-policy-action-diffusion",
+      "parent_title": "DDIM",
+      "child_title": "Diffusion Policy",
+      "authored_links": [
+        {
+          "source": "2020-ddim-denoising-diffusion-implicit-models",
+          "target": "2023-diffusion-policy-action-diffusion"
+        }
+      ]
+    },
+    {
+      "id": "2020-ddim-denoising-diffusion-implicit-models--2025-layerdag-diffusion-dag-generation--enables",
+      "type": "enables",
+      "endpoints": [
+        "2020-ddim-denoising-diffusion-implicit-models",
+        "2025-layerdag-diffusion-dag-generation"
+      ],
+      "parent_id": "2020-ddim-denoising-diffusion-implicit-models",
+      "child_id": "2025-layerdag-diffusion-dag-generation",
+      "parent_title": "DDIM",
+      "child_title": "LayerDAG",
+      "authored_links": [
+        {
+          "source": "2020-ddim-denoising-diffusion-implicit-models",
+          "target": "2025-layerdag-diffusion-dag-generation"
+        }
+      ]
+    },
+    {
+      "id": "2020-ddpm-denoising-diffusion-probabilistic-models--2020-score-sde-score-based-generative-modeling-sde--extends",
+      "type": "extends",
+      "endpoints": [
+        "2020-ddpm-denoising-diffusion-probabilistic-models",
+        "2020-score-sde-score-based-generative-modeling-sde"
+      ],
+      "parent_id": "2020-ddpm-denoising-diffusion-probabilistic-models",
+      "child_id": "2020-score-sde-score-based-generative-modeling-sde",
+      "parent_title": "DDPM",
+      "child_title": "Score SDE",
+      "authored_links": [
+        {
+          "source": "2020-score-sde-score-based-generative-modeling-sde",
+          "target": "2020-ddpm-denoising-diffusion-probabilistic-models"
+        }
+      ]
+    },
+    {
+      "id": "2020-ddim-denoising-diffusion-implicit-models--2020-score-sde-score-based-generative-modeling-sde--enables",
+      "type": "enables",
+      "endpoints": [
+        "2020-ddim-denoising-diffusion-implicit-models",
+        "2020-score-sde-score-based-generative-modeling-sde"
+      ],
+      "parent_id": "2020-ddim-denoising-diffusion-implicit-models",
+      "child_id": "2020-score-sde-score-based-generative-modeling-sde",
+      "parent_title": "DDIM",
+      "child_title": "Score SDE",
+      "authored_links": [
+        {
+          "source": "2020-score-sde-score-based-generative-modeling-sde",
+          "target": "2020-ddim-denoising-diffusion-implicit-models"
+        }
+      ]
+    },
+    {
+      "id": "2020-score-sde-score-based-generative-modeling-sde--2021-improved-ddpm-improved-denoising-diffusion-probabilistic-models--enables",
+      "type": "enables",
+      "endpoints": [
+        "2020-score-sde-score-based-generative-modeling-sde",
+        "2021-improved-ddpm-improved-denoising-diffusion-probabilistic-models"
+      ],
+      "parent_id": "2020-score-sde-score-based-generative-modeling-sde",
+      "child_id": "2021-improved-ddpm-improved-denoising-diffusion-probabilistic-models",
+      "parent_title": "Score SDE",
+      "child_title": "Improved DDPM",
+      "authored_links": [
+        {
+          "source": "2020-score-sde-score-based-generative-modeling-sde",
+          "target": "2021-improved-ddpm-improved-denoising-diffusion-probabilistic-models"
+        }
+      ]
+    },
+    {
+      "id": "2020-score-sde-score-based-generative-modeling-sde--2022-classifier-free-diffusion-guidance--enables",
+      "type": "enables",
+      "endpoints": [
+        "2020-score-sde-score-based-generative-modeling-sde",
+        "2022-classifier-free-diffusion-guidance"
+      ],
+      "parent_id": "2020-score-sde-score-based-generative-modeling-sde",
+      "child_id": "2022-classifier-free-diffusion-guidance",
+      "parent_title": "Score SDE",
+      "child_title": "CFG",
+      "authored_links": [
+        {
+          "source": "2020-score-sde-score-based-generative-modeling-sde",
+          "target": "2022-classifier-free-diffusion-guidance"
+        }
+      ]
+    },
+    {
+      "id": "2020-score-sde-score-based-generative-modeling-sde--2023-diffusion-policy-action-diffusion--enables",
+      "type": "enables",
+      "endpoints": [
+        "2020-score-sde-score-based-generative-modeling-sde",
+        "2023-diffusion-policy-action-diffusion"
+      ],
+      "parent_id": "2020-score-sde-score-based-generative-modeling-sde",
+      "child_id": "2023-diffusion-policy-action-diffusion",
+      "parent_title": "Score SDE",
+      "child_title": "Diffusion Policy",
+      "authored_links": [
+        {
+          "source": "2020-score-sde-score-based-generative-modeling-sde",
+          "target": "2023-diffusion-policy-action-diffusion"
+        }
+      ]
+    },
+    {
+      "id": "2020-score-sde-score-based-generative-modeling-sde--2025-layerdag-diffusion-dag-generation--enables",
+      "type": "enables",
+      "endpoints": [
+        "2020-score-sde-score-based-generative-modeling-sde",
+        "2025-layerdag-diffusion-dag-generation"
+      ],
+      "parent_id": "2020-score-sde-score-based-generative-modeling-sde",
+      "child_id": "2025-layerdag-diffusion-dag-generation",
+      "parent_title": "Score SDE",
+      "child_title": "LayerDAG",
+      "authored_links": [
+        {
+          "source": "2020-score-sde-score-based-generative-modeling-sde",
+          "target": "2025-layerdag-diffusion-dag-generation"
+        }
+      ]
+    },
+    {
+      "id": "2020-ddpm-denoising-diffusion-probabilistic-models--2021-improved-ddpm-improved-denoising-diffusion-probabilistic-models--extends",
+      "type": "extends",
+      "endpoints": [
+        "2020-ddpm-denoising-diffusion-probabilistic-models",
+        "2021-improved-ddpm-improved-denoising-diffusion-probabilistic-models"
+      ],
+      "parent_id": "2020-ddpm-denoising-diffusion-probabilistic-models",
+      "child_id": "2021-improved-ddpm-improved-denoising-diffusion-probabilistic-models",
+      "parent_title": "DDPM",
+      "child_title": "Improved DDPM",
+      "authored_links": [
+        {
+          "source": "2021-improved-ddpm-improved-denoising-diffusion-probabilistic-models",
+          "target": "2020-ddpm-denoising-diffusion-probabilistic-models"
+        }
+      ]
+    },
+    {
+      "id": "2020-ddim-denoising-diffusion-implicit-models--2021-improved-ddpm-improved-denoising-diffusion-probabilistic-models--enables",
+      "type": "enables",
+      "endpoints": [
+        "2020-ddim-denoising-diffusion-implicit-models",
+        "2021-improved-ddpm-improved-denoising-diffusion-probabilistic-models"
+      ],
+      "parent_id": "2020-ddim-denoising-diffusion-implicit-models",
+      "child_id": "2021-improved-ddpm-improved-denoising-diffusion-probabilistic-models",
+      "parent_title": "DDIM",
+      "child_title": "Improved DDPM",
+      "authored_links": [
+        {
+          "source": "2021-improved-ddpm-improved-denoising-diffusion-probabilistic-models",
+          "target": "2020-ddim-denoising-diffusion-implicit-models"
+        }
+      ]
+    },
+    {
+      "id": "2021-improved-ddpm-improved-denoising-diffusion-probabilistic-models--2022-classifier-free-diffusion-guidance--enables",
+      "type": "enables",
+      "endpoints": [
+        "2021-improved-ddpm-improved-denoising-diffusion-probabilistic-models",
+        "2022-classifier-free-diffusion-guidance"
+      ],
+      "parent_id": "2021-improved-ddpm-improved-denoising-diffusion-probabilistic-models",
+      "child_id": "2022-classifier-free-diffusion-guidance",
+      "parent_title": "Improved DDPM",
+      "child_title": "CFG",
+      "authored_links": [
+        {
+          "source": "2021-improved-ddpm-improved-denoising-diffusion-probabilistic-models",
+          "target": "2022-classifier-free-diffusion-guidance"
+        }
+      ]
+    },
+    {
+      "id": "2021-improved-ddpm-improved-denoising-diffusion-probabilistic-models--2023-diffusion-policy-action-diffusion--enables",
+      "type": "enables",
+      "endpoints": [
+        "2021-improved-ddpm-improved-denoising-diffusion-probabilistic-models",
+        "2023-diffusion-policy-action-diffusion"
+      ],
+      "parent_id": "2021-improved-ddpm-improved-denoising-diffusion-probabilistic-models",
+      "child_id": "2023-diffusion-policy-action-diffusion",
+      "parent_title": "Improved DDPM",
+      "child_title": "Diffusion Policy",
+      "authored_links": [
+        {
+          "source": "2021-improved-ddpm-improved-denoising-diffusion-probabilistic-models",
+          "target": "2023-diffusion-policy-action-diffusion"
+        }
+      ]
+    },
+    {
+      "id": "2021-improved-ddpm-improved-denoising-diffusion-probabilistic-models--2025-layerdag-diffusion-dag-generation--enables",
+      "type": "enables",
+      "endpoints": [
+        "2021-improved-ddpm-improved-denoising-diffusion-probabilistic-models",
+        "2025-layerdag-diffusion-dag-generation"
+      ],
+      "parent_id": "2021-improved-ddpm-improved-denoising-diffusion-probabilistic-models",
+      "child_id": "2025-layerdag-diffusion-dag-generation",
+      "parent_title": "Improved DDPM",
+      "child_title": "LayerDAG",
+      "authored_links": [
+        {
+          "source": "2021-improved-ddpm-improved-denoising-diffusion-probabilistic-models",
+          "target": "2025-layerdag-diffusion-dag-generation"
         }
       ]
     },
