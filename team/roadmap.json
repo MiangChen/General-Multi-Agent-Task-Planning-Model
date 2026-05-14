@@ -54,18 +54,18 @@
     },
     {
       "owner": "陈明阳",
-      "title": "Planning Diffusion -> Task Graph",
+      "title": "Planning Diffusion + Task Graph 定义",
       "workstream": "Graph-based planning",
-      "deliverable": "读 Diffuser / Decision Diffuser，并把 trajectory diffusion 改写为 task node / dependency edge / constraint graph schema",
+      "deliverable": "读 Diffuser / Decision Diffuser；补读 DAG-Plan、Task and Motion Planning in Hierarchical 3D Graphs、DELTA: Decomposed Efficient Long-Term Robot Task Planning using LLMs，抽取 task graph 的 node / edge / hierarchy / constraint schema，再把 trajectory diffusion 改写为 task graph schema",
       "start": "2026-05-15",
       "end": "2026-05-15",
       "status": "planned"
     },
     {
       "owner": "陈明阳",
-      "title": "阶段性总结 PDF",
-      "workstream": "Research synthesis",
-      "deliverable": "输出一份 PDF：diffusion 到离散 task graph generation 的技术路线、论文依据、风险和下一步实验",
+      "title": "DAG / Graph Flow 生成补线",
+      "workstream": "Graph generation synthesis",
+      "deliverable": "读 SEA-DAG、DEFOG、Hierarchical Discrete Flow Matching for Graph Generation，抽取 DAG 生成、离散 graph flow matching、层级图生成机制，并补到 diffusion 到离散 task graph generation 的技术路线、论文依据、风险和下一步实验中",
       "start": "2026-05-16",
       "end": "2026-05-16",
       "status": "review"
