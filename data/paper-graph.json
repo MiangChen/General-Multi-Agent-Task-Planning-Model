@@ -96,6 +96,21 @@
       "note_html": "notes/2021-improved-ddpm-improved-denoising-diffusion-probabilistic-models.html"
     },
     {
+      "id": "2021-d3pm-structured-denoising-diffusion-discrete-state-spaces",
+      "title": "Structured Denoising Diffusion Models in Discrete State-Spaces",
+      "short_title": "D3PM",
+      "published": "2021-07",
+      "published_value": 24258,
+      "primary_domain": "Diffusion",
+      "domains": [
+        "Diffusion",
+        "Discrete Generation",
+        "Graph Generation",
+        "Generative Model"
+      ],
+      "note_html": "notes/2021-d3pm-structured-denoising-diffusion-discrete-state-spaces.html"
+    },
+    {
       "id": "2021-hierarchical-scene-graph-navigation-gnn",
       "title": "Hierarchical Representations and Explicit Memory: Learning Effective Navigation Policies on 3D Scene Graphs using Graph Neural Networks",
       "short_title": "3DSG Navigation",
@@ -917,6 +932,60 @@
         {
           "source": "2021-improved-ddpm-improved-denoising-diffusion-probabilistic-models",
           "target": "2025-layerdag-diffusion-dag-generation"
+        }
+      ]
+    },
+    {
+      "id": "2020-ddpm-denoising-diffusion-probabilistic-models--2021-d3pm-structured-denoising-diffusion-discrete-state-spaces--extends",
+      "type": "extends",
+      "endpoints": [
+        "2020-ddpm-denoising-diffusion-probabilistic-models",
+        "2021-d3pm-structured-denoising-diffusion-discrete-state-spaces"
+      ],
+      "parent_id": "2020-ddpm-denoising-diffusion-probabilistic-models",
+      "child_id": "2021-d3pm-structured-denoising-diffusion-discrete-state-spaces",
+      "parent_title": "DDPM",
+      "child_title": "D3PM",
+      "authored_links": [
+        {
+          "source": "2021-d3pm-structured-denoising-diffusion-discrete-state-spaces",
+          "target": "2020-ddpm-denoising-diffusion-probabilistic-models"
+        }
+      ]
+    },
+    {
+      "id": "2021-d3pm-structured-denoising-diffusion-discrete-state-spaces--2025-layerdag-diffusion-dag-generation--enables",
+      "type": "enables",
+      "endpoints": [
+        "2021-d3pm-structured-denoising-diffusion-discrete-state-spaces",
+        "2025-layerdag-diffusion-dag-generation"
+      ],
+      "parent_id": "2021-d3pm-structured-denoising-diffusion-discrete-state-spaces",
+      "child_id": "2025-layerdag-diffusion-dag-generation",
+      "parent_title": "D3PM",
+      "child_title": "LayerDAG",
+      "authored_links": [
+        {
+          "source": "2021-d3pm-structured-denoising-diffusion-discrete-state-spaces",
+          "target": "2025-layerdag-diffusion-dag-generation"
+        }
+      ]
+    },
+    {
+      "id": "2020-score-sde-score-based-generative-modeling-sde--2021-d3pm-structured-denoising-diffusion-discrete-state-spaces--cites",
+      "type": "cites",
+      "endpoints": [
+        "2020-score-sde-score-based-generative-modeling-sde",
+        "2021-d3pm-structured-denoising-diffusion-discrete-state-spaces"
+      ],
+      "parent_id": "2020-score-sde-score-based-generative-modeling-sde",
+      "child_id": "2021-d3pm-structured-denoising-diffusion-discrete-state-spaces",
+      "parent_title": "Score SDE",
+      "child_title": "D3PM",
+      "authored_links": [
+        {
+          "source": "2021-d3pm-structured-denoising-diffusion-discrete-state-spaces",
+          "target": "2020-score-sde-score-based-generative-modeling-sde"
         }
       ]
     },

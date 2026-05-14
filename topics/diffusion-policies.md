@@ -31,6 +31,7 @@ DDPM 是这一类方法的基础来源：它先把数据逐步加噪，再训练
 - [[2021-improved-ddpm-improved-denoising-diffusion-probabilistic-models]]
 - [[2020-ddim-denoising-diffusion-implicit-models]]
 - [[2020-score-sde-score-based-generative-modeling-sde]]
+- [[2021-d3pm-structured-denoising-diffusion-discrete-state-spaces]]
 - [[2022-classifier-free-diffusion-guidance]]
 - [[2023-diffusion-policy-action-diffusion]]
 - [[2025-layerdag-diffusion-dag-generation]]
