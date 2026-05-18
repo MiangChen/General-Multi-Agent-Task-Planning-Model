@@ -531,7 +531,7 @@ function stripQuotes(value) {
 }
 
 function parseFrontmatter(text, filePath) {
-  const match = text.match(/^---\n([\s\S]*?)\n---\n?/);
+  const match = text.match(/^---\r?\n([\s\S]*?)\r?\n---\r?\n?/);
   if (!match) {
     throw new Error(`${relative(rootDir, filePath)} is missing frontmatter`);
   }

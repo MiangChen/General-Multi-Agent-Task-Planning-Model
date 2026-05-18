@@ -333,6 +333,21 @@
       "note_html": "notes/2024-pyramidal-flow-matching-video.html"
     },
     {
+      "id": "2024-seadag-semi-autoregressive-diffusion-dag-generation",
+      "title": "SeaDAG: Semi-Autoregressive Diffusion for Conditional Directed Acyclic Graph Generation",
+      "short_title": "SeaDAG",
+      "published": "2024-10",
+      "published_value": 24297,
+      "primary_domain": "Diffusion",
+      "domains": [
+        "Diffusion",
+        "Graph Generation",
+        "Task Graph",
+        "Planning"
+      ],
+      "note_html": "notes/2024-seadag-semi-autoregressive-diffusion-dag-generation.html"
+    },
+    {
       "id": "2024-pi0-vla-flow-model",
       "title": "π0: A Vision-Language-Action Flow Model for General Robot Control",
       "short_title": "π0",
@@ -1346,6 +1361,78 @@
         {
           "source": "2024-alphafold3-biomolecular-interactions",
           "target": "2025-layerdag-diffusion-dag-generation"
+        }
+      ]
+    },
+    {
+      "id": "2021-d3pm-structured-denoising-diffusion-discrete-state-spaces--2024-seadag-semi-autoregressive-diffusion-dag-generation--extends",
+      "type": "extends",
+      "endpoints": [
+        "2021-d3pm-structured-denoising-diffusion-discrete-state-spaces",
+        "2024-seadag-semi-autoregressive-diffusion-dag-generation"
+      ],
+      "parent_id": "2021-d3pm-structured-denoising-diffusion-discrete-state-spaces",
+      "child_id": "2024-seadag-semi-autoregressive-diffusion-dag-generation",
+      "parent_title": "D3PM",
+      "child_title": "SeaDAG",
+      "authored_links": [
+        {
+          "source": "2024-seadag-semi-autoregressive-diffusion-dag-generation",
+          "target": "2021-d3pm-structured-denoising-diffusion-discrete-state-spaces"
+        }
+      ]
+    },
+    {
+      "id": "2020-ddpm-denoising-diffusion-probabilistic-models--2024-seadag-semi-autoregressive-diffusion-dag-generation--uses",
+      "type": "uses",
+      "endpoints": [
+        "2020-ddpm-denoising-diffusion-probabilistic-models",
+        "2024-seadag-semi-autoregressive-diffusion-dag-generation"
+      ],
+      "parent_id": "2020-ddpm-denoising-diffusion-probabilistic-models",
+      "child_id": "2024-seadag-semi-autoregressive-diffusion-dag-generation",
+      "parent_title": "DDPM",
+      "child_title": "SeaDAG",
+      "authored_links": [
+        {
+          "source": "2024-seadag-semi-autoregressive-diffusion-dag-generation",
+          "target": "2020-ddpm-denoising-diffusion-probabilistic-models"
+        }
+      ]
+    },
+    {
+      "id": "2024-seadag-semi-autoregressive-diffusion-dag-generation--2025-layerdag-diffusion-dag-generation--enables",
+      "type": "enables",
+      "endpoints": [
+        "2024-seadag-semi-autoregressive-diffusion-dag-generation",
+        "2025-layerdag-diffusion-dag-generation"
+      ],
+      "parent_id": "2024-seadag-semi-autoregressive-diffusion-dag-generation",
+      "child_id": "2025-layerdag-diffusion-dag-generation",
+      "parent_title": "SeaDAG",
+      "child_title": "LayerDAG",
+      "authored_links": [
+        {
+          "source": "2024-seadag-semi-autoregressive-diffusion-dag-generation",
+          "target": "2025-layerdag-diffusion-dag-generation"
+        }
+      ]
+    },
+    {
+      "id": "2023-unsupervised-task-graph-generation--2024-seadag-semi-autoregressive-diffusion-dag-generation--contrasts",
+      "type": "contrasts",
+      "endpoints": [
+        "2023-unsupervised-task-graph-generation",
+        "2024-seadag-semi-autoregressive-diffusion-dag-generation"
+      ],
+      "parent_id": "2023-unsupervised-task-graph-generation",
+      "child_id": "2024-seadag-semi-autoregressive-diffusion-dag-generation",
+      "parent_title": "Unsupervised Task Graphs",
+      "child_title": "SeaDAG",
+      "authored_links": [
+        {
+          "source": "2024-seadag-semi-autoregressive-diffusion-dag-generation",
+          "target": "2023-unsupervised-task-graph-generation"
         }
       ]
     },

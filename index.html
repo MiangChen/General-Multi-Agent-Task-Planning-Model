@@ -1438,13 +1438,13 @@
 
   <main class="page">
     <section class="hero">
-      <div class="eyebrow">Obsidian-first paper repository · generated 2026/5/14 11:16:39</div>
+      <div class="eyebrow">Obsidian-first paper repository · generated 2026/5/18 17:16:45</div>
       <h1>通用多智能体任务规划模型研究图谱</h1>
       <p>基于 Markdown note 的 typed relations 自动生成。当前版本聚焦 VLA、π 系列、World Action Model 和 Dreamer，把论文定位为端到端多智能体任务规划模型里的执行器、世界模拟器、planner critic、记忆模块或任务分配器。</p>
 
     <div class="stats">
       <div class="stat-card">
-        <div class="stat-value">42</div>
+        <div class="stat-value">43</div>
         <div class="stat-label">论文总数</div>
       </div>
       <div class="stat-card">
@@ -1452,11 +1452,11 @@
         <div class="stat-label">年份范围</div>
       </div>
       <div class="stat-card">
-        <div class="stat-value">84</div>
+        <div class="stat-value">88</div>
         <div class="stat-label">Typed relations</div>
       </div>
       <div class="stat-card">
-        <div class="stat-value">36</div>
+        <div class="stat-value">37</div>
         <div class="stat-label">高优先级</div>
       </div>
     </div>
@@ -2330,6 +2330,70 @@
         data-edge-child-title="LayerDAG"
         data-edge-child-note="notes/2025-layerdag-diffusion-dag-generation.html"
         d="M 1124 1302 C 745 1302, 745 1560, 366 1560"
+        marker-end="url(#arrowhead-contrasts)"></path>
+<path class="graph-edge"
+        style="--edge-color:#246bfe; --edge-marker:url(#arrowhead-extends); --edge-start-marker:url(#arrowhead-start-extends)"
+        data-edge-a="2021-d3pm-structured-denoising-diffusion-discrete-state-spaces"
+        data-edge-b="2024-seadag-semi-autoregressive-diffusion-dag-generation"
+        data-edge-parent="2021-d3pm-structured-denoising-diffusion-discrete-state-spaces"
+        data-edge-child="2024-seadag-semi-autoregressive-diffusion-dag-generation"
+        data-edge-type="extends"
+        data-edge-label="继承/扩展"
+        data-edge-short="extends"
+        data-edge-description="后续模型或系统直接建立在前序路线之上。"
+        data-edge-parent-title="D3PM"
+        data-edge-parent-note="notes/2021-d3pm-structured-denoising-diffusion-discrete-state-spaces.html"
+        data-edge-child-title="SeaDAG"
+        data-edge-child-note="notes/2024-seadag-semi-autoregressive-diffusion-dag-generation.html"
+        d="M 372 512 C 406 512, 406 1366, 372 1366"
+        marker-end="url(#arrowhead-extends)"></path>
+<path class="graph-edge"
+        style="--edge-color:#00a7c7; --edge-marker:url(#arrowhead-uses); --edge-start-marker:url(#arrowhead-start-uses)"
+        data-edge-a="2020-ddpm-denoising-diffusion-probabilistic-models"
+        data-edge-b="2024-seadag-semi-autoregressive-diffusion-dag-generation"
+        data-edge-parent="2020-ddpm-denoising-diffusion-probabilistic-models"
+        data-edge-child="2024-seadag-semi-autoregressive-diffusion-dag-generation"
+        data-edge-type="uses"
+        data-edge-label="使用/依赖"
+        data-edge-short="uses"
+        data-edge-description="当前论文借用了前序工作的模块、表示、训练路线或系统组件。"
+        data-edge-parent-title="DDPM"
+        data-edge-parent-note="notes/2020-ddpm-denoising-diffusion-probabilistic-models.html"
+        data-edge-child-title="SeaDAG"
+        data-edge-child-note="notes/2024-seadag-semi-autoregressive-diffusion-dag-generation.html"
+        d="M 372 190 C 406 190, 406 1366, 372 1366"
+        marker-end="url(#arrowhead-uses)"></path>
+<path class="graph-edge"
+        style="--edge-color:#188aa6; --edge-marker:url(#arrowhead-enables); --edge-start-marker:url(#arrowhead-start-enables)"
+        data-edge-a="2024-seadag-semi-autoregressive-diffusion-dag-generation"
+        data-edge-b="2025-layerdag-diffusion-dag-generation"
+        data-edge-parent="2024-seadag-semi-autoregressive-diffusion-dag-generation"
+        data-edge-child="2025-layerdag-diffusion-dag-generation"
+        data-edge-type="enables"
+        data-edge-label="提供模块"
+        data-edge-short="enables"
+        data-edge-description="前序工作提供了可被当前系统复用的关键模块。"
+        data-edge-parent-title="SeaDAG"
+        data-edge-parent-note="notes/2024-seadag-semi-autoregressive-diffusion-dag-generation.html"
+        data-edge-child-title="LayerDAG"
+        data-edge-child-note="notes/2025-layerdag-diffusion-dag-generation.html"
+        d="M 372 1366 C 406 1366, 406 1560, 372 1560"
+        marker-end="url(#arrowhead-enables)"></path>
+<path class="graph-edge"
+        style="--edge-color:#d14d72; --edge-marker:url(#arrowhead-contrasts); --edge-start-marker:url(#arrowhead-start-contrasts)"
+        data-edge-a="2023-unsupervised-task-graph-generation"
+        data-edge-b="2024-seadag-semi-autoregressive-diffusion-dag-generation"
+        data-edge-parent="2023-unsupervised-task-graph-generation"
+        data-edge-child="2024-seadag-semi-autoregressive-diffusion-dag-generation"
+        data-edge-type="contrasts"
+        data-edge-label="对比路线"
+        data-edge-short="contrasts"
+        data-edge-description="两篇论文代表不同建模范式，适合用来比较取舍。"
+        data-edge-parent-title="Unsupervised Task Graphs"
+        data-edge-parent-note="notes/2023-unsupervised-task-graph-generation.html"
+        data-edge-child-title="SeaDAG"
+        data-edge-child-note="notes/2024-seadag-semi-autoregressive-diffusion-dag-generation.html"
+        d="M 1018 1040 C 692 1040, 692 1366, 366 1366"
         marker-end="url(#arrowhead-contrasts)"></path>
 <path class="graph-edge"
         style="--edge-color:#246bfe; --edge-marker:url(#arrowhead-extends); --edge-start-marker:url(#arrowhead-start-extends)"
@@ -3270,6 +3334,18 @@
 
 
         <button class="graph-node"
+          style="--x:321px; --y:1366px; --node:#16a085"
+          data-node-id="2024-seadag-semi-autoregressive-diffusion-dag-generation"
+          data-node-title="SeaDAG"
+          data-note-path="notes/2024-seadag-semi-autoregressive-diffusion-dag-generation.html"
+          aria-label="SeaDAG 2024-10">
+          <strong>SeaDAG</strong>
+          <span>Diffusion</span>
+          <em>Graph Generation · Task Graph</em>
+        </button>
+
+
+        <button class="graph-node"
           style="--x:427px; --y:1366px; --node:#00a7c7"
           data-node-id="2024-pi0-vla-flow-model"
           data-node-title="π0"
@@ -3660,14 +3736,14 @@
 
             <div class="gantt-row">
               <div class="gantt-task-label">
-                <strong>Planning Diffusion -&gt; Task Graph</strong>
-                <span>读 Diffuser / Decision Diffuser，并把 trajectory diffusion 改写为 task node / dependency edge / constraint graph schema</span>
+                <strong>Planning Diffusion + Task Graph 定义</strong>
+                <span>读 Diffuser / Decision Diffuser；补读 DAG-Plan、Task and Motion Planning in Hierarchical 3D Graphs、DELTA: Decomposed Efficient Long-Term Robot Task Planning using LLMs，抽取 task graph 的 node / edge / hierarchy / constraint schema，再把 trajectory diffusion 改写为 task graph schema</span>
               </div>
               <div class="gantt-track">
                 <div class="gantt-bar status-planned"
                   style="--left:66.66666666666666%; --width:16.666666666666664%"
-                  title="Planning Diffusion -&gt; Task Graph · 2026-05-15 - 2026-05-15">
-                  <span>Planning Diffusion -&gt; Task Graph</span>
+                  title="Planning Diffusion + Task Graph 定义 · 2026-05-15 - 2026-05-15">
+                  <span>Planning Diffusion + Task Graph 定义</span>
                   <em>05/15-05/15</em>
                 </div>
               </div>
@@ -3675,14 +3751,14 @@
 
             <div class="gantt-row">
               <div class="gantt-task-label">
-                <strong>阶段性总结 PDF</strong>
-                <span>输出一份 PDF：diffusion 到离散 task graph generation 的技术路线、论文依据、风险和下一步实验</span>
+                <strong>DAG / Graph Flow 生成补线</strong>
+                <span>读 SEA-DAG、DEFOG、Hierarchical Discrete Flow Matching for Graph Generation，抽取 DAG 生成、离散 graph flow matching、层级图生成机制，并补到 diffusion 到离散 task graph generation 的技术路线、论文依据、风险和下一步实验中</span>
               </div>
               <div class="gantt-track">
                 <div class="gantt-bar status-review"
                   style="--left:83.33333333333334%; --width:16.666666666666664%"
-                  title="阶段性总结 PDF · 2026-05-16 - 2026-05-16">
-                  <span>阶段性总结 PDF</span>
+                  title="DAG / Graph Flow 生成补线 · 2026-05-16 - 2026-05-16">
+                  <span>DAG / Graph Flow 生成补线</span>
                   <em>05/16-05/16</em>
                 </div>
               </div>
@@ -3711,25 +3787,25 @@
           </div>
 
           <div class="quality-card">
-            <div class="quality-value">32/42</div>
+            <div class="quality-value">33/43</div>
             <div class="quality-name">关系覆盖</div>
             <p>至少一条 typed relation</p>
           </div>
 
           <div class="quality-card">
-            <div class="quality-value">42/42</div>
+            <div class="quality-value">43/43</div>
             <div class="quality-name">系统角色覆盖</div>
             <p>能放入我们的模型架构</p>
           </div>
 
           <div class="quality-card">
-            <div class="quality-value">42/42</div>
+            <div class="quality-value">43/43</div>
             <div class="quality-name">复用模块覆盖</div>
             <p>可转成设计组件</p>
           </div>
 
           <div class="quality-card">
-            <div class="quality-value">42/42</div>
+            <div class="quality-value">43/43</div>
             <div class="quality-name">证据风险覆盖</div>
             <p>明确知道证据和风险</p>
           </div>
@@ -4684,6 +4760,51 @@ language / scene / agent / skill / feedback
 
         <article class="role-card">
           <div class="role-count">1</div>
+          <h3>conditional dag generator</h3>
+          <ul>
+          <li>
+            <strong>SeaDAG</strong>
+            <span>用户 note 里的关键点可以整理成一个 TOPG 设计方向：
+
+```text
+past confirmed layers
+  + current layer under denoising
+  + rough future layer sketch
+  -&gt; denoise current task graph layer
+```
+
+也就是说，我们不必强制执行“必须先完整生成第 1 层，再生成第 2 层，再生成第 3 层”的 LayerDAG 思路。对于真实任务规划，模型可以先构思一个粗糙后续 layer：
+
+- 后续可能出现的子任务
+- 可能的资源占用或空间冲突
+- 多机器人协作点
+- 目标状态或验证节点
+- 潜在失败恢复分支
+
+这些未来 layer 不需要是 clean graph，也不需要完全正确。它们可以只是 low-confidence / noisy sketch。当前 layer 在去噪时同时接收：
+
+```text
+已确定历史结构
+当前观测和语言目标
+粗糙未来层草图
+机器人能力和资源状态
+```
+
+这样，当前 layer 的生成会少一些短视。例如当前选择某个子任务顺序时，可以提前感知后续可能出现的资源竞争、协同需求或验证步骤。
+
+这会把 TOPG 从严格逐层扩散放松成：
+
+```text
+局部层逐渐变清晰
+未来层先以低清晰度参与条件
+执行反馈再不断修正后续 sketch
+```</span>
+          </li>
+        </ul>
+        </article>
+
+        <article class="role-card">
+          <div class="role-count">1</div>
           <h3>conditional generator</h3>
           <ul>
           <li>
@@ -5000,8 +5121,92 @@ repair mode: keep executed subgraph fixed, denoise only failed or unknown parts
 
         <article class="role-card">
           <div class="role-count">1</div>
+          <h3>future sketch planner</h3>
+          <ul>
+          <li>
+            <strong>SeaDAG</strong>
+            <span>用户 note 里的关键点可以整理成一个 TOPG 设计方向：
+
+```text
+past confirmed layers
+  + current layer under denoising
+  + rough future layer sketch
+  -&gt; denoise current task graph layer
+```
+
+也就是说，我们不必强制执行“必须先完整生成第 1 层，再生成第 2 层，再生成第 3 层”的 LayerDAG 思路。对于真实任务规划，模型可以先构思一个粗糙后续 layer：
+
+- 后续可能出现的子任务
+- 可能的资源占用或空间冲突
+- 多机器人协作点
+- 目标状态或验证节点
+- 潜在失败恢复分支
+
+这些未来 layer 不需要是 clean graph，也不需要完全正确。它们可以只是 low-confidence / noisy sketch。当前 layer 在去噪时同时接收：
+
+```text
+已确定历史结构
+当前观测和语言目标
+粗糙未来层草图
+机器人能力和资源状态
+```
+
+这样，当前 layer 的生成会少一些短视。例如当前选择某个子任务顺序时，可以提前感知后续可能出现的资源竞争、协同需求或验证步骤。
+
+这会把 TOPG 从严格逐层扩散放松成：
+
+```text
+局部层逐渐变清晰
+未来层先以低清晰度参与条件
+执行反馈再不断修正后续 sketch
+```</span>
+          </li>
+        </ul>
+        </article>
+
+        <article class="role-card">
+          <div class="role-count">2</div>
           <h3>generative planner</h3>
           <ul>
+          <li>
+            <strong>SeaDAG</strong>
+            <span>用户 note 里的关键点可以整理成一个 TOPG 设计方向：
+
+```text
+past confirmed layers
+  + current layer under denoising
+  + rough future layer sketch
+  -&gt; denoise current task graph layer
+```
+
+也就是说，我们不必强制执行“必须先完整生成第 1 层，再生成第 2 层，再生成第 3 层”的 LayerDAG 思路。对于真实任务规划，模型可以先构思一个粗糙后续 layer：
+
+- 后续可能出现的子任务
+- 可能的资源占用或空间冲突
+- 多机器人协作点
+- 目标状态或验证节点
+- 潜在失败恢复分支
+
+这些未来 layer 不需要是 clean graph，也不需要完全正确。它们可以只是 low-confidence / noisy sketch。当前 layer 在去噪时同时接收：
+
+```text
+已确定历史结构
+当前观测和语言目标
+粗糙未来层草图
+机器人能力和资源状态
+```
+
+这样，当前 layer 的生成会少一些短视。例如当前选择某个子任务顺序时，可以提前感知后续可能出现的资源竞争、协同需求或验证步骤。
+
+这会把 TOPG 从严格逐层扩散放松成：
+
+```text
+局部层逐渐变清晰
+未来层先以低清晰度参与条件
+执行反馈再不断修正后续 sketch
+```</span>
+          </li>
+
           <li>
             <strong>LayerDAG</strong>
             <span>我们可以把未来方向定义为：
@@ -5027,7 +5232,7 @@ instruction + scene graph + robot skills
         </article>
 
         <article class="role-card">
-          <div class="role-count">2</div>
+          <div class="role-count">3</div>
           <h3>graph prior model</h3>
           <ul>
           <li>
@@ -5043,6 +5248,45 @@ language / scene / agent / skill constraints
 ```
 
 也就是说，第一阶段不急着预测每个机器人和每个时间点，而是先生成一个可解释、可修复、可评估的任务结构骨架。</span>
+          </li>
+
+          <li>
+            <strong>SeaDAG</strong>
+            <span>用户 note 里的关键点可以整理成一个 TOPG 设计方向：
+
+```text
+past confirmed layers
+  + current layer under denoising
+  + rough future layer sketch
+  -&gt; denoise current task graph layer
+```
+
+也就是说，我们不必强制执行“必须先完整生成第 1 层，再生成第 2 层，再生成第 3 层”的 LayerDAG 思路。对于真实任务规划，模型可以先构思一个粗糙后续 layer：
+
+- 后续可能出现的子任务
+- 可能的资源占用或空间冲突
+- 多机器人协作点
+- 目标状态或验证节点
+- 潜在失败恢复分支
+
+这些未来 layer 不需要是 clean graph，也不需要完全正确。它们可以只是 low-confidence / noisy sketch。当前 layer 在去噪时同时接收：
+
+```text
+已确定历史结构
+当前观测和语言目标
+粗糙未来层草图
+机器人能力和资源状态
+```
+
+这样，当前 layer 的生成会少一些短视。例如当前选择某个子任务顺序时，可以提前感知后续可能出现的资源竞争、协同需求或验证步骤。
+
+这会把 TOPG 从严格逐层扩散放松成：
+
+```text
+局部层逐渐变清晰
+未来层先以低清晰度参与条件
+执行反馈再不断修正后续 sketch
+```</span>
           </li>
 
           <li>
@@ -5378,7 +5622,7 @@ SMART-LLM-style Python plan
         </article>
 
         <article class="role-card">
-          <div class="role-count">4</div>
+          <div class="role-count">5</div>
           <h3>task graph generator</h3>
           <ul>
           <li>
@@ -5407,6 +5651,45 @@ clean task graph tokens
 ```
 
 这里最关键的是 `Q_t` 不能随便设。TOPG 可以为不同对象设计不同 transition matrix：task type 可以往语义近邻转，edge type 可以先转 mask，再转 random；agent allocation 可以按 capability-compatible categories 做转移。</span>
+          </li>
+
+          <li>
+            <strong>SeaDAG</strong>
+            <span>用户 note 里的关键点可以整理成一个 TOPG 设计方向：
+
+```text
+past confirmed layers
+  + current layer under denoising
+  + rough future layer sketch
+  -&gt; denoise current task graph layer
+```
+
+也就是说，我们不必强制执行“必须先完整生成第 1 层，再生成第 2 层，再生成第 3 层”的 LayerDAG 思路。对于真实任务规划，模型可以先构思一个粗糙后续 layer：
+
+- 后续可能出现的子任务
+- 可能的资源占用或空间冲突
+- 多机器人协作点
+- 目标状态或验证节点
+- 潜在失败恢复分支
+
+这些未来 layer 不需要是 clean graph，也不需要完全正确。它们可以只是 low-confidence / noisy sketch。当前 layer 在去噪时同时接收：
+
+```text
+已确定历史结构
+当前观测和语言目标
+粗糙未来层草图
+机器人能力和资源状态
+```
+
+这样，当前 layer 的生成会少一些短视。例如当前选择某个子任务顺序时，可以提前感知后续可能出现的资源竞争、协同需求或验证步骤。
+
+这会把 TOPG 从严格逐层扩散放松成：
+
+```text
+局部层逐渐变清晰
+未来层先以低清晰度参与条件
+执行反馈再不断修正后续 sketch
+```</span>
           </li>
 
           <li>
@@ -5449,28 +5732,6 @@ instruction + robot capabilities + scene state
 ```
 
 未来我们要做的关键不是只让 LLM 生成这个 JSON，而是用领域数据训练一个模型，让它更稳定地生成与 robot skill library 对齐的 task graph，并能随着新任务、新机器人技能和执行反馈持续更新。</span>
-          </li>
-
-          <li>
-            <strong>LayerDAG</strong>
-            <span>我们可以把未来方向定义为：
-
-```text
-Layerwise Diffusion Task Graph Generator
-```
-
-系统形式：
-
-```text
-instruction + scene graph + robot skills
-  -&gt; conditional LayerDAG generator
-  -&gt; valid task DAG
-  -&gt; task allocation / scheduling module
-  -&gt; execution feedback
-  -&gt; local re-denoising
-```
-
-这个方向比单纯 LLM prompt 生成 task graph 更有研究空间，因为它可以学习领域内常见的 dependency pattern，并支持逐层、局部、可反馈的 task graph 生成。</span>
           </li>
         </ul>
         </article>
@@ -5948,6 +6209,19 @@ instruction + scene graph + robot skills
 
         <article class="queue-card">
           <div class="queue-count">1</div>
+          <h3>design future sketch layer for topg</h3>
+          <p>把这组论文转成更明确的系统设计动作。</p>
+          <ul>
+          <li>
+            <span>2024-10</span>
+            <strong>SeaDAG</strong>
+            <em>已读论文</em>
+          </li>
+        </ul>
+        </article>
+
+        <article class="queue-card">
+          <div class="queue-count">1</div>
           <h3>map af2 single pair to topg schema</h3>
           <p>把这组论文转成更明确的系统设计动作。</p>
           <ul>
@@ -6107,7 +6381,7 @@ instruction + scene graph + robot skills
           <h2>论文列表</h2>
           <p>搜索会匹配标题、摘要、作者、机构、方法和标签。</p>
         </div>
-        <div id="result-count">42 篇</div>
+        <div id="result-count">43 篇</div>
       </div>
       <div class="control-panel">
         <input id="search" type="search" placeholder="搜索论文、作者、方法或标签">
@@ -6143,6 +6417,7 @@ instruction + scene graph + robot skills
 <option value="scene_graph_navigation_policy">Scene Graph Navigation Policy</option>
 <option value="scene_graph_task_planning">Scene Graph Task Planning</option>
 <option value="score_based_sde_diffusion">score_based_sde_diffusion</option>
+<option value="semi_autoregressive_diffusion_dag_generation">semi_autoregressive_diffusion_dag_generation</option>
 <option value="unsupervised_task_graph_generation">Unsupervised Task Graph Generation</option>
 <option value="video_flow_model">Video Flow Model</option>
 <option value="vla">VLA</option>
@@ -6220,6 +6495,7 @@ instruction + scene graph + robot skills
 <option value="executor">执行器</option>
 <option value="executor_context">执行上下文</option>
 <option value="architecture_reference">architecture reference</option>
+<option value="conditional_dag_generator">conditional dag generator</option>
 <option value="conditional_generator">conditional generator</option>
 <option value="confidence_estimator">confidence estimator</option>
 <option value="denoising_generator">denoising generator</option>
@@ -6229,6 +6505,7 @@ instruction + scene graph + robot skills
 <option value="discrete_denoiser">discrete denoiser</option>
 <option value="execution_orchestrator">execution orchestrator</option>
 <option value="fast_sampler">fast sampler</option>
+<option value="future_sketch_planner">future sketch planner</option>
 <option value="generative_planner">generative planner</option>
 <option value="graph_prior_model">graph prior model</option>
 <option value="graph_token_generator">graph token generator</option>
@@ -7738,6 +8015,115 @@ eps_guided = eps_uncond + scale * (eps_cond - eps_uncond)
         <article class="paper-card"
           data-paper-card
           data-year="2024"
+          data-tech_paradigm="semi_autoregressive_diffusion_dag_generation"
+          data-primary_technical_layer="task_graph_generation"
+          data-primary_task_family="conditional_dag_diffusion_generation"
+          data-system_roles="task_graph_generator generative_planner graph_prior_model conditional_dag_generator future_sketch_planner"
+          data-search="seadag: semi-autoregressive diffusion for conditional directed acyclic graph generation seadag arxiv seadag 是一篇很适合放在 layerdag 旁边读的 dag diffusion 论文：它不是严格一层一层生成，而是在每个 diffusion step 都维护完整图，只是让不同 layer 以不同速度从 noisy 变 clean，从而模拟 semi-autoregressive generation。
+
+对我们的 task graph 方向，最重要的启发是：即使未来完整任务图不可知，也可以先生成一个粗糙的后续 layer 草图，让当前 layer 的去噪不只依赖过去结构，也能参考低置信度的未来结构。 seadag 的核心是 layer-wise semi-autoregressive diffusion。
+
+它先把 dag 看成带层级的结构，每个节点有自己的 level。然后在同一个全局 diffusion timestep `t` 下，为不同 layer 分配不同的 local timestep：
+
+```text
+tau_i^t = t(t, l_i)
+```
+
+这里 `l_i` 是节点所在层级，`tau_i^t` 是该节点自己的 local timestep。不同层的 `tau` 不同，就意味着它们处在不同噪声水平。
+
+直觉上：
+
+```text
+完整 noisy graph 一直存在
+不同 layer 去噪速度不同
+较 clean 的 layer 可以给较 noisy 的 layer 提供条件
+```
+
+这和严格 layerdag 很不一样。layerdag 更像：
+
+```text
+已生成历史层 -&gt; 生成下一层 -&gt; 接回历史图
+```
+
+seadag 更像：
+
+```text
+完整图画布一直存在
+过去层 / 当前层 / 未来层清晰度不同
+消息可以在不同清晰度的 layer 之间流动
+``` - 提出 semi-autoregressive dag diffusion：所有 layer 同时演化，但以不同速度去噪。
+- 在每个 diffusion step 都维护完整图视图，避免严格 ar 方法直到最后才看到全图。
+- 用 local timestep mapping 把一个全局时间转换成每层自己的噪声水平。
+- 在训练中引入 condition loss，让模型显式学习 graph structure 和 condition/property 的关系。
+- 对 conditional dag generation 给出一个介于 one-shot graph diffusion 和 strict autoregressive generation 之间的折中方案。 2024-10 diffusion paper_read design_future_sketch_layer_for_topg diffusion graph generation task graph planning seadag diffusion dag generation task graph semi-autoregressive diffusion conditional generation future sketch task_graph_generator generative_planner graph_prior_model conditional_dag_generator future_sketch_planner layerwise_denoising_speed complete_noisy_graph_state local_timestep_mapping semi_autoregressive_dag_diffusion condition_loss graph_property_decoder future_layer_sketch_conditioning xinyi zhou, xing li, yingzhao lian, yiwen wang, lei chen, mingxuan yuan the chinese university of hong kong · huawei noah&#39;s ark lab · zhejiang lab">
+          <div class="paper-media">
+            <div class="paper-placeholder">SeaDAG</div>
+            <span>2024-10</span>
+          </div>
+          <div class="paper-main">
+            <div class="paper-meta">
+              <strong>arXiv</strong>
+              <span>semi_autoregressive_diffusion_dag_generation</span>
+              <span>任务图生成</span>
+              <span>高优先级</span>
+            </div>
+            <h3>SeaDAG</h3>
+            <div class="paper-title">SeaDAG: Semi-Autoregressive Diffusion for Conditional Directed Acyclic Graph Generation</div>
+            <div class="paper-authors">Xinyi Zhou, Xing Li, Yingzhao Lian, Yiwen Wang, Lei Chen, Mingxuan Yuan · The Chinese University of Hong Kong · Huawei Noah&#39;s Ark Lab · Zhejiang Lab</div>
+            <div class="paper-summary"><p>SeaDAG 是一篇很适合放在 LayerDAG 旁边读的 DAG diffusion 论文：它不是严格一层一层生成，而是在每个 diffusion step 都维护完整图，只是让不同 layer 以不同速度从 noisy 变 clean，从而模拟 semi-autoregressive generation。</p>
+<p>对我们的 task graph 方向，最重要的启发是：即使未来完整任务图不可知，也可以先生成一个粗糙的后续 layer 草图，让当前 layer 的去噪不只依赖过去结构，也能参考低置信度的未来结构。</p></div>
+            <details>
+              <summary>研究理解</summary>
+              <div class="detail-grid">
+                <div><b>研究问题</b><p>DAG 生成比一般图生成更难，因为 DAG 有方向性、层级结构和跨层依赖。严格 autoregressive 方法可以按部分生成，但会带来三个问题。</p>
+<p>第一，part-by-part generation 会阻断后续层到前面层的信息流。当前层一旦生成完，后续结构很难反过来影响它。</p>
+<p>第二，严格 AR 方法直到最后才有完整图视图。对于 conditional DAG generation，这很麻烦，因为很多属性、功能或约束必须在完整图上才能检查。</p>
+<p>第三，很多条件图生成方法只在采样时加 guidance，而不是在训练时显式学习 condition。这样容易在图真实性和条件满足之间摇摆。</p>
+<p>SeaDAG 的问题是：能不能保留 DAG 层级生成的好处，同时在每个 diffusion step 都保留完整图视图，让全图属性和条件学习可以提前进入训练。</p></div>
+                <div><b>方法</b><p>SeaDAG 的核心是 layer-wise semi-autoregressive diffusion。</p>
+<p>它先把 DAG 看成带层级的结构，每个节点有自己的 level。然后在同一个全局 diffusion timestep <code>t</code> 下，为不同 layer 分配不同的 local timestep：</p>
+<p>```text<br>tau_i^t = T(t, l_i)<br>```</p>
+<p>这里 <code>l_i</code> 是节点所在层级，<code>tau_i^t</code> 是该节点自己的 local timestep。不同层的 <code>tau</code> 不同，就意味着它们处在不同噪声水平。</p>
+<p>直觉上：</p>
+<p>```text<br>完整 noisy graph 一直存在<br>不同 layer 去噪速度不同<br>较 clean 的 layer 可以给较 noisy 的 layer 提供条件<br>```</p>
+<p>这和严格 LayerDAG 很不一样。LayerDAG 更像：</p>
+<p>```text<br>已生成历史层 -&gt; 生成下一层 -&gt; 接回历史图<br>```</p>
+<p>SeaDAG 更像：</p>
+<p>```text<br>完整图画布一直存在<br>过去层 / 当前层 / 未来层清晰度不同<br>消息可以在不同清晰度的 layer 之间流动<br>```</p></div>
+                <div><b>局限</b><p>SeaDAG 默认采样时可以确定一个完整图画布，包括 level 数、每层 node 数和节点 level。论文中会从训练集分布采样这些结构先验，再在这个画布上去噪。</p>
+<p>这对电路 DAG 或 junction-tree molecule DAG 是合理的，但对开放世界多机器人任务规划不完全成立。真实 task graph 往往一边感知、一边分解、一边执行，后续 node 可能还没有被发现，资源冲突和失败恢复也会动态改变图结构。</p>
+<p>因此 SeaDAG 不能直接等价成“提前知道完整任务图再扩散”。真正可迁移的是它的不同清晰度层级交互机制。</p></div>
+                <div><b>关系</b><p>DDPM 提供基础去噪生成范式：训练时加噪，推理时逐步去噪。D3PM 把这个思想搬到离散 category/token 状态空间，使节点类型和边类型这类离散对象可以被 diffusion 建模。</p>
+<p>LayerDAG 和 SeaDAG 都关注 DAG generation，但二者的生成哲学不同。</p>
+<p>LayerDAG 更强调严格 layerwise autoregressive decomposition：已经生成的前缀图决定下一层，天然保证 DAG 方向性。</p>
+<p>SeaDAG 更强调 semi-autoregressive global view：完整图一直存在，只是不同 layer 清晰度不同，因此当前层可以参考已经较 clean 的层，也能被 noisy 的后续层影响。</p>
+<p>对 TOPG 来说，LayerDAG 适合作为“合法 DAG 生成”的强结构 baseline；SeaDAG 更适合作为“当前层与未来粗草图共同去噪”的灵感来源。</p></div>
+                <div><b>对多智能体任务规划模型的启发</b><p>用户 note 里的关键点可以整理成一个 TOPG 设计方向：</p>
+<p>```text<br>past confirmed layers<br>+ current layer under denoising<br>+ rough future layer sketch<br>-&gt; denoise current task graph layer<br>```</p>
+<p>也就是说，我们不必强制执行“必须先完整生成第 1 层，再生成第 2 层，再生成第 3 层”的 LayerDAG 思路。对于真实任务规划，模型可以先构思一个粗糙后续 layer：</p>
+<ul><li>后续可能出现的子任务</li><li>可能的资源占用或空间冲突</li><li>多机器人协作点</li><li>目标状态或验证节点</li><li>潜在失败恢复分支</li></ul>
+<p>这些未来 layer 不需要是 clean graph，也不需要完全正确。它们可以只是 low-confidence / noisy sketch。当前 layer 在去噪时同时接收：</p>
+<p>```text<br>已确定历史结构<br>当前观测和语言目标<br>粗糙未来层草图<br>机器人能力和资源状态<br>```</p>
+<p>这样，当前 layer 的生成会少一些短视。例如当前选择某个子任务顺序时，可以提前感知后续可能出现的资源竞争、协同需求或验证步骤。</p>
+<p>这会把 TOPG 从严格逐层扩散放松成：</p>
+<p>```text<br>局部层逐渐变清晰<br>未来层先以低清晰度参与条件<br>执行反馈再不断修正后续 sketch<br>```</p></div>
+                <div><b>可复用模块</b><p>layerwise denoising speed、complete noisy graph state、local timestep mapping、semi-autoregressive DAG diffusion、condition loss、graph property decoder、future layer sketch conditioning。</p></div>
+                <div><b>证据与风险</b><p>证据来自 SeaDAG 论文对 conditional DAG generation 的实验，包括 AIG circuit generation from truth tables 和 molecule generation based on quantum properties。论文报告 semi-autoregressive diffusion 能更好平衡图真实性与条件满足。</p>
+<p>风险是 SeaDAG 的实验对象不是机器人任务规划，且依赖可预设的 DAG level/node canvas。迁移到 TOPG 时，不能假设完整 future task graph 已知；应该把 future layer 当成可修正的 latent sketch，而不是硬约束。</p></div>
+              </div>
+            </details>
+            <div class="paper-roles"><span class="tag role-tag">task graph generator</span><span class="tag role-tag">generative planner</span><span class="tag role-tag">graph prior model</span><span class="tag role-tag">conditional dag generator</span><span class="tag role-tag">future sketch planner</span></div>
+            <div class="paper-modules"><span class="tag module-tag">layerwise denoising speed</span><span class="tag module-tag">complete noisy graph state</span><span class="tag module-tag">local timestep mapping</span><span class="tag module-tag">semi autoregressive dag diffusion</span><span class="tag module-tag">condition loss</span></div>
+            <div class="paper-next">Evidence: 已读论文 · Next: design future sketch layer for topg</div>
+            <div class="paper-tags"><span class="tag">SeaDAG</span><span class="tag">Diffusion</span><span class="tag">DAG generation</span><span class="tag">Task Graph</span><span class="tag">semi-autoregressive diffusion</span><span class="tag">conditional generation</span><span class="tag">future sketch</span></div>
+            <div class="paper-links"><a href="pdfs/2024-10-21-SeaDAG-semi-autoregressive-diffusion-dag-generation.pdf" data-pdf-link="pdfs/2024-10-21-SeaDAG-semi-autoregressive-diffusion-dag-generation.pdf" target="_blank" rel="noreferrer">PDF</a><a href="notes/2024-seadag-semi-autoregressive-diffusion-dag-generation.html" data-note-link="notes/2024-seadag-semi-autoregressive-diffusion-dag-generation.html" target="_blank" rel="noreferrer">Note</a><a href="https://arxiv.org/abs/2410.16119" target="_blank" rel="noreferrer">论文</a></div>
+          </div>
+        </article>
+
+
+        <article class="paper-card"
+          data-paper-card
+          data-year="2024"
           data-tech_paradigm="vla_flow_policy"
           data-primary_technical_layer="action_representation"
           data-primary_task_family="generalist_robot_control"
@@ -8942,6 +9328,15 @@ psi-w0 则是动作条件世界模型。它输入图像、语言和动作轨迹�
         <div class="question-meta">2024 · Pyramidal Flow</div>
         <h3>视频生成</h3>
         <p>如何把视频 flow matching 的多尺度结构扩展到结构化状态图，例如 agent-task-object graph，而不只输出像素级视频。</p>
+      </div>
+
+
+      <div class="question-card">
+        <div class="question-meta">2024 · SeaDAG</div>
+        <h3>任务图生成</h3>
+        <p>TOPG 里的 future sketch 应该如何产生：由 LLM 先草拟、由 denoiser 自回归预测、由 world model rollout 给出，还是由执行反馈不断维护。</p>
+<p>future sketch 应该参与哪些变量的去噪：task node、dependency edge、allocation hint、resource conflict edge、time window，还是 failure recovery branch。</p>
+<p>如果未来 sketch 是错的，模型应该如何降低它的权重，避免当前 layer 被错误未来牵着走。</p>
       </div>
 
 

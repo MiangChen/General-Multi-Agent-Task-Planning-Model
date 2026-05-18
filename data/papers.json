@@ -89,7 +89,7 @@
         "target": "2021-alphafold2-highly-accurate-structure-prediction"
       }
     ],
-    "file": "papers/2020-alphafold-potentials-deep-learning.md",
+    "file": "papers\\2020-alphafold-potentials-deep-learning.md",
     "note_html": "notes/2020-alphafold-potentials-deep-learning.html",
     "summary": "AlphaFold1 是 AlphaFold 系列的历史起点：它用深度网络预测残基间距离分布，并把这些 pairwise predictions 转成结构优化的势能函数。对 TOPG 的启发是 “先预测关系约束，再生成结构”，但它还不是我们最想参考的 AF3-style 结构生成架构。",
     "research_question": "给定蛋白质氨基酸序列，能否不依赖昂贵实验测定，预测蛋白质三维结构。传统方法严重依赖模板、物理采样和共进化分析；AlphaFold1 的问题意识是用深度学习直接学习残基对之间的距离约束。",
@@ -193,7 +193,7 @@
         "target": "2025-layerdag-diffusion-dag-generation"
       }
     ],
-    "file": "papers/2020-ddpm-denoising-diffusion-probabilistic-models.md",
+    "file": "papers\\2020-ddpm-denoising-diffusion-probabilistic-models.md",
     "note_html": "notes/2020-ddpm-denoising-diffusion-probabilistic-models.html",
     "summary": "DDPM 是现代 diffusion 生成模型的基础节点：它把生成过程写成“正向逐步加噪 + 反向逐步去噪”，并用简化的噪声预测目标让模型学会从噪声中恢复数据结构。",
     "research_question": "传统生成模型在高质量图像生成上常依赖 GAN、VAE 或 autoregressive decoder。DDPM 关心的问题是：能否用一个清晰的概率扩散过程，把复杂数据分布逐步扰动成高斯噪声，再训练一个神经网络学习反向去噪链，从噪声生成样本。\n\n对我们做 TOPG 来说，真正重要的不是图像任务，而是“结构可以被逐步破坏，也可以被条件模型逐步修复”这个范式。",
@@ -284,7 +284,7 @@
         "target": "2023-combinatorial-optimization-gnn-reasoning"
       }
     ],
-    "file": "papers/2020-robognn-multi-robot-scheduling-gat.md",
+    "file": "papers\\2020-robognn-multi-robot-scheduling-gat.md",
     "note_html": "notes/2020-robognn-multi-robot-scheduling-gat.html",
     "summary": "RoboGNN Scheduler 用模仿学习把传统优化器生成的小规模高质量调度数据蒸馏进 GAT + Q network，从而在同构多机器人 ST/SR/TA/XD 调度问题上快速生成接近最优的任务分配与排序。",
     "research_question": "这篇论文处理的是经典多机器人调度问题：多个机器人要完成一批任务，任务之间有时序约束、等待约束、deadline、地点互斥和 makespan 目标。\n\n用 iTax 语言说，它的问题设定是 SR、ST、TA、XD：每个任务只需要一个机器人，每个机器人一次只做一个任务，任务有时间扩展，并且不同机器人日程之间存在 cross-schedule dependency。论文还假设机器人同构，所以不处理不同机器人能力不同的问题。\n\n传统 MILP / CP / exact solver 能给高质量解，但大规模时太慢；手工启发式更快，但需要领域专家调参。论文的问题就是：能不能让 GAT 从优化器生成的示范解里学一个快速调度策略。",
@@ -392,7 +392,7 @@
         "target": "2025-layerdag-diffusion-dag-generation"
       }
     ],
-    "file": "papers/2020-ddim-denoising-diffusion-implicit-models.md",
+    "file": "papers\\2020-ddim-denoising-diffusion-implicit-models.md",
     "note_html": "notes/2020-ddim-denoising-diffusion-implicit-models.html",
     "summary": "DDIM 的核心贡献是：在不重新训练 DDPM 模型的情况下，构造一族保持相同边际分布的非马尔可夫采样过程，让同一个噪声预测模型可以更快、甚至确定性地生成样本。\n\n正式发表信息：论文 arXiv 版本是 `2010.02502`，正式会议为 **ICLR 2021**。",
     "research_question": "DDPM 的生成质量很强，但原始采样过程通常需要很多步，并且每一步都按马尔可夫链随机去噪。论文关心的问题是：如果训练好的 DDPM denoiser 已经学会预测噪声，是否必须沿用原始随机马尔可夫采样链，还是可以换一条更短、更快、更可控的采样路径。\n\n对 TOPG 来说，对应问题是：如果我们训练了一个 task graph denoiser，能不能在不重训模型的前提下，用不同采样器切换“快速出图”“稳定复现”“多候选探索”等模式。",
@@ -517,7 +517,7 @@
         "target": "2025-layerdag-diffusion-dag-generation"
       }
     ],
-    "file": "papers/2020-score-sde-score-based-generative-modeling-sde.md",
+    "file": "papers\\2020-score-sde-score-based-generative-modeling-sde.md",
     "note_html": "notes/2020-score-sde-score-based-generative-modeling-sde.html",
     "summary": "Score SDE 是 diffusion 理论线的关键统一论文：它把 DDPM、score matching、Langevin dynamics、随机 SDE 采样和确定性 probability flow ODE 放到同一个连续时间框架里。\n\n正式发表信息：论文 arXiv 版本是 `2011.13456`，正式会议为 **ICLR 2021 Oral**。",
     "research_question": "DDPM、NCSN / score matching、Langevin dynamics 看起来像不同路线：有的讲逐步加噪，有的讲估计 `score = grad_x log p(x)`，有的讲从噪声里用随机动力学采样。Score SDE 关心的问题是：这些方法能不能被统一成同一个连续时间生成建模框架。\n\n对 TOPG 来说，这个问题很关键。我们不只想知道“怎么训练一个去噪网络”，还想知道采样器、随机性、确定性路径、条件引导和概率流之间是什么关系。",
@@ -631,7 +631,7 @@
         "target": "2025-layerdag-diffusion-dag-generation"
       }
     ],
-    "file": "papers/2021-improved-ddpm-improved-denoising-diffusion-probabilistic-models.md",
+    "file": "papers\\2021-improved-ddpm-improved-denoising-diffusion-probabilistic-models.md",
     "note_html": "notes/2021-improved-ddpm-improved-denoising-diffusion-probabilistic-models.html",
     "summary": "Improved DDPM 的核心贡献不是“又发明了一种新的 diffusion”，而是把 DDPM 训练得更稳、更省步、更容易扩展：一方面改进噪声日程，让不同时间步的加噪更符合学习难度分布；另一方面用 timestep importance sampling 让训练更关注 loss 高、最难学的时刻。\n\n正式发表信息：论文 arXiv 版本是 `2102.09672`，正式会议为 **ICML 2021**。",
     "research_question": "原始 DDPM 已经证明 diffusion 可以做出高质量样本，但它的训练和采样设计还有很多空间：噪声日程是不是太粗糙，某些时间步是不是太容易、某些时间步是不是太难，训练是不是把太多预算浪费在低价值时刻上。\n\nImproved DDPM 关心的问题是：如何让 diffusion 的训练目标和时间步分配更合理，从而在不改变整体框架的前提下，提升样本质量、似然和采样效率。",
@@ -742,7 +742,7 @@
         "target": "2020-score-sde-score-based-generative-modeling-sde"
       }
     ],
-    "file": "papers/2021-d3pm-structured-denoising-diffusion-discrete-state-spaces.md",
+    "file": "papers\\2021-d3pm-structured-denoising-diffusion-discrete-state-spaces.md",
     "note_html": "notes/2021-d3pm-structured-denoising-diffusion-discrete-state-spaces.html",
     "summary": "D3PM 是把 continuous diffusion 推进到 discrete category / token state space 的关键论文：它把高斯加噪换成离散状态转移矩阵，把“预测噪声”改成“预测原始 token / category”，从而让 diffusion 可以处理文本 token、离散图节点、边类型等符号对象。\n\n正式发表信息：论文 arXiv 版本是 `2107.03006`，正式会议为 **NeurIPS 2021**。",
     "research_question": "DDPM 的原始形式主要面向连续空间，例如图像像素或连续 latent。可是很多重要生成对象天然是离散的：文本 token、类别标签、离散图节点类型、边类型、mask 状态、任务类型和机器人 skill label。\n\nD3PM 关心的问题是：能不能保留 diffusion 的逐步 corruption / denoising 思想，但把状态空间从连续值改成有限 category / token 集合。\n\n对 TOPG 来说，这正好对应 task graph generation 的基础问题：任务节点、依赖边、资源约束和机器人能力都不是连续像素，而是 typed discrete symbols。",
@@ -831,7 +831,7 @@
     "contrasts": [],
     "published_value": 24259,
     "relations": [],
-    "file": "papers/2021-hierarchical-scene-graph-navigation-gnn.md",
+    "file": "papers\\2021-hierarchical-scene-graph-navigation-gnn.md",
     "note_html": "notes/2021-hierarchical-scene-graph-navigation-gnn.html",
     "summary": "这篇论文的核心价值是：把分层 3D Scene Graph 变成机器人导航策略的显式空间记忆，并通过 GNN 在 action node 上做决策，而不是让策略从 RGB 或局部深度图里自己学出场景结构。",
     "research_question": "机器人导航策略如果只看 raw image、depth 或 2D semantic segmentation，需要自己从低层观测里学出三维结构、拓扑关系、语义关联和历史访问记忆。这个学习负担很重，也不利于泛化到新场景。\n\n论文的问题是：如果机器人已经有一个 3D Dynamic Scene Graph，它能不能直接在这张结构化图上学习导航策略，并利用图中显式的层级信息和访问记忆提升 object search 表现。",
@@ -963,7 +963,7 @@
         "target": "2024-alphafold3-biomolecular-interactions"
       }
     ],
-    "file": "papers/2021-alphafold2-highly-accurate-structure-prediction.md",
+    "file": "papers\\2021-alphafold2-highly-accurate-structure-prediction.md",
     "note_html": "notes/2021-alphafold2-highly-accurate-structure-prediction.html",
     "summary": "AlphaFold2 是 TOPG 架构最重要的前序参考之一：它把蛋白结构预测变成 single representation 和 pair representation 的共同更新问题，并通过 Evoformer、structure module、recycling 和 confidence head 形成端到端结构预测系统。",
     "research_question": "如何从氨基酸序列以及同源序列信息中预测接近实验精度的蛋白质三维结构。\n\n对我们来说，论文真正有价值的问题不是蛋白质本身，而是：复杂结构对象能否通过 token 表示、pair relation 表示和 iterative refinement 被模型化。",
@@ -1061,7 +1061,7 @@
         "target": "2023-combinatorial-optimization-gnn-reasoning"
       }
     ],
-    "file": "papers/2022-learned-subteam-performance-routing.md",
+    "file": "papers\\2022-learned-subteam-performance-routing.md",
     "note_html": "notes/2022-learned-subteam-performance-routing.html",
     "summary": "这篇论文把 GNN 放在高层任务规划和低层 MILP 路由之间：GNN 先估计某个 UAV/UGV 子团队完成某个区域检查任务的耗时，再只把最有希望的分配方案送进低层 MILP 精算，从而避免在推测阶段反复触发昂贵的 MILP。",
     "research_question": "场景中有多个子任务区域，每个区域内部又是一个异构多机器人路由问题。系统需要从总体机器人队伍中，为每个区域划分一个小团队，例如分配几个 UAV 和几个 UGV 去检查某片区域。\n\n难点在于：要判断某个子团队是否适合某个区域，通常需要求解该区域内部的 routing MILP，才能得到精确耗时。如果高层分配阶段枚举很多子团队-区域组合，每个组合都调用 MILP，规划时间会爆炸。\n\n论文把这个问题整体归为 ST-MR-TA-ID：机器人是 single-task，任务需要 multi-robot，分配是 time-extended，并且区域内部路由存在 in-schedule dependencies。它的高层 GNN 估计部分可以看成 ST-MR-IA 式 coalition formation：先估计“哪个子团队适合哪个任务”。",
@@ -1139,7 +1139,7 @@
     "contrasts": [],
     "published_value": 24269,
     "relations": [],
-    "file": "papers/2023-daydreamer-world-models-for-physical-robot-learning.md",
+    "file": "papers\\2023-daydreamer-world-models-for-physical-robot-learning.md",
     "note_html": "notes/2023-daydreamer-world-models-for-physical-robot-learning.html",
     "summary": "DayDreamer 把 Dreamer 式 world model 学习带到真实机器人，强调从少量真实交互中学习行为。",
     "research_question": "机器人能否通过在线真实经验和 world model，在样本效率更高的情况下学习多个物理任务。",
@@ -1245,7 +1245,7 @@
         "target": "2025-layerdag-diffusion-dag-generation"
       }
     ],
-    "file": "papers/2022-classifier-free-diffusion-guidance.md",
+    "file": "papers\\2022-classifier-free-diffusion-guidance.md",
     "note_html": "notes/2022-classifier-free-diffusion-guidance.html",
     "summary": "Classifier-Free Diffusion Guidance 是条件 diffusion 的核心控制方法：它不用额外训练 classifier，而是在同一个模型里同时学习 conditional 和 unconditional denoising，采样时通过 guidance scale 控制生成结果对条件的服从强度。",
     "research_question": "Classifier guidance 可以提高条件生成质量，但需要单独训练一个 classifier，并且在很多任务里 classifier 本身很难定义。论文关心的问题是：能不能只训练一个 diffusion model，就同时获得无条件生成能力和强条件引导能力。\n\n对 TOPG 来说，对应问题是：生成任务图时，如何让模型既能探索多种可行计划，又能在需要时强遵循语言目标、场景事实、机器人能力、技能兼容性和 repair feedback。",
@@ -1332,7 +1332,7 @@
         "target": "2023-daydreamer-world-models-for-physical-robot-learning"
       }
     ],
-    "file": "papers/2023-dreamerv3-world-models.md",
+    "file": "papers\\2023-dreamerv3-world-models.md",
     "note_html": "notes/2023-dreamerv3-world-models.html",
     "summary": "DreamerV3 是 world model RL 的重要基线：先学环境模型，再在想象轨迹中优化行为，并在 Nature 版本中展示了跨多控制域和 Minecraft 长程任务的泛化能力。",
     "research_question": "能否用一个相对统一的模型化 RL 算法，在很多差异很大的控制任务上减少人工调参并保持稳定学习，甚至从零开始完成 Minecraft 挖钻石这类长程稀疏奖励任务。",
@@ -1448,7 +1448,7 @@
         "target": "2023-rt-2-vla"
       }
     ],
-    "file": "papers/2023-diffusion-policy-action-diffusion.md",
+    "file": "papers\\2023-diffusion-policy-action-diffusion.md",
     "note_html": "notes/2023-diffusion-policy-action-diffusion.html",
     "summary": "Diffusion Policy 把机器人策略从“直接回归下一步动作”改成“条件扩散生成一段连续动作轨迹”，是独立于 VLA 语义路线之外的机器人动作生成根路线，也是后续 flow/diffusion action policy 和 WAM 低层动作生成的重要源头。",
     "research_question": "传统 visuomotor imitation learning 常把策略写成确定性回归或简单混合分布：输入图像和机器人状态，直接输出下一步动作。这在机器人操作里会遇到三个问题。第一，同一个视觉状态下可能有多种合理动作，比如从左边绕或从右边绕，均值回归会把多峰动作压成一个不可执行的平均动作。第二，复杂操作需要连续、平滑、高维的动作序列，而不是孤立的一步动作。第三，真实机器人控制需要稳定训练和闭环重规划，不能只生成离线轨迹。\n\n这篇论文的核心问题是：能否把扩散模型的强分布建模能力搬到机器人动作空间，让策略学习的是 action distribution，而不是单点动作回归。",
@@ -1537,7 +1537,7 @@
     "contrasts": [],
     "published_value": 24279,
     "relations": [],
-    "file": "papers/2023-combinatorial-optimization-gnn-reasoning.md",
+    "file": "papers\\2023-combinatorial-optimization-gnn-reasoning.md",
     "note_html": "notes/2023-combinatorial-optimization-gnn-reasoning.html",
     "summary": "这篇 JMLR 综述的核心判断是：GNN 最适合做组合优化和规划求解器里的 heuristic guide，而不是直接替代传统算法独立输出最终方案。",
     "research_question": "组合优化问题普遍存在于路径规划、任务分配、调度、SAT、MIP 和车辆路径等场景中。传统求解器有可行性和最优性保证，但搜索慢；纯神经网络推理快，但很难保证硬约束和最优性。\n\n论文关心的问题是：GNN 应该如何表示组合优化问题，应该输出什么，以及应该用什么学习范式嵌入到真实求解流程中。",
@@ -1665,7 +1665,7 @@
         "target": "2024-alphafold3-biomolecular-interactions"
       }
     ],
-    "file": "papers/2023-rfdiffusion-protein-structure-function.md",
+    "file": "papers\\2023-rfdiffusion-protein-structure-function.md",
     "note_html": "notes/2023-rfdiffusion-protein-structure-function.html",
     "summary": "RFdiffusion 是 “结构先行” 生成范式的关键参考：它不是先生成蛋白序列，而是先用 diffusion 生成满足 motif、拓扑或功能约束的 protein backbone，再把序列设计和实验验证接在后面。",
     "research_question": "蛋白设计不只是预测一个已知序列会折叠成什么结构，还要从功能目标出发设计一个新的结构。传统路线依赖人工 scaffold 搜索、物理采样和大量筛选，难以稳定生成复杂拓扑或功能位点约束下的新结构。\n\nRFdiffusion 关心的问题是：能不能把 RoseTTAFold 学到的结构先验转成 diffusion 生成器，让模型从噪声结构逐步去噪，生成满足条件的新蛋白 backbone。",
@@ -1747,7 +1747,7 @@
     "contrasts": [],
     "published_value": 24282,
     "relations": [],
-    "file": "papers/2023-rt-2-vla.md",
+    "file": "papers\\2023-rt-2-vla.md",
     "note_html": "notes/2023-rt-2-vla.html",
     "summary": "RT-2 把 VLM 的互联网语义知识和机器人轨迹数据共同训练到同一个 token 输出空间里，是 VLA 路线的关键起点。",
     "research_question": "机器人策略能否直接继承大规模视觉语言模型的语义泛化能力，而不是只在机器人数据中学动作映射。",
@@ -1831,7 +1831,7 @@
     "contrasts": [],
     "published_value": 24282,
     "relations": [],
-    "file": "papers/2023-unsupervised-task-graph-generation.md",
+    "file": "papers\\2023-unsupervised-task-graph-generation.md",
     "note_html": "notes/2023-unsupervised-task-graph-generation.html",
     "summary": "这篇论文是 task graph generation 的直接参考：它从多个 instructional video transcripts 中无监督抽取关键步骤，并推断步骤之间的 precondition dependency graph。",
     "research_question": "现实任务通常不是一个单步指令，而是由多个 key steps 和依赖关系组成。例如做 CPR 时，检查安全、确认意识、打开气道、检查呼吸、开始胸外按压之间有明确的先后依赖。\n\n问题是这些知识通常只存在于非结构化文本中，比如 how-to 视频的 ASR 转录、教程说明、操作流程描述。论文要解决的是：如何从这些 noisy transcripts 中生成结构化 task graph。",
@@ -1933,7 +1933,7 @@
         "target": "2023-combinatorial-optimization-gnn-reasoning"
       }
     ],
-    "file": "papers/2023-grid-scene-graph-task-planning.md",
+    "file": "papers\\2023-grid-scene-graph-task-planning.md",
     "note_html": "notes/2023-grid-scene-graph-task-planning.html",
     "summary": "GRID 的核心价值是：把大场景机器人任务规划从“看一张局部图片再问 LLM”改成“把环境表示成 scene graph，再用 instruction-conditioned GNN 选择与任务相关的物体、关系和动作”。",
     "research_question": "LLM 做机器人任务规划时，需要同时理解用户指令和环境语义。直接把图片喂给多模态模型有两个问题：第一，图片观察范围有限，容易看不到全局场景；第二，多模态训练成本高，且模型很大。\n\nGRID 关心的问题是：能不能用更结构化、更轻量的 scene graph 表达大场景信息，让机器人根据自然语言指令逐步分解子任务。",
@@ -2019,7 +2019,7 @@
     "contrasts": [],
     "published_value": 24285,
     "relations": [],
-    "file": "papers/2023-eureka-reward-design-llm.md",
+    "file": "papers\\2023-eureka-reward-design-llm.md",
     "note_html": "notes/2023-eureka-reward-design-llm.html",
     "summary": "Eureka 用 LLM 生成和迭代 reward code，再让 RL 在这些奖励函数下学习技能，是“语言理解 + 优化学习”的典型组合。",
     "research_question": "低层机器人技能往往需要精细 reward，人工设计成本高且难泛化。论文想回答：LLM 能否根据任务描述和环境代码自动写出接近人类专家水平的奖励函数。",
@@ -2118,7 +2118,7 @@
         "target": "2025-lip-llm-dependency-graph-planning"
       }
     ],
-    "file": "papers/2024-smart-llm-pythonic-task-planning.md",
+    "file": "papers\\2024-smart-llm-pythonic-task-planning.md",
     "note_html": "notes/2024-smart-llm-pythonic-task-planning.html",
     "summary": "SMART-LLM 可以暂时归档到 Task Graph 方向，但它不是严格的 task graph 方法：它没有显式 node/edge graph，而是用 Python code 的函数、threading 和 join 隐式存储任务结构、并行关系和执行顺序。",
     "research_question": "多机器人任务规划需要同时解决任务分解、机器人能力匹配、子任务分配和执行顺序。传统方法往往依赖固定规则或特定任务建模，难以处理自然语言里的模糊指令。\n\nSMART-LLM 的想法是：利用 LLM 对自然语言和代码结构的理解能力，把高层任务指令转成 Python 风格的多机器人执行计划。这里的 Python code 不只是输出格式，也承担了任务结构表示的角色。",
@@ -2266,7 +2266,7 @@
         "target": "2025-layerdag-diffusion-dag-generation"
       }
     ],
-    "file": "papers/2024-alphafold3-biomolecular-interactions.md",
+    "file": "papers\\2024-alphafold3-biomolecular-interactions.md",
     "note_html": "notes/2024-alphafold3-biomolecular-interactions.html",
     "summary": "AlphaFold3 是我们做 TOPG 结构生成最值得参考的论文：它不是普通 graph generation，而是把复杂多实体系统统一 token 化，通过 pair representation 与 Pairformer-style trunk 建模关系，再用 diffusion 生成结构并输出 confidence。",
     "research_question": "AlphaFold2 主要解决蛋白结构预测。AlphaFold3 想解决更一般的 biomolecular interactions：蛋白、DNA、RNA、小分子、离子、修饰残基等多类实体组成的复合体结构。\n\n这个问题与 TOPG 的相似点在于：输入实体类型多、关系类型多，输出不是一串文字，而是一个必须满足约束的结构对象。",
@@ -2352,7 +2352,7 @@
     "contrasts": [],
     "published_value": 24297,
     "relations": [],
-    "file": "papers/2024-pyramidal-flow-matching-video.md",
+    "file": "papers\\2024-pyramidal-flow-matching-video.md",
     "note_html": "notes/2024-pyramidal-flow-matching-video.html",
     "summary": "Pyramidal Flow Matching 用多尺度金字塔式 flow matching 降低视频生成训练成本，是 WAM 做未来视频预测时可借鉴的底层生成技术。",
     "research_question": "高分辨率长视频生成需要建模巨大的时空空间，训练成本高。论文关注如何在统一模型中更高效地学习视频生成轨迹。",
@@ -2365,6 +2365,133 @@
     "reusable_module_text": "pyramidal flow matching、efficient video rollout、video world backbone。主要作为 WAM 的底层视频生成能力，而不是 planner 本体。",
     "evidence_risk": "证据来自视频生成质量和效率；风险是没有直接验证机器人控制或多机器人任务规划。",
     "open_question": "如何把视频 flow matching 的多尺度结构扩展到结构化状态图，例如 agent-task-object graph，而不只输出像素级视频。"
+  },
+  {
+    "id": "2024-seadag-semi-autoregressive-diffusion-dag-generation",
+    "title": "SeaDAG: Semi-Autoregressive Diffusion for Conditional Directed Acyclic Graph Generation",
+    "short_title": "SeaDAG",
+    "year": 2024,
+    "published": "2024-10",
+    "venue": "arXiv",
+    "status": "read",
+    "scope": "in_scope",
+    "readiness": "high",
+    "action": "build_note",
+    "tech_paradigm": "semi_autoregressive_diffusion_dag_generation",
+    "primary_domain": "Diffusion",
+    "domains": [
+      "Diffusion",
+      "Graph Generation",
+      "Task Graph",
+      "Planning"
+    ],
+    "primary_technical_layer": "task_graph_generation",
+    "primary_task_family": "conditional_dag_diffusion_generation",
+    "platform": "directed_acyclic_graph_generation",
+    "planning_relevance": "SeaDAG 的关键启发不是要求提前知道完整 task graph，而是让不同 DAG layer 以不同速度去噪，使当前层在决策时既能看见较清晰的历史层，也能参考仍然 noisy 的未来层。对 TOPG 来说，这提供了一种淡化严格逐层 LayerDAG 的方案：先构思粗糙后续 layer，再用它辅助当前 layer 去噪。",
+    "multi_robot_relevance": "多机器人任务规划通常无法提前定义完整任务图，但可以维护一个粗糙的未来任务层草图，包括可能的子任务、资源冲突、协作约束和目标状态。SeaDAG 的半自回归 diffusion 思路可以把这些 future sketch 作为低清晰度条件，让当前任务层生成更少短视。",
+    "system_roles": [
+      "task_graph_generator",
+      "generative_planner",
+      "graph_prior_model",
+      "conditional_dag_generator",
+      "future_sketch_planner"
+    ],
+    "reusable_modules": [
+      "layerwise_denoising_speed",
+      "complete_noisy_graph_state",
+      "local_timestep_mapping",
+      "semi_autoregressive_dag_diffusion",
+      "condition_loss",
+      "graph_property_decoder",
+      "future_layer_sketch_conditioning"
+    ],
+    "evidence_level": "paper_read",
+    "next_action": "design_future_sketch_layer_for_topg",
+    "tags": [
+      "SeaDAG",
+      "Diffusion",
+      "DAG generation",
+      "Task Graph",
+      "semi-autoregressive diffusion",
+      "conditional generation",
+      "future sketch"
+    ],
+    "authors": [
+      "Xinyi Zhou",
+      "Xing Li",
+      "Yingzhao Lian",
+      "Yiwen Wang",
+      "Lei Chen",
+      "Mingxuan Yuan",
+      "Jianye Hao",
+      "Guangyong Chen",
+      "Pheng Ann Heng"
+    ],
+    "institutions": [
+      "The Chinese University of Hong Kong",
+      "Huawei Noah's Ark Lab",
+      "Zhejiang Lab"
+    ],
+    "doi": "",
+    "arxiv": "2410.16119",
+    "url": "https://arxiv.org/abs/2410.16119",
+    "project_url": "",
+    "pdf_path": "pdfs/2024-10-21-SeaDAG-semi-autoregressive-diffusion-dag-generation.pdf",
+    "image_url": "",
+    "zotero_key": "",
+    "citekey": "zhou2024seadag",
+    "cites": [
+      "2020-ddpm-denoising-diffusion-probabilistic-models",
+      "2021-d3pm-structured-denoising-diffusion-discrete-state-spaces"
+    ],
+    "extends": [
+      "2021-d3pm-structured-denoising-diffusion-discrete-state-spaces"
+    ],
+    "uses": [
+      "2020-ddpm-denoising-diffusion-probabilistic-models"
+    ],
+    "enables": [
+      "2025-layerdag-diffusion-dag-generation"
+    ],
+    "complements": [
+      "2025-layerdag-diffusion-dag-generation"
+    ],
+    "contrasts": [
+      "2023-unsupervised-task-graph-generation"
+    ],
+    "published_value": 24297,
+    "relations": [
+      {
+        "type": "extends",
+        "target": "2021-d3pm-structured-denoising-diffusion-discrete-state-spaces"
+      },
+      {
+        "type": "uses",
+        "target": "2020-ddpm-denoising-diffusion-probabilistic-models"
+      },
+      {
+        "type": "enables",
+        "target": "2025-layerdag-diffusion-dag-generation"
+      },
+      {
+        "type": "contrasts",
+        "target": "2023-unsupervised-task-graph-generation"
+      }
+    ],
+    "file": "papers\\2024-seadag-semi-autoregressive-diffusion-dag-generation.md",
+    "note_html": "notes/2024-seadag-semi-autoregressive-diffusion-dag-generation.html",
+    "summary": "SeaDAG 是一篇很适合放在 LayerDAG 旁边读的 DAG diffusion 论文：它不是严格一层一层生成，而是在每个 diffusion step 都维护完整图，只是让不同 layer 以不同速度从 noisy 变 clean，从而模拟 semi-autoregressive generation。\n\n对我们的 task graph 方向，最重要的启发是：即使未来完整任务图不可知，也可以先生成一个粗糙的后续 layer 草图，让当前 layer 的去噪不只依赖过去结构，也能参考低置信度的未来结构。",
+    "research_question": "DAG 生成比一般图生成更难，因为 DAG 有方向性、层级结构和跨层依赖。严格 autoregressive 方法可以按部分生成，但会带来三个问题。\n\n第一，part-by-part generation 会阻断后续层到前面层的信息流。当前层一旦生成完，后续结构很难反过来影响它。\n\n第二，严格 AR 方法直到最后才有完整图视图。对于 conditional DAG generation，这很麻烦，因为很多属性、功能或约束必须在完整图上才能检查。\n\n第三，很多条件图生成方法只在采样时加 guidance，而不是在训练时显式学习 condition。这样容易在图真实性和条件满足之间摇摆。\n\nSeaDAG 的问题是：能不能保留 DAG 层级生成的好处，同时在每个 diffusion step 都保留完整图视图，让全图属性和条件学习可以提前进入训练。",
+    "method": "SeaDAG 的核心是 layer-wise semi-autoregressive diffusion。\n\n它先把 DAG 看成带层级的结构，每个节点有自己的 level。然后在同一个全局 diffusion timestep `t` 下，为不同 layer 分配不同的 local timestep：\n\n```text\ntau_i^t = T(t, l_i)\n```\n\n这里 `l_i` 是节点所在层级，`tau_i^t` 是该节点自己的 local timestep。不同层的 `tau` 不同，就意味着它们处在不同噪声水平。\n\n直觉上：\n\n```text\n完整 noisy graph 一直存在\n不同 layer 去噪速度不同\n较 clean 的 layer 可以给较 noisy 的 layer 提供条件\n```\n\n这和严格 LayerDAG 很不一样。LayerDAG 更像：\n\n```text\n已生成历史层 -> 生成下一层 -> 接回历史图\n```\n\nSeaDAG 更像：\n\n```text\n完整图画布一直存在\n过去层 / 当前层 / 未来层清晰度不同\n消息可以在不同清晰度的 layer 之间流动\n```",
+    "contribution": "- 提出 semi-autoregressive DAG diffusion：所有 layer 同时演化，但以不同速度去噪。\n- 在每个 diffusion step 都维护完整图视图，避免严格 AR 方法直到最后才看到全图。\n- 用 local timestep mapping 把一个全局时间转换成每层自己的噪声水平。\n- 在训练中引入 condition loss，让模型显式学习 graph structure 和 condition/property 的关系。\n- 对 conditional DAG generation 给出一个介于 one-shot graph diffusion 和 strict autoregressive generation 之间的折中方案。",
+    "reading_highlights": "",
+    "limitation": "SeaDAG 默认采样时可以确定一个完整图画布，包括 level 数、每层 node 数和节点 level。论文中会从训练集分布采样这些结构先验，再在这个画布上去噪。\n\n这对电路 DAG 或 junction-tree molecule DAG 是合理的，但对开放世界多机器人任务规划不完全成立。真实 task graph 往往一边感知、一边分解、一边执行，后续 node 可能还没有被发现，资源冲突和失败恢复也会动态改变图结构。\n\n因此 SeaDAG 不能直接等价成“提前知道完整任务图再扩散”。真正可迁移的是它的不同清晰度层级交互机制。",
+    "relation": "DDPM 提供基础去噪生成范式：训练时加噪，推理时逐步去噪。D3PM 把这个思想搬到离散 category/token 状态空间，使节点类型和边类型这类离散对象可以被 diffusion 建模。\n\nLayerDAG 和 SeaDAG 都关注 DAG generation，但二者的生成哲学不同。\n\nLayerDAG 更强调严格 layerwise autoregressive decomposition：已经生成的前缀图决定下一层，天然保证 DAG 方向性。\n\nSeaDAG 更强调 semi-autoregressive global view：完整图一直存在，只是不同 layer 清晰度不同，因此当前层可以参考已经较 clean 的层，也能被 noisy 的后续层影响。\n\n对 TOPG 来说，LayerDAG 适合作为“合法 DAG 生成”的强结构 baseline；SeaDAG 更适合作为“当前层与未来粗草图共同去噪”的灵感来源。",
+    "planning_insight": "用户 note 里的关键点可以整理成一个 TOPG 设计方向：\n\n```text\npast confirmed layers\n  + current layer under denoising\n  + rough future layer sketch\n  -> denoise current task graph layer\n```\n\n也就是说，我们不必强制执行“必须先完整生成第 1 层，再生成第 2 层，再生成第 3 层”的 LayerDAG 思路。对于真实任务规划，模型可以先构思一个粗糙后续 layer：\n\n- 后续可能出现的子任务\n- 可能的资源占用或空间冲突\n- 多机器人协作点\n- 目标状态或验证节点\n- 潜在失败恢复分支\n\n这些未来 layer 不需要是 clean graph，也不需要完全正确。它们可以只是 low-confidence / noisy sketch。当前 layer 在去噪时同时接收：\n\n```text\n已确定历史结构\n当前观测和语言目标\n粗糙未来层草图\n机器人能力和资源状态\n```\n\n这样，当前 layer 的生成会少一些短视。例如当前选择某个子任务顺序时，可以提前感知后续可能出现的资源竞争、协同需求或验证步骤。\n\n这会把 TOPG 从严格逐层扩散放松成：\n\n```text\n局部层逐渐变清晰\n未来层先以低清晰度参与条件\n执行反馈再不断修正后续 sketch\n```",
+    "reusable_module_text": "layerwise denoising speed、complete noisy graph state、local timestep mapping、semi-autoregressive DAG diffusion、condition loss、graph property decoder、future layer sketch conditioning。",
+    "evidence_risk": "证据来自 SeaDAG 论文对 conditional DAG generation 的实验，包括 AIG circuit generation from truth tables 和 molecule generation based on quantum properties。论文报告 semi-autoregressive diffusion 能更好平衡图真实性与条件满足。\n\n风险是 SeaDAG 的实验对象不是机器人任务规划，且依赖可预设的 DAG level/node canvas。迁移到 TOPG 时，不能假设完整 future task graph 已知；应该把 future layer 当成可修正的 latent sketch，而不是硬约束。",
+    "open_question": "TOPG 里的 future sketch 应该如何产生：由 LLM 先草拟、由 denoiser 自回归预测、由 world model rollout 给出，还是由执行反馈不断维护。\n\nfuture sketch 应该参与哪些变量的去噪：task node、dependency edge、allocation hint、resource conflict edge、time window，还是 failure recovery branch。\n\n如果未来 sketch 是错的，模型应该如何降低它的权重，避免当前 layer 被错误未来牵着走。"
   },
   {
     "id": "2024-pi0-vla-flow-model",
@@ -2443,7 +2570,7 @@
         "target": "2023-rt-2-vla"
       }
     ],
-    "file": "papers/2024-pi0-vla-flow-model.md",
+    "file": "papers\\2024-pi0-vla-flow-model.md",
     "note_html": "notes/2024-pi0-vla-flow-model.html",
     "summary": "π0 的核心是把预训练 VLM 和 flow matching 动作头结合起来，面向跨平台、长程、灵巧操作学习连续动作策略。",
     "research_question": "通用机器人策略如何同时继承互联网语义知识，并在多种机器人平台和复杂真实任务上输出稳定动作。",
@@ -2535,7 +2662,7 @@
         "target": "2024-pi0-vla-flow-model"
       }
     ],
-    "file": "papers/2025-fast-action-tokenization-vla.md",
+    "file": "papers\\2025-fast-action-tokenization-vla.md",
     "note_html": "notes/2025-fast-action-tokenization-vla.html",
     "summary": "FAST 用频域压缩方式对机器人动作序列做 tokenization，让自回归 VLA 能更好处理高频、灵巧、连续控制数据。",
     "research_question": "朴素逐维、逐时间步动作离散化会让高频动作 token 信息量低、序列长、训练困难。论文想解决 VLA 动作 token 表示效率问题。",
@@ -2638,7 +2765,7 @@
         "target": "2025-magnnet-decentralized-task-allocation"
       }
     ],
-    "file": "papers/2025-lip-llm-dependency-graph-planning.md",
+    "file": "papers\\2025-lip-llm-dependency-graph-planning.md",
     "note_html": "notes/2025-lip-llm-dependency-graph-planning.html",
     "summary": "LiP-LLM 是一篇很适合放在 Task Graph 方向的论文：它让 LLM 生成多机器人任务中的 skill list 和 skill dependency graph，再用线性规划/MILP 风格的优化器完成机器人-任务分配。",
     "research_question": "LLM 可以理解自然语言任务并拆解步骤，但如果让 LLM 同时负责任务分解、依赖判断和机器人分配，会有两个问题：一是 hallucination，二是 allocation 这类组合优化问题并不适合完全交给 LLM。\n\nLiP-LLM 的思路是把这两部分拆开：LLM 负责更语义化的部分，也就是从指令中选出需要的 skills，并判断 skills 之间的前后依赖；优化器负责更结构化的分配问题，也就是当前哪些任务可执行、每个机器人更适合执行哪个任务。",
@@ -2745,7 +2872,7 @@
         "target": "2025-lip-llm-dependency-graph-planning"
       }
     ],
-    "file": "papers/2025-dart-llm-dependency-aware-task-graph.md",
+    "file": "papers\\2025-dart-llm-dependency-aware-task-graph.md",
     "note_html": "notes/2025-dart-llm-dependency-aware-task-graph.html",
     "summary": "DART-LLM 是 Task Graph 方向非常直接的一篇：它让 LLM 从自然语言任务中输出结构化 subtasks 和 dependencies，然后用规则模块把 dependencies 转成 DAG，并按拓扑顺序调度多机器人执行。",
     "research_question": "施工机器人任务往往有严格的前后依赖。例如运输车必须等挖掘机完成装载后才能离开，否则任务失败。SMART-LLM 这类方法用 Python code 隐式表达任务结构，但没有显式处理依赖关系，复杂任务下容易因为顺序错误而失败。\n\nDART-LLM 要解决的是：如何把自然语言施工任务拆成可执行 atomic skills，同时显式表达 subtasks 之间的依赖，使多机器人系统可以并行执行无依赖任务，并等待有前置条件的任务。",
@@ -2828,7 +2955,7 @@
     "contrasts": [],
     "published_value": 24302,
     "relations": [],
-    "file": "papers/2025-heterogeneous-mrta-rl.md",
+    "file": "papers\\2025-heterogeneous-mrta-rl.md",
     "note_html": "notes/2025-heterogeneous-mrta-rl.html",
     "summary": "这篇论文用 RL 学习异构多机器人任务分配和调度策略，让机器人根据任务能力需求动态组队，并减少等待和总完成时间。",
     "research_question": "异构机器人任务往往要求多个具备不同能力的机器人同时到达同一任务点。如何在任务依赖、能力约束和等待成本下快速分配任务。",
@@ -2913,6 +3040,9 @@
       "2025-dart-llm-dependency-aware-task-graph",
       "2025-lip-llm-dependency-graph-planning"
     ],
+    "complements": [
+      "2024-seadag-semi-autoregressive-diffusion-dag-generation"
+    ],
     "contrasts": [
       "2023-unsupervised-task-graph-generation"
     ],
@@ -2931,7 +3061,7 @@
         "target": "2023-unsupervised-task-graph-generation"
       }
     ],
-    "file": "papers/2025-layerdag-diffusion-dag-generation.md",
+    "file": "papers\\2025-layerdag-diffusion-dag-generation.md",
     "note_html": "notes/2025-layerdag-diffusion-dag-generation.html",
     "summary": "LayerDAG 是目前我们看到的、最接近“用 diffusion 生成 task graph”的方法论文：它不是机器人论文，但它直接研究如何生成有效 DAG，并且通过 layerwise autoregressive generation 保证方向性和无环结构。",
     "research_question": "DAG 广泛用于计算图、编译器 flow graph、硬件设计、项目依赖和任务依赖。普通 graph generation 方法往往不显式处理 DAG 的方向性和 partial order；纯 diffusion 一次性生成整张图，也不天然保证无环。\n\nLayerDAG 的核心问题是：如何生成具有强方向依赖和逻辑规则的大规模 DAG，同时保留生成模型的表达能力和泛化能力。",
@@ -3032,7 +3162,7 @@
         "target": "2025-fast-action-tokenization-vla"
       }
     ],
-    "file": "papers/2025-pi05-open-world-generalization.md",
+    "file": "papers\\2025-pi05-open-world-generalization.md",
     "note_html": "notes/2025-pi05-open-world-generalization.html",
     "summary": "π0.5 关注开放世界泛化，把多任务、网页数据、目标检测、语义子任务预测和 FAST/π0 训练路线合并到 VLA 训练中。",
     "research_question": "VLA 能否在训练环境之外的真实家庭中完成长程灵巧任务，而不是只在实验室桌面任务上泛化。",
@@ -3117,7 +3247,7 @@
     "contrasts": [],
     "published_value": 24305,
     "relations": [],
-    "file": "papers/2025-gmatann-heterogeneous-task-allocation.md",
+    "file": "papers\\2025-gmatann-heterogeneous-task-allocation.md",
     "note_html": "notes/2025-gmatann-heterogeneous-task-allocation.html",
     "summary": "GMATANN 是一篇典型的“GNN 负责表征提取 + RL 负责最终决策”的异构多智能体任务分配论文：它把机器人和任务建成 task-agent graph，用全局-局部注意力提取大局状态，再让强化学习输出具体分配动作。",
     "research_question": "异构多智能体系统中的任务分配不是简单的分类问题。机器人有不同速度、机动性、电量、通信范围和能力；任务有不同类型、紧急程度、空间位置、先后依赖和资源需求。传统启发式或扁平神经网络很难同时表达 task-agent 匹配、task-task 依赖和 agent-agent 协作关系。\n\n论文的问题可以概括为：如何把复杂多智能体任务分配建成图，并学习一个能感知局部匹配和全局态势的分配策略。",
@@ -3218,7 +3348,7 @@
         "target": "2023-combinatorial-optimization-gnn-reasoning"
       }
     ],
-    "file": "papers/2025-magnnet-decentralized-task-allocation.md",
+    "file": "papers\\2025-magnnet-decentralized-task-allocation.md",
     "note_html": "notes/2025-magnnet-decentralized-task-allocation.html",
     "summary": "MAGNNET 是一个“GNN 做关系编码 + PPO 做分布式决策”的异构 UAV/UGV 任务分配框架：每个 agent 根据本地状态、到任务的代价和 GNN 聚合到的邻域/任务关系，决定是否请求某个任务。",
     "research_question": "论文解决的是通信受限、动态任务场景里的去中心化任务分配。集中式 Hungarian 方法可以给较优分配，但需要所有 agent 状态持续上传到中心节点；去中心化 greedy 方法更快但容易冲突，多个 agent 可能同时抢同一个任务，或者一些任务没人接。\n\nMAGNNET 想在两者之间取平衡：训练时使用全局 critic 做 centralized training，执行时每个 agent 只用本地 observation 和 GNN message passing 做 decentralized execution。",
@@ -3317,7 +3447,7 @@
         "target": "2024-pi0-vla-flow-model"
       }
     ],
-    "file": "papers/2025-pistar06-recap.md",
+    "file": "papers\\2025-pistar06-recap.md",
     "note_html": "notes/2025-pistar06-recap.html",
     "summary": "π*0.6 的重点不是再做一个 VLA，而是让 VLA 从真实执行失败、人工纠错和自主经验中继续改进。",
     "research_question": "仅靠示范学习的 VLA 遇到分布外状态容易失败，如何让它利用自己的失败轨迹学习恢复策略。",
@@ -3406,7 +3536,7 @@
         "target": "2024-pi0-vla-flow-model"
       }
     ],
-    "file": "papers/2025-pi06-model-card.md",
+    "file": "papers\\2025-pi06-model-card.md",
     "note_html": "notes/2025-pi06-model-card.html",
     "summary": "π0.6 是 π0.5 后续的部署型模型迭代，保留高层子任务预测和低层动作生成的层级设计，并改进骨干、提示和训练数据。",
     "research_question": "在真实长程任务中，VLA 如何进一步提升鲁棒性、减少失败并适配更多部署场景。",
@@ -3495,7 +3625,7 @@
     "contrasts": [],
     "published_value": 24312,
     "relations": [],
-    "file": "papers/2026-genswarm-multi-robot-code-policy.md",
+    "file": "papers\\2026-genswarm-multi-robot-code-policy.md",
     "note_html": "notes/2026-genswarm-multi-robot-code-policy.html",
     "summary": "GenSwarm 用多 LLM agent 把自然语言任务转成多机器人代码策略，并自动部署到仿真和真实机器人，是“自然语言到多机器人执行”的强相关系统。",
     "research_question": "多机器人系统开发通常需要任务分析、算法设计、代码实现、仿真验证和真实部署。论文想降低这条链路的人工成本，并支持新任务快速适配。",
@@ -3623,7 +3753,7 @@
         "target": "2023-rt-2-vla"
       }
     ],
-    "file": "papers/2026-world-action-models-zero-shot-policies.md",
+    "file": "papers\\2026-world-action-models-zero-shot-policies.md",
     "note_html": "notes/2026-world-action-models-zero-shot-policies.html",
     "summary": "World Action Model 的关键转向是：不只从视觉语言直接输出动作，而是联合预测未来视频世界状态和动作，用世界演化本身支持零样本策略。",
     "research_question": "VLA 语义泛化强，但对未见物理运动和新环境动作泛化弱。能否用预训练视频扩散模型学习物理动态，从而成为零样本策略。",
@@ -3734,7 +3864,7 @@
         "target": "2025-pi05-open-world-generalization"
       }
     ],
-    "file": "papers/2026-lap-language-action-pretraining.md",
+    "file": "papers\\2026-lap-language-action-pretraining.md",
     "note_html": "notes/2026-lap-language-action-pretraining.html",
     "summary": "LAP 的核心是把机器人低层连续动作块转换成自然语言动作，让 VLM 像生成文本一样生成动作命令；它不是新增一个复杂 action head，而是把 action supervision 对齐到 VLM 原本擅长的离散语言输出空间，从而提升零样本跨具身迁移。",
     "research_question": "现有 VLA 即使做了多具身预训练，动作表示仍然容易和训练时的机器人身体强耦合。π0 / π0.5 通过 flow action expert 或异构数据提升泛化，但在新机器人身体上仍可能需要适配。LAP 追问：如果把连续控制动作先翻译成自然语言动作，VLM 是否能学到更 embodiment-agnostic 的控制表示？",
@@ -3840,7 +3970,7 @@
         "target": "2025-pi05-open-world-generalization"
       }
     ],
-    "file": "papers/2026-fast-wam-test-time-future-imagination.md",
+    "file": "papers\\2026-fast-wam-test-time-future-imagination.md",
     "note_html": "notes/2026-fast-wam-test-time-future-imagination.html",
     "summary": "Fast-WAM 的核心结论是：WAM 的主要收益可能来自训练期的视频协同建模，而不是测试时显式生成未来画面；因此测试时可以跳过 future imagination，直接用当前真实观测生成动作，并显著降低推理延迟。",
     "research_question": "DreamZero 代表的 WAM 路线把未来视频预测和动作生成绑在一起，默认认为机器人需要先“想象未来画面”再执行动作。但这一步会带来扩散去噪和视频生成的推理开销。Fast-WAM 直接追问：预测未来画面这一步真的有必要吗？还是说，视频预测的价值主要发生在训练期，用来塑造更好的 world representation？",
@@ -3958,7 +4088,7 @@
         "target": "2024-pi0-vla-flow-model"
       }
     ],
-    "file": "papers/2026-mem-multi-scale-embodied-memory.md",
+    "file": "papers\\2026-mem-multi-scale-embodied-memory.md",
     "note_html": "notes/2026-mem-multi-scale-embodied-memory.html",
     "summary": "MEM 给 VLA 加入多尺度记忆：短期用视频编码处理遮挡和近期动作，长期用文本摘要记住任务进展，从而支持十几分钟级长程操作。",
     "research_question": "长程真实任务要求机器人记住已经完成的步骤、对象状态和近期遮挡信息。简单堆叠历史图像会让上下文过长、推理成本过高。",
@@ -4067,7 +4197,7 @@
         "target": "2023-dreamerv3-world-models"
       }
     ],
-    "file": "papers/2026-psibot-from-human-skill-to-robotic-mastery.md",
+    "file": "papers\\2026-psibot-from-human-skill-to-robotic-mastery.md",
     "note_html": "notes/2026-psibot-from-human-skill-to-robotic-mastery.html",
     "summary": "这篇技术博客把 PsiBot 的 Psi-R2 / Psi-W0 路线讲得非常清楚：Psi-R2 是基于视频生成骨干的 WAM/VLA 策略模型，联合预测未来视频和机器人动作；Psi-W0 是动作条件世界模型，用来建模反事实失败、做策略评估、在人类数据到机器人数据的转换过程中执行 world-model 内强化学习。",
     "research_question": "具身智能缺少像互联网文本或自动驾驶日志那样自然沉淀的大规模数据。人类日常和工业操作数据规模巨大，但直接迁移到机器人存在 embodiment gap：人手和机械手的关节、摩擦、动力学和接触规律都不同。博客要回答的是：如何把近 10 万小时人类操作数据真正变成可训练、可评估、可回流的机器人策略数据。",
@@ -4169,7 +4299,7 @@
         "target": "2026-genswarm-multi-robot-code-policy"
       }
     ],
-    "file": "papers/2026-foundation-models-robot-swarms.md",
+    "file": "papers\\2026-foundation-models-robot-swarms.md",
     "note_html": "notes/2026-foundation-models-robot-swarms.html",
     "summary": "这篇 Science Robotics Viewpoint 把 foundation models 用于 robot swarms 的未来路线分成两类角色：FM as swarm designer 负责生成控制器、任务规划和代码；FM as swarm operator 负责把传感器、通信和人类指令转成机器人之间的协作决策。",
     "research_question": "机器人集群的难点不是单个机器人是否聪明，而是大量简单机器人如何通过局部通信和去中心化控制产生可靠的群体行为。传统 swarm controller 往往需要专家提前写好协议和控制逻辑，面对灾害搜救、环境监测、未知地形这类开放场景时很难实时适配。\n\n论文的问题是：foundation models 能否把 robot swarms 从“预先写死控制器”推进到“可以根据自然语言、图像、示意图、传感器和任务反馈动态设计与操作集群”的系统。",
@@ -4289,7 +4419,7 @@
         "target": "2024-pi0-vla-flow-model"
       }
     ],
-    "file": "papers/2026-pi07-steerable-generalist-robotic-foundation-model.md",
+    "file": "papers\\2026-pi07-steerable-generalist-robotic-foundation-model.md",
     "note_html": "notes/2026-pi07-steerable-generalist-robotic-foundation-model.html",
     "summary": "π0.7 把 PI 系列推进到“可 steer 的通用机器人基础模型”，重点是用更丰富的上下文条件支持组合泛化和策略选择。",
     "research_question": "当训练数据包含多种策略和质量差异时，通用 VLA 如何避免平均化，并根据任务上下文选择正确执行方式。",

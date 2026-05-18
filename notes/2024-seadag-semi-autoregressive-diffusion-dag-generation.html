@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="robots" content="noindex,nofollow,noarchive">
-  <title>D3PM · Paper Note</title>
+  <title>SeaDAG · Paper Note</title>
   <style>
     :root {
       --bg: #eef4fb;
@@ -434,16 +434,16 @@
   <main class="note-shell" id="top">
     <section class="note-hero">
       <div class="hero-main">
-        <div class="note-kicker">2021-07 · NeurIPS 2021 · discrete_denoising_diffusion</div>
-        <h1>D3PM</h1>
-        <div class="full-title">Structured Denoising Diffusion Models in Discrete State-Spaces</div>
-        <div class="note-summary"><p>D3PM 是把 continuous diffusion 推进到 discrete category / token state space 的关键论文：它把高斯加噪换成离散状态转移矩阵，把“预测噪声”改成“预测原始 token / category”，从而让 diffusion 可以处理文本 token、离散图节点、边类型等符号对象。</p>
-<p>正式发表信息：论文 arXiv 版本是 <code>2107.03006</code>，正式会议为 <strong>NeurIPS 2021</strong>。</p></div>
+        <div class="note-kicker">2024-10 · arXiv · semi_autoregressive_diffusion_dag_generation</div>
+        <h1>SeaDAG</h1>
+        <div class="full-title">SeaDAG: Semi-Autoregressive Diffusion for Conditional Directed Acyclic Graph Generation</div>
+        <div class="note-summary"><p>SeaDAG 是一篇很适合放在 LayerDAG 旁边读的 DAG diffusion 论文：它不是严格一层一层生成，而是在每个 diffusion step 都维护完整图，只是让不同 layer 以不同速度从 noisy 变 clean，从而模拟 semi-autoregressive generation。</p>
+<p>对我们的 task graph 方向，最重要的启发是：即使未来完整任务图不可知，也可以先生成一个粗糙的后续 layer 草图，让当前 layer 的去噪不只依赖过去结构，也能参考低置信度的未来结构。</p></div>
       </div>
       <aside class="hero-side">
         <div class="metric-grid">
           <div class="metric">
-            <div class="metric-value">2021</div>
+            <div class="metric-value">2024</div>
             <div class="metric-label">Year</div>
           </div>
           <div class="metric">
@@ -455,19 +455,19 @@
             <div class="metric-label">Evidence</div>
           </div>
           <div class="metric">
-            <div class="metric-value">3</div>
+            <div class="metric-value">4</div>
             <div class="metric-label">Relations</div>
           </div>
         </div>
         <div>
           <div class="note-section-kicker">Authors</div>
-          <div>Jacob Austin, Daniel D. Johnson, Jonathan Ho, Daniel Tarlow, Rianne van den Berg</div>
+          <div>Xinyi Zhou, Xing Li, Yingzhao Lian, Yiwen Wang, Lei Chen, Mingxuan Yuan, Jianye Hao, Guangyong Chen, Pheng Ann Heng</div>
         </div>
         <div>
           <div class="note-section-kicker">Institutions</div>
-          <div>Google Research · Brain Team</div>
+          <div>The Chinese University of Hong Kong · Huawei Noah&#39;s Ark Lab · Zhejiang Lab</div>
         </div>
-        <div class="note-link-row"><a href="../pdfs/2021-07-01-D3PM-structured-denoising-diffusion-discrete-state-spaces.pdf" target="_blank" rel="noreferrer">PDF</a><a href="https://proceedings.neurips.cc/paper/2021/hash/958c530554f78bcd8e97125b70e6973d-Abstract.html" target="_blank" rel="noreferrer">Paper</a><a href="https://doi.org/10.48550/arXiv.2107.03006" target="_blank" rel="noreferrer">DOI</a><a href="https://arxiv.org/abs/2107.03006" target="_blank" rel="noreferrer">arXiv</a></div>
+        <div class="note-link-row"><a href="../pdfs/2024-10-21-SeaDAG-semi-autoregressive-diffusion-dag-generation.pdf" target="_blank" rel="noreferrer">PDF</a><a href="https://arxiv.org/abs/2410.16119" target="_blank" rel="noreferrer">Paper</a><a href="https://arxiv.org/abs/2410.16119" target="_blank" rel="noreferrer">arXiv</a></div>
       </aside>
     </section>
 
@@ -476,66 +476,68 @@
 
     <section class="note-section impact">
       <div class="note-section-kicker">For Our Model</div>
-      <div class="note-section-body"><p>TOPG 可以先把任务规划图拆成离散 token 空间：</p>
-<p>```text<br>task node type<br>skill requirement<br>agent capability<br>location / object token<br>dependency edge type<br>resource constraint type<br>execution status token<br>```</p>
-<p>然后用 D3PM 式前向过程 corrupt 这些 token：</p>
-<p>```text<br>clean task graph tokens<br>-&gt; Q_t transition / mask / random category<br>-&gt; noisy task graph tokens<br>-&gt; predict p_theta(x_0 | x_t, language, scene, agents)<br>-&gt; posterior step to x_{t-1}<br>-&gt; valid task graph<br>```</p>
-<p>这里最关键的是 <code>Q_t</code> 不能随便设。TOPG 可以为不同对象设计不同 transition matrix：task type 可以往语义近邻转，edge type 可以先转 mask，再转 random；agent allocation 可以按 capability-compatible categories 做转移。</p></div>
+      <div class="note-section-body"><p>用户 note 里的关键点可以整理成一个 TOPG 设计方向：</p>
+<p>```text<br>past confirmed layers<br>+ current layer under denoising<br>+ rough future layer sketch<br>-&gt; denoise current task graph layer<br>```</p>
+<p>也就是说，我们不必强制执行“必须先完整生成第 1 层，再生成第 2 层，再生成第 3 层”的 LayerDAG 思路。对于真实任务规划，模型可以先构思一个粗糙后续 layer：</p>
+<ul><li>后续可能出现的子任务</li><li>可能的资源占用或空间冲突</li><li>多机器人协作点</li><li>目标状态或验证节点</li><li>潜在失败恢复分支</li></ul>
+<p>这些未来 layer 不需要是 clean graph，也不需要完全正确。它们可以只是 low-confidence / noisy sketch。当前 layer 在去噪时同时接收：</p>
+<p>```text<br>已确定历史结构<br>当前观测和语言目标<br>粗糙未来层草图<br>机器人能力和资源状态<br>```</p>
+<p>这样，当前 layer 的生成会少一些短视。例如当前选择某个子任务顺序时，可以提前感知后续可能出现的资源竞争、协同需求或验证步骤。</p>
+<p>这会把 TOPG 从严格逐层扩散放松成：</p>
+<p>```text<br>局部层逐渐变清晰<br>未来层先以低清晰度参与条件<br>执行反馈再不断修正后续 sketch<br>```</p></div>
     </section>
 
 
     <section class="note-section ">
       <div class="note-section-kicker">Research Question</div>
-      <div class="note-section-body"><p>DDPM 的原始形式主要面向连续空间，例如图像像素或连续 latent。可是很多重要生成对象天然是离散的：文本 token、类别标签、离散图节点类型、边类型、mask 状态、任务类型和机器人 skill label。</p>
-<p>D3PM 关心的问题是：能不能保留 diffusion 的逐步 corruption / denoising 思想，但把状态空间从连续值改成有限 category / token 集合。</p>
-<p>对 TOPG 来说，这正好对应 task graph generation 的基础问题：任务节点、依赖边、资源约束和机器人能力都不是连续像素，而是 typed discrete symbols。</p></div>
+      <div class="note-section-body"><p>DAG 生成比一般图生成更难，因为 DAG 有方向性、层级结构和跨层依赖。严格 autoregressive 方法可以按部分生成，但会带来三个问题。</p>
+<p>第一，part-by-part generation 会阻断后续层到前面层的信息流。当前层一旦生成完，后续结构很难反过来影响它。</p>
+<p>第二，严格 AR 方法直到最后才有完整图视图。对于 conditional DAG generation，这很麻烦，因为很多属性、功能或约束必须在完整图上才能检查。</p>
+<p>第三，很多条件图生成方法只在采样时加 guidance，而不是在训练时显式学习 condition。这样容易在图真实性和条件满足之间摇摆。</p>
+<p>SeaDAG 的问题是：能不能保留 DAG 层级生成的好处，同时在每个 diffusion step 都保留完整图视图，让全图属性和条件学习可以提前进入训练。</p></div>
     </section>
 
 
     <section class="note-section ">
       <div class="note-section-kicker">Method</div>
-      <div class="note-section-body"><p>D3PM 需要先定义原始的离散 category / token 空间。也就是说，模型不是在连续实数上加噪，而是先约定：</p>
-<p>```text<br>x_0 in {1, 2, ..., K}<br>```</p>
-<p>这里的 <code>K</code> 可以是词表大小、类别数，也可以迁移成 TOPG 里的 task type、edge type、skill token、location bucket 或 graph slot state。</p>
-<p>前向过程用状态转移矩阵 <code>Q_t</code> 进行离散 corruption：</p>
-<p>```text<br>q(x_t | x_{t-1}) = Cat(x_t; p = x_{t-1} Q_t)<br>```</p>
-<p>如果把 token 写成 one-hot 向量，<code>Q_t</code> 就定义了一个 category 在第 <code>t</code> 步会以什么概率变成另一个 category。连续 DDPM 里是“加高斯噪声”，D3PM 里是“按矩阵转移到别的 token / mask / uniform category”。</p>
-<p>多步前向过程可以合并成累积转移矩阵：</p>
-<p>```text<br>q(x_t | x_0) = Cat(x_t; p = x_0 \bar{Q}_t)<br>```</p>
-<p>其中：</p>
-<p>```text<br>\bar{Q}_t = Q_1 Q_2 ... Q_t<br>```</p>
-<p>反向过程的关键不是直接凭空猜 <code>x_{t-1}</code>，而是先预测当前 <code>x_t</code> 更像哪个原始 <code>x_0</code>。模型输出：</p>
-<p>```text<br>p_theta(x_0 | x_t)<br>```</p>
-<p>然后把这个预测和离散后验结合，得到反向一步：</p>
-<p>```text<br>p_theta(x_{t-1} | x_t)<br>= sum_{x_0} q(x_{t-1} | x_t, x_0) p_theta(x_0 | x_t)<br>```</p>
-<p>直觉上就是：先问“这个被污染的 token 最可能来自哪个干净 token”，再根据前向矩阵推导出的后验，决定上一时刻 <code>x_{t-1}</code> 应该是什么。</p></div>
+      <div class="note-section-body"><p>SeaDAG 的核心是 layer-wise semi-autoregressive diffusion。</p>
+<p>它先把 DAG 看成带层级的结构，每个节点有自己的 level。然后在同一个全局 diffusion timestep <code>t</code> 下，为不同 layer 分配不同的 local timestep：</p>
+<p>```text<br>tau_i^t = T(t, l_i)<br>```</p>
+<p>这里 <code>l_i</code> 是节点所在层级，<code>tau_i^t</code> 是该节点自己的 local timestep。不同层的 <code>tau</code> 不同，就意味着它们处在不同噪声水平。</p>
+<p>直觉上：</p>
+<p>```text<br>完整 noisy graph 一直存在<br>不同 layer 去噪速度不同<br>较 clean 的 layer 可以给较 noisy 的 layer 提供条件<br>```</p>
+<p>这和严格 LayerDAG 很不一样。LayerDAG 更像：</p>
+<p>```text<br>已生成历史层 -&gt; 生成下一层 -&gt; 接回历史图<br>```</p>
+<p>SeaDAG 更像：</p>
+<p>```text<br>完整图画布一直存在<br>过去层 / 当前层 / 未来层清晰度不同<br>消息可以在不同清晰度的 layer 之间流动<br>```</p></div>
     </section>
 
 
     <section class="note-section ">
       <div class="note-section-kicker">Key Contributions</div>
-      <div class="note-section-body"><ul><li>把 DDPM 的连续加噪过程推广到有限离散状态空间。</li><li>用状态转移矩阵 <code>Q_t</code> 表示 forward corruption，使 token/category 的噪声过程可设计、可解释。</li><li>支持多种 corruption kernel，例如 uniform transition、absorbing / mask state transition、nearest-neighbor-like transition。</li><li>采用 <code>x_0</code> prediction parameterization：先预测干净 token 分布，再通过离散后验得到 <code>x_{t-1}</code>。</li><li>为后续文本 diffusion、离散 graph diffusion、LayerDAG 这类离散结构生成提供基础。</li></ul></div>
+      <div class="note-section-body"><ul><li>提出 semi-autoregressive DAG diffusion：所有 layer 同时演化，但以不同速度去噪。</li><li>在每个 diffusion step 都维护完整图视图，避免严格 AR 方法直到最后才看到全图。</li><li>用 local timestep mapping 把一个全局时间转换成每层自己的噪声水平。</li><li>在训练中引入 condition loss，让模型显式学习 graph structure 和 condition/property 的关系。</li><li>对 conditional DAG generation 给出一个介于 one-shot graph diffusion 和 strict autoregressive generation 之间的折中方案。</li></ul></div>
     </section>
 
 
 
     <section class="note-section risk">
       <div class="note-section-kicker">Limitations</div>
-      <div class="note-section-body"><p>D3PM 本身不是 graph planning 论文，也不直接处理 DAG constraint、任务依赖合法性、资源约束或多机器人执行反馈。它主要解决“离散状态怎么 diffusion”的底层建模问题。</p>
-<p>如果直接把每个 task graph slot 当成独立 token，会丢失图结构约束；如果把 edge type 也做 token diffusion，则还需要额外保证 DAG、连通性、前置依赖和执行可行性。</p></div>
+      <div class="note-section-body"><p>SeaDAG 默认采样时可以确定一个完整图画布，包括 level 数、每层 node 数和节点 level。论文中会从训练集分布采样这些结构先验，再在这个画布上去噪。</p>
+<p>这对电路 DAG 或 junction-tree molecule DAG 是合理的，但对开放世界多机器人任务规划不完全成立。真实 task graph 往往一边感知、一边分解、一边执行，后续 node 可能还没有被发现，资源冲突和失败恢复也会动态改变图结构。</p>
+<p>因此 SeaDAG 不能直接等价成“提前知道完整任务图再扩散”。真正可迁移的是它的不同清晰度层级交互机制。</p></div>
     </section>
 
 
     <section class="note-section ">
       <div class="note-section-kicker">Reusable Modules</div>
-      <div class="note-section-body"><p>categorical state space、transition matrix forward process、discrete corruption kernel、<code>x_0</code> prediction parameterization、posterior reverse kernel、absorbing state diffusion。</p></div>
+      <div class="note-section-body"><p>layerwise denoising speed、complete noisy graph state、local timestep mapping、semi-autoregressive DAG diffusion、condition loss、graph property decoder、future layer sketch conditioning。</p></div>
     </section>
 
 
     <section class="note-section risk">
       <div class="note-section-kicker">Evidence &amp; Risk</div>
-      <div class="note-section-body"><p>证据来自 NeurIPS 2021 正式发表论文和 arXiv <code>2107.03006</code>。PDF 已保存为本地 arXiv 版本：<code>pdfs/2021-07-01-D3PM-structured-denoising-diffusion-discrete-state-spaces.pdf</code>。</p>
-<p>风险在于：D3PM 解决的是单个或序列离散 token 的扩散机制。task graph generation 还需要结构层约束，例如节点数量、边合法性、DAG acyclicity、并行层、资源互斥和执行状态一致性。D3PM 是底层 token diffusion，不是完整 graph planner。</p></div>
+      <div class="note-section-body"><p>证据来自 SeaDAG 论文对 conditional DAG generation 的实验，包括 AIG circuit generation from truth tables 和 molecule generation based on quantum properties。论文报告 semi-autoregressive diffusion 能更好平衡图真实性与条件满足。</p>
+<p>风险是 SeaDAG 的实验对象不是机器人任务规划，且依赖可预设的 DAG level/node canvas。迁移到 TOPG 时，不能假设完整 future task graph 已知；应该把 future layer 当成可修正的 latent sketch，而不是硬约束。</p></div>
     </section>
 
         <div id="relations">
@@ -545,8 +547,13 @@
         <div>
           <h3>当前论文 -> 关联论文 / 前序工作</h3>
           <div class="relation-chip-grid">
-            <a class="relation-chip" style="--rel:#246bfe" href="../notes/2020-ddpm-denoising-diffusion-probabilistic-models.html">
+            <a class="relation-chip" style="--rel:#246bfe" href="../notes/2021-d3pm-structured-denoising-diffusion-discrete-state-spaces.html">
               <span>继承/扩展</span>
+              <strong>D3PM</strong>
+            </a>
+
+            <a class="relation-chip" style="--rel:#00a7c7" href="../notes/2020-ddpm-denoising-diffusion-probabilistic-models.html">
+              <span>使用/依赖</span>
               <strong>DDPM</strong>
             </a>
 
@@ -555,20 +562,15 @@
               <strong>LayerDAG</strong>
             </a>
 
-            <a class="relation-chip" style="--rel:#4b6f96" href="../notes/2020-score-sde-score-based-generative-modeling-sde.html">
-              <span>引用/背景</span>
-              <strong>Score SDE</strong>
+            <a class="relation-chip" style="--rel:#d14d72" href="../notes/2023-unsupervised-task-graph-generation.html">
+              <span>对比路线</span>
+              <strong>Unsupervised Task Graphs</strong>
             </a>
           </div>
         </div>
         <div>
           <h3>下游论文 -> 当前论文</h3>
-          <div class="relation-chip-grid">
-            <a class="relation-chip incoming" style="--rel:#246bfe" href="../notes/2024-seadag-semi-autoregressive-diffusion-dag-generation.html">
-              <span>继承/扩展</span>
-              <strong>SeaDAG</strong>
-            </a>
-          </div>
+          <div class="relation-chip-grid"><div class="relation-empty">暂时没有下游论文连接到这篇。</div></div>
         </div>
       </div>
     </section>
@@ -576,15 +578,19 @@
 
     <section class="note-section ">
       <div class="note-section-kicker">Relation Notes</div>
-      <div class="note-section-body"><p>DDPM 给出连续 diffusion 的基本框架，D3PM 把这个框架改造成离散 token/category 的状态转移过程。</p>
-<p>Score SDE 提供连续 score / SDE 统一视角；D3PM 走的是离散转移矩阵路线。二者都在解释“从噪声逐步回到数据”，但数学对象不同。</p>
-<p>LayerDAG 可以看成 D3PM 思想在 DAG generation 里的后续应用之一：节点属性和边都可以用离散 diffusion / categorical denoising 处理，只是 LayerDAG 额外加入了 layerwise DAG 结构约束。</p></div>
+      <div class="note-section-body"><p>DDPM 提供基础去噪生成范式：训练时加噪，推理时逐步去噪。D3PM 把这个思想搬到离散 category/token 状态空间，使节点类型和边类型这类离散对象可以被 diffusion 建模。</p>
+<p>LayerDAG 和 SeaDAG 都关注 DAG generation，但二者的生成哲学不同。</p>
+<p>LayerDAG 更强调严格 layerwise autoregressive decomposition：已经生成的前缀图决定下一层，天然保证 DAG 方向性。</p>
+<p>SeaDAG 更强调 semi-autoregressive global view：完整图一直存在，只是不同 layer 清晰度不同，因此当前层可以参考已经较 clean 的层，也能被 noisy 的后续层影响。</p>
+<p>对 TOPG 来说，LayerDAG 适合作为“合法 DAG 生成”的强结构 baseline；SeaDAG 更适合作为“当前层与未来粗草图共同去噪”的灵感来源。</p></div>
     </section>
 
         <div id="open-question">
     <section class="note-section impact">
       <div class="note-section-kicker">Open Question</div>
-      <div class="note-section-body"><p>TOPG 的第一版离散 diffusion 应该用 absorbing mask kernel，还是用语义相似的 transition matrix。mask kernel 更简单，语义 transition 更贴近 task/skill ontology，但需要先定义可靠的离散类别相似度。</p></div>
+      <div class="note-section-body"><p>TOPG 里的 future sketch 应该如何产生：由 LLM 先草拟、由 denoiser 自回归预测、由 world model rollout 给出，还是由执行反馈不断维护。</p>
+<p>future sketch 应该参与哪些变量的去噪：task node、dependency edge、allocation hint、resource conflict edge、time window，还是 failure recovery branch。</p>
+<p>如果未来 sketch 是错的，模型应该如何降低它的权重，避免当前 layer 被错误未来牵着走。</p></div>
     </section>
   </div>
       </article>
@@ -592,19 +598,19 @@
       <aside class="note-aside">
         <section class="note-aside-panel">
           <h2>System Roles</h2>
-          <div class="pill-row"><span class="note-pill role-pill">diffusion foundation</span><span class="note-pill role-pill">discrete denoiser</span><span class="note-pill role-pill">graph token generator</span><span class="note-pill role-pill">task graph generator</span></div>
+          <div class="pill-row"><span class="note-pill role-pill">task graph generator</span><span class="note-pill role-pill">generative planner</span><span class="note-pill role-pill">graph prior model</span><span class="note-pill role-pill">conditional dag generator</span><span class="note-pill role-pill">future sketch planner</span></div>
         </section>
         <section class="note-aside-panel">
           <h2>Reusable Modules</h2>
-          <div class="pill-row"><span class="note-pill module-pill">categorical state space</span><span class="note-pill module-pill">transition matrix forward process</span><span class="note-pill module-pill">discrete corruption kernel</span><span class="note-pill module-pill">x0 prediction parameterization</span><span class="note-pill module-pill">posterior reverse kernel</span><span class="note-pill module-pill">absorbing state diffusion</span></div>
+          <div class="pill-row"><span class="note-pill module-pill">layerwise denoising speed</span><span class="note-pill module-pill">complete noisy graph state</span><span class="note-pill module-pill">local timestep mapping</span><span class="note-pill module-pill">semi autoregressive dag diffusion</span><span class="note-pill module-pill">condition loss</span><span class="note-pill module-pill">graph property decoder</span><span class="note-pill module-pill">future layer sketch conditioning</span></div>
         </section>
         <section class="note-aside-panel">
           <h2>Next Action</h2>
-          <div class="note-pill role-pill">map d3pm to task graph tokens</div>
+          <div class="note-pill role-pill">design future sketch layer for topg</div>
         </section>
         <section class="note-aside-panel">
           <h2>Tags</h2>
-          <div class="pill-row"><span class="note-pill">D3PM</span><span class="note-pill">discrete diffusion</span><span class="note-pill">categorical diffusion</span><span class="note-pill">token diffusion</span><span class="note-pill">transition matrix</span><span class="note-pill">NeurIPS 2021</span></div>
+          <div class="pill-row"><span class="note-pill">SeaDAG</span><span class="note-pill">Diffusion</span><span class="note-pill">DAG generation</span><span class="note-pill">Task Graph</span><span class="note-pill">semi-autoregressive diffusion</span><span class="note-pill">conditional generation</span><span class="note-pill">future sketch</span></div>
         </section>
         <section class="note-aside-panel">
           <h2>Reading Map</h2>

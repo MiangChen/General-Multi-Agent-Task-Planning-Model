@@ -36,6 +36,7 @@ cites: []
 extends: []
 uses: []
 enables: [2025-dart-llm-dependency-aware-task-graph, 2025-lip-llm-dependency-graph-planning]
+complements: [2024-seadag-semi-autoregressive-diffusion-dag-generation]
 contrasts: [2023-unsupervised-task-graph-generation]
 ---
 
