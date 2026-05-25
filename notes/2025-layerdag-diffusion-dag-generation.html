@@ -437,7 +437,7 @@
         <div class="note-kicker">2025-03 · ICLR 2025 · Layerwise Diffusion DAG Generation</div>
         <h1>LayerDAG</h1>
         <div class="full-title">LayerDAG: A Layerwise Autoregressive Diffusion Model for Directed Acyclic Graph Generation</div>
-        <div class="note-summary"><p>LayerDAG 是目前我们看到的、最接近“用 diffusion 生成 task graph”的方法论文：它不是机器人论文，但它直接研究如何生成有效 DAG，并且通过 layerwise autoregressive generation 保证方向性和无环结构。</p></div>
+        <div class="note-summary"><p>LayerDAG 是目前我们看到的、最接近“用 diffusion 生成 task graph”的方法论文：它用 <strong>autoregression + diffusion</strong> 一层一层生成 DAG，而不是像 DiGress 那样直接对整张图做一次式 node/edge diffusion，因此更适合具备时序依赖、前置依赖和 partial order 的任务规划图。</p></div>
       </div>
       <aside class="hero-side">
         <div class="metric-grid">
@@ -454,7 +454,7 @@
             <div class="metric-label">Evidence</div>
           </div>
           <div class="metric">
-            <div class="metric-value">3</div>
+            <div class="metric-value">5</div>
             <div class="metric-label">Relations</div>
           </div>
         </div>
@@ -486,7 +486,8 @@
     <section class="note-section ">
       <div class="note-section-kicker">Research Question</div>
       <div class="note-section-body"><p>DAG 广泛用于计算图、编译器 flow graph、硬件设计、项目依赖和任务依赖。普通 graph generation 方法往往不显式处理 DAG 的方向性和 partial order；纯 diffusion 一次性生成整张图，也不天然保证无环。</p>
-<p>LayerDAG 的核心问题是：如何生成具有强方向依赖和逻辑规则的大规模 DAG，同时保留生成模型的表达能力和泛化能力。</p></div>
+<p>LayerDAG 的核心问题是：如何生成具有强方向依赖和逻辑规则的大规模 DAG，同时保留生成模型的表达能力和泛化能力。</p>
+<p>对 TOPG 来说，这正好对应“任务规划都在 graph 上操作”时最核心的问题：任务图不是一般无向图，通常有先后顺序、并行层、前置条件和不能成环的依赖结构。</p></div>
     </section>
 
 
@@ -528,6 +529,16 @@
         <div>
           <h3>当前论文 -> 关联论文 / 前序工作</h3>
           <div class="relation-chip-grid">
+            <a class="relation-chip" style="--rel:#246bfe" href="../notes/2021-d3pm-structured-denoising-diffusion-discrete-state-spaces.html">
+              <span>继承/扩展</span>
+              <strong>D3PM</strong>
+            </a>
+
+            <a class="relation-chip" style="--rel:#246bfe" href="../notes/2022-digress-discrete-denoising-diffusion-graph-generation.html">
+              <span>继承/扩展</span>
+              <strong>DiGress</strong>
+            </a>
+
             <a class="relation-chip" style="--rel:#188aa6" href="../notes/2025-dart-llm-dependency-aware-task-graph.html">
               <span>提供模块</span>
               <strong>DART-LLM</strong>
@@ -577,6 +588,11 @@
               <strong>CFG</strong>
             </a>
 
+            <a class="relation-chip incoming" style="--rel:#188aa6" href="../notes/2022-digress-discrete-denoising-diffusion-graph-generation.html">
+              <span>提供模块</span>
+              <strong>DiGress</strong>
+            </a>
+
             <a class="relation-chip incoming" style="--rel:#d14d72" href="../notes/2024-alphafold3-biomolecular-interactions.html">
               <span>对比路线</span>
               <strong>AlphaFold3</strong>
@@ -594,7 +610,8 @@
 
     <section class="note-section ">
       <div class="note-section-kicker">Relation Notes</div>
-      <div class="note-section-body"><p>和 DiGress 相比，LayerDAG 更适合 task graph，因为它直接面向 DAG generation，而不是一般 graph generation。</p>
+      <div class="note-section-body"><p>D3PM 解决的是离散 token/category 怎么做 diffusion。DiGress 把 D3PM 推到一般 graph generation，让 node features 和 edge features 同时扩散。LayerDAG 再往前走一步：承认很多图不是一般图，而是带方向、时序和依赖层级的 DAG，因此把 graph generation 拆成 layerwise autoregression + intra-layer diffusion。</p>
+<p>和 DiGress 相比，LayerDAG 更适合 task graph，因为它直接面向 DAG generation，而不是一般 graph generation。</p>
 <p>和 DART-LLM / LiP-LLM 相比，LayerDAG 不是 prompt engineering，而是一个可训练的 DAG generative model。它提供了从“LLM 输出依赖 JSON”走向“训练模型生成 task graph”的方法路线。</p>
 <p>和 Diffusion-CCSP 相比，Diffusion-CCSP 的 graph 是输入的 constraint graph，diffusion 输出连续变量解；LayerDAG 的 diffusion 参与生成 DAG 本身。</p></div>
     </section>
@@ -624,7 +641,7 @@
         </section>
         <section class="note-aside-panel">
           <h2>Tags</h2>
-          <div class="pill-row"><span class="note-pill">LayerDAG</span><span class="note-pill">Diffusion</span><span class="note-pill">DAG generation</span><span class="note-pill">Task Graph</span><span class="note-pill">layerwise generation</span><span class="note-pill">autoregressive diffusion</span><span class="note-pill">discrete diffusion</span></div>
+          <div class="pill-row"><span class="note-pill">LayerDAG</span><span class="note-pill">Diffusion</span><span class="note-pill">Graph Generation</span><span class="note-pill">DAG generation</span><span class="note-pill">Task Graph</span><span class="note-pill">layerwise generation</span><span class="note-pill">autoregressive diffusion</span><span class="note-pill">discrete diffusion</span></div>
         </section>
         <section class="note-aside-panel">
           <h2>Reading Map</h2>

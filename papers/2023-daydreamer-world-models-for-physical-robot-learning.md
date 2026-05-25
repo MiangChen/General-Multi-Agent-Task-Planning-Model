@@ -10,8 +10,8 @@ scope: in_scope
 readiness: medium
 action: buffer
 tech_paradigm: world_model_rl
-primary_domain: World Model
-domains: [World Model, RL]
+primary_domain: Model-based RL
+domains: [RL, Model-based RL, World Model]
 primary_technical_layer: embodied_learning
 primary_task_family: real_robot_learning
 platform: physical_robot_learning

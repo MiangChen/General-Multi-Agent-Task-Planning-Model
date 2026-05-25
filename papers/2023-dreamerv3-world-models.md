@@ -10,8 +10,8 @@ scope: in_scope
 readiness: high
 action: build_note
 tech_paradigm: world_model_rl
-primary_domain: World Model
-domains: [World Model, RL]
+primary_domain: Model-based RL
+domains: [RL, Model-based RL, World Model]
 primary_technical_layer: imagination_planning
 primary_task_family: latent_world_model_control
 platform: simulated_control_domains

@@ -9,9 +9,9 @@ status: read
 scope: in_scope
 readiness: high
 action: deep_read
-tech_paradigm: vla
-primary_domain: VLA
-domains: [LLM, VLA, Planning]
+tech_paradigm: cascade_world_action_model
+primary_domain: World Action Model
+domains: [World Action Model, VLA, LLM, Planning]
 primary_technical_layer: compositional_generalization
 primary_task_family: steerable_long_horizon_execution
 platform: cross_embodiment_manipulation

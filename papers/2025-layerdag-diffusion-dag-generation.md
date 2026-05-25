@@ -11,17 +11,17 @@ readiness: high
 action: build_note
 tech_paradigm: layerwise_diffusion_dag_generation
 primary_domain: Diffusion
-domains: [Diffusion, Task Graph, Planning]
+domains: [Diffusion, Graph Generation, Task Graph, Planning]
 primary_technical_layer: task_graph_generation
 primary_task_family: diffusion_dag_task_graph_generation
 platform: directed_acyclic_graph_generation
-planning_relevance: LayerDAG 不是机器人规划论文，但它提供了用 autoregressive diffusion 生成 DAG 的核心机制：把 DAG 唯一拆成 layerwise bipartite graphs，逐层预测 node count、用 diffusion 生成 node attributes 和 cross-layer edges。这正好可迁移到开放世界多机器人 task graph 生成。
+planning_relevance: LayerDAG 不是机器人规划论文，但它提供了用 autoregression + diffusion 生成 DAG 的核心机制：autoregression 负责一层一层生成图，diffusion 负责每层内部的 node attributes 和 cross-layer edges。相比 DiGress 一次性对整张图做 node/edge denoising，LayerDAG 更适合具备时序依赖、前置依赖和 partial order 的任务图。
 multi_robot_relevance: 对多机器人任务规划来说，可以把 layer 理解为并行可执行的任务阶段，把 node attribute 映射为 robot skill / task intent，把 edge 映射为前置依赖或同步约束，再把生成出的有效 DAG 交给任务分配和调度模块。
 system_roles: [task_graph_generator, generative_planner, graph_prior_model, planner_research_direction]
 reusable_modules: [layerwise_dag_partition, source_task_layer_generation, discrete_diffusion_node_attributes, diffusion_edge_generation, conditional_dag_generation, cross_layer_dependency_generation]
 evidence_level: paper_read
 next_action: adapt_layerdag_to_multi_robot_task_graph_schema
-tags: [LayerDAG, Diffusion, DAG generation, Task Graph, layerwise generation, autoregressive diffusion, discrete diffusion]
+tags: [LayerDAG, Diffusion, Graph Generation, DAG generation, Task Graph, layerwise generation, autoregressive diffusion, discrete diffusion]
 authors: [Zhuo Li, Yifei Shen, Lei Chen, Mingming Sun, Wei Liu]
 institutions: []
 doi:
@@ -32,8 +32,8 @@ pdf_path: pdfs/2025-03-04-LayerDAG-layerwise-autoregressive-diffusion-dag-genera
 image_url:
 zotero_key:
 citekey: li2025layerdag
-cites: []
-extends: []
+cites: [2021-d3pm-structured-denoising-diffusion-discrete-state-spaces, 2022-digress-discrete-denoising-diffusion-graph-generation]
+extends: [2021-d3pm-structured-denoising-diffusion-discrete-state-spaces, 2022-digress-discrete-denoising-diffusion-graph-generation]
 uses: []
 enables: [2025-dart-llm-dependency-aware-task-graph, 2025-lip-llm-dependency-graph-planning]
 complements: [2024-seadag-semi-autoregressive-diffusion-dag-generation]
@@ -42,13 +42,15 @@ contrasts: [2023-unsupervised-task-graph-generation]
 
 ## 一句话结论
 
-LayerDAG 是目前我们看到的、最接近“用 diffusion 生成 task graph”的方法论文：它不是机器人论文，但它直接研究如何生成有效 DAG，并且通过 layerwise autoregressive generation 保证方向性和无环结构。
+LayerDAG 是目前我们看到的、最接近“用 diffusion 生成 task graph”的方法论文：它用 **autoregression + diffusion** 一层一层生成 DAG，而不是像 DiGress 那样直接对整张图做一次式 node/edge diffusion，因此更适合具备时序依赖、前置依赖和 partial order 的任务规划图。
 
 ## 研究问题
 
 DAG 广泛用于计算图、编译器 flow graph、硬件设计、项目依赖和任务依赖。普通 graph generation 方法往往不显式处理 DAG 的方向性和 partial order；纯 diffusion 一次性生成整张图，也不天然保证无环。
 
 LayerDAG 的核心问题是：如何生成具有强方向依赖和逻辑规则的大规模 DAG，同时保留生成模型的表达能力和泛化能力。
+
+对 TOPG 来说，这正好对应“任务规划都在 graph 上操作”时最核心的问题：任务图不是一般无向图，通常有先后顺序、并行层、前置条件和不能成环的依赖结构。
 
 ## 核心思想
 
@@ -78,7 +80,7 @@ E(l+1) = {(u, v) in E | u in V(<=l), v in V(l+1)}
 
 ## 生成过程
 
-LayerDAG 把整张图的概率拆成逐层条件生成：
+LayerDAG 把整张图的概率拆成逐层条件生成。这里 autoregression 负责外层顺序：先生成第 1 层，再生成第 2 层，后面每层都条件于已经生成的 partial DAG。
 
 ```text
 P(G) = product_l P(G(l+1) | G(<=l))
@@ -100,6 +102,13 @@ P(G(l+1) | G(<=l))
 3. 用 diffusion 生成从前面所有已生成层到当前层的 edges。
 
 当模型预测下一层节点数为 0 时，生成终止。
+
+所以它不是“一次性生成整张图”的 graph diffusion，而是：
+
+```text
+autoregression: 控制层级和时序展开
+diffusion: 生成每层内部属性和跨层边
+```
 
 ## Diffusion 在哪里
 
@@ -203,6 +212,8 @@ LayerDAG 本身不是机器人任务规划模型。它没有处理自然语言 g
 此外，迁移到开放世界任务规划需要训练数据：历史任务图、仿真生成任务图、人类修正任务图，或者 LLM/规则生成后再用执行反馈筛选的 task graph 数据。
 
 ## 和其他论文的关系
+
+D3PM 解决的是离散 token/category 怎么做 diffusion。DiGress 把 D3PM 推到一般 graph generation，让 node features 和 edge features 同时扩散。LayerDAG 再往前走一步：承认很多图不是一般图，而是带方向、时序和依赖层级的 DAG，因此把 graph generation 拆成 layerwise autoregression + intra-layer diffusion。
 
 和 DiGress 相比，LayerDAG 更适合 task graph，因为它直接面向 DAG generation，而不是一般 graph generation。
 

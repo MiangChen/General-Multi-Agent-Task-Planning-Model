@@ -153,15 +153,31 @@
       "note_html": "notes/2022-learned-subteam-performance-routing.html"
     },
     {
+      "id": "2022-diffuser-planning-with-diffusion-flexible-behavior-synthesis",
+      "title": "Planning with Diffusion for Flexible Behavior Synthesis",
+      "short_title": "Diffuser",
+      "published": "2022-05",
+      "published_value": 24268,
+      "primary_domain": "Diffusion",
+      "domains": [
+        "Diffusion",
+        "Planning",
+        "RL",
+        "Trajectory Generation"
+      ],
+      "note_html": "notes/2022-diffuser-planning-with-diffusion-flexible-behavior-synthesis.html"
+    },
+    {
       "id": "2023-daydreamer-world-models-for-physical-robot-learning",
       "title": "DayDreamer: World Models for Physical Robot Learning",
       "short_title": "DayDreamer",
       "published": "2022-06",
       "published_value": 24269,
-      "primary_domain": "World Model",
+      "primary_domain": "Model-based RL",
       "domains": [
-        "World Model",
-        "RL"
+        "RL",
+        "Model-based RL",
+        "World Model"
       ],
       "note_html": "notes/2023-daydreamer-world-models-for-physical-robot-learning.html"
     },
@@ -181,15 +197,46 @@
       "note_html": "notes/2022-classifier-free-diffusion-guidance.html"
     },
     {
+      "id": "2022-digress-discrete-denoising-diffusion-graph-generation",
+      "title": "DiGress: Discrete Denoising diffusion for graph generation",
+      "short_title": "DiGress",
+      "published": "2022-09",
+      "published_value": 24272,
+      "primary_domain": "Diffusion",
+      "domains": [
+        "Diffusion",
+        "Graph Generation",
+        "Discrete Generation",
+        "Task Graph"
+      ],
+      "note_html": "notes/2022-digress-discrete-denoising-diffusion-graph-generation.html"
+    },
+    {
+      "id": "2022-decision-diffuser-conditional-generative-modeling-decision-making",
+      "title": "Is Conditional Generative Modeling all you need for Decision-Making?",
+      "short_title": "Decision Diffuser",
+      "published": "2022-11",
+      "published_value": 24274,
+      "primary_domain": "Diffusion",
+      "domains": [
+        "Diffusion",
+        "Planning",
+        "RL",
+        "Trajectory Generation"
+      ],
+      "note_html": "notes/2022-decision-diffuser-conditional-generative-modeling-decision-making.html"
+    },
+    {
       "id": "2023-dreamerv3-world-models",
       "title": "Mastering Diverse Control Tasks through World Models",
       "short_title": "DreamerV3",
       "published": "2023-01",
       "published_value": 24276,
-      "primary_domain": "World Model",
+      "primary_domain": "Model-based RL",
       "domains": [
-        "World Model",
-        "RL"
+        "RL",
+        "Model-based RL",
+        "World Model"
       ],
       "note_html": "notes/2023-dreamerv3-world-models.html"
     },
@@ -325,9 +372,10 @@
       "short_title": "Pyramidal Flow",
       "published": "2024-10",
       "published_value": 24297,
-      "primary_domain": "World Action Model",
+      "primary_domain": "Diffusion",
       "domains": [
-        "World Action Model",
+        "Diffusion",
+        "Video Generation",
         "World Model"
       ],
       "note_html": "notes/2024-pyramidal-flow-matching-video.html"
@@ -423,6 +471,7 @@
       "primary_domain": "Diffusion",
       "domains": [
         "Diffusion",
+        "Graph Generation",
         "Task Graph",
         "Planning"
       ],
@@ -598,13 +647,40 @@
       "short_title": "π0.7",
       "published": "2026-04",
       "published_value": 24315,
-      "primary_domain": "VLA",
+      "primary_domain": "World Action Model",
       "domains": [
-        "LLM",
+        "World Action Model",
         "VLA",
+        "LLM",
         "Planning"
       ],
       "note_html": "notes/2026-pi07-steerable-generalist-robotic-foundation-model.html"
+    },
+    {
+      "id": "2026-cola-dlm-continuous-latent-diffusion-language-model",
+      "title": "Continuous Latent Diffusion Language Model",
+      "short_title": "Cola DLM",
+      "published": "2026-05",
+      "published_value": 24316,
+      "primary_domain": "Diffusion",
+      "domains": [
+        "LLM",
+        "Diffusion"
+      ],
+      "note_html": "notes/2026-cola-dlm-continuous-latent-diffusion-language-model.html"
+    },
+    {
+      "id": "2026-elf-embedded-language-flows",
+      "title": "ELF: Embedded Language Flows",
+      "short_title": "ELF",
+      "published": "2026-05",
+      "published_value": 24316,
+      "primary_domain": "Diffusion",
+      "domains": [
+        "LLM",
+        "Diffusion"
+      ],
+      "note_html": "notes/2026-elf-embedded-language-flows.html"
     }
   ],
   "edges": [
@@ -1059,6 +1135,60 @@
       ]
     },
     {
+      "id": "2020-ddpm-denoising-diffusion-probabilistic-models--2022-diffuser-planning-with-diffusion-flexible-behavior-synthesis--extends",
+      "type": "extends",
+      "endpoints": [
+        "2020-ddpm-denoising-diffusion-probabilistic-models",
+        "2022-diffuser-planning-with-diffusion-flexible-behavior-synthesis"
+      ],
+      "parent_id": "2020-ddpm-denoising-diffusion-probabilistic-models",
+      "child_id": "2022-diffuser-planning-with-diffusion-flexible-behavior-synthesis",
+      "parent_title": "DDPM",
+      "child_title": "Diffuser",
+      "authored_links": [
+        {
+          "source": "2022-diffuser-planning-with-diffusion-flexible-behavior-synthesis",
+          "target": "2020-ddpm-denoising-diffusion-probabilistic-models"
+        }
+      ]
+    },
+    {
+      "id": "2022-diffuser-planning-with-diffusion-flexible-behavior-synthesis--2023-diffusion-policy-action-diffusion--enables",
+      "type": "enables",
+      "endpoints": [
+        "2022-diffuser-planning-with-diffusion-flexible-behavior-synthesis",
+        "2023-diffusion-policy-action-diffusion"
+      ],
+      "parent_id": "2022-diffuser-planning-with-diffusion-flexible-behavior-synthesis",
+      "child_id": "2023-diffusion-policy-action-diffusion",
+      "parent_title": "Diffuser",
+      "child_title": "Diffusion Policy",
+      "authored_links": [
+        {
+          "source": "2022-diffuser-planning-with-diffusion-flexible-behavior-synthesis",
+          "target": "2023-diffusion-policy-action-diffusion"
+        }
+      ]
+    },
+    {
+      "id": "2022-diffuser-planning-with-diffusion-flexible-behavior-synthesis--2022-classifier-free-diffusion-guidance--cites",
+      "type": "cites",
+      "endpoints": [
+        "2022-diffuser-planning-with-diffusion-flexible-behavior-synthesis",
+        "2022-classifier-free-diffusion-guidance"
+      ],
+      "parent_id": "2022-diffuser-planning-with-diffusion-flexible-behavior-synthesis",
+      "child_id": "2022-classifier-free-diffusion-guidance",
+      "parent_title": "Diffuser",
+      "child_title": "CFG",
+      "authored_links": [
+        {
+          "source": "2022-diffuser-planning-with-diffusion-flexible-behavior-synthesis",
+          "target": "2022-classifier-free-diffusion-guidance"
+        }
+      ]
+    },
+    {
       "id": "2020-ddpm-denoising-diffusion-probabilistic-models--2022-classifier-free-diffusion-guidance--extends",
       "type": "extends",
       "endpoints": [
@@ -1127,6 +1257,114 @@
         {
           "source": "2022-classifier-free-diffusion-guidance",
           "target": "2025-layerdag-diffusion-dag-generation"
+        }
+      ]
+    },
+    {
+      "id": "2021-d3pm-structured-denoising-diffusion-discrete-state-spaces--2022-digress-discrete-denoising-diffusion-graph-generation--extends",
+      "type": "extends",
+      "endpoints": [
+        "2021-d3pm-structured-denoising-diffusion-discrete-state-spaces",
+        "2022-digress-discrete-denoising-diffusion-graph-generation"
+      ],
+      "parent_id": "2021-d3pm-structured-denoising-diffusion-discrete-state-spaces",
+      "child_id": "2022-digress-discrete-denoising-diffusion-graph-generation",
+      "parent_title": "D3PM",
+      "child_title": "DiGress",
+      "authored_links": [
+        {
+          "source": "2022-digress-discrete-denoising-diffusion-graph-generation",
+          "target": "2021-d3pm-structured-denoising-diffusion-discrete-state-spaces"
+        }
+      ]
+    },
+    {
+      "id": "2022-digress-discrete-denoising-diffusion-graph-generation--2025-layerdag-diffusion-dag-generation--enables",
+      "type": "enables",
+      "endpoints": [
+        "2022-digress-discrete-denoising-diffusion-graph-generation",
+        "2025-layerdag-diffusion-dag-generation"
+      ],
+      "parent_id": "2022-digress-discrete-denoising-diffusion-graph-generation",
+      "child_id": "2025-layerdag-diffusion-dag-generation",
+      "parent_title": "DiGress",
+      "child_title": "LayerDAG",
+      "authored_links": [
+        {
+          "source": "2022-digress-discrete-denoising-diffusion-graph-generation",
+          "target": "2025-layerdag-diffusion-dag-generation"
+        }
+      ]
+    },
+    {
+      "id": "2020-ddpm-denoising-diffusion-probabilistic-models--2022-digress-discrete-denoising-diffusion-graph-generation--cites",
+      "type": "cites",
+      "endpoints": [
+        "2020-ddpm-denoising-diffusion-probabilistic-models",
+        "2022-digress-discrete-denoising-diffusion-graph-generation"
+      ],
+      "parent_id": "2020-ddpm-denoising-diffusion-probabilistic-models",
+      "child_id": "2022-digress-discrete-denoising-diffusion-graph-generation",
+      "parent_title": "DDPM",
+      "child_title": "DiGress",
+      "authored_links": [
+        {
+          "source": "2022-digress-discrete-denoising-diffusion-graph-generation",
+          "target": "2020-ddpm-denoising-diffusion-probabilistic-models"
+        }
+      ]
+    },
+    {
+      "id": "2022-diffuser-planning-with-diffusion-flexible-behavior-synthesis--2022-decision-diffuser-conditional-generative-modeling-decision-making--extends",
+      "type": "extends",
+      "endpoints": [
+        "2022-diffuser-planning-with-diffusion-flexible-behavior-synthesis",
+        "2022-decision-diffuser-conditional-generative-modeling-decision-making"
+      ],
+      "parent_id": "2022-diffuser-planning-with-diffusion-flexible-behavior-synthesis",
+      "child_id": "2022-decision-diffuser-conditional-generative-modeling-decision-making",
+      "parent_title": "Diffuser",
+      "child_title": "Decision Diffuser",
+      "authored_links": [
+        {
+          "source": "2022-decision-diffuser-conditional-generative-modeling-decision-making",
+          "target": "2022-diffuser-planning-with-diffusion-flexible-behavior-synthesis"
+        }
+      ]
+    },
+    {
+      "id": "2022-decision-diffuser-conditional-generative-modeling-decision-making--2023-diffusion-policy-action-diffusion--enables",
+      "type": "enables",
+      "endpoints": [
+        "2022-decision-diffuser-conditional-generative-modeling-decision-making",
+        "2023-diffusion-policy-action-diffusion"
+      ],
+      "parent_id": "2022-decision-diffuser-conditional-generative-modeling-decision-making",
+      "child_id": "2023-diffusion-policy-action-diffusion",
+      "parent_title": "Decision Diffuser",
+      "child_title": "Diffusion Policy",
+      "authored_links": [
+        {
+          "source": "2022-decision-diffuser-conditional-generative-modeling-decision-making",
+          "target": "2023-diffusion-policy-action-diffusion"
+        }
+      ]
+    },
+    {
+      "id": "2020-ddpm-denoising-diffusion-probabilistic-models--2022-decision-diffuser-conditional-generative-modeling-decision-making--cites",
+      "type": "cites",
+      "endpoints": [
+        "2020-ddpm-denoising-diffusion-probabilistic-models",
+        "2022-decision-diffuser-conditional-generative-modeling-decision-making"
+      ],
+      "parent_id": "2020-ddpm-denoising-diffusion-probabilistic-models",
+      "child_id": "2022-decision-diffuser-conditional-generative-modeling-decision-making",
+      "parent_title": "DDPM",
+      "child_title": "Decision Diffuser",
+      "authored_links": [
+        {
+          "source": "2022-decision-diffuser-conditional-generative-modeling-decision-making",
+          "target": "2020-ddpm-denoising-diffusion-probabilistic-models"
         }
       ]
     },
@@ -1559,6 +1797,42 @@
         {
           "source": "2025-dart-llm-dependency-aware-task-graph",
           "target": "2025-lip-llm-dependency-graph-planning"
+        }
+      ]
+    },
+    {
+      "id": "2021-d3pm-structured-denoising-diffusion-discrete-state-spaces--2025-layerdag-diffusion-dag-generation--extends",
+      "type": "extends",
+      "endpoints": [
+        "2021-d3pm-structured-denoising-diffusion-discrete-state-spaces",
+        "2025-layerdag-diffusion-dag-generation"
+      ],
+      "parent_id": "2021-d3pm-structured-denoising-diffusion-discrete-state-spaces",
+      "child_id": "2025-layerdag-diffusion-dag-generation",
+      "parent_title": "D3PM",
+      "child_title": "LayerDAG",
+      "authored_links": [
+        {
+          "source": "2025-layerdag-diffusion-dag-generation",
+          "target": "2021-d3pm-structured-denoising-diffusion-discrete-state-spaces"
+        }
+      ]
+    },
+    {
+      "id": "2022-digress-discrete-denoising-diffusion-graph-generation--2025-layerdag-diffusion-dag-generation--extends",
+      "type": "extends",
+      "endpoints": [
+        "2022-digress-discrete-denoising-diffusion-graph-generation",
+        "2025-layerdag-diffusion-dag-generation"
+      ],
+      "parent_id": "2022-digress-discrete-denoising-diffusion-graph-generation",
+      "child_id": "2025-layerdag-diffusion-dag-generation",
+      "parent_title": "DiGress",
+      "child_title": "LayerDAG",
+      "authored_links": [
+        {
+          "source": "2025-layerdag-diffusion-dag-generation",
+          "target": "2022-digress-discrete-denoising-diffusion-graph-generation"
         }
       ]
     },
@@ -2189,6 +2463,78 @@
         {
           "source": "2026-pi07-steerable-generalist-robotic-foundation-model",
           "target": "2024-pi0-vla-flow-model"
+        }
+      ]
+    },
+    {
+      "id": "2020-ddpm-denoising-diffusion-probabilistic-models--2026-cola-dlm-continuous-latent-diffusion-language-model--extends",
+      "type": "extends",
+      "endpoints": [
+        "2020-ddpm-denoising-diffusion-probabilistic-models",
+        "2026-cola-dlm-continuous-latent-diffusion-language-model"
+      ],
+      "parent_id": "2020-ddpm-denoising-diffusion-probabilistic-models",
+      "child_id": "2026-cola-dlm-continuous-latent-diffusion-language-model",
+      "parent_title": "DDPM",
+      "child_title": "Cola DLM",
+      "authored_links": [
+        {
+          "source": "2026-cola-dlm-continuous-latent-diffusion-language-model",
+          "target": "2020-ddpm-denoising-diffusion-probabilistic-models"
+        }
+      ]
+    },
+    {
+      "id": "2024-pi0-vla-flow-model--2026-cola-dlm-continuous-latent-diffusion-language-model--cites",
+      "type": "cites",
+      "endpoints": [
+        "2024-pi0-vla-flow-model",
+        "2026-cola-dlm-continuous-latent-diffusion-language-model"
+      ],
+      "parent_id": "2024-pi0-vla-flow-model",
+      "child_id": "2026-cola-dlm-continuous-latent-diffusion-language-model",
+      "parent_title": "π0",
+      "child_title": "Cola DLM",
+      "authored_links": [
+        {
+          "source": "2026-cola-dlm-continuous-latent-diffusion-language-model",
+          "target": "2024-pi0-vla-flow-model"
+        }
+      ]
+    },
+    {
+      "id": "2020-ddpm-denoising-diffusion-probabilistic-models--2026-elf-embedded-language-flows--extends",
+      "type": "extends",
+      "endpoints": [
+        "2020-ddpm-denoising-diffusion-probabilistic-models",
+        "2026-elf-embedded-language-flows"
+      ],
+      "parent_id": "2020-ddpm-denoising-diffusion-probabilistic-models",
+      "child_id": "2026-elf-embedded-language-flows",
+      "parent_title": "DDPM",
+      "child_title": "ELF",
+      "authored_links": [
+        {
+          "source": "2026-elf-embedded-language-flows",
+          "target": "2020-ddpm-denoising-diffusion-probabilistic-models"
+        }
+      ]
+    },
+    {
+      "id": "2022-classifier-free-diffusion-guidance--2026-elf-embedded-language-flows--extends",
+      "type": "extends",
+      "endpoints": [
+        "2022-classifier-free-diffusion-guidance",
+        "2026-elf-embedded-language-flows"
+      ],
+      "parent_id": "2022-classifier-free-diffusion-guidance",
+      "child_id": "2026-elf-embedded-language-flows",
+      "parent_title": "CFG",
+      "child_title": "ELF",
+      "authored_links": [
+        {
+          "source": "2026-elf-embedded-language-flows",
+          "target": "2022-classifier-free-diffusion-guidance"
         }
       ]
     }

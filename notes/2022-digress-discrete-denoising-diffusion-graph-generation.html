@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="robots" content="noindex,nofollow,noarchive">
-  <title>DDPM · Paper Note</title>
+  <title>DiGress · Paper Note</title>
   <style>
     :root {
       --bg: #eef4fb;
@@ -434,15 +434,16 @@
   <main class="note-shell" id="top">
     <section class="note-hero">
       <div class="hero-main">
-        <div class="note-kicker">2020-06 · NeurIPS 2020 · denoising_diffusion_probabilistic_model</div>
-        <h1>DDPM</h1>
-        <div class="full-title">Denoising Diffusion Probabilistic Models</div>
-        <div class="note-summary"><p>DDPM 是现代 diffusion 生成模型的基础节点：它把生成过程写成“正向逐步加噪 + 反向逐步去噪”，并用简化的噪声预测目标让模型学会从噪声中恢复数据结构。</p></div>
+        <div class="note-kicker">2022-09 · ICLR 2023 Poster · discrete_graph_diffusion</div>
+        <h1>DiGress</h1>
+        <div class="full-title">DiGress: Discrete Denoising diffusion for graph generation</div>
+        <div class="note-summary"><p>DiGress 是把离散 diffusion 真正推进到 graph generation 的关键论文：它让 node features 和 edge features 同时扩散、同时去噪，从而生成带节点类型和边类型的完整离散图。</p>
+<p>正式发表信息：论文 arXiv 版本是 <code>2209.14734</code>，正式会议为 <strong>ICLR 2023 Poster</strong>。</p></div>
       </div>
       <aside class="hero-side">
         <div class="metric-grid">
           <div class="metric">
-            <div class="metric-value">2020</div>
+            <div class="metric-value">2022</div>
             <div class="metric-label">Year</div>
           </div>
           <div class="metric">
@@ -450,7 +451,7 @@
             <div class="metric-label">Readiness</div>
           </div>
           <div class="metric">
-            <div class="metric-value">略读</div>
+            <div class="metric-value">已读论文</div>
             <div class="metric-label">Evidence</div>
           </div>
           <div class="metric">
@@ -460,13 +461,13 @@
         </div>
         <div>
           <div class="note-section-kicker">Authors</div>
-          <div>Jonathan Ho, Ajay Jain, Pieter Abbeel</div>
+          <div>Clément Vignac, Igor Krawczuk, Antoine Siraudin, Bohan Wang, Volkan Cevher, Pascal Frossard</div>
         </div>
         <div>
           <div class="note-section-kicker">Institutions</div>
-          <div>UC Berkeley · Google Research</div>
+          <div>EPFL</div>
         </div>
-        <div class="note-link-row"><a href="https://arxiv.org/abs/2006.11239" target="_blank" rel="noreferrer">Paper</a><a href="https://github.com/hojonathanho/diffusion" target="_blank" rel="noreferrer">Project</a><a href="https://doi.org/10.48550/arXiv.2006.11239" target="_blank" rel="noreferrer">DOI</a><a href="https://arxiv.org/abs/2006.11239" target="_blank" rel="noreferrer">arXiv</a></div>
+        <div class="note-link-row"><a href="../pdfs/2022-09-01-DiGress-discrete-denoising-diffusion-graph-generation.pdf" target="_blank" rel="noreferrer">PDF</a><a href="https://openreview.net/forum?id=UaAD-Nu86WX" target="_blank" rel="noreferrer">Paper</a><a href="https://github.com/cvignac/DiGress" target="_blank" rel="noreferrer">Project</a><a href="https://doi.org/10.48550/arXiv.2209.14734" target="_blank" rel="noreferrer">DOI</a><a href="https://arxiv.org/abs/2209.14734" target="_blank" rel="noreferrer">arXiv</a></div>
       </aside>
     </section>
 
@@ -475,51 +476,63 @@
 
     <section class="note-section impact">
       <div class="note-section-kicker">For Our Model</div>
-      <div class="note-section-body"><p>DDPM 给 TOPG 的最小迁移形式是：</p>
-<p>```text<br>clean task graph<br>-&gt; add node / edge / attribute noise<br>-&gt; condition on language + scene + agents + skills + feedback<br>-&gt; denoise into a valid plan graph<br>-&gt; check constraints and optionally denoise again<br>```</p>
-<p>这说明 TOPG 生成器不一定要一次性输出完整计划。它可以先产生一个 noised / masked plan hypothesis view，再逐步修正 task count、skill label、location grounding、dependency edge 和 allocation hints。</p></div>
+      <div class="note-section-body"><p>TOPG 可以把 DiGress 作为第一版 graph diffusion generator 的蓝本：</p>
+<p>```text<br>X = task node types / skill requirements / object-location tokens<br>E = dependency edge types / resource edges / sync edges / handoff edges<br>y = language goal + scene summary + robot team profile<br>```</p>
+<p>前向过程：</p>
+<p>```text<br>clean task graph<br>-&gt; corrupt node categories<br>-&gt; corrupt edge categories<br>-&gt; noisy task graph<br>```</p>
+<p>反向过程：</p>
+<p>```text<br>graph transformer denoiser<br>-&gt; predict clean node types<br>-&gt; predict clean edge types<br>-&gt; validity repair / DAG projection<br>-&gt; executable task graph candidate<br>```</p>
+<p>关键问题是：TOPG 的 edge feature 必须比分子 bond 更丰富。至少需要区分 prerequisite、parallel-sync、resource-conflict、same-agent-continuity、communication、failure-recovery 等边类型。</p></div>
     </section>
 
 
     <section class="note-section ">
       <div class="note-section-kicker">Research Question</div>
-      <div class="note-section-body"><p>传统生成模型在高质量图像生成上常依赖 GAN、VAE 或 autoregressive decoder。DDPM 关心的问题是：能否用一个清晰的概率扩散过程，把复杂数据分布逐步扰动成高斯噪声，再训练一个神经网络学习反向去噪链，从噪声生成样本。</p>
-<p>对我们做 TOPG 来说，真正重要的不是图像任务，而是“结构可以被逐步破坏，也可以被条件模型逐步修复”这个范式。</p></div>
+      <div class="note-section-body"><p>D3PM 说明了离散 token/category 可以做 diffusion，但 graph 不是一串独立 token。图同时有节点、边、节点属性、边属性和全局结构约束。如果只生成节点而不生成边，或者只生成邻接矩阵而不处理节点类型，生成结果就很难成为真实可用的结构对象。</p>
+<p>DiGress 关心的问题是：如何把离散 denoising diffusion 扩展到 graph，使模型能够联合生成节点类型和边类型，并保留图结构分布。</p>
+<p>对 TOPG 来说，这就是 task graph generation 的直接前置问题：任务规划不是生成一个 token 序列，而是生成 typed nodes + typed dependency edges。</p></div>
     </section>
 
 
     <section class="note-section ">
       <div class="note-section-kicker">Method</div>
-      <div class="note-section-body"><p>DDPM 定义两个过程。</p>
-<p>第一，forward process 从真实样本 <code>x_0</code> 开始，按照预设噪声日程逐步加入高斯噪声，得到 <code>x_t</code>。当 <code>t</code> 足够大时，样本接近标准高斯噪声。</p>
-<p>第二，reverse process 训练神经网络估计每个时间步应该如何去噪。实践中常用 U-Net 接收 noisy sample 和 timestep embedding，并预测噪声项。推理时从随机噪声开始，反复调用去噪网络，逐步得到干净样本。</p>
-<p>论文还把 weighted variational bound、denoising score matching 和 Langevin-style sampling 联系起来，使 diffusion 不只是经验技巧，而是有概率建模解释的生成框架。</p></div>
+      <div class="note-section-body"><p>DiGress 把一张图表示成三类对象：</p>
+<p>```text<br>X: node features<br>E: edge features<br>y: graph-level features / condition<br>```</p>
+<p>其中 <code>X</code> 和 <code>E</code> 都是离散类别。节点可以是 atom type，边可以是 bond type；迁移到 TOPG 时，节点可以是 task type / skill type，边可以是 dependency / sync / resource / same-agent-continuity 等类型。</p>
+<p>前向过程对 node 和 edge 同时做离散 corruption：</p>
+<p>```text<br>q(G_t | G_{t-1})<br>= q(X_t | X_{t-1}) q(E_t | E_{t-1}) q(y_t | y_{t-1})<br>```</p>
+<p>直觉上，就是每一步都同时扰乱节点类别和边类别。连续 diffusion 里加的是高斯噪声，D3PM 里对 token 用转移矩阵，DiGress 则把这套离散转移扩展到整张图的 nodes 和 edges。</p>
+<p>反向过程用 graph transformer denoiser 接收 noisy graph：</p>
+<p>```text<br>(X_t, E_t, y_t)<br>```</p>
+<p>然后预测干净图或前一步图的分布。模型通过 graph transformer 在节点、边和全局特征之间传递信息，因此边的预测不是独立的，节点类型也会受邻接结构和全局图条件影响。</p>
+<p>DiGress 还强调 transition kernel 可以利用数据边际分布，而不是完全均匀地随机替换类别。这样生成过程更贴近真实图分布。</p></div>
     </section>
 
 
     <section class="note-section ">
       <div class="note-section-kicker">Key Contributions</div>
-      <div class="note-section-body"><ul><li>把扩散概率模型推进到高质量图像生成，成为后续 diffusion family 的关键起点之一。</li><li>给出了可操作的训练目标：预测加到数据上的噪声，而不是直接建模复杂数据分布。</li><li>明确了 timestep-conditioned denoising 的工程形式，让后续模型可以把图像、视频、动作、结构或图都放进同一“加噪-去噪”框架。</li><li>为后续 DDIM、score-based diffusion、latent diffusion、action diffusion、video diffusion 和 graph diffusion 提供了共同语言。</li></ul></div>
+      <div class="note-section-body"><ul><li>把离散 diffusion 从 token/category 推进到 graph generation。</li><li>同时扩散 node features 和 edge features，而不是只生成节点或只生成邻接矩阵。</li><li>使用 graph transformer 作为 denoiser，让节点、边和全局图特征交互更新。</li><li>用离散 transition kernel 处理 categorical node / edge corruption，可使用 marginal distribution 提高稳定性。</li><li>在分子图和非分子图任务上验证，成为后续 graph diffusion 和 LayerDAG 类方法的重要参考。</li></ul></div>
     </section>
 
 
 
     <section class="note-section risk">
       <div class="note-section-kicker">Limitations</div>
-      <div class="note-section-body"><p>DDPM 本身主要验证无条件图像生成，不处理语言条件、机器人状态、任务图约束或多机器人协作。原始采样通常需要很多去噪步，推理速度慢；后续大量工作才围绕采样加速、条件控制、离散结构生成和实时执行展开。</p>
-<p>对 TOPG 而言，不能直接照搬连续像素扩散。任务图包含离散节点类型、边类型、约束、可执行性和拓扑合法性，因此需要把 DDPM 的连续去噪思想改造成 typed graph denoising。</p></div>
+      <div class="note-section-body"><p>DiGress 生成的是一般图，不天然保证 DAG、partial order、任务前置依赖、资源约束或可执行调度。对于 task graph，边不只是“有无连接”或 bond type，还包含方向、语义、时序和执行约束。</p>
+<p>此外，DiGress 原始任务更偏分子图和通用图生成。TOPG 需要额外引入语言条件、场景 grounding、机器人能力、执行反馈和 graph validity checker。</p></div>
     </section>
 
 
     <section class="note-section ">
       <div class="note-section-kicker">Reusable Modules</div>
-      <div class="note-section-body"><p>forward noise process、reverse denoising process、timestep conditioning、noise prediction objective、iterative refinement sampling。</p></div>
+      <div class="note-section-body"><p>joint node-edge diffusion、discrete graph corruption、graph transformer denoiser、marginal transition kernel、graph-level conditioning、validity metric / graph property evaluation。</p></div>
     </section>
 
 
     <section class="note-section risk">
       <div class="note-section-kicker">Evidence &amp; Risk</div>
-      <div class="note-section-body"><p>证据来自 NeurIPS 2020 论文和公开实现，DDPM 已成为 diffusion 系列方法的基础参考。风险是原始证据来自图像生成；迁移到 TOPG 必须重新定义噪声空间、合法性约束、离散边预测和 planner confidence，不能只把图像 U-Net 换成 GNN 就期待规划成功。</p></div>
+      <div class="note-section-body"><p>证据来自 ICLR 2023 Poster 正式发表论文、OpenReview 页面和 arXiv <code>2209.14734</code>。PDF 已保存为本地 arXiv 版本：<code>pdfs/2022-09-01-DiGress-discrete-denoising-diffusion-graph-generation.pdf</code>。</p>
+<p>风险在于：DiGress 证明了离散图生成可行，但没有直接证明能生成可执行 task graph。TOPG 还需要方向性、无环性、调度可行性和执行反馈闭环；否则生成出来的 graph 可能像图，但不像计划。</p></div>
     </section>
 
         <div id="relations">
@@ -529,78 +542,28 @@
         <div>
           <h3>当前论文 -> 关联论文 / 前序工作</h3>
           <div class="relation-chip-grid">
-            <a class="relation-chip" style="--rel:#188aa6" href="../notes/2023-diffusion-policy-action-diffusion.html">
-              <span>提供模块</span>
-              <strong>Diffusion Policy</strong>
-            </a>
-
-            <a class="relation-chip" style="--rel:#188aa6" href="../notes/2023-rfdiffusion-protein-structure-function.html">
-              <span>提供模块</span>
-              <strong>RFdiffusion</strong>
+            <a class="relation-chip" style="--rel:#246bfe" href="../notes/2021-d3pm-structured-denoising-diffusion-discrete-state-spaces.html">
+              <span>继承/扩展</span>
+              <strong>D3PM</strong>
             </a>
 
             <a class="relation-chip" style="--rel:#188aa6" href="../notes/2025-layerdag-diffusion-dag-generation.html">
               <span>提供模块</span>
               <strong>LayerDAG</strong>
             </a>
+
+            <a class="relation-chip" style="--rel:#4b6f96" href="../notes/2020-ddpm-denoising-diffusion-probabilistic-models.html">
+              <span>引用/背景</span>
+              <strong>DDPM</strong>
+            </a>
           </div>
         </div>
         <div>
           <h3>下游论文 -> 当前论文</h3>
           <div class="relation-chip-grid">
-            <a class="relation-chip incoming" style="--rel:#246bfe" href="../notes/2020-ddim-denoising-diffusion-implicit-models.html">
+            <a class="relation-chip incoming" style="--rel:#246bfe" href="../notes/2025-layerdag-diffusion-dag-generation.html">
               <span>继承/扩展</span>
-              <strong>DDIM</strong>
-            </a>
-
-            <a class="relation-chip incoming" style="--rel:#246bfe" href="../notes/2020-score-sde-score-based-generative-modeling-sde.html">
-              <span>继承/扩展</span>
-              <strong>Score SDE</strong>
-            </a>
-
-            <a class="relation-chip incoming" style="--rel:#246bfe" href="../notes/2021-improved-ddpm-improved-denoising-diffusion-probabilistic-models.html">
-              <span>继承/扩展</span>
-              <strong>Improved DDPM</strong>
-            </a>
-
-            <a class="relation-chip incoming" style="--rel:#246bfe" href="../notes/2021-d3pm-structured-denoising-diffusion-discrete-state-spaces.html">
-              <span>继承/扩展</span>
-              <strong>D3PM</strong>
-            </a>
-
-            <a class="relation-chip incoming" style="--rel:#246bfe" href="../notes/2022-diffuser-planning-with-diffusion-flexible-behavior-synthesis.html">
-              <span>继承/扩展</span>
-              <strong>Diffuser</strong>
-            </a>
-
-            <a class="relation-chip incoming" style="--rel:#246bfe" href="../notes/2022-classifier-free-diffusion-guidance.html">
-              <span>继承/扩展</span>
-              <strong>CFG</strong>
-            </a>
-
-            <a class="relation-chip incoming" style="--rel:#4b6f96" href="../notes/2022-digress-discrete-denoising-diffusion-graph-generation.html">
-              <span>引用/背景</span>
-              <strong>DiGress</strong>
-            </a>
-
-            <a class="relation-chip incoming" style="--rel:#4b6f96" href="../notes/2022-decision-diffuser-conditional-generative-modeling-decision-making.html">
-              <span>引用/背景</span>
-              <strong>Decision Diffuser</strong>
-            </a>
-
-            <a class="relation-chip incoming" style="--rel:#00a7c7" href="../notes/2024-seadag-semi-autoregressive-diffusion-dag-generation.html">
-              <span>使用/依赖</span>
-              <strong>SeaDAG</strong>
-            </a>
-
-            <a class="relation-chip incoming" style="--rel:#246bfe" href="../notes/2026-cola-dlm-continuous-latent-diffusion-language-model.html">
-              <span>继承/扩展</span>
-              <strong>Cola DLM</strong>
-            </a>
-
-            <a class="relation-chip incoming" style="--rel:#246bfe" href="../notes/2026-elf-embedded-language-flows.html">
-              <span>继承/扩展</span>
-              <strong>ELF</strong>
+              <strong>LayerDAG</strong>
             </a>
           </div>
         </div>
@@ -610,15 +573,15 @@
 
     <section class="note-section ">
       <div class="note-section-kicker">Relation Notes</div>
-      <div class="note-section-body"><p>Diffusion Policy 把 DDPM 的去噪生成思想从图像迁移到机器人 action chunk：目标不再是像素，而是一段连续控制序列。</p>
-<p>RFdiffusion 把去噪生成从图像迁移到 protein backbone scaffold：目标不再是图片，而是满足 motif/结构约束的三维骨架。</p>
-<p>LayerDAG 则把 diffusion 进一步放到离散 DAG 生成里，接近我们要做的 task graph denoising。它不是直接使用原始 DDPM 生成整张图，而是把 DDPM-style iterative refinement 用在 layer 内节点属性和边生成上。</p></div>
+      <div class="note-section-body"><p>D3PM 解决离散 category/token 如何 diffusion；DiGress 把这个思想扩展到 graph，让 nodes 和 edges 都参与离散扩散。</p>
+<p>Score SDE 提供连续理论视角；DiGress 更靠近我们需要的离散结构生成路线。LayerDAG 则进一步处理 DAG 的方向性和层级生成问题，可以看成 DiGress 之后更贴近 task graph 的结构约束版本。</p>
+<p>和 LayerDAG 相比，DiGress 的优势是直接联合建模 node/edge；弱点是没有天然 DAG 保证。LayerDAG 的优势是 layerwise DAG validity；弱点是结构流程更专门。</p></div>
     </section>
 
         <div id="open-question">
     <section class="note-section impact">
       <div class="note-section-kicker">Open Question</div>
-      <div class="note-section-body"><p>TOPG 的 noise schedule 应该破坏什么：任务节点数量、任务技能、location grounding、dependency edge，还是 allocation hint。第一版可以从 mask-denoising 开始，后续再扩展到 multi-step discrete diffusion。</p></div>
+      <div class="note-section-body"><p>TOPG 第一版应该先用 DiGress-style joint node-edge denoising 生成一般 typed task graph，再用 DAG projection 修复；还是一开始就采用 LayerDAG-style layerwise generation 保证无环。前者实现更直接，后者结构合法性更强。</p></div>
     </section>
   </div>
       </article>
@@ -626,19 +589,19 @@
       <aside class="note-aside">
         <section class="note-aside-panel">
           <h2>System Roles</h2>
-          <div class="pill-row"><span class="note-pill role-pill">diffusion foundation</span><span class="note-pill role-pill">denoising generator</span><span class="note-pill role-pill">architecture reference</span></div>
+          <div class="pill-row"><span class="note-pill role-pill">graph generator</span><span class="note-pill role-pill">discrete denoiser</span><span class="note-pill role-pill">task graph generator</span><span class="note-pill role-pill">graph prior model</span></div>
         </section>
         <section class="note-aside-panel">
           <h2>Reusable Modules</h2>
-          <div class="pill-row"><span class="note-pill module-pill">forward noise process</span><span class="note-pill module-pill">reverse denoising process</span><span class="note-pill module-pill">timestep conditioning</span><span class="note-pill module-pill">noise prediction objective</span><span class="note-pill module-pill">iterative refinement sampling</span></div>
+          <div class="pill-row"><span class="note-pill module-pill">joint node edge diffusion</span><span class="note-pill module-pill">discrete graph corruption</span><span class="note-pill module-pill">graph transformer denoiser</span><span class="note-pill module-pill">marginal transition kernel</span><span class="note-pill module-pill">graph level conditioning</span><span class="note-pill module-pill">molecule planarity metrics</span></div>
         </section>
         <section class="note-aside-panel">
           <h2>Next Action</h2>
-          <div class="note-pill role-pill">map ddpm to graph denoising</div>
+          <div class="note-pill role-pill">adapt digress to task graph schema</div>
         </section>
         <section class="note-aside-panel">
           <h2>Tags</h2>
-          <div class="pill-row"><span class="note-pill">DDPM</span><span class="note-pill">diffusion model</span><span class="note-pill">denoising</span><span class="note-pill">score matching</span><span class="note-pill">generative model</span><span class="note-pill">iterative refinement</span></div>
+          <div class="pill-row"><span class="note-pill">DiGress</span><span class="note-pill">graph diffusion</span><span class="note-pill">discrete diffusion</span><span class="note-pill">node-edge denoising</span><span class="note-pill">graph generation</span><span class="note-pill">ICLR 2023</span></div>
         </section>
         <section class="note-aside-panel">
           <h2>Reading Map</h2>

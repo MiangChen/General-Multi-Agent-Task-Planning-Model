@@ -89,7 +89,7 @@
         "target": "2021-alphafold2-highly-accurate-structure-prediction"
       }
     ],
-    "file": "papers\\2020-alphafold-potentials-deep-learning.md",
+    "file": "papers/2020-alphafold-potentials-deep-learning.md",
     "note_html": "notes/2020-alphafold-potentials-deep-learning.html",
     "summary": "AlphaFold1 是 AlphaFold 系列的历史起点：它用深度网络预测残基间距离分布，并把这些 pairwise predictions 转成结构优化的势能函数。对 TOPG 的启发是 “先预测关系约束，再生成结构”，但它还不是我们最想参考的 AF3-style 结构生成架构。",
     "research_question": "给定蛋白质氨基酸序列，能否不依赖昂贵实验测定，预测蛋白质三维结构。传统方法严重依赖模板、物理采样和共进化分析；AlphaFold1 的问题意识是用深度学习直接学习残基对之间的距离约束。",
@@ -193,7 +193,7 @@
         "target": "2025-layerdag-diffusion-dag-generation"
       }
     ],
-    "file": "papers\\2020-ddpm-denoising-diffusion-probabilistic-models.md",
+    "file": "papers/2020-ddpm-denoising-diffusion-probabilistic-models.md",
     "note_html": "notes/2020-ddpm-denoising-diffusion-probabilistic-models.html",
     "summary": "DDPM 是现代 diffusion 生成模型的基础节点：它把生成过程写成“正向逐步加噪 + 反向逐步去噪”，并用简化的噪声预测目标让模型学会从噪声中恢复数据结构。",
     "research_question": "传统生成模型在高质量图像生成上常依赖 GAN、VAE 或 autoregressive decoder。DDPM 关心的问题是：能否用一个清晰的概率扩散过程，把复杂数据分布逐步扰动成高斯噪声，再训练一个神经网络学习反向去噪链，从噪声生成样本。\n\n对我们做 TOPG 来说，真正重要的不是图像任务，而是“结构可以被逐步破坏，也可以被条件模型逐步修复”这个范式。",
@@ -284,7 +284,7 @@
         "target": "2023-combinatorial-optimization-gnn-reasoning"
       }
     ],
-    "file": "papers\\2020-robognn-multi-robot-scheduling-gat.md",
+    "file": "papers/2020-robognn-multi-robot-scheduling-gat.md",
     "note_html": "notes/2020-robognn-multi-robot-scheduling-gat.html",
     "summary": "RoboGNN Scheduler 用模仿学习把传统优化器生成的小规模高质量调度数据蒸馏进 GAT + Q network，从而在同构多机器人 ST/SR/TA/XD 调度问题上快速生成接近最优的任务分配与排序。",
     "research_question": "这篇论文处理的是经典多机器人调度问题：多个机器人要完成一批任务，任务之间有时序约束、等待约束、deadline、地点互斥和 makespan 目标。\n\n用 iTax 语言说，它的问题设定是 SR、ST、TA、XD：每个任务只需要一个机器人，每个机器人一次只做一个任务，任务有时间扩展，并且不同机器人日程之间存在 cross-schedule dependency。论文还假设机器人同构，所以不处理不同机器人能力不同的问题。\n\n传统 MILP / CP / exact solver 能给高质量解，但大规模时太慢；手工启发式更快，但需要领域专家调参。论文的问题就是：能不能让 GAT 从优化器生成的示范解里学一个快速调度策略。",
@@ -392,7 +392,7 @@
         "target": "2025-layerdag-diffusion-dag-generation"
       }
     ],
-    "file": "papers\\2020-ddim-denoising-diffusion-implicit-models.md",
+    "file": "papers/2020-ddim-denoising-diffusion-implicit-models.md",
     "note_html": "notes/2020-ddim-denoising-diffusion-implicit-models.html",
     "summary": "DDIM 的核心贡献是：在不重新训练 DDPM 模型的情况下，构造一族保持相同边际分布的非马尔可夫采样过程，让同一个噪声预测模型可以更快、甚至确定性地生成样本。\n\n正式发表信息：论文 arXiv 版本是 `2010.02502`，正式会议为 **ICLR 2021**。",
     "research_question": "DDPM 的生成质量很强，但原始采样过程通常需要很多步，并且每一步都按马尔可夫链随机去噪。论文关心的问题是：如果训练好的 DDPM denoiser 已经学会预测噪声，是否必须沿用原始随机马尔可夫采样链，还是可以换一条更短、更快、更可控的采样路径。\n\n对 TOPG 来说，对应问题是：如果我们训练了一个 task graph denoiser，能不能在不重训模型的前提下，用不同采样器切换“快速出图”“稳定复现”“多候选探索”等模式。",
@@ -517,7 +517,7 @@
         "target": "2025-layerdag-diffusion-dag-generation"
       }
     ],
-    "file": "papers\\2020-score-sde-score-based-generative-modeling-sde.md",
+    "file": "papers/2020-score-sde-score-based-generative-modeling-sde.md",
     "note_html": "notes/2020-score-sde-score-based-generative-modeling-sde.html",
     "summary": "Score SDE 是 diffusion 理论线的关键统一论文：它把 DDPM、score matching、Langevin dynamics、随机 SDE 采样和确定性 probability flow ODE 放到同一个连续时间框架里。\n\n正式发表信息：论文 arXiv 版本是 `2011.13456`，正式会议为 **ICLR 2021 Oral**。",
     "research_question": "DDPM、NCSN / score matching、Langevin dynamics 看起来像不同路线：有的讲逐步加噪，有的讲估计 `score = grad_x log p(x)`，有的讲从噪声里用随机动力学采样。Score SDE 关心的问题是：这些方法能不能被统一成同一个连续时间生成建模框架。\n\n对 TOPG 来说，这个问题很关键。我们不只想知道“怎么训练一个去噪网络”，还想知道采样器、随机性、确定性路径、条件引导和概率流之间是什么关系。",
@@ -631,7 +631,7 @@
         "target": "2025-layerdag-diffusion-dag-generation"
       }
     ],
-    "file": "papers\\2021-improved-ddpm-improved-denoising-diffusion-probabilistic-models.md",
+    "file": "papers/2021-improved-ddpm-improved-denoising-diffusion-probabilistic-models.md",
     "note_html": "notes/2021-improved-ddpm-improved-denoising-diffusion-probabilistic-models.html",
     "summary": "Improved DDPM 的核心贡献不是“又发明了一种新的 diffusion”，而是把 DDPM 训练得更稳、更省步、更容易扩展：一方面改进噪声日程，让不同时间步的加噪更符合学习难度分布；另一方面用 timestep importance sampling 让训练更关注 loss 高、最难学的时刻。\n\n正式发表信息：论文 arXiv 版本是 `2102.09672`，正式会议为 **ICML 2021**。",
     "research_question": "原始 DDPM 已经证明 diffusion 可以做出高质量样本，但它的训练和采样设计还有很多空间：噪声日程是不是太粗糙，某些时间步是不是太容易、某些时间步是不是太难，训练是不是把太多预算浪费在低价值时刻上。\n\nImproved DDPM 关心的问题是：如何让 diffusion 的训练目标和时间步分配更合理，从而在不改变整体框架的前提下，提升样本质量、似然和采样效率。",
@@ -742,7 +742,7 @@
         "target": "2020-score-sde-score-based-generative-modeling-sde"
       }
     ],
-    "file": "papers\\2021-d3pm-structured-denoising-diffusion-discrete-state-spaces.md",
+    "file": "papers/2021-d3pm-structured-denoising-diffusion-discrete-state-spaces.md",
     "note_html": "notes/2021-d3pm-structured-denoising-diffusion-discrete-state-spaces.html",
     "summary": "D3PM 是把 continuous diffusion 推进到 discrete category / token state space 的关键论文：它把高斯加噪换成离散状态转移矩阵，把“预测噪声”改成“预测原始 token / category”，从而让 diffusion 可以处理文本 token、离散图节点、边类型等符号对象。\n\n正式发表信息：论文 arXiv 版本是 `2107.03006`，正式会议为 **NeurIPS 2021**。",
     "research_question": "DDPM 的原始形式主要面向连续空间，例如图像像素或连续 latent。可是很多重要生成对象天然是离散的：文本 token、类别标签、离散图节点类型、边类型、mask 状态、任务类型和机器人 skill label。\n\nD3PM 关心的问题是：能不能保留 diffusion 的逐步 corruption / denoising 思想，但把状态空间从连续值改成有限 category / token 集合。\n\n对 TOPG 来说，这正好对应 task graph generation 的基础问题：任务节点、依赖边、资源约束和机器人能力都不是连续像素，而是 typed discrete symbols。",
@@ -831,7 +831,7 @@
     "contrasts": [],
     "published_value": 24259,
     "relations": [],
-    "file": "papers\\2021-hierarchical-scene-graph-navigation-gnn.md",
+    "file": "papers/2021-hierarchical-scene-graph-navigation-gnn.md",
     "note_html": "notes/2021-hierarchical-scene-graph-navigation-gnn.html",
     "summary": "这篇论文的核心价值是：把分层 3D Scene Graph 变成机器人导航策略的显式空间记忆，并通过 GNN 在 action node 上做决策，而不是让策略从 RGB 或局部深度图里自己学出场景结构。",
     "research_question": "机器人导航策略如果只看 raw image、depth 或 2D semantic segmentation，需要自己从低层观测里学出三维结构、拓扑关系、语义关联和历史访问记忆。这个学习负担很重，也不利于泛化到新场景。\n\n论文的问题是：如果机器人已经有一个 3D Dynamic Scene Graph，它能不能直接在这张结构化图上学习导航策略，并利用图中显式的层级信息和访问记忆提升 object search 表现。",
@@ -963,7 +963,7 @@
         "target": "2024-alphafold3-biomolecular-interactions"
       }
     ],
-    "file": "papers\\2021-alphafold2-highly-accurate-structure-prediction.md",
+    "file": "papers/2021-alphafold2-highly-accurate-structure-prediction.md",
     "note_html": "notes/2021-alphafold2-highly-accurate-structure-prediction.html",
     "summary": "AlphaFold2 是 TOPG 架构最重要的前序参考之一：它把蛋白结构预测变成 single representation 和 pair representation 的共同更新问题，并通过 Evoformer、structure module、recycling 和 confidence head 形成端到端结构预测系统。",
     "research_question": "如何从氨基酸序列以及同源序列信息中预测接近实验精度的蛋白质三维结构。\n\n对我们来说，论文真正有价值的问题不是蛋白质本身，而是：复杂结构对象能否通过 token 表示、pair relation 表示和 iterative refinement 被模型化。",
@@ -1061,7 +1061,7 @@
         "target": "2023-combinatorial-optimization-gnn-reasoning"
       }
     ],
-    "file": "papers\\2022-learned-subteam-performance-routing.md",
+    "file": "papers/2022-learned-subteam-performance-routing.md",
     "note_html": "notes/2022-learned-subteam-performance-routing.html",
     "summary": "这篇论文把 GNN 放在高层任务规划和低层 MILP 路由之间：GNN 先估计某个 UAV/UGV 子团队完成某个区域检查任务的耗时，再只把最有希望的分配方案送进低层 MILP 精算，从而避免在推测阶段反复触发昂贵的 MILP。",
     "research_question": "场景中有多个子任务区域，每个区域内部又是一个异构多机器人路由问题。系统需要从总体机器人队伍中，为每个区域划分一个小团队，例如分配几个 UAV 和几个 UGV 去检查某片区域。\n\n难点在于：要判断某个子团队是否适合某个区域，通常需要求解该区域内部的 routing MILP，才能得到精确耗时。如果高层分配阶段枚举很多子团队-区域组合，每个组合都调用 MILP，规划时间会爆炸。\n\n论文把这个问题整体归为 ST-MR-TA-ID：机器人是 single-task，任务需要 multi-robot，分配是 time-extended，并且区域内部路由存在 in-schedule dependencies。它的高层 GNN 估计部分可以看成 ST-MR-IA 式 coalition formation：先估计“哪个子团队适合哪个任务”。",
@@ -1076,6 +1076,117 @@
     "open_question": "如何把这个 GNN cost estimator 扩展成多模块 planner 的统一代价预测层：不仅估计区域检查耗时，还估计 VLA/WAM 执行成功率、通信风险、能源消耗和任务失败后的恢复成本。\n\n另一个问题是如何把本文的 ST-MR-IA 高层子团队划分，与整体 ST-MR-TA-ID 的时间扩展任务调度结合起来，避免只得到“谁去哪片区域”，却没有得到跨区域、跨团队的时间顺序和依赖约束。"
   },
   {
+    "id": "2022-diffuser-planning-with-diffusion-flexible-behavior-synthesis",
+    "title": "Planning with Diffusion for Flexible Behavior Synthesis",
+    "short_title": "Diffuser",
+    "year": 2022,
+    "published": "2022-05",
+    "venue": "ICML 2022",
+    "status": "read",
+    "scope": "in_scope",
+    "readiness": "high",
+    "action": "build_note",
+    "tech_paradigm": "diffusion_planning",
+    "primary_domain": "Diffusion",
+    "domains": [
+      "Diffusion",
+      "Planning",
+      "RL",
+      "Trajectory Generation"
+    ],
+    "primary_technical_layer": "trajectory_planning",
+    "primary_task_family": "diffusion_trajectory_planning",
+    "platform": "offline_rl_control",
+    "planning_relevance": "Diffuser 把 trajectory / path 本身当作 diffusion 生成对象：从随机噪声开始逐步 denoise 出一段状态-动作轨迹，并在采样时用 reward/value guidance 或条件 inpainting 引导计划。它把“采样轨迹”和“做路径规划”几乎合成同一个过程，是 diffusion 用于 planning 的核心源头论文。",
+    "multi_robot_relevance": "间接但重要。多机器人可以把每个机器人或联合系统的计划轨迹作为 diffusion sample，再用约束或 value guidance 引入避碰、资源占用、目标到达和协同奖励。不过直接扩展到多机器人会遇到联合状态空间和约束合法性问题。",
+    "system_roles": [
+      "diffusion_foundation",
+      "trajectory_planner",
+      "planner_sampler",
+      "behavior_prior_model"
+    ],
+    "reusable_modules": [
+      "trajectory_diffusion_model",
+      "value_guided_sampling",
+      "classifier_guided_planning",
+      "trajectory_inpainting",
+      "receding_horizon_diffusion_planning",
+      "flexible_test_time_conditioning"
+    ],
+    "evidence_level": "paper_read",
+    "next_action": "compare_diffuser_with_task_graph_generation",
+    "tags": [
+      "Diffuser",
+      "diffusion planning",
+      "trajectory generation",
+      "path planning",
+      "offline RL",
+      "ICML 2022"
+    ],
+    "authors": [
+      "Michael Janner",
+      "Yilun Du",
+      "Joshua B. Tenenbaum",
+      "Sergey Levine"
+    ],
+    "institutions": [
+      "UC Berkeley",
+      "MIT"
+    ],
+    "doi": "",
+    "arxiv": "2205.09991",
+    "url": "https://proceedings.mlr.press/v162/janner22a.html",
+    "project_url": "https://diffusion-planning.github.io/",
+    "pdf_path": "pdfs/2022-05-01-Diffuser-planning-with-diffusion-flexible-behavior-synthesis.pdf",
+    "image_url": "",
+    "zotero_key": "",
+    "citekey": "janner2022diffuser",
+    "cites": [
+      "2020-ddpm-denoising-diffusion-probabilistic-models",
+      "2022-classifier-free-diffusion-guidance"
+    ],
+    "extends": [
+      "2020-ddpm-denoising-diffusion-probabilistic-models"
+    ],
+    "uses": [],
+    "enables": [
+      "2023-diffusion-policy-action-diffusion"
+    ],
+    "complements": [
+      "2022-digress-discrete-denoising-diffusion-graph-generation",
+      "2025-layerdag-diffusion-dag-generation"
+    ],
+    "contrasts": [],
+    "published_value": 24268,
+    "relations": [
+      {
+        "type": "extends",
+        "target": "2020-ddpm-denoising-diffusion-probabilistic-models"
+      },
+      {
+        "type": "enables",
+        "target": "2023-diffusion-policy-action-diffusion"
+      },
+      {
+        "type": "cites",
+        "target": "2022-classifier-free-diffusion-guidance"
+      }
+    ],
+    "file": "papers/2022-diffuser-planning-with-diffusion-flexible-behavior-synthesis.md",
+    "note_html": "notes/2022-diffuser-planning-with-diffusion-flexible-behavior-synthesis.html",
+    "summary": "Diffuser 把 diffusion model 用到路径规划 / 轨迹规划上：模型不是生成图像，而是从噪声中逐步 denoise 出一段状态-动作 trajectory，让“采样”和“规划”几乎变成同一个过程。\n\n正式发表信息：论文 arXiv 版本是 `2205.09991`，正式会议为 **ICML 2022**。",
+    "research_question": "传统 model-based RL 常把学习模型和规划器分开：模型负责预测 dynamics，真正决策交给 trajectory optimizer。这个组合听起来清晰，但实践里会有问题：学到的 dynamics 不一定适合优化器，优化器也可能在模型误差上投机。\n\nDiffuser 问的是：能不能把尽可能多的 trajectory optimization pipeline 折叠进生成模型本身，让模型直接生成可执行的行为轨迹。\n\n对我们做 TOPG 来说，这篇论文的价值在于它第一次很清楚地把 diffusion 从“生成图片/动作”推到“生成计划轨迹”：路径本身就是生成对象。",
+    "method": "Diffuser 把一段行为表示成 trajectory：\n\n```text\ntau = (s_0, a_0, s_1, a_1, ..., s_H)\n```\n\n训练时，把数据集里的轨迹加噪，然后训练 denoiser 从 noisy trajectory 中恢复 clean trajectory。推理时，从随机噪声轨迹开始，逐步 denoise，最后得到一段状态-动作路径。\n\n核心直觉是：\n\n```text\nrandom trajectory noise\n  -> denoise\n  -> plausible behavior trajectory\n  -> execute first action / receding horizon\n```\n\n为了让生成轨迹满足测试时任务，Diffuser 使用两类 conditioning。\n\n第一，value / reward guidance。采样时用 value function 或 reward gradient 引导 denoising，让 trajectory 往高回报区域移动。这和 classifier guidance 的思想类似：生成模型给出行为先验，外部目标函数把采样推向想要的计划。\n\n第二，trajectory inpainting。像图像修补一样固定 trajectory 的一部分，例如起点、终点、某些中间状态，再让 diffusion 补全其余部分。这让同一个模型可以在测试时适配不同目标、不同约束和不同路径片段。",
+    "contribution": "- 把 diffusion 从图像生成迁移到 trajectory / path planning。\n- 把 planning 解释成 iterative trajectory denoising：采样轨迹就是生成计划。\n- 用 value-guided sampling 把 reward / objective 接进 diffusion 采样过程。\n- 用 trajectory inpainting 支持灵活的测试时条件，例如指定目标状态或局部路径约束。\n- 展示 diffusion planner 在 long-horizon decision-making 和 test-time flexibility 上的潜力。",
+    "reading_highlights": "",
+    "limitation": "Diffuser 主要在控制和 offline RL 环境里验证，trajectory 通常是连续状态-动作序列。它不直接生成离散 task graph，也不保证符号前置依赖、资源约束或多机器人协同合法性。\n\n扩展到多机器人时，联合 trajectory 维度会快速变大；如果每个机器人独立采样，又可能破坏全局避碰、资源占用和任务同步约束。因此它更像 trajectory-level planner 或低层行为 prior，不是完整的 task graph planner。",
+    "relation": "DDPM 提供基础 denoising 生成框架，Diffuser 把生成对象从图像换成 trajectory。\n\nDiffusion Policy 后来把 diffusion 用于机器人 action chunk，更靠近低层 visuomotor execution；Diffuser 更强调规划，把整段状态-动作序列当作计划。\n\nDiGress / LayerDAG 生成的是 graph 结构，Diffuser 生成的是 trajectory。对 TOPG 来说，两者可以分工：LayerDAG 生成高层 task graph，Diffuser 或 Diffusion Policy 生成某个子任务的连续路径/动作轨迹。",
+    "planning_insight": "TOPG 可以把 Diffuser 放在 task graph 之后：\n\n```text\ntask graph node\n  -> local goal / constraint\n  -> trajectory diffuser\n  -> executable path / action sequence\n  -> feedback to graph planner\n```\n\n也可以把它作为 planner sampler 的类比：如果 trajectory 可以通过 diffusion denoise 出来，那么 task graph 也可以通过 discrete graph denoising 生成。不同之处是，trajectory 是时间序列，task graph 是带 typed node/edge 和 partial order 的结构对象。\n\n对于多机器人，Diffuser 的 value guidance 可以扩展成：\n\n```text\nreward = task progress\n       - collision risk\n       - resource conflict\n       - communication delay\n       - energy cost\n```\n\n但这需要强约束或 repair 机制，否则 diffusion 生成的轨迹可能高分但不可执行。",
+    "reusable_module_text": "trajectory diffusion model、value-guided sampling、classifier-guided planning、trajectory inpainting、receding-horizon diffusion planning、flexible test-time conditioning。",
+    "evidence_risk": "证据来自 ICML 2022 正式发表论文、PMLR 页面和 arXiv `2205.09991`。PDF 已保存为本地 arXiv 版本：`pdfs/2022-05-01-Diffuser-planning-with-diffusion-flexible-behavior-synthesis.pdf`。\n\n风险在于：Diffuser 强在连续 trajectory planning，不直接处理离散 task graph、DAG 结构或多机器人约束。TOPG 需要把它和 graph-level planner 分层使用，而不是把它直接当成多机器人任务规划总模型。",
+    "open_question": "TOPG 应该把 Diffuser 用作低层 trajectory generator，还是把它的 value-guided sampling 思想迁移到高层 task graph generation。第一版更稳的是：LayerDAG 负责生成 task graph，Diffuser 类方法负责生成单个 task node 的路径或动作轨迹。"
+  },
+  {
     "id": "2023-daydreamer-world-models-for-physical-robot-learning",
     "title": "DayDreamer: World Models for Physical Robot Learning",
     "short_title": "DayDreamer",
@@ -1087,10 +1198,11 @@
     "readiness": "medium",
     "action": "buffer",
     "tech_paradigm": "world_model_rl",
-    "primary_domain": "World Model",
+    "primary_domain": "Model-based RL",
     "domains": [
-      "World Model",
-      "RL"
+      "RL",
+      "Model-based RL",
+      "World Model"
     ],
     "primary_technical_layer": "embodied_learning",
     "primary_task_family": "real_robot_learning",
@@ -1139,7 +1251,7 @@
     "contrasts": [],
     "published_value": 24269,
     "relations": [],
-    "file": "papers\\2023-daydreamer-world-models-for-physical-robot-learning.md",
+    "file": "papers/2023-daydreamer-world-models-for-physical-robot-learning.md",
     "note_html": "notes/2023-daydreamer-world-models-for-physical-robot-learning.html",
     "summary": "DayDreamer 把 Dreamer 式 world model 学习带到真实机器人，强调从少量真实交互中学习行为。",
     "research_question": "机器人能否通过在线真实经验和 world model，在样本效率更高的情况下学习多个物理任务。",
@@ -1245,7 +1357,7 @@
         "target": "2025-layerdag-diffusion-dag-generation"
       }
     ],
-    "file": "papers\\2022-classifier-free-diffusion-guidance.md",
+    "file": "papers/2022-classifier-free-diffusion-guidance.md",
     "note_html": "notes/2022-classifier-free-diffusion-guidance.html",
     "summary": "Classifier-Free Diffusion Guidance 是条件 diffusion 的核心控制方法：它不用额外训练 classifier，而是在同一个模型里同时学习 conditional 和 unconditional denoising，采样时通过 guidance scale 控制生成结果对条件的服从强度。",
     "research_question": "Classifier guidance 可以提高条件生成质量，但需要单独训练一个 classifier，并且在很多任务里 classifier 本身很难定义。论文关心的问题是：能不能只训练一个 diffusion model，就同时获得无条件生成能力和强条件引导能力。\n\n对 TOPG 来说，对应问题是：生成任务图时，如何让模型既能探索多种可行计划，又能在需要时强遵循语言目标、场景事实、机器人能力、技能兼容性和 repair feedback。",
@@ -1260,6 +1372,228 @@
     "open_question": "TOPG 应该把 guidance scale 设计成全局单旋钮，还是针对 language、scene、agent、skill、safety、repair context 分别设置多个 scale。第一版可以先实现全局 `condition_scale`，后续再拆成多条件 guidance。"
   },
   {
+    "id": "2022-digress-discrete-denoising-diffusion-graph-generation",
+    "title": "DiGress: Discrete Denoising diffusion for graph generation",
+    "short_title": "DiGress",
+    "year": 2022,
+    "published": "2022-09",
+    "venue": "ICLR 2023 Poster",
+    "status": "read",
+    "scope": "in_scope",
+    "readiness": "high",
+    "action": "build_note",
+    "tech_paradigm": "discrete_graph_diffusion",
+    "primary_domain": "Diffusion",
+    "domains": [
+      "Diffusion",
+      "Graph Generation",
+      "Discrete Generation",
+      "Task Graph"
+    ],
+    "primary_technical_layer": "graph_generation",
+    "primary_task_family": "discrete_graph_diffusion_generation",
+    "platform": "graph_generation",
+    "planning_relevance": "DiGress 把 D3PM 的离散 diffusion 直接应用到 graph generation：node features 和 edge features 同时作为离散变量扩散，前向过程逐步破坏图，反向过程用 graph transformer 去恢复节点类型和边类型。对 TOPG 来说，这是从 token diffusion 迈向 task graph diffusion 的关键桥梁。",
+    "multi_robot_relevance": "多机器人任务规划图天然包含任务节点、依赖边、资源边、协作边和 agent/skill 属性。DiGress 提供了同时生成 node 和 edge 的离散图扩散框架，可迁移到 typed task graph 生成。",
+    "system_roles": [
+      "graph_generator",
+      "discrete_denoiser",
+      "task_graph_generator",
+      "graph_prior_model"
+    ],
+    "reusable_modules": [
+      "joint_node_edge_diffusion",
+      "discrete_graph_corruption",
+      "graph_transformer_denoiser",
+      "marginal_transition_kernel",
+      "graph_level_conditioning",
+      "molecule_planarity_metrics"
+    ],
+    "evidence_level": "paper_read",
+    "next_action": "adapt_digress_to_task_graph_schema",
+    "tags": [
+      "DiGress",
+      "graph diffusion",
+      "discrete diffusion",
+      "node-edge denoising",
+      "graph generation",
+      "ICLR 2023"
+    ],
+    "authors": [
+      "Clément Vignac",
+      "Igor Krawczuk",
+      "Antoine Siraudin",
+      "Bohan Wang",
+      "Volkan Cevher",
+      "Pascal Frossard"
+    ],
+    "institutions": [
+      "EPFL"
+    ],
+    "doi": "10.48550/arXiv.2209.14734",
+    "arxiv": "2209.14734",
+    "url": "https://openreview.net/forum?id=UaAD-Nu86WX",
+    "project_url": "https://github.com/cvignac/DiGress",
+    "pdf_path": "pdfs/2022-09-01-DiGress-discrete-denoising-diffusion-graph-generation.pdf",
+    "image_url": "",
+    "zotero_key": "",
+    "citekey": "vignac2022digress",
+    "cites": [
+      "2021-d3pm-structured-denoising-diffusion-discrete-state-spaces",
+      "2020-ddpm-denoising-diffusion-probabilistic-models"
+    ],
+    "extends": [
+      "2021-d3pm-structured-denoising-diffusion-discrete-state-spaces"
+    ],
+    "uses": [],
+    "enables": [
+      "2025-layerdag-diffusion-dag-generation"
+    ],
+    "complements": [
+      "2020-score-sde-score-based-generative-modeling-sde"
+    ],
+    "contrasts": [],
+    "published_value": 24272,
+    "relations": [
+      {
+        "type": "extends",
+        "target": "2021-d3pm-structured-denoising-diffusion-discrete-state-spaces"
+      },
+      {
+        "type": "enables",
+        "target": "2025-layerdag-diffusion-dag-generation"
+      },
+      {
+        "type": "cites",
+        "target": "2020-ddpm-denoising-diffusion-probabilistic-models"
+      }
+    ],
+    "file": "papers/2022-digress-discrete-denoising-diffusion-graph-generation.md",
+    "note_html": "notes/2022-digress-discrete-denoising-diffusion-graph-generation.html",
+    "summary": "DiGress 是把离散 diffusion 真正推进到 graph generation 的关键论文：它让 node features 和 edge features 同时扩散、同时去噪，从而生成带节点类型和边类型的完整离散图。\n\n正式发表信息：论文 arXiv 版本是 `2209.14734`，正式会议为 **ICLR 2023 Poster**。",
+    "research_question": "D3PM 说明了离散 token/category 可以做 diffusion，但 graph 不是一串独立 token。图同时有节点、边、节点属性、边属性和全局结构约束。如果只生成节点而不生成边，或者只生成邻接矩阵而不处理节点类型，生成结果就很难成为真实可用的结构对象。\n\nDiGress 关心的问题是：如何把离散 denoising diffusion 扩展到 graph，使模型能够联合生成节点类型和边类型，并保留图结构分布。\n\n对 TOPG 来说，这就是 task graph generation 的直接前置问题：任务规划不是生成一个 token 序列，而是生成 typed nodes + typed dependency edges。",
+    "method": "DiGress 把一张图表示成三类对象：\n\n```text\nX: node features\nE: edge features\ny: graph-level features / condition\n```\n\n其中 `X` 和 `E` 都是离散类别。节点可以是 atom type，边可以是 bond type；迁移到 TOPG 时，节点可以是 task type / skill type，边可以是 dependency / sync / resource / same-agent-continuity 等类型。\n\n前向过程对 node 和 edge 同时做离散 corruption：\n\n```text\nq(G_t | G_{t-1})\n  = q(X_t | X_{t-1}) q(E_t | E_{t-1}) q(y_t | y_{t-1})\n```\n\n直觉上，就是每一步都同时扰乱节点类别和边类别。连续 diffusion 里加的是高斯噪声，D3PM 里对 token 用转移矩阵，DiGress 则把这套离散转移扩展到整张图的 nodes 和 edges。\n\n反向过程用 graph transformer denoiser 接收 noisy graph：\n\n```text\n(X_t, E_t, y_t)\n```\n\n然后预测干净图或前一步图的分布。模型通过 graph transformer 在节点、边和全局特征之间传递信息，因此边的预测不是独立的，节点类型也会受邻接结构和全局图条件影响。\n\nDiGress 还强调 transition kernel 可以利用数据边际分布，而不是完全均匀地随机替换类别。这样生成过程更贴近真实图分布。",
+    "contribution": "- 把离散 diffusion 从 token/category 推进到 graph generation。\n- 同时扩散 node features 和 edge features，而不是只生成节点或只生成邻接矩阵。\n- 使用 graph transformer 作为 denoiser，让节点、边和全局图特征交互更新。\n- 用离散 transition kernel 处理 categorical node / edge corruption，可使用 marginal distribution 提高稳定性。\n- 在分子图和非分子图任务上验证，成为后续 graph diffusion 和 LayerDAG 类方法的重要参考。",
+    "reading_highlights": "",
+    "limitation": "DiGress 生成的是一般图，不天然保证 DAG、partial order、任务前置依赖、资源约束或可执行调度。对于 task graph，边不只是“有无连接”或 bond type，还包含方向、语义、时序和执行约束。\n\n此外，DiGress 原始任务更偏分子图和通用图生成。TOPG 需要额外引入语言条件、场景 grounding、机器人能力、执行反馈和 graph validity checker。",
+    "relation": "D3PM 解决离散 category/token 如何 diffusion；DiGress 把这个思想扩展到 graph，让 nodes 和 edges 都参与离散扩散。\n\nScore SDE 提供连续理论视角；DiGress 更靠近我们需要的离散结构生成路线。LayerDAG 则进一步处理 DAG 的方向性和层级生成问题，可以看成 DiGress 之后更贴近 task graph 的结构约束版本。\n\n和 LayerDAG 相比，DiGress 的优势是直接联合建模 node/edge；弱点是没有天然 DAG 保证。LayerDAG 的优势是 layerwise DAG validity；弱点是结构流程更专门。",
+    "planning_insight": "TOPG 可以把 DiGress 作为第一版 graph diffusion generator 的蓝本：\n\n```text\nX = task node types / skill requirements / object-location tokens\nE = dependency edge types / resource edges / sync edges / handoff edges\ny = language goal + scene summary + robot team profile\n```\n\n前向过程：\n\n```text\nclean task graph\n  -> corrupt node categories\n  -> corrupt edge categories\n  -> noisy task graph\n```\n\n反向过程：\n\n```text\ngraph transformer denoiser\n  -> predict clean node types\n  -> predict clean edge types\n  -> validity repair / DAG projection\n  -> executable task graph candidate\n```\n\n关键问题是：TOPG 的 edge feature 必须比分子 bond 更丰富。至少需要区分 prerequisite、parallel-sync、resource-conflict、same-agent-continuity、communication、failure-recovery 等边类型。",
+    "reusable_module_text": "joint node-edge diffusion、discrete graph corruption、graph transformer denoiser、marginal transition kernel、graph-level conditioning、validity metric / graph property evaluation。",
+    "evidence_risk": "证据来自 ICLR 2023 Poster 正式发表论文、OpenReview 页面和 arXiv `2209.14734`。PDF 已保存为本地 arXiv 版本：`pdfs/2022-09-01-DiGress-discrete-denoising-diffusion-graph-generation.pdf`。\n\n风险在于：DiGress 证明了离散图生成可行，但没有直接证明能生成可执行 task graph。TOPG 还需要方向性、无环性、调度可行性和执行反馈闭环；否则生成出来的 graph 可能像图，但不像计划。",
+    "open_question": "TOPG 第一版应该先用 DiGress-style joint node-edge denoising 生成一般 typed task graph，再用 DAG projection 修复；还是一开始就采用 LayerDAG-style layerwise generation 保证无环。前者实现更直接，后者结构合法性更强。"
+  },
+  {
+    "id": "2022-decision-diffuser-conditional-generative-modeling-decision-making",
+    "title": "Is Conditional Generative Modeling all you need for Decision-Making?",
+    "short_title": "Decision Diffuser",
+    "year": 2022,
+    "published": "2022-11",
+    "venue": "ICLR 2023 Notable Top 5%",
+    "status": "read",
+    "scope": "in_scope",
+    "readiness": "high",
+    "action": "build_note",
+    "tech_paradigm": "decision_diffusion_modeling",
+    "primary_domain": "Diffusion",
+    "domains": [
+      "Diffusion",
+      "Planning",
+      "RL",
+      "Trajectory Generation"
+    ],
+    "primary_technical_layer": "state_trajectory_planning",
+    "primary_task_family": "conditional_generative_decision_making",
+    "platform": "offline_rl_control",
+    "planning_relevance": "Decision Diffuser 和 Diffuser 很接近，都是把 decision-making 变成条件生成问题；关键区别是它更分层：diffusion model 主要生成未来 state trajectory，再用 inverse dynamics / action model 从相邻 state 还原 action。对 TOPG 来说，这提示高层 planner 可以先生成状态/任务进展，再由执行器补动作。",
+    "multi_robot_relevance": "间接但有启发。多机器人系统可以先生成联合状态进展或任务图状态序列，再让各机器人局部 policy / inverse dynamics 生成动作；这样比直接在巨大联合 action space 上 diffusion 更稳。",
+    "system_roles": [
+      "diffusion_foundation",
+      "state_trajectory_planner",
+      "planner_sampler",
+      "inverse_dynamics_executor"
+    ],
+    "reusable_modules": [
+      "state_trajectory_diffusion",
+      "inverse_dynamics_action_model",
+      "return_conditioning",
+      "constraint_conditioning",
+      "classifier_free_planning_guidance",
+      "hierarchical_decision_generation"
+    ],
+    "evidence_level": "paper_read",
+    "next_action": "compare_decision_diffuser_with_diffuser_and_topg",
+    "tags": [
+      "Decision Diffuser",
+      "diffusion planning",
+      "state trajectory",
+      "inverse dynamics",
+      "offline RL",
+      "ICLR 2023"
+    ],
+    "authors": [
+      "Anurag Ajay",
+      "Yilun Du",
+      "Abhi Gupta",
+      "Joshua B. Tenenbaum",
+      "Tommi Jaakkola",
+      "Pulkit Agrawal"
+    ],
+    "institutions": [
+      "MIT"
+    ],
+    "doi": "10.48550/arXiv.2211.15657",
+    "arxiv": "2211.15657",
+    "url": "https://openreview.net/forum?id=sP1fo2K9DFG",
+    "project_url": "https://anuragajay.github.io/decision-diffuser/",
+    "pdf_path": "pdfs/2022-11-01-Decision-Diffuser-conditional-generative-modeling-decision-making.pdf",
+    "image_url": "",
+    "zotero_key": "",
+    "citekey": "ajay2022decisiondiffuser",
+    "cites": [
+      "2022-diffuser-planning-with-diffusion-flexible-behavior-synthesis",
+      "2020-ddpm-denoising-diffusion-probabilistic-models"
+    ],
+    "extends": [
+      "2022-diffuser-planning-with-diffusion-flexible-behavior-synthesis"
+    ],
+    "uses": [],
+    "enables": [
+      "2023-diffusion-policy-action-diffusion"
+    ],
+    "complements": [
+      "2025-layerdag-diffusion-dag-generation"
+    ],
+    "contrasts": [],
+    "published_value": 24274,
+    "relations": [
+      {
+        "type": "extends",
+        "target": "2022-diffuser-planning-with-diffusion-flexible-behavior-synthesis"
+      },
+      {
+        "type": "enables",
+        "target": "2023-diffusion-policy-action-diffusion"
+      },
+      {
+        "type": "cites",
+        "target": "2020-ddpm-denoising-diffusion-probabilistic-models"
+      }
+    ],
+    "file": "papers/2022-decision-diffuser-conditional-generative-modeling-decision-making.md",
+    "note_html": "notes/2022-decision-diffuser-conditional-generative-modeling-decision-making.html",
+    "summary": "Decision Diffuser 把 decision-making 看成 conditional generative modeling：先用 diffusion 生成未来 state trajectory，再用 inverse dynamics / action model 把相邻状态转成动作，因此比直接生成 action trajectory 更分层。\n\n正式发表信息：论文 arXiv 版本是 `2211.15657`，正式会议为 **ICLR 2023 Notable Top 5%**。",
+    "research_question": "Diffuser 已经说明 diffusion 可以生成 trajectory 并用于规划。但直接生成包含 action 的完整 trajectory 仍然会把状态建模和动作建模绑在一起。\n\nDecision Diffuser 问的是：是否可以把 decision-making 更彻底地写成条件生成问题，并把“想要到达什么状态序列”和“具体怎么动作”拆开。\n\n对 TOPG 来说，这个拆分很重要。高层任务规划通常更关心状态进展、子任务完成顺序和约束满足，而不是一开始就决定每个低层 action。",
+    "method": "Decision Diffuser 的核心是分层。\n\n第一层，用 diffusion 生成未来 state trajectory：\n\n```text\ns_0, s_1, ..., s_H\n```\n\n模型从 noisy state sequence 开始去噪，生成一段符合条件的未来状态序列。条件可以包括 return、goal、constraint 等。\n\n第二层，用 inverse dynamics / action model 生成动作：\n\n```text\na_t = f(s_t, s_{t+1})\n```\n\n也就是说，它不要求 diffusion model 直接把 action 全部学出来，而是先想清楚“状态应该怎么变化”，再由另一个模型把相邻状态转换成可执行动作。\n\n这和你的理解一致：\n\n```text\nDiffuser:\n  diffusion 直接生成 state-action trajectory\n\nDecision Diffuser:\n  diffusion 生成 state trajectory\n  inverse dynamics / policy 生成 action\n```\n\n这种分层让 diffusion 更专注于长程结构和目标达成，动作层则交给更局部、更容易学习的模型。",
+    "contribution": "- 把 offline decision-making 表述成 conditional generative modeling。\n- 用 diffusion 生成 state trajectory，而不是必须直接生成 action。\n- 用 inverse dynamics action model 从相邻状态恢复动作，实现 state planning 和 action execution 的分工。\n- 支持 return conditioning、goal conditioning、constraint conditioning 等多种测试时条件。\n- 为后续“先生成计划状态，再调用执行器”的分层 planner 提供清晰范式。",
+    "reading_highlights": "",
+    "limitation": "Decision Diffuser 主要验证在 offline RL / control benchmark 上，状态空间通常是连续或低维结构化状态。它不直接处理语言任务、离散 task graph、DAG 依赖、资源约束或多机器人协同。\n\n如果迁移到真实机器人，inverse dynamics 模型必须足够可靠；否则状态序列看起来合理，但动作无法执行。多机器人场景还需要考虑联合状态和个体动作之间的可分解性。",
+    "relation": "Diffuser 直接把 trajectory 作为 diffusion 生成对象，包含状态和动作；Decision Diffuser 更强调分层，把 state trajectory generation 和 action recovery 分开。\n\nDiffusion Policy 更像低层 action chunk executor；Decision Diffuser 更像高层状态轨迹 planner + 局部 action model。\n\nLayerDAG 生成的是离散 task graph，Decision Diffuser 生成的是连续 state trajectory。它们可以组成两级系统：LayerDAG 规划任务依赖，Decision Diffuser 为每个任务或任务片段生成状态进展，执行器再产生动作。",
+    "planning_insight": "TOPG 可以借鉴 Decision Diffuser 的分层思想：\n\n```text\nhigh-level graph planner\n  -> desired state / task progress sequence\n  -> inverse dynamics / executor policy\n  -> robot actions\n```\n\n这比“直接生成所有机器人的联合动作”更稳。多机器人任务规划可以先生成任务状态流：\n\n```text\nobject located\narea cleared\nrobot A at room 1\nrobot B carrying item\nhandoff completed\n```\n\n然后由每个机器人自己的 policy 或 inverse dynamics model 负责把状态变化转成动作。这样 high-level planner 只管“世界怎么变”，executor 负责“身体怎么动”。",
+    "reusable_module_text": "state trajectory diffusion、inverse dynamics action model、return conditioning、constraint conditioning、classifier-free planning guidance、hierarchical decision generation。",
+    "evidence_risk": "证据来自 ICLR 2023 notable top 5% 正式发表论文、OpenReview 页面和 arXiv `2211.15657`。PDF 已保存为本地 arXiv 版本：`pdfs/2022-11-01-Decision-Diffuser-conditional-generative-modeling-decision-making.pdf`。\n\n风险在于：state trajectory 在 benchmark 里容易定义，但 TOPG 的“状态”可能是 scene graph、task graph、object relation、robot capability 和 execution status 的混合结构。迁移时最难的是定义可学习、可验证、可执行的 state representation。",
+    "open_question": "TOPG 是否应该先生成 task graph，再生成 state trajectory，最后生成 action；还是把 task graph 和 state trajectory 合成一个统一的 planning graph。第一版建议保留分层：task graph 负责结构，state trajectory 负责连续进展，executor 负责动作。"
+  },
+  {
     "id": "2023-dreamerv3-world-models",
     "title": "Mastering Diverse Control Tasks through World Models",
     "short_title": "DreamerV3",
@@ -1271,10 +1605,11 @@
     "readiness": "high",
     "action": "build_note",
     "tech_paradigm": "world_model_rl",
-    "primary_domain": "World Model",
+    "primary_domain": "Model-based RL",
     "domains": [
-      "World Model",
-      "RL"
+      "RL",
+      "Model-based RL",
+      "World Model"
     ],
     "primary_technical_layer": "imagination_planning",
     "primary_task_family": "latent_world_model_control",
@@ -1332,7 +1667,7 @@
         "target": "2023-daydreamer-world-models-for-physical-robot-learning"
       }
     ],
-    "file": "papers\\2023-dreamerv3-world-models.md",
+    "file": "papers/2023-dreamerv3-world-models.md",
     "note_html": "notes/2023-dreamerv3-world-models.html",
     "summary": "DreamerV3 是 world model RL 的重要基线：先学环境模型，再在想象轨迹中优化行为，并在 Nature 版本中展示了跨多控制域和 Minecraft 长程任务的泛化能力。",
     "research_question": "能否用一个相对统一的模型化 RL 算法，在很多差异很大的控制任务上减少人工调参并保持稳定学习，甚至从零开始完成 Minecraft 挖钻石这类长程稀疏奖励任务。",
@@ -1448,7 +1783,7 @@
         "target": "2023-rt-2-vla"
       }
     ],
-    "file": "papers\\2023-diffusion-policy-action-diffusion.md",
+    "file": "papers/2023-diffusion-policy-action-diffusion.md",
     "note_html": "notes/2023-diffusion-policy-action-diffusion.html",
     "summary": "Diffusion Policy 把机器人策略从“直接回归下一步动作”改成“条件扩散生成一段连续动作轨迹”，是独立于 VLA 语义路线之外的机器人动作生成根路线，也是后续 flow/diffusion action policy 和 WAM 低层动作生成的重要源头。",
     "research_question": "传统 visuomotor imitation learning 常把策略写成确定性回归或简单混合分布：输入图像和机器人状态，直接输出下一步动作。这在机器人操作里会遇到三个问题。第一，同一个视觉状态下可能有多种合理动作，比如从左边绕或从右边绕，均值回归会把多峰动作压成一个不可执行的平均动作。第二，复杂操作需要连续、平滑、高维的动作序列，而不是孤立的一步动作。第三，真实机器人控制需要稳定训练和闭环重规划，不能只生成离线轨迹。\n\n这篇论文的核心问题是：能否把扩散模型的强分布建模能力搬到机器人动作空间，让策略学习的是 action distribution，而不是单点动作回归。",
@@ -1537,7 +1872,7 @@
     "contrasts": [],
     "published_value": 24279,
     "relations": [],
-    "file": "papers\\2023-combinatorial-optimization-gnn-reasoning.md",
+    "file": "papers/2023-combinatorial-optimization-gnn-reasoning.md",
     "note_html": "notes/2023-combinatorial-optimization-gnn-reasoning.html",
     "summary": "这篇 JMLR 综述的核心判断是：GNN 最适合做组合优化和规划求解器里的 heuristic guide，而不是直接替代传统算法独立输出最终方案。",
     "research_question": "组合优化问题普遍存在于路径规划、任务分配、调度、SAT、MIP 和车辆路径等场景中。传统求解器有可行性和最优性保证，但搜索慢；纯神经网络推理快，但很难保证硬约束和最优性。\n\n论文关心的问题是：GNN 应该如何表示组合优化问题，应该输出什么，以及应该用什么学习范式嵌入到真实求解流程中。",
@@ -1665,7 +2000,7 @@
         "target": "2024-alphafold3-biomolecular-interactions"
       }
     ],
-    "file": "papers\\2023-rfdiffusion-protein-structure-function.md",
+    "file": "papers/2023-rfdiffusion-protein-structure-function.md",
     "note_html": "notes/2023-rfdiffusion-protein-structure-function.html",
     "summary": "RFdiffusion 是 “结构先行” 生成范式的关键参考：它不是先生成蛋白序列，而是先用 diffusion 生成满足 motif、拓扑或功能约束的 protein backbone，再把序列设计和实验验证接在后面。",
     "research_question": "蛋白设计不只是预测一个已知序列会折叠成什么结构，还要从功能目标出发设计一个新的结构。传统路线依赖人工 scaffold 搜索、物理采样和大量筛选，难以稳定生成复杂拓扑或功能位点约束下的新结构。\n\nRFdiffusion 关心的问题是：能不能把 RoseTTAFold 学到的结构先验转成 diffusion 生成器，让模型从噪声结构逐步去噪，生成满足条件的新蛋白 backbone。",
@@ -1747,7 +2082,7 @@
     "contrasts": [],
     "published_value": 24282,
     "relations": [],
-    "file": "papers\\2023-rt-2-vla.md",
+    "file": "papers/2023-rt-2-vla.md",
     "note_html": "notes/2023-rt-2-vla.html",
     "summary": "RT-2 把 VLM 的互联网语义知识和机器人轨迹数据共同训练到同一个 token 输出空间里，是 VLA 路线的关键起点。",
     "research_question": "机器人策略能否直接继承大规模视觉语言模型的语义泛化能力，而不是只在机器人数据中学动作映射。",
@@ -1831,7 +2166,7 @@
     "contrasts": [],
     "published_value": 24282,
     "relations": [],
-    "file": "papers\\2023-unsupervised-task-graph-generation.md",
+    "file": "papers/2023-unsupervised-task-graph-generation.md",
     "note_html": "notes/2023-unsupervised-task-graph-generation.html",
     "summary": "这篇论文是 task graph generation 的直接参考：它从多个 instructional video transcripts 中无监督抽取关键步骤，并推断步骤之间的 precondition dependency graph。",
     "research_question": "现实任务通常不是一个单步指令，而是由多个 key steps 和依赖关系组成。例如做 CPR 时，检查安全、确认意识、打开气道、检查呼吸、开始胸外按压之间有明确的先后依赖。\n\n问题是这些知识通常只存在于非结构化文本中，比如 how-to 视频的 ASR 转录、教程说明、操作流程描述。论文要解决的是：如何从这些 noisy transcripts 中生成结构化 task graph。",
@@ -1933,7 +2268,7 @@
         "target": "2023-combinatorial-optimization-gnn-reasoning"
       }
     ],
-    "file": "papers\\2023-grid-scene-graph-task-planning.md",
+    "file": "papers/2023-grid-scene-graph-task-planning.md",
     "note_html": "notes/2023-grid-scene-graph-task-planning.html",
     "summary": "GRID 的核心价值是：把大场景机器人任务规划从“看一张局部图片再问 LLM”改成“把环境表示成 scene graph，再用 instruction-conditioned GNN 选择与任务相关的物体、关系和动作”。",
     "research_question": "LLM 做机器人任务规划时，需要同时理解用户指令和环境语义。直接把图片喂给多模态模型有两个问题：第一，图片观察范围有限，容易看不到全局场景；第二，多模态训练成本高，且模型很大。\n\nGRID 关心的问题是：能不能用更结构化、更轻量的 scene graph 表达大场景信息，让机器人根据自然语言指令逐步分解子任务。",
@@ -2019,7 +2354,7 @@
     "contrasts": [],
     "published_value": 24285,
     "relations": [],
-    "file": "papers\\2023-eureka-reward-design-llm.md",
+    "file": "papers/2023-eureka-reward-design-llm.md",
     "note_html": "notes/2023-eureka-reward-design-llm.html",
     "summary": "Eureka 用 LLM 生成和迭代 reward code，再让 RL 在这些奖励函数下学习技能，是“语言理解 + 优化学习”的典型组合。",
     "research_question": "低层机器人技能往往需要精细 reward，人工设计成本高且难泛化。论文想回答：LLM 能否根据任务描述和环境代码自动写出接近人类专家水平的奖励函数。",
@@ -2118,7 +2453,7 @@
         "target": "2025-lip-llm-dependency-graph-planning"
       }
     ],
-    "file": "papers\\2024-smart-llm-pythonic-task-planning.md",
+    "file": "papers/2024-smart-llm-pythonic-task-planning.md",
     "note_html": "notes/2024-smart-llm-pythonic-task-planning.html",
     "summary": "SMART-LLM 可以暂时归档到 Task Graph 方向，但它不是严格的 task graph 方法：它没有显式 node/edge graph，而是用 Python code 的函数、threading 和 join 隐式存储任务结构、并行关系和执行顺序。",
     "research_question": "多机器人任务规划需要同时解决任务分解、机器人能力匹配、子任务分配和执行顺序。传统方法往往依赖固定规则或特定任务建模，难以处理自然语言里的模糊指令。\n\nSMART-LLM 的想法是：利用 LLM 对自然语言和代码结构的理解能力，把高层任务指令转成 Python 风格的多机器人执行计划。这里的 Python code 不只是输出格式，也承担了任务结构表示的角色。",
@@ -2266,7 +2601,7 @@
         "target": "2025-layerdag-diffusion-dag-generation"
       }
     ],
-    "file": "papers\\2024-alphafold3-biomolecular-interactions.md",
+    "file": "papers/2024-alphafold3-biomolecular-interactions.md",
     "note_html": "notes/2024-alphafold3-biomolecular-interactions.html",
     "summary": "AlphaFold3 是我们做 TOPG 结构生成最值得参考的论文：它不是普通 graph generation，而是把复杂多实体系统统一 token 化，通过 pair representation 与 Pairformer-style trunk 建模关系，再用 diffusion 生成结构并输出 confidence。",
     "research_question": "AlphaFold2 主要解决蛋白结构预测。AlphaFold3 想解决更一般的 biomolecular interactions：蛋白、DNA、RNA、小分子、离子、修饰残基等多类实体组成的复合体结构。\n\n这个问题与 TOPG 的相似点在于：输入实体类型多、关系类型多，输出不是一串文字，而是一个必须满足约束的结构对象。",
@@ -2292,9 +2627,10 @@
     "readiness": "medium",
     "action": "buffer",
     "tech_paradigm": "video_flow_model",
-    "primary_domain": "World Action Model",
+    "primary_domain": "Diffusion",
     "domains": [
-      "World Action Model",
+      "Diffusion",
+      "Video Generation",
       "World Model"
     ],
     "primary_technical_layer": "video_generation",
@@ -2352,7 +2688,7 @@
     "contrasts": [],
     "published_value": 24297,
     "relations": [],
-    "file": "papers\\2024-pyramidal-flow-matching-video.md",
+    "file": "papers/2024-pyramidal-flow-matching-video.md",
     "note_html": "notes/2024-pyramidal-flow-matching-video.html",
     "summary": "Pyramidal Flow Matching 用多尺度金字塔式 flow matching 降低视频生成训练成本，是 WAM 做未来视频预测时可借鉴的底层生成技术。",
     "research_question": "高分辨率长视频生成需要建模巨大的时空空间，训练成本高。论文关注如何在统一模型中更高效地学习视频生成轨迹。",
@@ -2479,7 +2815,7 @@
         "target": "2023-unsupervised-task-graph-generation"
       }
     ],
-    "file": "papers\\2024-seadag-semi-autoregressive-diffusion-dag-generation.md",
+    "file": "papers/2024-seadag-semi-autoregressive-diffusion-dag-generation.md",
     "note_html": "notes/2024-seadag-semi-autoregressive-diffusion-dag-generation.html",
     "summary": "SeaDAG 是一篇很适合放在 LayerDAG 旁边读的 DAG diffusion 论文：它不是严格一层一层生成，而是在每个 diffusion step 都维护完整图，只是让不同 layer 以不同速度从 noisy 变 clean，从而模拟 semi-autoregressive generation。\n\n对我们的 task graph 方向，最重要的启发是：即使未来完整任务图不可知，也可以先生成一个粗糙的后续 layer 草图，让当前 layer 的去噪不只依赖过去结构，也能参考低置信度的未来结构。",
     "research_question": "DAG 生成比一般图生成更难，因为 DAG 有方向性、层级结构和跨层依赖。严格 autoregressive 方法可以按部分生成，但会带来三个问题。\n\n第一，part-by-part generation 会阻断后续层到前面层的信息流。当前层一旦生成完，后续结构很难反过来影响它。\n\n第二，严格 AR 方法直到最后才有完整图视图。对于 conditional DAG generation，这很麻烦，因为很多属性、功能或约束必须在完整图上才能检查。\n\n第三，很多条件图生成方法只在采样时加 guidance，而不是在训练时显式学习 condition。这样容易在图真实性和条件满足之间摇摆。\n\nSeaDAG 的问题是：能不能保留 DAG 层级生成的好处，同时在每个 diffusion step 都保留完整图视图，让全图属性和条件学习可以提前进入训练。",
@@ -2570,7 +2906,7 @@
         "target": "2023-rt-2-vla"
       }
     ],
-    "file": "papers\\2024-pi0-vla-flow-model.md",
+    "file": "papers/2024-pi0-vla-flow-model.md",
     "note_html": "notes/2024-pi0-vla-flow-model.html",
     "summary": "π0 的核心是把预训练 VLM 和 flow matching 动作头结合起来，面向跨平台、长程、灵巧操作学习连续动作策略。",
     "research_question": "通用机器人策略如何同时继承互联网语义知识，并在多种机器人平台和复杂真实任务上输出稳定动作。",
@@ -2662,7 +2998,7 @@
         "target": "2024-pi0-vla-flow-model"
       }
     ],
-    "file": "papers\\2025-fast-action-tokenization-vla.md",
+    "file": "papers/2025-fast-action-tokenization-vla.md",
     "note_html": "notes/2025-fast-action-tokenization-vla.html",
     "summary": "FAST 用频域压缩方式对机器人动作序列做 tokenization，让自回归 VLA 能更好处理高频、灵巧、连续控制数据。",
     "research_question": "朴素逐维、逐时间步动作离散化会让高频动作 token 信息量低、序列长、训练困难。论文想解决 VLA 动作 token 表示效率问题。",
@@ -2765,7 +3101,7 @@
         "target": "2025-magnnet-decentralized-task-allocation"
       }
     ],
-    "file": "papers\\2025-lip-llm-dependency-graph-planning.md",
+    "file": "papers/2025-lip-llm-dependency-graph-planning.md",
     "note_html": "notes/2025-lip-llm-dependency-graph-planning.html",
     "summary": "LiP-LLM 是一篇很适合放在 Task Graph 方向的论文：它让 LLM 生成多机器人任务中的 skill list 和 skill dependency graph，再用线性规划/MILP 风格的优化器完成机器人-任务分配。",
     "research_question": "LLM 可以理解自然语言任务并拆解步骤，但如果让 LLM 同时负责任务分解、依赖判断和机器人分配，会有两个问题：一是 hallucination，二是 allocation 这类组合优化问题并不适合完全交给 LLM。\n\nLiP-LLM 的思路是把这两部分拆开：LLM 负责更语义化的部分，也就是从指令中选出需要的 skills，并判断 skills 之间的前后依赖；优化器负责更结构化的分配问题，也就是当前哪些任务可执行、每个机器人更适合执行哪个任务。",
@@ -2872,7 +3208,7 @@
         "target": "2025-lip-llm-dependency-graph-planning"
       }
     ],
-    "file": "papers\\2025-dart-llm-dependency-aware-task-graph.md",
+    "file": "papers/2025-dart-llm-dependency-aware-task-graph.md",
     "note_html": "notes/2025-dart-llm-dependency-aware-task-graph.html",
     "summary": "DART-LLM 是 Task Graph 方向非常直接的一篇：它让 LLM 从自然语言任务中输出结构化 subtasks 和 dependencies，然后用规则模块把 dependencies 转成 DAG，并按拓扑顺序调度多机器人执行。",
     "research_question": "施工机器人任务往往有严格的前后依赖。例如运输车必须等挖掘机完成装载后才能离开，否则任务失败。SMART-LLM 这类方法用 Python code 隐式表达任务结构，但没有显式处理依赖关系，复杂任务下容易因为顺序错误而失败。\n\nDART-LLM 要解决的是：如何把自然语言施工任务拆成可执行 atomic skills，同时显式表达 subtasks 之间的依赖，使多机器人系统可以并行执行无依赖任务，并等待有前置条件的任务。",
@@ -2955,7 +3291,7 @@
     "contrasts": [],
     "published_value": 24302,
     "relations": [],
-    "file": "papers\\2025-heterogeneous-mrta-rl.md",
+    "file": "papers/2025-heterogeneous-mrta-rl.md",
     "note_html": "notes/2025-heterogeneous-mrta-rl.html",
     "summary": "这篇论文用 RL 学习异构多机器人任务分配和调度策略，让机器人根据任务能力需求动态组队，并减少等待和总完成时间。",
     "research_question": "异构机器人任务往往要求多个具备不同能力的机器人同时到达同一任务点。如何在任务依赖、能力约束和等待成本下快速分配任务。",
@@ -2984,13 +3320,14 @@
     "primary_domain": "Diffusion",
     "domains": [
       "Diffusion",
+      "Graph Generation",
       "Task Graph",
       "Planning"
     ],
     "primary_technical_layer": "task_graph_generation",
     "primary_task_family": "diffusion_dag_task_graph_generation",
     "platform": "directed_acyclic_graph_generation",
-    "planning_relevance": "LayerDAG 不是机器人规划论文，但它提供了用 autoregressive diffusion 生成 DAG 的核心机制：把 DAG 唯一拆成 layerwise bipartite graphs，逐层预测 node count、用 diffusion 生成 node attributes 和 cross-layer edges。这正好可迁移到开放世界多机器人 task graph 生成。",
+    "planning_relevance": "LayerDAG 不是机器人规划论文，但它提供了用 autoregression + diffusion 生成 DAG 的核心机制：autoregression 负责一层一层生成图，diffusion 负责每层内部的 node attributes 和 cross-layer edges。相比 DiGress 一次性对整张图做 node/edge denoising，LayerDAG 更适合具备时序依赖、前置依赖和 partial order 的任务图。",
     "multi_robot_relevance": "对多机器人任务规划来说，可以把 layer 理解为并行可执行的任务阶段，把 node attribute 映射为 robot skill / task intent，把 edge 映射为前置依赖或同步约束，再把生成出的有效 DAG 交给任务分配和调度模块。",
     "system_roles": [
       "task_graph_generator",
@@ -3011,6 +3348,7 @@
     "tags": [
       "LayerDAG",
       "Diffusion",
+      "Graph Generation",
       "DAG generation",
       "Task Graph",
       "layerwise generation",
@@ -3033,8 +3371,14 @@
     "image_url": "",
     "zotero_key": "",
     "citekey": "li2025layerdag",
-    "cites": [],
-    "extends": [],
+    "cites": [
+      "2021-d3pm-structured-denoising-diffusion-discrete-state-spaces",
+      "2022-digress-discrete-denoising-diffusion-graph-generation"
+    ],
+    "extends": [
+      "2021-d3pm-structured-denoising-diffusion-discrete-state-spaces",
+      "2022-digress-discrete-denoising-diffusion-graph-generation"
+    ],
     "uses": [],
     "enables": [
       "2025-dart-llm-dependency-aware-task-graph",
@@ -3049,6 +3393,14 @@
     "published_value": 24302,
     "relations": [
       {
+        "type": "extends",
+        "target": "2021-d3pm-structured-denoising-diffusion-discrete-state-spaces"
+      },
+      {
+        "type": "extends",
+        "target": "2022-digress-discrete-denoising-diffusion-graph-generation"
+      },
+      {
         "type": "enables",
         "target": "2025-dart-llm-dependency-aware-task-graph"
       },
@@ -3061,15 +3413,15 @@
         "target": "2023-unsupervised-task-graph-generation"
       }
     ],
-    "file": "papers\\2025-layerdag-diffusion-dag-generation.md",
+    "file": "papers/2025-layerdag-diffusion-dag-generation.md",
     "note_html": "notes/2025-layerdag-diffusion-dag-generation.html",
-    "summary": "LayerDAG 是目前我们看到的、最接近“用 diffusion 生成 task graph”的方法论文：它不是机器人论文，但它直接研究如何生成有效 DAG，并且通过 layerwise autoregressive generation 保证方向性和无环结构。",
-    "research_question": "DAG 广泛用于计算图、编译器 flow graph、硬件设计、项目依赖和任务依赖。普通 graph generation 方法往往不显式处理 DAG 的方向性和 partial order；纯 diffusion 一次性生成整张图，也不天然保证无环。\n\nLayerDAG 的核心问题是：如何生成具有强方向依赖和逻辑规则的大规模 DAG，同时保留生成模型的表达能力和泛化能力。",
+    "summary": "LayerDAG 是目前我们看到的、最接近“用 diffusion 生成 task graph”的方法论文：它用 **autoregression + diffusion** 一层一层生成 DAG，而不是像 DiGress 那样直接对整张图做一次式 node/edge diffusion，因此更适合具备时序依赖、前置依赖和 partial order 的任务规划图。",
+    "research_question": "DAG 广泛用于计算图、编译器 flow graph、硬件设计、项目依赖和任务依赖。普通 graph generation 方法往往不显式处理 DAG 的方向性和 partial order；纯 diffusion 一次性生成整张图，也不天然保证无环。\n\nLayerDAG 的核心问题是：如何生成具有强方向依赖和逻辑规则的大规模 DAG，同时保留生成模型的表达能力和泛化能力。\n\n对 TOPG 来说，这正好对应“任务规划都在 graph 上操作”时最核心的问题：任务图不是一般无向图，通常有先后顺序、并行层、前置条件和不能成环的依赖结构。",
     "method": "",
     "contribution": "第一，它解决了通用 graph diffusion 不天然保证 DAG 的问题。通过 layerwise autoregressive generation，边只从前面层指向当前层，因此天然无环。\n\n第二，它避免了普通 topological ordering 不唯一的问题。LayerDAG 的 layerwise partition 是唯一的，能把一张 DAG 转成可逆的层级序列。\n\n第三，它把 autoregressive 和 diffusion 分工清楚：autoregressive 负责生成方向和层级，diffusion 负责每一层内部 node/edge 的多轮 refinement。\n\n第四，它支持 conditional generation，可以根据目标属性生成 DAG。这对应到我们的任务规划里，就是根据自然语言、scene graph、机器人能力和 deadline 生成符合条件的 task graph。",
     "reading_highlights": "",
     "limitation": "LayerDAG 本身不是机器人任务规划模型。它没有处理自然语言 grounding、机器人 skill schema、执行反馈、资源约束、持续时间估计或多机器人 allocation。\n\n它生成的是 DAG，但 task graph 在真实系统里可能还需要非前置依赖边，例如通信关系、资源冲突、协同约束、时间窗和软约束。这些边需要区分清楚，否则会破坏 DAG layer 的定义。\n\n此外，迁移到开放世界任务规划需要训练数据：历史任务图、仿真生成任务图、人类修正任务图，或者 LLM/规则生成后再用执行反馈筛选的 task graph 数据。",
-    "relation": "和 DiGress 相比，LayerDAG 更适合 task graph，因为它直接面向 DAG generation，而不是一般 graph generation。\n\n和 DART-LLM / LiP-LLM 相比，LayerDAG 不是 prompt engineering，而是一个可训练的 DAG generative model。它提供了从“LLM 输出依赖 JSON”走向“训练模型生成 task graph”的方法路线。\n\n和 Diffusion-CCSP 相比，Diffusion-CCSP 的 graph 是输入的 constraint graph，diffusion 输出连续变量解；LayerDAG 的 diffusion 参与生成 DAG 本身。",
+    "relation": "D3PM 解决的是离散 token/category 怎么做 diffusion。DiGress 把 D3PM 推到一般 graph generation，让 node features 和 edge features 同时扩散。LayerDAG 再往前走一步：承认很多图不是一般图，而是带方向、时序和依赖层级的 DAG，因此把 graph generation 拆成 layerwise autoregression + intra-layer diffusion。\n\n和 DiGress 相比，LayerDAG 更适合 task graph，因为它直接面向 DAG generation，而不是一般 graph generation。\n\n和 DART-LLM / LiP-LLM 相比，LayerDAG 不是 prompt engineering，而是一个可训练的 DAG generative model。它提供了从“LLM 输出依赖 JSON”走向“训练模型生成 task graph”的方法路线。\n\n和 Diffusion-CCSP 相比，Diffusion-CCSP 的 graph 是输入的 constraint graph，diffusion 输出连续变量解；LayerDAG 的 diffusion 参与生成 DAG 本身。",
     "planning_insight": "我们可以把未来方向定义为：\n\n```text\nLayerwise Diffusion Task Graph Generator\n```\n\n系统形式：\n\n```text\ninstruction + scene graph + robot skills\n  -> conditional LayerDAG generator\n  -> valid task DAG\n  -> task allocation / scheduling module\n  -> execution feedback\n  -> local re-denoising\n```\n\n这个方向比单纯 LLM prompt 生成 task graph 更有研究空间，因为它可以学习领域内常见的 dependency pattern，并支持逐层、局部、可反馈的 task graph 生成。",
     "reusable_module_text": "layerwise DAG partition、source task layer generation、discrete diffusion for node attributes、diffusion edge generation、conditional DAG generation、cross-layer dependency generation、local re-denoising。",
     "evidence_risk": "论文在 synthetic DAG 和真实计算系统 DAG 数据上验证，能生成最多约 400 个节点的大规模 DAG，并在条件生成和 out-of-distribution label setting 中优于多个 baseline。\n\n风险是这些实验领域是计算图和硬件/编译器 flow graph，不是机器人任务图。迁移时最关键的是设计 task graph schema 和训练数据生成机制。",
@@ -3162,7 +3514,7 @@
         "target": "2025-fast-action-tokenization-vla"
       }
     ],
-    "file": "papers\\2025-pi05-open-world-generalization.md",
+    "file": "papers/2025-pi05-open-world-generalization.md",
     "note_html": "notes/2025-pi05-open-world-generalization.html",
     "summary": "π0.5 关注开放世界泛化，把多任务、网页数据、目标检测、语义子任务预测和 FAST/π0 训练路线合并到 VLA 训练中。",
     "research_question": "VLA 能否在训练环境之外的真实家庭中完成长程灵巧任务，而不是只在实验室桌面任务上泛化。",
@@ -3247,7 +3599,7 @@
     "contrasts": [],
     "published_value": 24305,
     "relations": [],
-    "file": "papers\\2025-gmatann-heterogeneous-task-allocation.md",
+    "file": "papers/2025-gmatann-heterogeneous-task-allocation.md",
     "note_html": "notes/2025-gmatann-heterogeneous-task-allocation.html",
     "summary": "GMATANN 是一篇典型的“GNN 负责表征提取 + RL 负责最终决策”的异构多智能体任务分配论文：它把机器人和任务建成 task-agent graph，用全局-局部注意力提取大局状态，再让强化学习输出具体分配动作。",
     "research_question": "异构多智能体系统中的任务分配不是简单的分类问题。机器人有不同速度、机动性、电量、通信范围和能力；任务有不同类型、紧急程度、空间位置、先后依赖和资源需求。传统启发式或扁平神经网络很难同时表达 task-agent 匹配、task-task 依赖和 agent-agent 协作关系。\n\n论文的问题可以概括为：如何把复杂多智能体任务分配建成图，并学习一个能感知局部匹配和全局态势的分配策略。",
@@ -3348,7 +3700,7 @@
         "target": "2023-combinatorial-optimization-gnn-reasoning"
       }
     ],
-    "file": "papers\\2025-magnnet-decentralized-task-allocation.md",
+    "file": "papers/2025-magnnet-decentralized-task-allocation.md",
     "note_html": "notes/2025-magnnet-decentralized-task-allocation.html",
     "summary": "MAGNNET 是一个“GNN 做关系编码 + PPO 做分布式决策”的异构 UAV/UGV 任务分配框架：每个 agent 根据本地状态、到任务的代价和 GNN 聚合到的邻域/任务关系，决定是否请求某个任务。",
     "research_question": "论文解决的是通信受限、动态任务场景里的去中心化任务分配。集中式 Hungarian 方法可以给较优分配，但需要所有 agent 状态持续上传到中心节点；去中心化 greedy 方法更快但容易冲突，多个 agent 可能同时抢同一个任务，或者一些任务没人接。\n\nMAGNNET 想在两者之间取平衡：训练时使用全局 critic 做 centralized training，执行时每个 agent 只用本地 observation 和 GNN message passing 做 decentralized execution。",
@@ -3447,7 +3799,7 @@
         "target": "2024-pi0-vla-flow-model"
       }
     ],
-    "file": "papers\\2025-pistar06-recap.md",
+    "file": "papers/2025-pistar06-recap.md",
     "note_html": "notes/2025-pistar06-recap.html",
     "summary": "π*0.6 的重点不是再做一个 VLA，而是让 VLA 从真实执行失败、人工纠错和自主经验中继续改进。",
     "research_question": "仅靠示范学习的 VLA 遇到分布外状态容易失败，如何让它利用自己的失败轨迹学习恢复策略。",
@@ -3536,7 +3888,7 @@
         "target": "2024-pi0-vla-flow-model"
       }
     ],
-    "file": "papers\\2025-pi06-model-card.md",
+    "file": "papers/2025-pi06-model-card.md",
     "note_html": "notes/2025-pi06-model-card.html",
     "summary": "π0.6 是 π0.5 后续的部署型模型迭代，保留高层子任务预测和低层动作生成的层级设计，并改进骨干、提示和训练数据。",
     "research_question": "在真实长程任务中，VLA 如何进一步提升鲁棒性、减少失败并适配更多部署场景。",
@@ -3625,7 +3977,7 @@
     "contrasts": [],
     "published_value": 24312,
     "relations": [],
-    "file": "papers\\2026-genswarm-multi-robot-code-policy.md",
+    "file": "papers/2026-genswarm-multi-robot-code-policy.md",
     "note_html": "notes/2026-genswarm-multi-robot-code-policy.html",
     "summary": "GenSwarm 用多 LLM agent 把自然语言任务转成多机器人代码策略，并自动部署到仿真和真实机器人，是“自然语言到多机器人执行”的强相关系统。",
     "research_question": "多机器人系统开发通常需要任务分析、算法设计、代码实现、仿真验证和真实部署。论文想降低这条链路的人工成本，并支持新任务快速适配。",
@@ -3753,7 +4105,7 @@
         "target": "2023-rt-2-vla"
       }
     ],
-    "file": "papers\\2026-world-action-models-zero-shot-policies.md",
+    "file": "papers/2026-world-action-models-zero-shot-policies.md",
     "note_html": "notes/2026-world-action-models-zero-shot-policies.html",
     "summary": "World Action Model 的关键转向是：不只从视觉语言直接输出动作，而是联合预测未来视频世界状态和动作，用世界演化本身支持零样本策略。",
     "research_question": "VLA 语义泛化强，但对未见物理运动和新环境动作泛化弱。能否用预训练视频扩散模型学习物理动态，从而成为零样本策略。",
@@ -3864,7 +4216,7 @@
         "target": "2025-pi05-open-world-generalization"
       }
     ],
-    "file": "papers\\2026-lap-language-action-pretraining.md",
+    "file": "papers/2026-lap-language-action-pretraining.md",
     "note_html": "notes/2026-lap-language-action-pretraining.html",
     "summary": "LAP 的核心是把机器人低层连续动作块转换成自然语言动作，让 VLM 像生成文本一样生成动作命令；它不是新增一个复杂 action head，而是把 action supervision 对齐到 VLM 原本擅长的离散语言输出空间，从而提升零样本跨具身迁移。",
     "research_question": "现有 VLA 即使做了多具身预训练，动作表示仍然容易和训练时的机器人身体强耦合。π0 / π0.5 通过 flow action expert 或异构数据提升泛化，但在新机器人身体上仍可能需要适配。LAP 追问：如果把连续控制动作先翻译成自然语言动作，VLM 是否能学到更 embodiment-agnostic 的控制表示？",
@@ -3970,7 +4322,7 @@
         "target": "2025-pi05-open-world-generalization"
       }
     ],
-    "file": "papers\\2026-fast-wam-test-time-future-imagination.md",
+    "file": "papers/2026-fast-wam-test-time-future-imagination.md",
     "note_html": "notes/2026-fast-wam-test-time-future-imagination.html",
     "summary": "Fast-WAM 的核心结论是：WAM 的主要收益可能来自训练期的视频协同建模，而不是测试时显式生成未来画面；因此测试时可以跳过 future imagination，直接用当前真实观测生成动作，并显著降低推理延迟。",
     "research_question": "DreamZero 代表的 WAM 路线把未来视频预测和动作生成绑在一起，默认认为机器人需要先“想象未来画面”再执行动作。但这一步会带来扩散去噪和视频生成的推理开销。Fast-WAM 直接追问：预测未来画面这一步真的有必要吗？还是说，视频预测的价值主要发生在训练期，用来塑造更好的 world representation？",
@@ -4088,7 +4440,7 @@
         "target": "2024-pi0-vla-flow-model"
       }
     ],
-    "file": "papers\\2026-mem-multi-scale-embodied-memory.md",
+    "file": "papers/2026-mem-multi-scale-embodied-memory.md",
     "note_html": "notes/2026-mem-multi-scale-embodied-memory.html",
     "summary": "MEM 给 VLA 加入多尺度记忆：短期用视频编码处理遮挡和近期动作，长期用文本摘要记住任务进展，从而支持十几分钟级长程操作。",
     "research_question": "长程真实任务要求机器人记住已经完成的步骤、对象状态和近期遮挡信息。简单堆叠历史图像会让上下文过长、推理成本过高。",
@@ -4197,7 +4549,7 @@
         "target": "2023-dreamerv3-world-models"
       }
     ],
-    "file": "papers\\2026-psibot-from-human-skill-to-robotic-mastery.md",
+    "file": "papers/2026-psibot-from-human-skill-to-robotic-mastery.md",
     "note_html": "notes/2026-psibot-from-human-skill-to-robotic-mastery.html",
     "summary": "这篇技术博客把 PsiBot 的 Psi-R2 / Psi-W0 路线讲得非常清楚：Psi-R2 是基于视频生成骨干的 WAM/VLA 策略模型，联合预测未来视频和机器人动作；Psi-W0 是动作条件世界模型，用来建模反事实失败、做策略评估、在人类数据到机器人数据的转换过程中执行 world-model 内强化学习。",
     "research_question": "具身智能缺少像互联网文本或自动驾驶日志那样自然沉淀的大规模数据。人类日常和工业操作数据规模巨大，但直接迁移到机器人存在 embodiment gap：人手和机械手的关节、摩擦、动力学和接触规律都不同。博客要回答的是：如何把近 10 万小时人类操作数据真正变成可训练、可评估、可回流的机器人策略数据。",
@@ -4299,7 +4651,7 @@
         "target": "2026-genswarm-multi-robot-code-policy"
       }
     ],
-    "file": "papers\\2026-foundation-models-robot-swarms.md",
+    "file": "papers/2026-foundation-models-robot-swarms.md",
     "note_html": "notes/2026-foundation-models-robot-swarms.html",
     "summary": "这篇 Science Robotics Viewpoint 把 foundation models 用于 robot swarms 的未来路线分成两类角色：FM as swarm designer 负责生成控制器、任务规划和代码；FM as swarm operator 负责把传感器、通信和人类指令转成机器人之间的协作决策。",
     "research_question": "机器人集群的难点不是单个机器人是否聪明，而是大量简单机器人如何通过局部通信和去中心化控制产生可靠的群体行为。传统 swarm controller 往往需要专家提前写好协议和控制逻辑，面对灾害搜救、环境监测、未知地形这类开放场景时很难实时适配。\n\n论文的问题是：foundation models 能否把 robot swarms 从“预先写死控制器”推进到“可以根据自然语言、图像、示意图、传感器和任务反馈动态设计与操作集群”的系统。",
@@ -4324,11 +4676,12 @@
     "scope": "in_scope",
     "readiness": "high",
     "action": "deep_read",
-    "tech_paradigm": "vla",
-    "primary_domain": "VLA",
+    "tech_paradigm": "cascade_world_action_model",
+    "primary_domain": "World Action Model",
     "domains": [
-      "LLM",
+      "World Action Model",
       "VLA",
+      "LLM",
       "Planning"
     ],
     "primary_technical_layer": "compositional_generalization",
@@ -4419,7 +4772,7 @@
         "target": "2024-pi0-vla-flow-model"
       }
     ],
-    "file": "papers\\2026-pi07-steerable-generalist-robotic-foundation-model.md",
+    "file": "papers/2026-pi07-steerable-generalist-robotic-foundation-model.md",
     "note_html": "notes/2026-pi07-steerable-generalist-robotic-foundation-model.html",
     "summary": "π0.7 把 PI 系列推进到“可 steer 的通用机器人基础模型”，重点是用更丰富的上下文条件支持组合泛化和策略选择。",
     "research_question": "当训练数据包含多种策略和质量差异时，通用 VLA 如何避免平均化，并根据任务上下文选择正确执行方式。",
@@ -4432,5 +4785,214 @@
     "reusable_module_text": "context-conditioned policy、steerable executor interface、compositional generalization setup。适合作为最终 executor 形态的参考目标。",
     "evidence_risk": "证据来自 PI 系列最新路线；风险是仍以直接策略为主，缺少团队规划、显式世界模型和多机器人通信机制。",
     "open_question": "如何设计标准化的 planner-to-VLA context schema，让多机器人任务规划器稳定调用不同 VLA，而不依赖脆弱的自然语言提示。"
+  },
+  {
+    "id": "2026-cola-dlm-continuous-latent-diffusion-language-model",
+    "title": "Continuous Latent Diffusion Language Model",
+    "short_title": "Cola DLM",
+    "year": 2026,
+    "published": "2026-05",
+    "venue": "arXiv",
+    "status": "read",
+    "scope": "candidate",
+    "readiness": "medium",
+    "action": "build_note",
+    "tech_paradigm": "continuous_latent_diffusion_language_model",
+    "primary_domain": "Diffusion",
+    "domains": [
+      "LLM",
+      "Diffusion"
+    ],
+    "primary_technical_layer": "language_generation",
+    "primary_task_family": "diffusion_language_modeling",
+    "platform": "text_generation",
+    "planning_relevance": "Cola DLM 把语言生成拆成 Text VAE 的 text-to-latent / latent-to-text 与 block-causal DiT 的 latent prior transport，对我们的 PlanObject 路线有借鉴意义：先建连续高层 latent，再投影成离散文本或结构。",
+    "multi_robot_relevance": "直接多机器人相关性较弱，但可作为“连续 latent 先组织全局语义，再解码为局部可执行计划”的语言侧参考。",
+    "system_roles": [
+      "semantic_planner",
+      "foundation_policy"
+    ],
+    "reusable_modules": [
+      "text_vae_latent_mapping",
+      "block_causal_dit_prior",
+      "latent_prior_transport",
+      "conditional_text_decoder"
+    ],
+    "evidence_level": "paper_read",
+    "next_action": "compare_with_elf",
+    "tags": [
+      "Cola DLM",
+      "ByteDance Seed",
+      "diffusion language model",
+      "latent diffusion",
+      "Text VAE",
+      "DiT",
+      "flow matching",
+      "LLM"
+    ],
+    "authors": [
+      "Hongcan Guo",
+      "Qinyu Zhao",
+      "Yian Zhao",
+      "Shen Nie",
+      "Rui Zhu",
+      "Qiushan Guo",
+      "Feng Wang",
+      "Tao Yang",
+      "Hengshuang Zhao",
+      "Guoqiang Wei",
+      "Yan Zeng"
+    ],
+    "institutions": [
+      "ByteDance Seed",
+      "Peking University",
+      "University of Hong Kong"
+    ],
+    "doi": "10.48550/arXiv.2605.06548",
+    "arxiv": "2605.06548",
+    "url": "https://arxiv.org/abs/2605.06548",
+    "project_url": "https://hongcanguo.github.io/Cola-DLM/",
+    "image_url": "",
+    "zotero_key": "",
+    "citekey": "guo2026coladlm",
+    "cites": [
+      "2020-ddpm-denoising-diffusion-probabilistic-models",
+      "2024-pi0-vla-flow-model"
+    ],
+    "extends": [
+      "2020-ddpm-denoising-diffusion-probabilistic-models"
+    ],
+    "uses": [],
+    "enables": [],
+    "complements": [
+      "2026-elf-embedded-language-flows"
+    ],
+    "contrasts": [],
+    "published_value": 24316,
+    "relations": [
+      {
+        "type": "extends",
+        "target": "2020-ddpm-denoising-diffusion-probabilistic-models"
+      },
+      {
+        "type": "cites",
+        "target": "2024-pi0-vla-flow-model"
+      }
+    ],
+    "file": "papers/2026-cola-dlm-continuous-latent-diffusion-language-model.md",
+    "note_html": "notes/2026-cola-dlm-continuous-latent-diffusion-language-model.html",
+    "summary": "Cola DLM 是 ByteDance Seed 的层级连续潜在扩散语言模型：先用 Text VAE 把文本压到连续 latent，再用 block-causal DiT 做 latent prior transport，最后条件解码回文本。",
+    "research_question": "自回归 LLM 绑定固定的从左到右 token 顺序；离散 DLM 又常常面临全局语义组织、可扩展表示学习和高效生成之间的冲突。\n\nCola DLM 要回答的是：能否把语言生成拆成“全局语义 latent 建模”和“局部文本实现”两层，使 diffusion 主要承担连续 latent prior 的建模，而不是每一步都恢复 token。",
+    "method": "模型由两个主要部分组成：\n\n- Text VAE：负责 text-to-latent 和 latent-to-text，把离散文本变成稳定的连续 latent 序列。\n- block-causal DiT：在连续 latent 空间中用 Flow Matching / diffusion prior transport 建模全局语义。\n\n生成时，DiT 先组织 latent 空间中的全局语义轨迹，再由条件 decoder 把 latent realization 成文本。",
+    "contribution": "第一，Cola DLM 明确把语言生成分解为层级信息建模：高层 semantic prior 和低层 textual realization 分离。\n\n第二，它把 diffusion 的对象从 token observation recovery 转向 latent prior transport，更适合连续空间的 scaling。\n\n第三，它提供了开源模型和 HuggingFace checkpoint，便于后续实测采样速度、生成质量和接口可用性。",
+    "reading_highlights": "",
+    "limitation": "Cola DLM 仍是语言模型，不直接处理任务图合法性、执行资源、POMDP 状态不确定性或多机器人调度。\n\nText VAE 的压缩质量会成为关键瓶颈：如果 latent 丢失任务约束、依赖关系或资源冲突信息，后续 diffusion prior 很难恢复。",
+    "relation": "和 ELF 相比，Cola DLM 更强调层级 latent decomposition：ELF 主要在 token embedding 空间做 flow，Cola DLM 则先通过 VAE 建立更抽象的连续 latent，再用 DiT 建模 prior。\n\n和 π0 一样，它说明 flow / diffusion 不一定只服务图像，也可以作为连续决策或语言生成的核心 prior。但 Cola DLM 的输出仍是文本，不是机器人动作。",
+    "planning_insight": "我们的 PlanObject 可以参考 Cola DLM 的分层：`scene / agent / skill graph` 先编码成连续 latent evidence，diffusion planner 在 latent PlanObject 空间中生成高维决策，再由 mapping module 投影成 Gantt、task graph 或 JSON。\n\n这里的关键不是把 Cola DLM 直接当 planner，而是借鉴它的分工：连续 latent 负责全局组织，decoder / projector 负责离散可读输出。",
+    "reusable_module_text": "Text VAE 式的结构压缩、block-causal DiT prior、latent prior transport、conditional decoder、HuggingFace / OpenAI-compatible serving adapter。",
+    "evidence_risk": "证据来自 arXiv 报告和 ByteDance Seed 公开模型仓库；风险是当前 benchmark 主要验证语言生成，不验证规划可执行性或状态约束一致性。",
+    "open_question": "如果把 Cola DLM 的层级 latent 思路迁移到任务规划，Text VAE 对应的模块应该学习自然语言文本 latent，还是直接学习 typed graph / PlanObject latent。"
+  },
+  {
+    "id": "2026-elf-embedded-language-flows",
+    "title": "ELF: Embedded Language Flows",
+    "short_title": "ELF",
+    "year": 2026,
+    "published": "2026-05",
+    "venue": "arXiv",
+    "status": "read",
+    "scope": "candidate",
+    "readiness": "medium",
+    "action": "build_note",
+    "tech_paradigm": "continuous_embedding_language_flow",
+    "primary_domain": "Diffusion",
+    "domains": [
+      "LLM",
+      "Diffusion"
+    ],
+    "primary_technical_layer": "language_generation",
+    "primary_task_family": "diffusion_language_modeling",
+    "platform": "text_generation",
+    "planning_relevance": "ELF 把语言生成从离散 token diffusion 推向连续 embedding-space flow matching，为“语言条件 -> 连续 latent -> 离散结构/文本”的接口提供参考。对任务规划来说，它更像是可微语言/结构中间层的建模路线，而不是直接 planner。",
+    "multi_robot_relevance": "对多机器人系统的直接贡献较弱，但它提示可以把高层指令、任务图草案和执行反馈放在连续 latent 空间中优化，再在最后投影成可读计划。",
+    "system_roles": [
+      "semantic_planner",
+      "foundation_policy"
+    ],
+    "reusable_modules": [
+      "embedding_space_flow_matching",
+      "shared_weight_token_projection",
+      "classifier_free_guidance_for_language"
+    ],
+    "evidence_level": "paper_read",
+    "next_action": "compare_with_cola_dlm",
+    "tags": [
+      "ELF",
+      "diffusion language model",
+      "continuous diffusion",
+      "flow matching",
+      "embedding space",
+      "classifier-free guidance",
+      "LLM"
+    ],
+    "authors": [
+      "Keya Hu",
+      "Linlu Qiu",
+      "Yiyang Lu",
+      "Hanhong Zhao",
+      "Tianhong Li",
+      "Yoon Kim",
+      "Jacob Andreas",
+      "Kaiming He"
+    ],
+    "institutions": [
+      "MIT"
+    ],
+    "doi": "10.48550/arXiv.2605.10938",
+    "arxiv": "2605.10938",
+    "url": "https://arxiv.org/abs/2605.10938",
+    "project_url": "https://github.com/lillian039/ELF",
+    "image_url": "",
+    "zotero_key": "",
+    "citekey": "hu2026elf",
+    "cites": [
+      "2020-ddpm-denoising-diffusion-probabilistic-models",
+      "2022-classifier-free-diffusion-guidance"
+    ],
+    "extends": [
+      "2020-ddpm-denoising-diffusion-probabilistic-models",
+      "2022-classifier-free-diffusion-guidance"
+    ],
+    "uses": [],
+    "enables": [],
+    "complements": [
+      "2026-cola-dlm-continuous-latent-diffusion-language-model",
+      "2024-pi0-vla-flow-model"
+    ],
+    "contrasts": [],
+    "published_value": 24316,
+    "relations": [
+      {
+        "type": "extends",
+        "target": "2020-ddpm-denoising-diffusion-probabilistic-models"
+      },
+      {
+        "type": "extends",
+        "target": "2022-classifier-free-diffusion-guidance"
+      }
+    ],
+    "file": "papers/2026-elf-embedded-language-flows.md",
+    "note_html": "notes/2026-elf-embedded-language-flows.html",
+    "summary": "ELF 是一条连续语言扩散路线：主要在 embedding space 里用 continuous-time Flow Matching 生成语言表示，只在最后一步映射回离散 token，因此更接近图像/视频扩散模型的连续建模范式。",
+    "research_question": "扩散语言模型长期受离散 token 空间限制：如果直接对 token 做 mask / categorical denoising，和图像扩散的连续空间经验不完全兼容；如果做连续语言模型，又容易卡在离散文本映射和采样质量上。\n\nELF 关心的问题是：语言生成是否可以主要留在连续 embedding 空间里完成，并复用 Flow Matching、CFG 等图像扩散领域已经成熟的训练和采样技巧。",
+    "method": "ELF 将离散文本映射到连续 embedding 表示，在连续时间 flow matching 目标下学习从噪声到 clean embedding 的速度场。生成过程中，模型大部分时间都在连续空间中迭代，最终通过共享权重网络投影回离散 token。\n\n这个设计避免了每个去噪步都要直接恢复离散 token，也让 classifier-free guidance 这类条件采样方法可以自然迁移到语言生成。",
+    "contribution": "第一，ELF 把语言扩散重新表述为 embedding-space flow，而不是 token-level denoising。\n\n第二，它说明连续 DLM 并不一定需要复杂的离散适配，关键是把离散投影推迟到最后阶段。\n\n第三，它为“语言 latent 可微优化”提供了一个更清楚的参照：模型可以先在连续空间中推理、规划或重写，再转成符号输出。",
+    "reading_highlights": "",
+    "limitation": "ELF 仍是语言生成模型，不直接解决开放世界任务规划中的状态估计、资源约束、执行失败恢复或多机器人调度。\n\n它对我们的价值主要是范式借鉴：连续 latent 空间里的 diffusion / flow 如何连接到最终离散计划对象。",
+    "relation": "ELF 继承 DDPM / Flow Matching 一类连续生成思想，并显式借用 classifier-free guidance。和 Cola DLM 相比，ELF 更靠近 token embedding 层，强调 embedding-space flow；Cola DLM 更强调层级 latent decomposition 和 Text VAE。\n\n它也和 π0 有概念相似性：两者都把最终输出之外的核心生成过程放在连续 flow 空间中，只是 π0 面向机器人动作，ELF 面向语言。",
+    "planning_insight": "我们的 diffusion graph planner 可以借鉴 ELF 的边界设计：内部保持连续 latent `z_t / Y_t`，只在输出层投影为 task graph、Gantt 或 JSON。这样比显式离散 belief / token 链更容易保留可微性质。",
+    "reusable_module_text": "embedding-space Flow Matching、最后一步 token projection、language CFG conditioning、连续 latent 到离散符号的投影边界。",
+    "evidence_risk": "证据来自 arXiv 技术报告中的语言生成实验；风险是它尚未证明可直接承担任务图生成、长程规划或真实执行反馈闭环。",
+    "open_question": "如果把 ELF 的 embedding-space flow 迁移到任务规划，输出层应该投影成自然语言计划、Typed PlanObject，还是直接投影成 task graph delta。"
   }
 ]

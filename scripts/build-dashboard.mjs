@@ -17,6 +17,8 @@ const valueLabels = {
   "Task Graph": "Task Graph",
   "Structure Generation": "Structure Generation",
   Diffusion: "Diffusion",
+  "Model-based RL": "Model-based RL",
+  "Model-free RL": "Model-free RL",
   vla: "VLA",
   llm_code_policy: "LLM Code Policy",
   llm_reward_design: "LLM Reward Design",
@@ -25,7 +27,10 @@ const valueLabels = {
   foundation_swarm_overview: "Foundation Swarm Overview",
   vla_rl: "VLA + RL",
   world_action_model: "World Action Model",
+  cascade_world_action_model: "Cascade World Action Model",
   world_model_rl: "World Model RL",
+  model_based_rl: "Model-based RL",
+  model_free_rl: "Model-free RL",
   video_flow_model: "Video Flow Model",
   multi_robot_allocation_rl: "Multi-Robot Allocation RL",
   graph_assignment_network: "Graph Assignment Network",
@@ -38,6 +43,8 @@ const valueLabels = {
   pythonic_llm_task_planning: "Pythonic LLM Task Planning",
   dag_based_llm_task_decomposition: "DAG-based LLM Task Decomposition",
   layerwise_diffusion_dag_generation: "Layerwise Diffusion DAG Generation",
+  continuous_embedding_language_flow: "Continuous Embedding Language Flow",
+  continuous_latent_diffusion_language_model: "Continuous Latent Diffusion Language Model",
   unsupervised_task_graph_generation: "Unsupervised Task Graph Generation",
   llm_dependency_graph_planning: "LLM Dependency Graph Planning",
   semantic_grounding: "语义落地",
@@ -293,27 +300,47 @@ const palette = [
 ];
 
 const domainColumns = [
-  "Overview / Foundation",
-  "LLM",
+  "LLM / Auto-regression",
+  "LLM / Diffusion",
   "Diffusion",
-  "VLA",
-  "World Model",
-  "World Action Model",
-  "RL",
+  "VLA / RT series",
+  "VLA / π series",
+  "World Action Model / Cascade",
+  "World Action Model / Joint",
+  "RL / Model-free",
+  "RL / Model-based",
   "GNN",
-  "Scene Graph",
-  "Task Graph",
-  "Structure Generation",
 ];
+
+const domainColumnLabels = {
+  "LLM / Auto-regression": "auto-regression",
+  "LLM / Diffusion": "diffusion",
+  Diffusion: "base diffusion",
+  "VLA / RT series": "RT series",
+  "VLA / π series": "π series",
+  "World Action Model / Cascade": "cascade WAM",
+  "World Action Model / Joint": "joint WAM",
+  "RL / Model-free": "model-free",
+  "RL / Model-based": "model-based",
+  GNN: "GNN",
+};
 
 const domainColors = {
   "Overview / Foundation": "#64748b",
   LLM: "#246bfe",
+  "LLM / Auto-regression": "#246bfe",
+  "LLM / Diffusion": "#3b82f6",
   VLA: "#00a7c7",
+  "VLA / RT series": "#0891b2",
+  "VLA / π series": "#00a7c7",
   Diffusion: "#16a085",
   "World Model": "#6a7dff",
   "World Action Model": "#7c67d8",
+  "World Action Model / Cascade": "#8b5cf6",
+  "World Action Model / Joint": "#7c67d8",
   RL: "#188aa6",
+  "RL / Model-free": "#188aa6",
+  "RL / Model-based": "#0f766e",
   GNN: "#4b6f96",
   "Scene Graph": "#2f80ed",
   "Task Graph": "#4a56b8",
@@ -323,19 +350,27 @@ const domainColors = {
 const domainColumnGroups = [
   {
     label: "LLM",
-    domains: ["LLM"],
+    domains: ["LLM / Auto-regression", "LLM / Diffusion"],
   },
   {
-    label: "Vision",
-    domains: ["VLA", "World Model", "World Action Model"],
+    label: "Diffusion",
+    domains: ["Diffusion"],
+  },
+  {
+    label: "VLA",
+    domains: ["VLA / RT series", "VLA / π series"],
+  },
+  {
+    label: "World Action Model",
+    domains: ["World Action Model / Cascade", "World Action Model / Joint"],
   },
   {
     label: "RL",
-    domains: ["RL"],
+    domains: ["RL / Model-free", "RL / Model-based"],
   },
   {
-    label: "Graph Struct",
-    domains: ["GNN", "Scene Graph", "Task Graph", "Structure Generation"],
+    label: "GNN",
+    domains: ["GNN"],
   },
 ];
 
@@ -1081,13 +1116,13 @@ function renderAgentBoard() {
   `;
 }
 
-function renderBenchmarkBoard() {
+function renderBenchmarkBoard(assetPrefix = "") {
   const cards = benchmarkResources
     .map(
       (resource) => `
         <article class="benchmark-card">
           <a class="benchmark-shot" href="${escapeHtml(resource.url)}" target="_blank" rel="noreferrer">
-            <img src="${escapeHtml(resource.image)}" alt="${escapeHtml(resource.name)} screenshot" loading="lazy">
+            <img src="${escapeHtml(assetHref(resource.image, assetPrefix))}" alt="${escapeHtml(resource.name)} screenshot" loading="lazy">
           </a>
           <div class="benchmark-body">
             <div class="benchmark-label">${escapeHtml(resource.label)}</div>
@@ -1301,14 +1336,77 @@ function buildDomainGraphLayout(graphPapers, options) {
   return { width, height, positions };
 }
 
+function inferGraphDomain(paper) {
+  const id = String(paper.id || "").toLowerCase();
+  const shortTitle = String(paper.short_title || "").toLowerCase();
+  const title = String(paper.title || "").toLowerCase();
+  const tech = String(paper.tech_paradigm || "").toLowerCase();
+  const primary = String(paper.primary_domain || "");
+  const domains = asList(paper.domains);
+  const hasDomain = (domain) => domains.includes(domain);
+  const text = `${id} ${shortTitle} ${title} ${tech}`;
+
+  if (
+    id === "2026-elf-embedded-language-flows" ||
+    id === "2026-cola-dlm-continuous-latent-diffusion-language-model" ||
+    tech.includes("continuous_embedding_language_flow") ||
+    tech.includes("continuous_latent_diffusion_language_model")
+  ) {
+    return "LLM / Diffusion";
+  }
+
+  if (primary === "Diffusion" || hasDomain("Diffusion")) {
+    return "Diffusion";
+  }
+
+  if (
+    id.includes("dreamer") ||
+    tech === "world_model_rl" ||
+    tech === "model_based_rl" ||
+    hasDomain("Model-based RL")
+  ) {
+    return "RL / Model-based";
+  }
+
+  if (id === "2026-pi07-steerable-generalist-robotic-foundation-model") {
+    return "World Action Model / Cascade";
+  }
+
+  if (primary === "World Action Model" || hasDomain("World Action Model")) {
+    return "World Action Model / Joint";
+  }
+
+  if (primary === "GNN" || hasDomain("GNN") || primary === "Scene Graph" || hasDomain("Scene Graph")) {
+    return "GNN";
+  }
+
+  if (primary === "RL" || hasDomain("RL")) {
+    return "RL / Model-free";
+  }
+
+  if (primary === "VLA" || hasDomain("VLA")) {
+    if (text.includes("rt-") || text.includes("rt 2") || text.includes("rt-2") || text.includes("lap")) {
+      return "VLA / RT series";
+    }
+    return "VLA / π series";
+  }
+
+  if (primary === "LLM" || hasDomain("LLM") || primary === "Task Graph" || hasDomain("Task Graph")) {
+    return "LLM / Auto-regression";
+  }
+
+  if (primary === "Structure Generation" || hasDomain("Structure Generation")) {
+    return "Diffusion";
+  }
+
+  return "GNN";
+}
+
 function renderDomainGraph(papers) {
   const graphPapers = papers
     .map((paper) => ({
       ...paper,
-      graph_domain:
-        domainColumns.includes(paper.primary_domain)
-          ? paper.primary_domain
-          : asList(paper.domains).find((domain) => domainColumns.includes(domain)) || "GNN",
+      graph_domain: inferGraphDomain(paper),
     }))
     .sort((a, b) => a.published_value - b.published_value || a.graph_domain.localeCompare(b.graph_domain));
 
@@ -1316,8 +1414,8 @@ function renderDomainGraph(papers) {
   const left = 56;
   const top = 124;
   const bottom = 78;
-  const colWidth = 106;
-  const nodeWidth = 86;
+  const colWidth = 116;
+  const nodeWidth = 92;
   const nodeHeight = 28;
   const nodeGap = 7;
   const timeAxis = buildCompactTimeAxis(graphPapers, top);
@@ -1347,6 +1445,7 @@ function renderDomainGraph(papers) {
         .filter((domain) => domain !== paper.graph_domain)
         .slice(0, 2)
         .join(" · ");
+      const graphLabel = domainColumnLabels[paper.graph_domain] ?? paper.graph_domain;
       return `
         <button class="graph-node"
           style="--x:${x}px; --y:${y}px; --node:${domainColors[paper.graph_domain] ?? palette[0]}"
@@ -1355,7 +1454,7 @@ function renderDomainGraph(papers) {
           data-note-path="${escapeHtml(paper.note_html)}"
           aria-label="${escapeHtml(`${paper.short_title} ${paper.published}`)}">
           <strong>${escapeHtml(paper.short_title)}</strong>
-          <span>${escapeHtml(paper.graph_domain)}</span>
+          <span>${escapeHtml(graphLabel)}</span>
           ${secondaryDomains ? `<em>${escapeHtml(secondaryDomains)}</em>` : ""}
         </button>
       `;
@@ -1429,7 +1528,7 @@ function renderDomainGraph(papers) {
       const x = left + index * colWidth;
       return `
         <div class="graph-column" style="--x:${x}px; --w:${colWidth}px; --domain:${domainColors[domain]}">
-          <span>${escapeHtml(domain)}</span>
+          <span>${escapeHtml(domainColumnLabels[domain] ?? domain)}</span>
         </div>
       `;
     })
@@ -1528,7 +1627,7 @@ function renderDomainGraph(papers) {
   `;
 }
 
-function renderPapers(papers) {
+function renderPapers(papers, assetPrefix = "") {
   return papers
     .map((paper) => {
       const tags = asList(paper.tags)
@@ -1543,7 +1642,7 @@ function renderPapers(papers) {
         .join("");
       const authors = asList(paper.authors).slice(0, 6).join(", ");
       const institutions = asList(paper.institutions).join(" · ");
-      const pdfHref = assetHref(paper.pdf_path);
+      const pdfHref = assetHref(paper.pdf_path, assetPrefix);
       const pdfDataLink =
         paper.pdf_path && !isExternalUrl(paper.pdf_path)
           ? ` data-pdf-link="${escapeHtml(paper.pdf_path)}"`
@@ -1552,7 +1651,7 @@ function renderPapers(papers) {
         paper.pdf_path
           ? `<a href="${escapeHtml(pdfHref)}"${pdfDataLink} target="_blank" rel="noreferrer">PDF</a>`
           : "",
-        `<a href="${escapeHtml(paper.note_html)}" data-note-link="${escapeHtml(paper.note_html)}" target="_blank" rel="noreferrer">Note</a>`,
+        `<a href="${escapeHtml(assetHref(paper.note_html, assetPrefix))}" data-note-link="${escapeHtml(paper.note_html)}" target="_blank" rel="noreferrer">Note</a>`,
         paper.url ? `<a href="${escapeHtml(paper.url)}" target="_blank" rel="noreferrer">论文</a>` : "",
         paper.project_url
           ? `<a href="${escapeHtml(paper.project_url)}" target="_blank" rel="noreferrer">项目页</a>`
@@ -1594,7 +1693,7 @@ function renderPapers(papers) {
           <div class="paper-media">
             ${
               paper.image_url
-                ? `<img src="${escapeHtml(paper.image_url)}" alt="${escapeHtml(paper.short_title)}" loading="lazy">`
+                ? `<img src="${escapeHtml(assetHref(paper.image_url, assetPrefix))}" alt="${escapeHtml(paper.short_title)}" loading="lazy">`
                 : `<div class="paper-placeholder">${escapeHtml(paper.short_title)}</div>`
             }
             <span>${escapeHtml(paper.published)}</span>
@@ -2267,7 +2366,8 @@ function renderNotePage(paper, papers) {
 </html>`;
 }
 
-function renderIndex(papers, teamRoadmap) {
+function renderIndex(papers, teamRoadmap, options = {}) {
+  const assetPrefix = options.assetPrefix || "";
   const techValues = uniqueValues(papers, "tech_paradigm");
   const layerValues = uniqueValues(papers, "primary_technical_layer");
   const roleValues = uniqueList(papers.flatMap((paper) => asList(paper.system_roles))).sort((a, b) =>
@@ -3726,7 +3826,7 @@ function renderIndex(papers, teamRoadmap) {
     </section>
 
     ${renderDomainGraph(papers)}
-    ${renderBenchmarkBoard()}
+    ${renderBenchmarkBoard(assetPrefix)}
     ${renderTeamRoadmap(teamRoadmap)}
     ${renderQualityBoard(papers)}
     ${renderRoleBoard(papers)}
@@ -3764,7 +3864,7 @@ function renderIndex(papers, teamRoadmap) {
       </div>
       <div class="empty-state" id="empty-state">没有匹配的论文。</div>
       <div class="paper-grid">
-        ${renderPapers(papers)}
+        ${renderPapers(papers, assetPrefix)}
       </div>
     </section>
 
@@ -4039,10 +4139,11 @@ async function build() {
   const paperGraph = buildPaperGraphData(papers);
   const teamRoadmap = await readTeamRoadmap();
   const dashboardHtml = stripTrailingWhitespace(renderIndex(papers, teamRoadmap));
+  const dashboardViewHtml = stripTrailingWhitespace(renderIndex(papers, teamRoadmap, { assetPrefix: "../" }));
   await writeFile(join(dataDir, "papers.json"), `${JSON.stringify(papers, null, 2)}\n`, "utf8");
   await writeFile(join(dataDir, "paper-graph.json"), `${JSON.stringify(paperGraph, null, 2)}\n`, "utf8");
   await writeFile(join(rootDir, "index.html"), dashboardHtml, "utf8");
-  await writeFile(join(viewsDir, "dashboard.html"), dashboardHtml, "utf8");
+  await writeFile(join(viewsDir, "dashboard.html"), dashboardViewHtml, "utf8");
   for (const paper of papers) {
     await writeFile(join(rootDir, paper.note_html), stripTrailingWhitespace(renderNotePage(paper, papers)), "utf8");
   }

@@ -10,8 +10,8 @@ scope: in_scope
 readiness: medium
 action: buffer
 tech_paradigm: video_flow_model
-primary_domain: World Action Model
-domains: [World Action Model, World Model]
+primary_domain: Diffusion
+domains: [Diffusion, Video Generation, World Model]
 primary_technical_layer: video_generation
 primary_task_family: video_dynamics_generation
 platform: video_generation_models

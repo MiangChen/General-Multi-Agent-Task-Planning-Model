@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="robots" content="noindex,nofollow,noarchive">
-  <title>DDPM · Paper Note</title>
+  <title>Decision Diffuser · Paper Note</title>
   <style>
     :root {
       --bg: #eef4fb;
@@ -434,15 +434,16 @@
   <main class="note-shell" id="top">
     <section class="note-hero">
       <div class="hero-main">
-        <div class="note-kicker">2020-06 · NeurIPS 2020 · denoising_diffusion_probabilistic_model</div>
-        <h1>DDPM</h1>
-        <div class="full-title">Denoising Diffusion Probabilistic Models</div>
-        <div class="note-summary"><p>DDPM 是现代 diffusion 生成模型的基础节点：它把生成过程写成“正向逐步加噪 + 反向逐步去噪”，并用简化的噪声预测目标让模型学会从噪声中恢复数据结构。</p></div>
+        <div class="note-kicker">2022-11 · ICLR 2023 Notable Top 5% · decision_diffusion_modeling</div>
+        <h1>Decision Diffuser</h1>
+        <div class="full-title">Is Conditional Generative Modeling all you need for Decision-Making?</div>
+        <div class="note-summary"><p>Decision Diffuser 把 decision-making 看成 conditional generative modeling：先用 diffusion 生成未来 state trajectory，再用 inverse dynamics / action model 把相邻状态转成动作，因此比直接生成 action trajectory 更分层。</p>
+<p>正式发表信息：论文 arXiv 版本是 <code>2211.15657</code>，正式会议为 <strong>ICLR 2023 Notable Top 5%</strong>。</p></div>
       </div>
       <aside class="hero-side">
         <div class="metric-grid">
           <div class="metric">
-            <div class="metric-value">2020</div>
+            <div class="metric-value">2022</div>
             <div class="metric-label">Year</div>
           </div>
           <div class="metric">
@@ -450,7 +451,7 @@
             <div class="metric-label">Readiness</div>
           </div>
           <div class="metric">
-            <div class="metric-value">略读</div>
+            <div class="metric-value">已读论文</div>
             <div class="metric-label">Evidence</div>
           </div>
           <div class="metric">
@@ -460,13 +461,13 @@
         </div>
         <div>
           <div class="note-section-kicker">Authors</div>
-          <div>Jonathan Ho, Ajay Jain, Pieter Abbeel</div>
+          <div>Anurag Ajay, Yilun Du, Abhi Gupta, Joshua B. Tenenbaum, Tommi Jaakkola, Pulkit Agrawal</div>
         </div>
         <div>
           <div class="note-section-kicker">Institutions</div>
-          <div>UC Berkeley · Google Research</div>
+          <div>MIT</div>
         </div>
-        <div class="note-link-row"><a href="https://arxiv.org/abs/2006.11239" target="_blank" rel="noreferrer">Paper</a><a href="https://github.com/hojonathanho/diffusion" target="_blank" rel="noreferrer">Project</a><a href="https://doi.org/10.48550/arXiv.2006.11239" target="_blank" rel="noreferrer">DOI</a><a href="https://arxiv.org/abs/2006.11239" target="_blank" rel="noreferrer">arXiv</a></div>
+        <div class="note-link-row"><a href="../pdfs/2022-11-01-Decision-Diffuser-conditional-generative-modeling-decision-making.pdf" target="_blank" rel="noreferrer">PDF</a><a href="https://openreview.net/forum?id=sP1fo2K9DFG" target="_blank" rel="noreferrer">Paper</a><a href="https://anuragajay.github.io/decision-diffuser/" target="_blank" rel="noreferrer">Project</a><a href="https://doi.org/10.48550/arXiv.2211.15657" target="_blank" rel="noreferrer">DOI</a><a href="https://arxiv.org/abs/2211.15657" target="_blank" rel="noreferrer">arXiv</a></div>
       </aside>
     </section>
 
@@ -475,51 +476,62 @@
 
     <section class="note-section impact">
       <div class="note-section-kicker">For Our Model</div>
-      <div class="note-section-body"><p>DDPM 给 TOPG 的最小迁移形式是：</p>
-<p>```text<br>clean task graph<br>-&gt; add node / edge / attribute noise<br>-&gt; condition on language + scene + agents + skills + feedback<br>-&gt; denoise into a valid plan graph<br>-&gt; check constraints and optionally denoise again<br>```</p>
-<p>这说明 TOPG 生成器不一定要一次性输出完整计划。它可以先产生一个 noised / masked plan hypothesis view，再逐步修正 task count、skill label、location grounding、dependency edge 和 allocation hints。</p></div>
+      <div class="note-section-body"><p>TOPG 可以借鉴 Decision Diffuser 的分层思想：</p>
+<p>```text<br>high-level graph planner<br>-&gt; desired state / task progress sequence<br>-&gt; inverse dynamics / executor policy<br>-&gt; robot actions<br>```</p>
+<p>这比“直接生成所有机器人的联合动作”更稳。多机器人任务规划可以先生成任务状态流：</p>
+<p>```text<br>object located<br>area cleared<br>robot A at room 1<br>robot B carrying item<br>handoff completed<br>```</p>
+<p>然后由每个机器人自己的 policy 或 inverse dynamics model 负责把状态变化转成动作。这样 high-level planner 只管“世界怎么变”，executor 负责“身体怎么动”。</p></div>
     </section>
 
 
     <section class="note-section ">
       <div class="note-section-kicker">Research Question</div>
-      <div class="note-section-body"><p>传统生成模型在高质量图像生成上常依赖 GAN、VAE 或 autoregressive decoder。DDPM 关心的问题是：能否用一个清晰的概率扩散过程，把复杂数据分布逐步扰动成高斯噪声，再训练一个神经网络学习反向去噪链，从噪声生成样本。</p>
-<p>对我们做 TOPG 来说，真正重要的不是图像任务，而是“结构可以被逐步破坏，也可以被条件模型逐步修复”这个范式。</p></div>
+      <div class="note-section-body"><p>Diffuser 已经说明 diffusion 可以生成 trajectory 并用于规划。但直接生成包含 action 的完整 trajectory 仍然会把状态建模和动作建模绑在一起。</p>
+<p>Decision Diffuser 问的是：是否可以把 decision-making 更彻底地写成条件生成问题，并把“想要到达什么状态序列”和“具体怎么动作”拆开。</p>
+<p>对 TOPG 来说，这个拆分很重要。高层任务规划通常更关心状态进展、子任务完成顺序和约束满足，而不是一开始就决定每个低层 action。</p></div>
     </section>
 
 
     <section class="note-section ">
       <div class="note-section-kicker">Method</div>
-      <div class="note-section-body"><p>DDPM 定义两个过程。</p>
-<p>第一，forward process 从真实样本 <code>x_0</code> 开始，按照预设噪声日程逐步加入高斯噪声，得到 <code>x_t</code>。当 <code>t</code> 足够大时，样本接近标准高斯噪声。</p>
-<p>第二，reverse process 训练神经网络估计每个时间步应该如何去噪。实践中常用 U-Net 接收 noisy sample 和 timestep embedding，并预测噪声项。推理时从随机噪声开始，反复调用去噪网络，逐步得到干净样本。</p>
-<p>论文还把 weighted variational bound、denoising score matching 和 Langevin-style sampling 联系起来，使 diffusion 不只是经验技巧，而是有概率建模解释的生成框架。</p></div>
+      <div class="note-section-body"><p>Decision Diffuser 的核心是分层。</p>
+<p>第一层，用 diffusion 生成未来 state trajectory：</p>
+<p>```text<br>s_0, s_1, ..., s_H<br>```</p>
+<p>模型从 noisy state sequence 开始去噪，生成一段符合条件的未来状态序列。条件可以包括 return、goal、constraint 等。</p>
+<p>第二层，用 inverse dynamics / action model 生成动作：</p>
+<p>```text<br>a_t = f(s_t, s_{t+1})<br>```</p>
+<p>也就是说，它不要求 diffusion model 直接把 action 全部学出来，而是先想清楚“状态应该怎么变化”，再由另一个模型把相邻状态转换成可执行动作。</p>
+<p>这和你的理解一致：</p>
+<p>```text<br>Diffuser:<br>diffusion 直接生成 state-action trajectory</p>
+<p>Decision Diffuser:<br>diffusion 生成 state trajectory<br>inverse dynamics / policy 生成 action<br>```</p>
+<p>这种分层让 diffusion 更专注于长程结构和目标达成，动作层则交给更局部、更容易学习的模型。</p></div>
     </section>
 
 
     <section class="note-section ">
       <div class="note-section-kicker">Key Contributions</div>
-      <div class="note-section-body"><ul><li>把扩散概率模型推进到高质量图像生成，成为后续 diffusion family 的关键起点之一。</li><li>给出了可操作的训练目标：预测加到数据上的噪声，而不是直接建模复杂数据分布。</li><li>明确了 timestep-conditioned denoising 的工程形式，让后续模型可以把图像、视频、动作、结构或图都放进同一“加噪-去噪”框架。</li><li>为后续 DDIM、score-based diffusion、latent diffusion、action diffusion、video diffusion 和 graph diffusion 提供了共同语言。</li></ul></div>
+      <div class="note-section-body"><ul><li>把 offline decision-making 表述成 conditional generative modeling。</li><li>用 diffusion 生成 state trajectory，而不是必须直接生成 action。</li><li>用 inverse dynamics action model 从相邻状态恢复动作，实现 state planning 和 action execution 的分工。</li><li>支持 return conditioning、goal conditioning、constraint conditioning 等多种测试时条件。</li><li>为后续“先生成计划状态，再调用执行器”的分层 planner 提供清晰范式。</li></ul></div>
     </section>
 
 
 
     <section class="note-section risk">
       <div class="note-section-kicker">Limitations</div>
-      <div class="note-section-body"><p>DDPM 本身主要验证无条件图像生成，不处理语言条件、机器人状态、任务图约束或多机器人协作。原始采样通常需要很多去噪步，推理速度慢；后续大量工作才围绕采样加速、条件控制、离散结构生成和实时执行展开。</p>
-<p>对 TOPG 而言，不能直接照搬连续像素扩散。任务图包含离散节点类型、边类型、约束、可执行性和拓扑合法性，因此需要把 DDPM 的连续去噪思想改造成 typed graph denoising。</p></div>
+      <div class="note-section-body"><p>Decision Diffuser 主要验证在 offline RL / control benchmark 上，状态空间通常是连续或低维结构化状态。它不直接处理语言任务、离散 task graph、DAG 依赖、资源约束或多机器人协同。</p>
+<p>如果迁移到真实机器人，inverse dynamics 模型必须足够可靠；否则状态序列看起来合理，但动作无法执行。多机器人场景还需要考虑联合状态和个体动作之间的可分解性。</p></div>
     </section>
 
 
     <section class="note-section ">
       <div class="note-section-kicker">Reusable Modules</div>
-      <div class="note-section-body"><p>forward noise process、reverse denoising process、timestep conditioning、noise prediction objective、iterative refinement sampling。</p></div>
+      <div class="note-section-body"><p>state trajectory diffusion、inverse dynamics action model、return conditioning、constraint conditioning、classifier-free planning guidance、hierarchical decision generation。</p></div>
     </section>
 
 
     <section class="note-section risk">
       <div class="note-section-kicker">Evidence &amp; Risk</div>
-      <div class="note-section-body"><p>证据来自 NeurIPS 2020 论文和公开实现，DDPM 已成为 diffusion 系列方法的基础参考。风险是原始证据来自图像生成；迁移到 TOPG 必须重新定义噪声空间、合法性约束、离散边预测和 planner confidence，不能只把图像 U-Net 换成 GNN 就期待规划成功。</p></div>
+      <div class="note-section-body"><p>证据来自 ICLR 2023 notable top 5% 正式发表论文、OpenReview 页面和 arXiv <code>2211.15657</code>。PDF 已保存为本地 arXiv 版本：<code>pdfs/2022-11-01-Decision-Diffuser-conditional-generative-modeling-decision-making.pdf</code>。</p>
+<p>风险在于：state trajectory 在 benchmark 里容易定义，但 TOPG 的“状态”可能是 scene graph、task graph、object relation、robot capability 和 execution status 的混合结构。迁移时最难的是定义可学习、可验证、可执行的 state representation。</p></div>
     </section>
 
         <div id="relations">
@@ -529,80 +541,25 @@
         <div>
           <h3>当前论文 -> 关联论文 / 前序工作</h3>
           <div class="relation-chip-grid">
+            <a class="relation-chip" style="--rel:#246bfe" href="../notes/2022-diffuser-planning-with-diffusion-flexible-behavior-synthesis.html">
+              <span>继承/扩展</span>
+              <strong>Diffuser</strong>
+            </a>
+
             <a class="relation-chip" style="--rel:#188aa6" href="../notes/2023-diffusion-policy-action-diffusion.html">
               <span>提供模块</span>
               <strong>Diffusion Policy</strong>
             </a>
 
-            <a class="relation-chip" style="--rel:#188aa6" href="../notes/2023-rfdiffusion-protein-structure-function.html">
-              <span>提供模块</span>
-              <strong>RFdiffusion</strong>
-            </a>
-
-            <a class="relation-chip" style="--rel:#188aa6" href="../notes/2025-layerdag-diffusion-dag-generation.html">
-              <span>提供模块</span>
-              <strong>LayerDAG</strong>
+            <a class="relation-chip" style="--rel:#4b6f96" href="../notes/2020-ddpm-denoising-diffusion-probabilistic-models.html">
+              <span>引用/背景</span>
+              <strong>DDPM</strong>
             </a>
           </div>
         </div>
         <div>
           <h3>下游论文 -> 当前论文</h3>
-          <div class="relation-chip-grid">
-            <a class="relation-chip incoming" style="--rel:#246bfe" href="../notes/2020-ddim-denoising-diffusion-implicit-models.html">
-              <span>继承/扩展</span>
-              <strong>DDIM</strong>
-            </a>
-
-            <a class="relation-chip incoming" style="--rel:#246bfe" href="../notes/2020-score-sde-score-based-generative-modeling-sde.html">
-              <span>继承/扩展</span>
-              <strong>Score SDE</strong>
-            </a>
-
-            <a class="relation-chip incoming" style="--rel:#246bfe" href="../notes/2021-improved-ddpm-improved-denoising-diffusion-probabilistic-models.html">
-              <span>继承/扩展</span>
-              <strong>Improved DDPM</strong>
-            </a>
-
-            <a class="relation-chip incoming" style="--rel:#246bfe" href="../notes/2021-d3pm-structured-denoising-diffusion-discrete-state-spaces.html">
-              <span>继承/扩展</span>
-              <strong>D3PM</strong>
-            </a>
-
-            <a class="relation-chip incoming" style="--rel:#246bfe" href="../notes/2022-diffuser-planning-with-diffusion-flexible-behavior-synthesis.html">
-              <span>继承/扩展</span>
-              <strong>Diffuser</strong>
-            </a>
-
-            <a class="relation-chip incoming" style="--rel:#246bfe" href="../notes/2022-classifier-free-diffusion-guidance.html">
-              <span>继承/扩展</span>
-              <strong>CFG</strong>
-            </a>
-
-            <a class="relation-chip incoming" style="--rel:#4b6f96" href="../notes/2022-digress-discrete-denoising-diffusion-graph-generation.html">
-              <span>引用/背景</span>
-              <strong>DiGress</strong>
-            </a>
-
-            <a class="relation-chip incoming" style="--rel:#4b6f96" href="../notes/2022-decision-diffuser-conditional-generative-modeling-decision-making.html">
-              <span>引用/背景</span>
-              <strong>Decision Diffuser</strong>
-            </a>
-
-            <a class="relation-chip incoming" style="--rel:#00a7c7" href="../notes/2024-seadag-semi-autoregressive-diffusion-dag-generation.html">
-              <span>使用/依赖</span>
-              <strong>SeaDAG</strong>
-            </a>
-
-            <a class="relation-chip incoming" style="--rel:#246bfe" href="../notes/2026-cola-dlm-continuous-latent-diffusion-language-model.html">
-              <span>继承/扩展</span>
-              <strong>Cola DLM</strong>
-            </a>
-
-            <a class="relation-chip incoming" style="--rel:#246bfe" href="../notes/2026-elf-embedded-language-flows.html">
-              <span>继承/扩展</span>
-              <strong>ELF</strong>
-            </a>
-          </div>
+          <div class="relation-chip-grid"><div class="relation-empty">暂时没有下游论文连接到这篇。</div></div>
         </div>
       </div>
     </section>
@@ -610,15 +567,15 @@
 
     <section class="note-section ">
       <div class="note-section-kicker">Relation Notes</div>
-      <div class="note-section-body"><p>Diffusion Policy 把 DDPM 的去噪生成思想从图像迁移到机器人 action chunk：目标不再是像素，而是一段连续控制序列。</p>
-<p>RFdiffusion 把去噪生成从图像迁移到 protein backbone scaffold：目标不再是图片，而是满足 motif/结构约束的三维骨架。</p>
-<p>LayerDAG 则把 diffusion 进一步放到离散 DAG 生成里，接近我们要做的 task graph denoising。它不是直接使用原始 DDPM 生成整张图，而是把 DDPM-style iterative refinement 用在 layer 内节点属性和边生成上。</p></div>
+      <div class="note-section-body"><p>Diffuser 直接把 trajectory 作为 diffusion 生成对象，包含状态和动作；Decision Diffuser 更强调分层，把 state trajectory generation 和 action recovery 分开。</p>
+<p>Diffusion Policy 更像低层 action chunk executor；Decision Diffuser 更像高层状态轨迹 planner + 局部 action model。</p>
+<p>LayerDAG 生成的是离散 task graph，Decision Diffuser 生成的是连续 state trajectory。它们可以组成两级系统：LayerDAG 规划任务依赖，Decision Diffuser 为每个任务或任务片段生成状态进展，执行器再产生动作。</p></div>
     </section>
 
         <div id="open-question">
     <section class="note-section impact">
       <div class="note-section-kicker">Open Question</div>
-      <div class="note-section-body"><p>TOPG 的 noise schedule 应该破坏什么：任务节点数量、任务技能、location grounding、dependency edge，还是 allocation hint。第一版可以从 mask-denoising 开始，后续再扩展到 multi-step discrete diffusion。</p></div>
+      <div class="note-section-body"><p>TOPG 是否应该先生成 task graph，再生成 state trajectory，最后生成 action；还是把 task graph 和 state trajectory 合成一个统一的 planning graph。第一版建议保留分层：task graph 负责结构，state trajectory 负责连续进展，executor 负责动作。</p></div>
     </section>
   </div>
       </article>
@@ -626,19 +583,19 @@
       <aside class="note-aside">
         <section class="note-aside-panel">
           <h2>System Roles</h2>
-          <div class="pill-row"><span class="note-pill role-pill">diffusion foundation</span><span class="note-pill role-pill">denoising generator</span><span class="note-pill role-pill">architecture reference</span></div>
+          <div class="pill-row"><span class="note-pill role-pill">diffusion foundation</span><span class="note-pill role-pill">state trajectory planner</span><span class="note-pill role-pill">planner sampler</span><span class="note-pill role-pill">inverse dynamics executor</span></div>
         </section>
         <section class="note-aside-panel">
           <h2>Reusable Modules</h2>
-          <div class="pill-row"><span class="note-pill module-pill">forward noise process</span><span class="note-pill module-pill">reverse denoising process</span><span class="note-pill module-pill">timestep conditioning</span><span class="note-pill module-pill">noise prediction objective</span><span class="note-pill module-pill">iterative refinement sampling</span></div>
+          <div class="pill-row"><span class="note-pill module-pill">state trajectory diffusion</span><span class="note-pill module-pill">inverse dynamics action model</span><span class="note-pill module-pill">return conditioning</span><span class="note-pill module-pill">constraint conditioning</span><span class="note-pill module-pill">classifier free planning guidance</span><span class="note-pill module-pill">hierarchical decision generation</span></div>
         </section>
         <section class="note-aside-panel">
           <h2>Next Action</h2>
-          <div class="note-pill role-pill">map ddpm to graph denoising</div>
+          <div class="note-pill role-pill">compare decision diffuser with diffuser and topg</div>
         </section>
         <section class="note-aside-panel">
           <h2>Tags</h2>
-          <div class="pill-row"><span class="note-pill">DDPM</span><span class="note-pill">diffusion model</span><span class="note-pill">denoising</span><span class="note-pill">score matching</span><span class="note-pill">generative model</span><span class="note-pill">iterative refinement</span></div>
+          <div class="pill-row"><span class="note-pill">Decision Diffuser</span><span class="note-pill">diffusion planning</span><span class="note-pill">state trajectory</span><span class="note-pill">inverse dynamics</span><span class="note-pill">offline RL</span><span class="note-pill">ICLR 2023</span></div>
         </section>
         <section class="note-aside-panel">
           <h2>Reading Map</h2>

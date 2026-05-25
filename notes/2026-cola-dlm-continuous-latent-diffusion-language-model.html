@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="robots" content="noindex,nofollow,noarchive">
-  <title>DDPM · Paper Note</title>
+  <title>Cola DLM · Paper Note</title>
   <style>
     :root {
       --bg: #eef4fb;
@@ -434,39 +434,39 @@
   <main class="note-shell" id="top">
     <section class="note-hero">
       <div class="hero-main">
-        <div class="note-kicker">2020-06 · NeurIPS 2020 · denoising_diffusion_probabilistic_model</div>
-        <h1>DDPM</h1>
-        <div class="full-title">Denoising Diffusion Probabilistic Models</div>
-        <div class="note-summary"><p>DDPM 是现代 diffusion 生成模型的基础节点：它把生成过程写成“正向逐步加噪 + 反向逐步去噪”，并用简化的噪声预测目标让模型学会从噪声中恢复数据结构。</p></div>
+        <div class="note-kicker">2026-05 · arXiv · Continuous Latent Diffusion Language Model</div>
+        <h1>Cola DLM</h1>
+        <div class="full-title">Continuous Latent Diffusion Language Model</div>
+        <div class="note-summary"><p>Cola DLM 是 ByteDance Seed 的层级连续潜在扩散语言模型：先用 Text VAE 把文本压到连续 latent，再用 block-causal DiT 做 latent prior transport，最后条件解码回文本。</p></div>
       </div>
       <aside class="hero-side">
         <div class="metric-grid">
           <div class="metric">
-            <div class="metric-value">2020</div>
+            <div class="metric-value">2026</div>
             <div class="metric-label">Year</div>
           </div>
           <div class="metric">
-            <div class="metric-value">高</div>
+            <div class="metric-value">中</div>
             <div class="metric-label">Readiness</div>
           </div>
           <div class="metric">
-            <div class="metric-value">略读</div>
+            <div class="metric-value">已读论文</div>
             <div class="metric-label">Evidence</div>
           </div>
           <div class="metric">
-            <div class="metric-value">3</div>
+            <div class="metric-value">2</div>
             <div class="metric-label">Relations</div>
           </div>
         </div>
         <div>
           <div class="note-section-kicker">Authors</div>
-          <div>Jonathan Ho, Ajay Jain, Pieter Abbeel</div>
+          <div>Hongcan Guo, Qinyu Zhao, Yian Zhao, Shen Nie, Rui Zhu, Qiushan Guo, Feng Wang, Tao Yang, Hengshuang Zhao, Guoqiang Wei, Yan Zeng</div>
         </div>
         <div>
           <div class="note-section-kicker">Institutions</div>
-          <div>UC Berkeley · Google Research</div>
+          <div>ByteDance Seed · Peking University · University of Hong Kong</div>
         </div>
-        <div class="note-link-row"><a href="https://arxiv.org/abs/2006.11239" target="_blank" rel="noreferrer">Paper</a><a href="https://github.com/hojonathanho/diffusion" target="_blank" rel="noreferrer">Project</a><a href="https://doi.org/10.48550/arXiv.2006.11239" target="_blank" rel="noreferrer">DOI</a><a href="https://arxiv.org/abs/2006.11239" target="_blank" rel="noreferrer">arXiv</a></div>
+        <div class="note-link-row"><a href="https://arxiv.org/abs/2605.06548" target="_blank" rel="noreferrer">Paper</a><a href="https://hongcanguo.github.io/Cola-DLM/" target="_blank" rel="noreferrer">Project</a><a href="https://doi.org/10.48550/arXiv.2605.06548" target="_blank" rel="noreferrer">DOI</a><a href="https://arxiv.org/abs/2605.06548" target="_blank" rel="noreferrer">arXiv</a></div>
       </aside>
     </section>
 
@@ -475,51 +475,51 @@
 
     <section class="note-section impact">
       <div class="note-section-kicker">For Our Model</div>
-      <div class="note-section-body"><p>DDPM 给 TOPG 的最小迁移形式是：</p>
-<p>```text<br>clean task graph<br>-&gt; add node / edge / attribute noise<br>-&gt; condition on language + scene + agents + skills + feedback<br>-&gt; denoise into a valid plan graph<br>-&gt; check constraints and optionally denoise again<br>```</p>
-<p>这说明 TOPG 生成器不一定要一次性输出完整计划。它可以先产生一个 noised / masked plan hypothesis view，再逐步修正 task count、skill label、location grounding、dependency edge 和 allocation hints。</p></div>
+      <div class="note-section-body"><p>我们的 PlanObject 可以参考 Cola DLM 的分层：<code>scene / agent / skill graph</code> 先编码成连续 latent evidence，diffusion planner 在 latent PlanObject 空间中生成高维决策，再由 mapping module 投影成 Gantt、task graph 或 JSON。</p>
+<p>这里的关键不是把 Cola DLM 直接当 planner，而是借鉴它的分工：连续 latent 负责全局组织，decoder / projector 负责离散可读输出。</p></div>
     </section>
 
 
     <section class="note-section ">
       <div class="note-section-kicker">Research Question</div>
-      <div class="note-section-body"><p>传统生成模型在高质量图像生成上常依赖 GAN、VAE 或 autoregressive decoder。DDPM 关心的问题是：能否用一个清晰的概率扩散过程，把复杂数据分布逐步扰动成高斯噪声，再训练一个神经网络学习反向去噪链，从噪声生成样本。</p>
-<p>对我们做 TOPG 来说，真正重要的不是图像任务，而是“结构可以被逐步破坏，也可以被条件模型逐步修复”这个范式。</p></div>
+      <div class="note-section-body"><p>自回归 LLM 绑定固定的从左到右 token 顺序；离散 DLM 又常常面临全局语义组织、可扩展表示学习和高效生成之间的冲突。</p>
+<p>Cola DLM 要回答的是：能否把语言生成拆成“全局语义 latent 建模”和“局部文本实现”两层，使 diffusion 主要承担连续 latent prior 的建模，而不是每一步都恢复 token。</p></div>
     </section>
 
 
     <section class="note-section ">
       <div class="note-section-kicker">Method</div>
-      <div class="note-section-body"><p>DDPM 定义两个过程。</p>
-<p>第一，forward process 从真实样本 <code>x_0</code> 开始，按照预设噪声日程逐步加入高斯噪声，得到 <code>x_t</code>。当 <code>t</code> 足够大时，样本接近标准高斯噪声。</p>
-<p>第二，reverse process 训练神经网络估计每个时间步应该如何去噪。实践中常用 U-Net 接收 noisy sample 和 timestep embedding，并预测噪声项。推理时从随机噪声开始，反复调用去噪网络，逐步得到干净样本。</p>
-<p>论文还把 weighted variational bound、denoising score matching 和 Langevin-style sampling 联系起来，使 diffusion 不只是经验技巧，而是有概率建模解释的生成框架。</p></div>
+      <div class="note-section-body"><p>模型由两个主要部分组成：</p>
+<ul><li>Text VAE：负责 text-to-latent 和 latent-to-text，把离散文本变成稳定的连续 latent 序列。</li><li>block-causal DiT：在连续 latent 空间中用 Flow Matching / diffusion prior transport 建模全局语义。</li></ul>
+<p>生成时，DiT 先组织 latent 空间中的全局语义轨迹，再由条件 decoder 把 latent realization 成文本。</p></div>
     </section>
 
 
     <section class="note-section ">
       <div class="note-section-kicker">Key Contributions</div>
-      <div class="note-section-body"><ul><li>把扩散概率模型推进到高质量图像生成，成为后续 diffusion family 的关键起点之一。</li><li>给出了可操作的训练目标：预测加到数据上的噪声，而不是直接建模复杂数据分布。</li><li>明确了 timestep-conditioned denoising 的工程形式，让后续模型可以把图像、视频、动作、结构或图都放进同一“加噪-去噪”框架。</li><li>为后续 DDIM、score-based diffusion、latent diffusion、action diffusion、video diffusion 和 graph diffusion 提供了共同语言。</li></ul></div>
+      <div class="note-section-body"><p>第一，Cola DLM 明确把语言生成分解为层级信息建模：高层 semantic prior 和低层 textual realization 分离。</p>
+<p>第二，它把 diffusion 的对象从 token observation recovery 转向 latent prior transport，更适合连续空间的 scaling。</p>
+<p>第三，它提供了开源模型和 HuggingFace checkpoint，便于后续实测采样速度、生成质量和接口可用性。</p></div>
     </section>
 
 
 
     <section class="note-section risk">
       <div class="note-section-kicker">Limitations</div>
-      <div class="note-section-body"><p>DDPM 本身主要验证无条件图像生成，不处理语言条件、机器人状态、任务图约束或多机器人协作。原始采样通常需要很多去噪步，推理速度慢；后续大量工作才围绕采样加速、条件控制、离散结构生成和实时执行展开。</p>
-<p>对 TOPG 而言，不能直接照搬连续像素扩散。任务图包含离散节点类型、边类型、约束、可执行性和拓扑合法性，因此需要把 DDPM 的连续去噪思想改造成 typed graph denoising。</p></div>
+      <div class="note-section-body"><p>Cola DLM 仍是语言模型，不直接处理任务图合法性、执行资源、POMDP 状态不确定性或多机器人调度。</p>
+<p>Text VAE 的压缩质量会成为关键瓶颈：如果 latent 丢失任务约束、依赖关系或资源冲突信息，后续 diffusion prior 很难恢复。</p></div>
     </section>
 
 
     <section class="note-section ">
       <div class="note-section-kicker">Reusable Modules</div>
-      <div class="note-section-body"><p>forward noise process、reverse denoising process、timestep conditioning、noise prediction objective、iterative refinement sampling。</p></div>
+      <div class="note-section-body"><p>Text VAE 式的结构压缩、block-causal DiT prior、latent prior transport、conditional decoder、HuggingFace / OpenAI-compatible serving adapter。</p></div>
     </section>
 
 
     <section class="note-section risk">
       <div class="note-section-kicker">Evidence &amp; Risk</div>
-      <div class="note-section-body"><p>证据来自 NeurIPS 2020 论文和公开实现，DDPM 已成为 diffusion 系列方法的基础参考。风险是原始证据来自图像生成；迁移到 TOPG 必须重新定义噪声空间、合法性约束、离散边预测和 planner confidence，不能只把图像 U-Net 换成 GNN 就期待规划成功。</p></div>
+      <div class="note-section-body"><p>证据来自 arXiv 报告和 ByteDance Seed 公开模型仓库；风险是当前 benchmark 主要验证语言生成，不验证规划可执行性或状态约束一致性。</p></div>
     </section>
 
         <div id="relations">
@@ -529,80 +529,20 @@
         <div>
           <h3>当前论文 -> 关联论文 / 前序工作</h3>
           <div class="relation-chip-grid">
-            <a class="relation-chip" style="--rel:#188aa6" href="../notes/2023-diffusion-policy-action-diffusion.html">
-              <span>提供模块</span>
-              <strong>Diffusion Policy</strong>
+            <a class="relation-chip" style="--rel:#246bfe" href="../notes/2020-ddpm-denoising-diffusion-probabilistic-models.html">
+              <span>继承/扩展</span>
+              <strong>DDPM</strong>
             </a>
 
-            <a class="relation-chip" style="--rel:#188aa6" href="../notes/2023-rfdiffusion-protein-structure-function.html">
-              <span>提供模块</span>
-              <strong>RFdiffusion</strong>
-            </a>
-
-            <a class="relation-chip" style="--rel:#188aa6" href="../notes/2025-layerdag-diffusion-dag-generation.html">
-              <span>提供模块</span>
-              <strong>LayerDAG</strong>
+            <a class="relation-chip" style="--rel:#4b6f96" href="../notes/2024-pi0-vla-flow-model.html">
+              <span>引用/背景</span>
+              <strong>π0</strong>
             </a>
           </div>
         </div>
         <div>
           <h3>下游论文 -> 当前论文</h3>
-          <div class="relation-chip-grid">
-            <a class="relation-chip incoming" style="--rel:#246bfe" href="../notes/2020-ddim-denoising-diffusion-implicit-models.html">
-              <span>继承/扩展</span>
-              <strong>DDIM</strong>
-            </a>
-
-            <a class="relation-chip incoming" style="--rel:#246bfe" href="../notes/2020-score-sde-score-based-generative-modeling-sde.html">
-              <span>继承/扩展</span>
-              <strong>Score SDE</strong>
-            </a>
-
-            <a class="relation-chip incoming" style="--rel:#246bfe" href="../notes/2021-improved-ddpm-improved-denoising-diffusion-probabilistic-models.html">
-              <span>继承/扩展</span>
-              <strong>Improved DDPM</strong>
-            </a>
-
-            <a class="relation-chip incoming" style="--rel:#246bfe" href="../notes/2021-d3pm-structured-denoising-diffusion-discrete-state-spaces.html">
-              <span>继承/扩展</span>
-              <strong>D3PM</strong>
-            </a>
-
-            <a class="relation-chip incoming" style="--rel:#246bfe" href="../notes/2022-diffuser-planning-with-diffusion-flexible-behavior-synthesis.html">
-              <span>继承/扩展</span>
-              <strong>Diffuser</strong>
-            </a>
-
-            <a class="relation-chip incoming" style="--rel:#246bfe" href="../notes/2022-classifier-free-diffusion-guidance.html">
-              <span>继承/扩展</span>
-              <strong>CFG</strong>
-            </a>
-
-            <a class="relation-chip incoming" style="--rel:#4b6f96" href="../notes/2022-digress-discrete-denoising-diffusion-graph-generation.html">
-              <span>引用/背景</span>
-              <strong>DiGress</strong>
-            </a>
-
-            <a class="relation-chip incoming" style="--rel:#4b6f96" href="../notes/2022-decision-diffuser-conditional-generative-modeling-decision-making.html">
-              <span>引用/背景</span>
-              <strong>Decision Diffuser</strong>
-            </a>
-
-            <a class="relation-chip incoming" style="--rel:#00a7c7" href="../notes/2024-seadag-semi-autoregressive-diffusion-dag-generation.html">
-              <span>使用/依赖</span>
-              <strong>SeaDAG</strong>
-            </a>
-
-            <a class="relation-chip incoming" style="--rel:#246bfe" href="../notes/2026-cola-dlm-continuous-latent-diffusion-language-model.html">
-              <span>继承/扩展</span>
-              <strong>Cola DLM</strong>
-            </a>
-
-            <a class="relation-chip incoming" style="--rel:#246bfe" href="../notes/2026-elf-embedded-language-flows.html">
-              <span>继承/扩展</span>
-              <strong>ELF</strong>
-            </a>
-          </div>
+          <div class="relation-chip-grid"><div class="relation-empty">暂时没有下游论文连接到这篇。</div></div>
         </div>
       </div>
     </section>
@@ -610,15 +550,14 @@
 
     <section class="note-section ">
       <div class="note-section-kicker">Relation Notes</div>
-      <div class="note-section-body"><p>Diffusion Policy 把 DDPM 的去噪生成思想从图像迁移到机器人 action chunk：目标不再是像素，而是一段连续控制序列。</p>
-<p>RFdiffusion 把去噪生成从图像迁移到 protein backbone scaffold：目标不再是图片，而是满足 motif/结构约束的三维骨架。</p>
-<p>LayerDAG 则把 diffusion 进一步放到离散 DAG 生成里，接近我们要做的 task graph denoising。它不是直接使用原始 DDPM 生成整张图，而是把 DDPM-style iterative refinement 用在 layer 内节点属性和边生成上。</p></div>
+      <div class="note-section-body"><p>和 ELF 相比，Cola DLM 更强调层级 latent decomposition：ELF 主要在 token embedding 空间做 flow，Cola DLM 则先通过 VAE 建立更抽象的连续 latent，再用 DiT 建模 prior。</p>
+<p>和 π0 一样，它说明 flow / diffusion 不一定只服务图像，也可以作为连续决策或语言生成的核心 prior。但 Cola DLM 的输出仍是文本，不是机器人动作。</p></div>
     </section>
 
         <div id="open-question">
     <section class="note-section impact">
       <div class="note-section-kicker">Open Question</div>
-      <div class="note-section-body"><p>TOPG 的 noise schedule 应该破坏什么：任务节点数量、任务技能、location grounding、dependency edge，还是 allocation hint。第一版可以从 mask-denoising 开始，后续再扩展到 multi-step discrete diffusion。</p></div>
+      <div class="note-section-body"><p>如果把 Cola DLM 的层级 latent 思路迁移到任务规划，Text VAE 对应的模块应该学习自然语言文本 latent，还是直接学习 typed graph / PlanObject latent。</p></div>
     </section>
   </div>
       </article>
@@ -626,19 +565,19 @@
       <aside class="note-aside">
         <section class="note-aside-panel">
           <h2>System Roles</h2>
-          <div class="pill-row"><span class="note-pill role-pill">diffusion foundation</span><span class="note-pill role-pill">denoising generator</span><span class="note-pill role-pill">architecture reference</span></div>
+          <div class="pill-row"><span class="note-pill role-pill">语义规划器</span><span class="note-pill role-pill">基础策略</span></div>
         </section>
         <section class="note-aside-panel">
           <h2>Reusable Modules</h2>
-          <div class="pill-row"><span class="note-pill module-pill">forward noise process</span><span class="note-pill module-pill">reverse denoising process</span><span class="note-pill module-pill">timestep conditioning</span><span class="note-pill module-pill">noise prediction objective</span><span class="note-pill module-pill">iterative refinement sampling</span></div>
+          <div class="pill-row"><span class="note-pill module-pill">text vae latent mapping</span><span class="note-pill module-pill">block causal dit prior</span><span class="note-pill module-pill">latent prior transport</span><span class="note-pill module-pill">conditional text decoder</span></div>
         </section>
         <section class="note-aside-panel">
           <h2>Next Action</h2>
-          <div class="note-pill role-pill">map ddpm to graph denoising</div>
+          <div class="note-pill role-pill">compare with elf</div>
         </section>
         <section class="note-aside-panel">
           <h2>Tags</h2>
-          <div class="pill-row"><span class="note-pill">DDPM</span><span class="note-pill">diffusion model</span><span class="note-pill">denoising</span><span class="note-pill">score matching</span><span class="note-pill">generative model</span><span class="note-pill">iterative refinement</span></div>
+          <div class="pill-row"><span class="note-pill">Cola DLM</span><span class="note-pill">ByteDance Seed</span><span class="note-pill">diffusion language model</span><span class="note-pill">latent diffusion</span><span class="note-pill">Text VAE</span><span class="note-pill">DiT</span><span class="note-pill">flow matching</span><span class="note-pill">LLM</span></div>
         </section>
         <section class="note-aside-panel">
           <h2>Reading Map</h2>

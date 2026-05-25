@@ -1,15 +1,15 @@
 ---
 id: diffusion-policies
 type: topic
-title: Diffusion 动作生成
-tags: [Diffusion Policy, action diffusion, robot policy, action chunk]
+title: Diffusion 生成模型
+tags: [Diffusion, action diffusion, graph diffusion, robot policy, action chunk]
 ---
 
-# Diffusion 动作生成
+# Diffusion 生成模型
 
-Diffusion 路线的核心不是语言语义，而是连续动作分布建模：给定视觉、状态或任务条件，在动作空间里从噪声逐步去噪出一段可执行 action chunk。
+Diffusion 路线的核心不是语言语义，而是把复杂对象建模成“从噪声逐步去噪出来”的生成过程。对象可以是图像、动作 chunk、离散 token、graph，或者带时序依赖的 task DAG。
 
-DDPM 是这一类方法的基础来源：它先把数据逐步加噪，再训练模型学习反向去噪。Diffusion Policy 把这个过程从图像迁移到机器人动作序列；LayerDAG / TOPG 则可以把同一个思想迁移到离散任务图和依赖边生成。
+DDPM 是这一类方法的基础来源：它先把数据逐步加噪，再训练模型学习反向去噪。Diffusion Policy 把这个过程从图像迁移到机器人动作序列；D3PM / DiGress / LayerDAG 则把同一个思想迁移到离散 token、graph 和 DAG 生成。
 
 ## 和 VLA / World Model / WAM 的区别
 
@@ -32,7 +32,10 @@ DDPM 是这一类方法的基础来源：它先把数据逐步加噪，再训练
 - [[2020-ddim-denoising-diffusion-implicit-models]]
 - [[2020-score-sde-score-based-generative-modeling-sde]]
 - [[2021-d3pm-structured-denoising-diffusion-discrete-state-spaces]]
+- [[2022-digress-discrete-denoising-diffusion-graph-generation]]
 - [[2022-classifier-free-diffusion-guidance]]
+- [[2022-diffuser-planning-with-diffusion-flexible-behavior-synthesis]]
+- [[2022-decision-diffuser-conditional-generative-modeling-decision-making]]
 - [[2023-diffusion-policy-action-diffusion]]
 - [[2025-layerdag-diffusion-dag-generation]]
 
