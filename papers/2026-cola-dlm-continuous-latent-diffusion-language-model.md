@@ -31,9 +31,9 @@ project_url: https://hongcanguo.github.io/Cola-DLM/
 image_url:
 zotero_key:
 citekey: guo2026coladlm
-cites: [2020-ddpm-denoising-diffusion-probabilistic-models, 2024-pi0-vla-flow-model]
+cites: [2013-auto-encoding-variational-bayes, 2020-ddpm-denoising-diffusion-probabilistic-models, 2024-pi0-vla-flow-model]
 extends: [2020-ddpm-denoising-diffusion-probabilistic-models]
-uses: []
+uses: [2013-auto-encoding-variational-bayes]
 enables: []
 complements: [2026-elf-embedded-language-flows]
 contrasts: []

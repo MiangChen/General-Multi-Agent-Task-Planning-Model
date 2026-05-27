@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="robots" content="noindex,nofollow,noarchive">
-  <title>DreamZero / WAM · Paper Note</title>
+  <title>UWM · Paper Note</title>
   <style>
     :root {
       --bg: #eef4fb;
@@ -434,15 +434,15 @@
   <main class="note-shell" id="top">
     <section class="note-hero">
       <div class="hero-main">
-        <div class="note-kicker">2026-02 · arXiv · World Action Model</div>
-        <h1>DreamZero / WAM</h1>
-        <div class="full-title">World Action Models are Zero-shot Policies</div>
-        <div class="note-summary"><p>World Action Model 的关键转向是：不只从视觉语言直接输出动作，而是联合预测未来视频世界状态和动作，用世界演化本身支持零样本策略。</p></div>
+        <div class="note-kicker">2025-04 · RSS 2025 · coupled_video_action_diffusion_world_model</div>
+        <h1>UWM</h1>
+        <div class="full-title">Unified World Models: Coupling Video and Action Diffusion for Pretraining on Large Robotic Datasets</div>
+        <div class="note-summary"><p>UWM 是 joint World Action Model 路线里的关键中间节点：它用一个多模态 DiT 同时耦合 video diffusion 和 action diffusion，并通过独立的扩散时间步控制 action、future observation 的生成与条件化。</p></div>
       </div>
       <aside class="hero-side">
         <div class="metric-grid">
           <div class="metric">
-            <div class="metric-value">2026</div>
+            <div class="metric-value">2025</div>
             <div class="metric-label">Year</div>
           </div>
           <div class="metric">
@@ -460,13 +460,13 @@
         </div>
         <div>
           <div class="note-section-kicker">Authors</div>
-          <div>Ye, Ge, Zheng, Gao, Du, Chebotar, Reed, Kautz, Zhu, Fan, Jang</div>
+          <div>Chuning Zhu, Raymond Yu, Siyuan Feng, Benjamin Burchfiel, Paarth Shah, Abhishek Gupta</div>
         </div>
         <div>
           <div class="note-section-kicker">Institutions</div>
-          <div>NVIDIA · University of Texas at Austin · Georgia Tech</div>
+          <div>University of Washington · Toyota Research Institute</div>
         </div>
-        <div class="note-link-row"><a href="../pdfs/2026-02-01-DreamZero-world-action-model.pdf" target="_blank" rel="noreferrer">PDF</a><a href="https://arxiv.org/abs/2602.15922" target="_blank" rel="noreferrer">Paper</a><a href="https://dreamzero0.github.io/" target="_blank" rel="noreferrer">Project</a><a href="https://doi.org/10.48550/arXiv.2602.15922" target="_blank" rel="noreferrer">DOI</a><a href="https://arxiv.org/abs/2602.15922" target="_blank" rel="noreferrer">arXiv</a></div>
+        <div class="note-link-row"><a href="https://arxiv.org/abs/2504.02792" target="_blank" rel="noreferrer">Paper</a><a href="https://weirdlabuw.github.io/uwm/" target="_blank" rel="noreferrer">Project</a><a href="https://github.com/weirdlabuw/uwm" target="_blank" rel="noreferrer">Code</a><a href="https://doi.org/10.48550/arXiv.2504.02792" target="_blank" rel="noreferrer">DOI</a><a href="https://arxiv.org/abs/2504.02792" target="_blank" rel="noreferrer">arXiv</a></div>
       </aside>
     </section>
 
@@ -475,53 +475,56 @@
 
     <section class="note-section impact">
       <div class="note-section-kicker">For Our Model</div>
-      <div class="note-section-body"><p>WAM 可以不只做执行器，还可以做 planner 的“行动后果预测器”：给定多个候选子任务分配，预测世界状态变化、冲突风险和可行性。</p>
-<p>对多机器人任务规划尤其关键的是三点。第一，diversity-first 数据策略提示我们不应只收集同一协作任务的大量重复轨迹，而要覆盖更多机器人组合、场景布局、任务依赖和失败模式。第二，asynchronous execution 可以变成多机器人系统的执行协议：每个机器人执行自己的 action chunk，同时中央 planner 或分布式 critic 在后台更新下一段联合计划。第三，cross-embodiment adaptation 提示多机器人系统可以把“机器人能力模型”和“任务语义模型”分开：少量 play data 用来适配新机器人身体，语义和世界预测能力尽量保留。</p></div>
+      <div class="note-section-body"><p>UWM 可以直接启发我们的 joint graph WAM 设计。把单机器人格式推广为：</p>
+<p>```text<br>o_t       -&gt; scene graph + agent graph + resource belief<br>a_t       -&gt; agent-time action graph G_{I_t}<br>o_{t+H}   -&gt; future scene / agent / resource graph<br>```</p>
+<p>对应地，<code>t_a</code> 变成 action graph 的噪声水平，<code>t_o</code> 变成 future graph 的噪声水平。通过控制两者，可以让同一个模型完成：</p>
+<ul><li>只生成计划：给定当前图，生成 <code>G_{I_t}</code>。</li><li>只预测后果：给定当前图和候选计划，预测未来图。</li><li>反推计划：给定当前图和目标未来图，生成可达计划。</li><li>纯世界建模：用无动作视频或无动作轨迹学习未来状态。</li></ul>
+<p>这比单纯 VLA 更接近任务规划，因为输出不只是低层动作，而是可以进一步约束、验证和调度的结构化 plan object。</p></div>
     </section>
 
 
     <section class="note-section ">
       <div class="note-section-kicker">Research Question</div>
-      <div class="note-section-body"><p>VLA 语义泛化强，但对未见物理运动和新环境动作泛化弱。能否用预训练视频扩散模型学习物理动态，从而成为零样本策略。</p></div>
+      <div class="note-section-body"><p>大规模机器人 imitation learning 依赖高质量动作标注，数据扩展困难；但互联网上和机器人采集中存在大量只有视觉、没有 action label 的视频。传统 action policy 只能吃 <code>(o, a, o&#39;)</code> 轨迹，传统 video world model 又不直接产出动作。</p>
+<p>UWM 追问的是：能否用同一个扩散模型同时覆盖机器人动作数据和 action-free 视频数据，让模型既学习世界动态，又学习从观测到动作的策略。</p></div>
     </section>
 
 
     <section class="note-section ">
       <div class="note-section-kicker">Method</div>
-      <div class="note-section-body"><p>DreamZero 基于预训练视频扩散/生成骨干，联合建模未来视频和动作，并做系统优化，使大规模视频生成模型能以约 7Hz 做实时闭环控制。关键工程链路包括：用 teacher forcing attention mask 降低闭环滚动中的误差累积，用 KV-cache 缓存历史视觉 token 以支持实时推理，并用 DreamZero-Flash 把扩散式多步生成压缩到更接近实时控制的单步推理。</p>
-<p>DreamZero-Flash 的核心是 decoupled noise schedules：训练时把视频噪声和动作噪声解绑，让视频更多处于高噪声、模糊状态，而动作仍保持可学习的均匀噪声。这样模型在单步推理时即使只能看到“模糊未来”，也要学会输出干净动作。这个设计可以理解成“抗大雾训练法”：故意让模型在视觉未来很不确定的条件下学习稳定控制。</p>
-<p>执行层采用 asynchronous execution：模型每次输出一段约 1.6 秒的 action chunk，机器人执行当前 chunk 的同时，GPU 在后台计算下一段动作。这样大模型推理不必阻塞低层控制循环，避免“停下思考再动一下”的同步卡顿。</p></div>
+      <div class="note-section-body"><p>UWM 把当前观测 <code>o</code>、动作 <code>a</code> 和未来观测 <code>o&#39;</code> 放进一个 unified transformer / DiT。模型不是分别训练一个 action model 和一个 video model，而是在同一个 denoiser 中预测两类噪声：</p>
+<ul><li><code>epsilon_a</code>：动作 token 上的噪声，对应 action diffusion。</li><li><code>epsilon_o</code>：未来观测/video token 上的噪声，对应 video diffusion / future observation diffusion。</li></ul>
+<p>关键控制量是两组独立扩散时间步：<code>t_a</code> 控制 action 的噪声水平，<code>t_o</code> 控制 future observation 的噪声水平。通过设置 <code>t_a</code> 和 <code>t_o</code>，同一个模型可以切换不同条件分布：</p>
+<p>```text<br>policy:           generate a      | condition on o<br>forward dynamics: generate o&#39;     | condition on o, a<br>inverse dynamics: generate a      | condition on o, o&#39;<br>video prediction: generate o&#39;     | condition on o<br>```</p>
+<p>训练数据支持两种格式：</p>
+<ul><li><code>(o, a, o&#39;)</code>：真实机器人采集轨迹。随机采样 <code>t_a</code> 和 <code>t_o</code>，模型同时预测 action epsilon 和 future observation epsilon。</li><li><code>(o, o&#39;)</code>：action-free 视频。把缺失动作视为 fully noised / masked，等价于手动设置 <code>t_a = T</code>，让模型主要从视觉变化中学习动态表示。</li></ul>
+<p>这使 UWM 可以把动作标注数据和无动作视频数据放在同一训练目标里，而不是为两类数据写两套模型。</p></div>
     </section>
 
 
     <section class="note-section ">
       <div class="note-section-kicker">Key Contributions</div>
-      <div class="note-section-body"><p>论文报告相比当时 VLA 在新任务和新环境上有显著泛化提升，并展示视频-only 演示和少量新具身数据下的跨具身迁移。更重要的是，它把 robotics 里的几个关键假设往前推了一步：</p>
-<ul><li>速度：DreamZero-Flash、KV-cache 和 Asynchronous Execution 共同服务于实时闭环，让 video diffusion 不再只是离线生成器。</li><li>数据：采用 Diversity &gt; Repetition 的数据哲学，不把采集预算耗在单任务重复熟练度上，而是通过 data deprecation 机制限制单任务重复次数，强迫数据覆盖更多任务和环境。</li><li>跨具身：Cross-Embodiment 利用人类第一人称纯视频和少量新机器人 play data，把视频模型里的物理常识和语义能力迁移到不同机器人身体上。</li><li>策略形式：WAM 不只是“看图出动作”的 VLA，而是用未来世界预测来支撑动作选择。</li></ul></div>
+      <div class="note-section-body"><ul><li>把 video diffusion 和 action diffusion 耦合到一个 unified DiT，而不是两个分离模块。</li><li>用 modality-specific diffusion timesteps 作为统一控制接口，决定 action / future obs 哪个被生成、哪个作为条件、哪个被 mask。</li><li>同时支持 <code>(o, a, o&#39;)</code> 机器人轨迹和 <code>(o, o&#39;)</code> action-free 视频，解决视频数据缺少动作标注时无法直接用于 policy learning 的问题。</li><li>同一个模型可表示 policy、forward dynamics、inverse dynamics 和 video prediction，连接 imitation learning 与 world modeling。</li><li>在 DROID 子集预训练、真实机器人任务、LIBERO 和 OOD 设置中展示了 pretraining 与 cotraining 的收益。</li></ul></div>
     </section>
 
-
-    <section class="note-section ">
-      <div class="note-section-kicker">Reading Highlights</div>
-      <div class="note-section-body"><ol><li>DreamZero-Flash：为单步去噪设计的抗噪训练。通过解耦视频噪声和动作噪声，让模型习惯在模糊未来里仍输出精确动作。</li><li>Diversity &gt; Repetition：数据收集强调任务和场景广度，而不是对同一任务反复示教。data deprecation 让单任务达到上限后被停止采集，逼迫数据集覆盖新任务。</li><li>Asynchronous Execution：大脑推理和身体执行并行。动作 chunk 正在执行时，GPU 计算下一段 chunk，从而让大模型控制看起来连续。</li><li>Cross-Embodiment：模型不只学习某个机器人身体的动作映射，还尝试从人类视频和少量新机器人 play data 中迁移技能与逆动力学。</li></ol></div>
-    </section>
 
 
     <section class="note-section risk">
       <div class="note-section-kicker">Limitations</div>
-      <div class="note-section-body"><p>WAM 当前仍主要面向机器人操作策略。对于多机器人，关键挑战会变成多主体状态预测、交互建模、通信动作和联合任务奖励。</p></div>
+      <div class="note-section-body"><p>UWM 仍主要是单机器人 manipulation / robot learning 范式。它联合建模的是 observation 和 action，但还没有显式处理多机器人之间的通信、资源竞争、角色分配和任务依赖。把它扩展到多智能体任务规划时，<code>a</code> 需要从单体 action chunk 升级为 agent-time action graph，<code>o&#39;</code> 也需要从视频帧升级为可解释的 scene graph / belief state。</p>
+<p>另一个风险是，action-free 视频只提供视觉动态，不提供执行意图和低层控制，因此它更适合增强 world representation，而不是直接替代机器人轨迹。</p></div>
     </section>
 
 
     <section class="note-section ">
       <div class="note-section-kicker">Reusable Modules</div>
-      <div class="note-section-body"><p>video-action world model、zero-shot policy rollout、action feasibility predictor、DreamZero-Flash / decoupled noise schedule、asynchronous action chunk executor、diversity-first data collector、cross-embodiment adapter。适合作为 planner critic、多机器人联合 rollout 和 planner-to-executor 接口的核心候选。</p></div>
+      <div class="note-section-body"><p>coupled video-action diffusion、modality-specific timesteps、joint DiT denoiser、action-free video pretraining、missing-action-as-noise masking、forward / inverse dynamics mode switching、policy as conditional generation。</p></div>
     </section>
 
 
     <section class="note-section risk">
       <div class="note-section-kicker">Evidence &amp; Risk</div>
-      <div class="note-section-body"><p>证据强在 zero-shot policy、视频-动作联合建模、实时推理工程、数据广度策略和跨具身迁移；风险是多主体交互、联合动作空间、通信动作和多机器人任务级同步尚未直接验证。DreamZero 证明了 WAM 可以成为强执行器和单机器人世界预测器，但把它升级成多机器人 planner critic 还需要额外验证：联合状态表示、冲突预测、角色分工、通信延迟和失败恢复是否能被同一个视频-动作模型稳定建模。</p></div>
+      <div class="note-section-body"><p>证据来自 RSS 2025 论文、arXiv <code>2504.02792</code> 和项目页。项目页明确说明 UWM 使用 separate diffusion timesteps for actions and videos，并支持从 <code>(o, a, o&#39;)</code> 机器人轨迹与 <code>(o, o&#39;)</code> action-free 视频共训。风险在于它尚未验证多智能体联合计划、图结构输出和资源约束；迁移到我们的任务规划模型时，需要把 video/action token 接口改成 typed graph token 接口。</p></div>
     </section>
 
         <div id="relations">
@@ -531,55 +534,35 @@
         <div>
           <h3>当前论文 -> 关联论文 / 前序工作</h3>
           <div class="relation-chip-grid">
-            <a class="relation-chip" style="--rel:#00a7c7" href="../notes/2024-pyramidal-flow-matching-video.html">
-              <span>使用/依赖</span>
-              <strong>Pyramidal Flow</strong>
+            <a class="relation-chip" style="--rel:#246bfe" href="../notes/2023-diffusion-policy-action-diffusion.html">
+              <span>继承/扩展</span>
+              <strong>Diffusion Policy</strong>
             </a>
 
-            <a class="relation-chip" style="--rel:#00a7c7" href="../notes/2023-dreamerv3-world-models.html">
+            <a class="relation-chip" style="--rel:#00a7c7" href="../notes/2020-ddpm-denoising-diffusion-probabilistic-models.html">
               <span>使用/依赖</span>
-              <strong>DreamerV3</strong>
+              <strong>DDPM</strong>
+            </a>
+
+            <a class="relation-chip" style="--rel:#188aa6" href="../notes/2026-world-action-models-zero-shot-policies.html">
+              <span>提供模块</span>
+              <strong>DreamZero / WAM</strong>
+            </a>
+
+            <a class="relation-chip" style="--rel:#188aa6" href="../notes/2026-fast-wam-test-time-future-imagination.html">
+              <span>提供模块</span>
+              <strong>Fast-WAM</strong>
             </a>
 
             <a class="relation-chip" style="--rel:#d14d72" href="../notes/2025-pi05-open-world-generalization.html">
               <span>对比路线</span>
               <strong>π0.5</strong>
             </a>
-
-            <a class="relation-chip" style="--rel:#d14d72" href="../notes/2024-pi0-vla-flow-model.html">
-              <span>对比路线</span>
-              <strong>π0</strong>
-            </a>
-
-            <a class="relation-chip" style="--rel:#d14d72" href="../notes/2023-rt-2-vla.html">
-              <span>对比路线</span>
-              <strong>RT-2</strong>
-            </a>
           </div>
         </div>
         <div>
           <h3>下游论文 -> 当前论文</h3>
-          <div class="relation-chip-grid">
-            <a class="relation-chip incoming" style="--rel:#188aa6" href="../notes/2023-diffusion-policy-action-diffusion.html">
-              <span>提供模块</span>
-              <strong>Diffusion Policy</strong>
-            </a>
-
-            <a class="relation-chip incoming" style="--rel:#188aa6" href="../notes/2025-uwm-coupling-video-action-diffusion.html">
-              <span>提供模块</span>
-              <strong>UWM</strong>
-            </a>
-
-            <a class="relation-chip incoming" style="--rel:#d14d72" href="../notes/2026-fast-wam-test-time-future-imagination.html">
-              <span>对比路线</span>
-              <strong>Fast-WAM</strong>
-            </a>
-
-            <a class="relation-chip incoming" style="--rel:#4b6f96" href="../notes/2026-psibot-from-human-skill-to-robotic-mastery.html">
-              <span>引用/背景</span>
-              <strong>Psi-R2 / Psi-W0</strong>
-            </a>
-          </div>
+          <div class="relation-chip-grid"><div class="relation-empty">暂时没有下游论文连接到这篇。</div></div>
         </div>
       </div>
     </section>
@@ -587,13 +570,15 @@
 
     <section class="note-section ">
       <div class="note-section-kicker">Relation Notes</div>
-      <div class="note-section-body"><p>DreamZero 和 Dreamer 都是 world model 思路，但侧重点不同：Dreamer 在 latent world model 中用 RL 学行为，DreamZero 借视频生成模型和动作联合预测直接成为策略。Pyramidal Flow 是其视频生成和 flow matching 技术背景之一。</p></div>
+      <div class="note-section-body"><p>和 Diffusion Policy 相比，UWM 不只在动作空间做 diffusion policy，而是把 action diffusion 和 future observation diffusion 绑在一个模型中。Diffusion Policy 是动作生成根路线，UWM 把它推进到 world-action joint modeling。</p>
+<p>和 DreamZero / WAM 相比，UWM 更像前置的统一训练范式：它明确给出了 <code>(o, a, o&#39;)</code> 与 <code>(o, o&#39;)</code> 两类数据如何共训，以及如何用 <code>t_a/t_o</code> 切换 policy、forward dynamics、inverse dynamics 和 video prediction。DreamZero 更强调用 world action model 形成 zero-shot policy 和实时执行。</p>
+<p>和 Fast-WAM 相比，UWM 保留了训练/推理时的联合 video-action diffusion 接口；Fast-WAM 则进一步追问测试时是否需要显式 future imagination。两者可以形成一个很好的设计轴：UWM 负责说明“怎么统一训练”，Fast-WAM 负责说明“部署时哪些分支可以省掉”。</p></div>
     </section>
 
         <div id="open-question">
     <section class="note-section impact">
       <div class="note-section-kicker">Open Question</div>
-      <div class="note-section-body"><p>如何把 WAM 从单机器人视频-动作预测扩展到多机器人联合动作预测，例如同时建模 A 机器人移动、B 机器人抓取、C 机器人等待带来的全局状态变化。</p></div>
+      <div class="note-section-body"><p>在 joint graph WAM 中，<code>t_a/t_o</code> 是否足够表达所有条件化模式？例如有时我们还需要 mask 某些 agent、某些资源或某些时间段。更通用的版本可能需要 <code>t_plan</code>、<code>t_world</code>、<code>t_agent_i</code> 或 per-token mask schedule，而不是只有 action / observation 两个全局时间步。</p></div>
     </section>
   </div>
       </article>
@@ -601,19 +586,19 @@
       <aside class="note-aside">
         <section class="note-aside-panel">
           <h2>System Roles</h2>
-          <div class="pill-row"><span class="note-pill role-pill">世界模拟器</span><span class="note-pill role-pill">Planner critic</span><span class="note-pill role-pill">执行器</span></div>
+          <div class="pill-row"><span class="note-pill role-pill">世界模拟器</span><span class="note-pill role-pill">执行器</span><span class="note-pill role-pill">Planner critic</span><span class="note-pill role-pill">世界编码器</span></div>
         </section>
         <section class="note-aside-panel">
           <h2>Reusable Modules</h2>
-          <div class="pill-row"><span class="note-pill module-pill">video action world model</span><span class="note-pill module-pill">zero shot policy rollout</span><span class="note-pill module-pill">action feasibility prediction</span><span class="note-pill module-pill">dreamzero flash</span><span class="note-pill module-pill">decoupled noise schedule</span><span class="note-pill module-pill">async chunk execution</span><span class="note-pill module-pill">diversity first data collection</span><span class="note-pill module-pill">cross embodiment adaptation</span></div>
+          <div class="pill-row"><span class="note-pill module-pill">coupled video action diffusion</span><span class="note-pill module-pill">modality specific diffusion timesteps</span><span class="note-pill module-pill">joint dit denoiser</span><span class="note-pill module-pill">action free video pretraining</span><span class="note-pill module-pill">forward inverse dynamics modes</span><span class="note-pill module-pill">policy as conditional generation</span></div>
         </section>
         <section class="note-aside-panel">
           <h2>Next Action</h2>
-          <div class="note-pill role-pill">扩展多智能体 rollout</div>
+          <div class="note-pill role-pill">map uwm to joint wam graph interface</div>
         </section>
         <section class="note-aside-panel">
           <h2>Tags</h2>
-          <div class="pill-row"><span class="note-pill">World Action Model</span><span class="note-pill">DreamZero</span><span class="note-pill">video diffusion</span><span class="note-pill">zero-shot policy</span><span class="note-pill">cross-embodiment</span></div>
+          <div class="pill-row"><span class="note-pill">UWM</span><span class="note-pill">Unified World Models</span><span class="note-pill">World Action Model</span><span class="note-pill">video diffusion</span><span class="note-pill">action diffusion</span><span class="note-pill">DiT</span><span class="note-pill">action-free video</span><span class="note-pill">DROID</span></div>
         </section>
         <section class="note-aside-panel">
           <h2>Reading Map</h2>

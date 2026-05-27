@@ -16,6 +16,7 @@ const valueLabels = {
   "Scene Graph": "Scene Graph",
   "Task Graph": "Task Graph",
   "Structure Generation": "Structure Generation",
+  "Generative Model": "Generative Model",
   Diffusion: "Diffusion",
   "Model-based RL": "Model-based RL",
   "Model-free RL": "Model-free RL",
@@ -45,6 +46,7 @@ const valueLabels = {
   layerwise_diffusion_dag_generation: "Layerwise Diffusion DAG Generation",
   continuous_embedding_language_flow: "Continuous Embedding Language Flow",
   continuous_latent_diffusion_language_model: "Continuous Latent Diffusion Language Model",
+  variational_autoencoder: "Variational Autoencoder",
   unsupervised_task_graph_generation: "Unsupervised Task Graph Generation",
   llm_dependency_graph_planning: "LLM Dependency Graph Planning",
   semantic_grounding: "语义落地",
@@ -302,6 +304,8 @@ const palette = [
 const domainColumns = [
   "LLM / Auto-regression",
   "LLM / Diffusion",
+  "LLM / Agent framework",
+  "Generative Model / VAE",
   "Diffusion",
   "VLA / RT series",
   "VLA / π series",
@@ -315,6 +319,8 @@ const domainColumns = [
 const domainColumnLabels = {
   "LLM / Auto-regression": "auto-regression",
   "LLM / Diffusion": "diffusion",
+  "LLM / Agent framework": "agent framework",
+  "Generative Model / VAE": "VAE",
   Diffusion: "base diffusion",
   "VLA / RT series": "RT series",
   "VLA / π series": "π series",
@@ -330,6 +336,9 @@ const domainColors = {
   LLM: "#246bfe",
   "LLM / Auto-regression": "#246bfe",
   "LLM / Diffusion": "#3b82f6",
+  "LLM / Agent framework": "#4f46e5",
+  "Generative Model": "#9333ea",
+  "Generative Model / VAE": "#9333ea",
   VLA: "#00a7c7",
   "VLA / RT series": "#0891b2",
   "VLA / π series": "#00a7c7",
@@ -350,7 +359,11 @@ const domainColors = {
 const domainColumnGroups = [
   {
     label: "LLM",
-    domains: ["LLM / Auto-regression", "LLM / Diffusion"],
+    domains: ["LLM / Auto-regression", "LLM / Diffusion", "LLM / Agent framework"],
+  },
+  {
+    label: "Generative Model",
+    domains: ["Generative Model / VAE"],
   },
   {
     label: "Diffusion",
@@ -1353,6 +1366,38 @@ function inferGraphDomain(paper) {
     tech.includes("continuous_latent_diffusion_language_model")
   ) {
     return "LLM / Diffusion";
+  }
+
+  if (
+    id === "2013-auto-encoding-variational-bayes" ||
+    tech === "variational_autoencoder" ||
+    primary === "Generative Model" ||
+    hasDomain("VAE") ||
+    hasDomain("Variational Inference")
+  ) {
+    return "Generative Model / VAE";
+  }
+
+  if (
+    id === "2024-smart-llm-pythonic-task-planning" ||
+    id === "2025-lip-llm-dependency-graph-planning" ||
+    id === "2025-dart-llm-dependency-aware-task-graph" ||
+    id === "2026-genswarm-multi-robot-code-policy" ||
+    id === "2026-foundation-models-robot-swarms" ||
+    tech === "pythonic_llm_task_planning" ||
+    tech === "llm_dependency_graph_planning" ||
+    tech === "dag_based_llm_task_decomposition" ||
+    tech === "llm_code_policy" ||
+    tech === "foundation_swarm_overview"
+  ) {
+    return "LLM / Agent framework";
+  }
+
+  if (
+    id === "2025-uwm-coupling-video-action-diffusion" ||
+    tech === "coupled_video_action_diffusion_world_model"
+  ) {
+    return "World Action Model / Joint";
   }
 
   if (primary === "Diffusion" || hasDomain("Diffusion")) {

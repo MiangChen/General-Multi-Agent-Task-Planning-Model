@@ -8,6 +8,21 @@
   ],
   "nodes": [
     {
+      "id": "2013-auto-encoding-variational-bayes",
+      "title": "Auto-Encoding Variational Bayes",
+      "short_title": "AEVB / VAE",
+      "published": "2013-12",
+      "published_value": 24167,
+      "primary_domain": "Generative Model",
+      "domains": [
+        "Generative Model",
+        "VAE",
+        "Variational Inference",
+        "Latent Model"
+      ],
+      "note_html": "notes/2013-auto-encoding-variational-bayes.html"
+    },
+    {
       "id": "2020-alphafold-potentials-deep-learning",
       "title": "Improved protein structure prediction using potentials from deep learning",
       "short_title": "AlphaFold1",
@@ -478,6 +493,21 @@
       "note_html": "notes/2025-layerdag-diffusion-dag-generation.html"
     },
     {
+      "id": "2025-uwm-coupling-video-action-diffusion",
+      "title": "Unified World Models: Coupling Video and Action Diffusion for Pretraining on Large Robotic Datasets",
+      "short_title": "UWM",
+      "published": "2025-04",
+      "published_value": 24303,
+      "primary_domain": "World Action Model",
+      "domains": [
+        "World Action Model",
+        "World Model",
+        "Diffusion",
+        "VLA"
+      ],
+      "note_html": "notes/2025-uwm-coupling-video-action-diffusion.html"
+    },
+    {
       "id": "2025-pi05-open-world-generalization",
       "title": "π0.5: a Vision-Language-Action Model with Open-World Generalization",
       "short_title": "π0.5",
@@ -684,6 +714,42 @@
     }
   ],
   "edges": [
+    {
+      "id": "2013-auto-encoding-variational-bayes--2026-cola-dlm-continuous-latent-diffusion-language-model--enables",
+      "type": "enables",
+      "endpoints": [
+        "2013-auto-encoding-variational-bayes",
+        "2026-cola-dlm-continuous-latent-diffusion-language-model"
+      ],
+      "parent_id": "2013-auto-encoding-variational-bayes",
+      "child_id": "2026-cola-dlm-continuous-latent-diffusion-language-model",
+      "parent_title": "AEVB / VAE",
+      "child_title": "Cola DLM",
+      "authored_links": [
+        {
+          "source": "2013-auto-encoding-variational-bayes",
+          "target": "2026-cola-dlm-continuous-latent-diffusion-language-model"
+        }
+      ]
+    },
+    {
+      "id": "2013-auto-encoding-variational-bayes--2020-ddpm-denoising-diffusion-probabilistic-models--contrasts",
+      "type": "contrasts",
+      "endpoints": [
+        "2013-auto-encoding-variational-bayes",
+        "2020-ddpm-denoising-diffusion-probabilistic-models"
+      ],
+      "parent_id": "2013-auto-encoding-variational-bayes",
+      "child_id": "2020-ddpm-denoising-diffusion-probabilistic-models",
+      "parent_title": "AEVB / VAE",
+      "child_title": "DDPM",
+      "authored_links": [
+        {
+          "source": "2013-auto-encoding-variational-bayes",
+          "target": "2020-ddpm-denoising-diffusion-probabilistic-models"
+        }
+      ]
+    },
     {
       "id": "2020-alphafold-potentials-deep-learning--2021-alphafold2-highly-accurate-structure-prediction--enables",
       "type": "enables",
@@ -1891,6 +1957,96 @@
       ]
     },
     {
+      "id": "2023-diffusion-policy-action-diffusion--2025-uwm-coupling-video-action-diffusion--extends",
+      "type": "extends",
+      "endpoints": [
+        "2023-diffusion-policy-action-diffusion",
+        "2025-uwm-coupling-video-action-diffusion"
+      ],
+      "parent_id": "2023-diffusion-policy-action-diffusion",
+      "child_id": "2025-uwm-coupling-video-action-diffusion",
+      "parent_title": "Diffusion Policy",
+      "child_title": "UWM",
+      "authored_links": [
+        {
+          "source": "2025-uwm-coupling-video-action-diffusion",
+          "target": "2023-diffusion-policy-action-diffusion"
+        }
+      ]
+    },
+    {
+      "id": "2020-ddpm-denoising-diffusion-probabilistic-models--2025-uwm-coupling-video-action-diffusion--uses",
+      "type": "uses",
+      "endpoints": [
+        "2020-ddpm-denoising-diffusion-probabilistic-models",
+        "2025-uwm-coupling-video-action-diffusion"
+      ],
+      "parent_id": "2020-ddpm-denoising-diffusion-probabilistic-models",
+      "child_id": "2025-uwm-coupling-video-action-diffusion",
+      "parent_title": "DDPM",
+      "child_title": "UWM",
+      "authored_links": [
+        {
+          "source": "2025-uwm-coupling-video-action-diffusion",
+          "target": "2020-ddpm-denoising-diffusion-probabilistic-models"
+        }
+      ]
+    },
+    {
+      "id": "2025-uwm-coupling-video-action-diffusion--2026-world-action-models-zero-shot-policies--enables",
+      "type": "enables",
+      "endpoints": [
+        "2025-uwm-coupling-video-action-diffusion",
+        "2026-world-action-models-zero-shot-policies"
+      ],
+      "parent_id": "2025-uwm-coupling-video-action-diffusion",
+      "child_id": "2026-world-action-models-zero-shot-policies",
+      "parent_title": "UWM",
+      "child_title": "DreamZero / WAM",
+      "authored_links": [
+        {
+          "source": "2025-uwm-coupling-video-action-diffusion",
+          "target": "2026-world-action-models-zero-shot-policies"
+        }
+      ]
+    },
+    {
+      "id": "2025-uwm-coupling-video-action-diffusion--2026-fast-wam-test-time-future-imagination--enables",
+      "type": "enables",
+      "endpoints": [
+        "2025-uwm-coupling-video-action-diffusion",
+        "2026-fast-wam-test-time-future-imagination"
+      ],
+      "parent_id": "2025-uwm-coupling-video-action-diffusion",
+      "child_id": "2026-fast-wam-test-time-future-imagination",
+      "parent_title": "UWM",
+      "child_title": "Fast-WAM",
+      "authored_links": [
+        {
+          "source": "2025-uwm-coupling-video-action-diffusion",
+          "target": "2026-fast-wam-test-time-future-imagination"
+        }
+      ]
+    },
+    {
+      "id": "2025-uwm-coupling-video-action-diffusion--2025-pi05-open-world-generalization--contrasts",
+      "type": "contrasts",
+      "endpoints": [
+        "2025-uwm-coupling-video-action-diffusion",
+        "2025-pi05-open-world-generalization"
+      ],
+      "parent_id": "2025-uwm-coupling-video-action-diffusion",
+      "child_id": "2025-pi05-open-world-generalization",
+      "parent_title": "UWM",
+      "child_title": "π0.5",
+      "authored_links": [
+        {
+          "source": "2025-uwm-coupling-video-action-diffusion",
+          "target": "2025-pi05-open-world-generalization"
+        }
+      ]
+    },
+    {
       "id": "2024-pi0-vla-flow-model--2025-pi05-open-world-generalization--extends",
       "type": "extends",
       "endpoints": [
@@ -2481,6 +2637,24 @@
         {
           "source": "2026-cola-dlm-continuous-latent-diffusion-language-model",
           "target": "2020-ddpm-denoising-diffusion-probabilistic-models"
+        }
+      ]
+    },
+    {
+      "id": "2013-auto-encoding-variational-bayes--2026-cola-dlm-continuous-latent-diffusion-language-model--uses",
+      "type": "uses",
+      "endpoints": [
+        "2013-auto-encoding-variational-bayes",
+        "2026-cola-dlm-continuous-latent-diffusion-language-model"
+      ],
+      "parent_id": "2013-auto-encoding-variational-bayes",
+      "child_id": "2026-cola-dlm-continuous-latent-diffusion-language-model",
+      "parent_title": "AEVB / VAE",
+      "child_title": "Cola DLM",
+      "authored_links": [
+        {
+          "source": "2026-cola-dlm-continuous-latent-diffusion-language-model",
+          "target": "2013-auto-encoding-variational-bayes"
         }
       ]
     },

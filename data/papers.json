@@ -1,5 +1,102 @@
 [
   {
+    "id": "2013-auto-encoding-variational-bayes",
+    "title": "Auto-Encoding Variational Bayes",
+    "short_title": "AEVB / VAE",
+    "year": 2013,
+    "published": "2013-12",
+    "venue": "ICLR 2014 / arXiv",
+    "status": "read",
+    "scope": "in_scope",
+    "readiness": "high",
+    "action": "build_note",
+    "tech_paradigm": "variational_autoencoder",
+    "primary_domain": "Generative Model",
+    "domains": [
+      "Generative Model",
+      "VAE",
+      "Variational Inference",
+      "Latent Model"
+    ],
+    "primary_technical_layer": "latent_representation_learning",
+    "primary_task_family": "variational_latent_variable_modeling",
+    "platform": "general_generative_modeling",
+    "planning_relevance": "AEVB/VAE 提供了把离散或高维观测压缩成连续 latent，再从 latent 解码回数据的基础框架；对 PlanObject 和 Cola DLM 式 latent diffusion 来说，它是“先学可微 latent 空间，再在 latent 中生成/规划”的上游思想。",
+    "multi_robot_relevance": "间接但重要。多机器人任务规划可以把 language、scene graph、agent graph 和 skill graph 编码到连续 latent belief，再由 diffusion 或 planner 在 latent 中生成候选计划，最后解码成可执行图或 Gantt。",
+    "system_roles": [
+      "latent_encoder",
+      "latent_decoder",
+      "representation_learning",
+      "generative_prior"
+    ],
+    "reusable_modules": [
+      "amortized_variational_inference",
+      "reparameterization_trick",
+      "encoder_decoder_latent_model",
+      "elbo_objective",
+      "gaussian_latent_space"
+    ],
+    "evidence_level": "paper_read",
+    "next_action": "map_vae_to_planobject_latent",
+    "tags": [
+      "AEVB",
+      "VAE",
+      "variational inference",
+      "latent variable model",
+      "reparameterization trick",
+      "ELBO",
+      "generative model"
+    ],
+    "authors": [
+      "Diederik P. Kingma",
+      "Max Welling"
+    ],
+    "institutions": [
+      "University of Amsterdam"
+    ],
+    "doi": "10.48550/arXiv.1312.6114",
+    "arxiv": "1312.6114",
+    "url": "https://arxiv.org/abs/1312.6114",
+    "project_url": "",
+    "pdf_path": "",
+    "image_url": "",
+    "zotero_key": "",
+    "citekey": "kingma2013autoencoding",
+    "cites": [],
+    "extends": [],
+    "uses": [],
+    "enables": [
+      "2026-cola-dlm-continuous-latent-diffusion-language-model"
+    ],
+    "contrasts": [
+      "2020-ddpm-denoising-diffusion-probabilistic-models"
+    ],
+    "published_value": 24167,
+    "relations": [
+      {
+        "type": "enables",
+        "target": "2026-cola-dlm-continuous-latent-diffusion-language-model"
+      },
+      {
+        "type": "contrasts",
+        "target": "2020-ddpm-denoising-diffusion-probabilistic-models"
+      }
+    ],
+    "file": "papers/2013-auto-encoding-variational-bayes.md",
+    "note_html": "notes/2013-auto-encoding-variational-bayes.html",
+    "summary": "AEVB/VAE 把深度生成模型、变分推断和 autoencoder 结合起来：encoder 学近似后验，decoder 学生成模型，中间用可微的 reparameterization trick 让 latent-variable model 可以端到端训练。",
+    "research_question": "很多有用的数据生成过程都包含不可观测的 latent variable，但真实后验通常难以解析计算。传统变分推断可以优化证据下界，却很难和大规模神经网络、连续 latent variable、随机采样训练自然结合。\n\nAEVB 要回答的是：能否用神经网络参数化近似后验 `q_phi(z|x)` 和生成模型 `p_theta(x|z)`，并通过一个可微采样技巧，让整个 latent-variable model 像 autoencoder 一样用梯度下降训练。",
+    "method": "模型由两部分组成：\n\n- encoder / recognition model：输入观测 `x`，输出 latent 后验分布参数，例如 `mu` 和 `sigma`。\n- decoder / generative model：从 latent `z` 重构或生成观测 `x`。\n\n关键是 reparameterization trick：不直接从 `q_phi(z|x)` 采样阻断梯度，而是写成 `z = mu_phi(x) + sigma_phi(x) * epsilon`，其中 `epsilon` 来自固定噪声分布。这样随机性和可学习参数分离，ELBO 可以用 Monte Carlo 估计并反向传播。",
+    "contribution": "- 提出 Auto-Encoding Variational Bayes，把 amortized variational inference 做成可扩展神经网络训练流程。\n- 用 reparameterization trick 解决连续 latent variable 的低方差梯度估计问题。\n- 给出了 VAE 的标准结构：encoder 近似后验、decoder 生成数据、ELBO 同时约束重构质量和 latent prior。\n- 为后续 latent generative model、latent diffusion、text VAE、representation learning 和可微世界模型提供基础接口。",
+    "reading_highlights": "",
+    "limitation": "VAE 的 latent space 通常需要依赖先验假设和 KL 正则，容易出现 posterior collapse 或重构模糊。它本身不解决复杂条件生成中的高保真采样，也不直接表达任务图约束、资源冲突或多机器人执行逻辑。\n\n对我们的路线来说，VAE 更适合作为 latent interface，而不是完整 planner。它负责把复杂输入压进可微 latent；真正的生成、约束修复和计划选择还需要 diffusion / graph decoder / validator。",
+    "relation": "和 DDPM 相比，VAE 是一次前向的 latent-variable generator，训练核心是 ELBO 和 approximate posterior；DDPM 是逐步加噪-去噪的 iterative generator。两者都属于生成模型基础，但建模对象和采样机制不同。\n\n和 Cola DLM 的关系最直接：Cola DLM 用 Text VAE 把文本压缩到连续 latent，再用 diffusion / DiT 在 latent prior 中建模。因此 AEVB 是 Cola DLM 的 latent compression 思想来源。",
+    "planning_insight": "PlanObject 可以采用 VAE 式边界：\n\n```text\nlanguage + scene graph + agent graph + skill graph\n  -> encoder q_phi(z | context)\n  -> continuous latent PlanObject z\n  -> diffusion / planner prior edits z\n  -> decoder projects to task graph / Gantt / JSON plan\n```\n\n这个分工的好处是：belief、partial observation、资源状态和技能约束可以先进入连续 latent；后续 diffusion planner 不必直接在离散 JSON 上采样，而是在更平滑的 latent space 中生成候选。",
+    "reusable_module_text": "amortized variational inference、reparameterization trick、encoder-decoder latent model、ELBO objective、Gaussian latent space、latent compression interface。",
+    "evidence_risk": "证据来自 ICLR 2014 / arXiv `1312.6114`。风险是 VAE 的 reconstruction-oriented objective 不保证计划可执行性；迁移到任务规划时必须额外加入 graph validity、resource constraints、execution feedback 和 uncertainty calibration。",
+    "open_question": "PlanObject latent 应该压缩哪些东西：自然语言任务、scene graph、agent state、skill library、belief uncertainty，还是完整历史轨迹。第一版可以只做 context encoder，后续再加入 decoder 到 typed graph。"
+  },
+  {
     "id": "2020-alphafold-potentials-deep-learning",
     "title": "Improved protein structure prediction using potentials from deep learning",
     "short_title": "AlphaFold1",
@@ -3428,6 +3525,131 @@
     "open_question": "如何把自然语言、scene graph 和 robot skill library 编码成 LayerDAG 的 conditioning signal。\n\n如何把 task graph 的软约束和非 DAG 关系区分开：dependency edge 保持 DAG，coordination/resource/time-window edge 作为额外约束图交给 scheduler。\n\n如何在执行中只对受影响的局部 layer 进行 re-denoising，而不是重生成整张任务图。"
   },
   {
+    "id": "2025-uwm-coupling-video-action-diffusion",
+    "title": "Unified World Models: Coupling Video and Action Diffusion for Pretraining on Large Robotic Datasets",
+    "short_title": "UWM",
+    "year": 2025,
+    "published": "2025-04",
+    "venue": "RSS 2025",
+    "status": "read",
+    "scope": "in_scope",
+    "readiness": "high",
+    "action": "deep_read",
+    "tech_paradigm": "coupled_video_action_diffusion_world_model",
+    "primary_domain": "World Action Model",
+    "domains": [
+      "World Action Model",
+      "World Model",
+      "Diffusion",
+      "VLA"
+    ],
+    "primary_technical_layer": "dynamics_prediction",
+    "primary_task_family": "joint_video_action_diffusion_pretraining",
+    "platform": "large_robot_and_video_datasets",
+    "planning_relevance": "UWM 把 video diffusion 和 action diffusion 放进同一个 DiT，用独立的 observation/action diffusion timesteps 控制谁被生成、谁作为条件、谁被 mask；这为 joint WAM 提供了一个清晰接口：同一模型既能做 policy，也能做 forward dynamics、inverse dynamics 和 video prediction。",
+    "multi_robot_relevance": "对多机器人规划的直接价值在于数据接口和联合生成机制。机器人轨迹数据可写成 (o, a, o')，action-free 网络视频可写成 (o, o')；缺失 action 被视为全噪声，使模型可以从大规模无动作视频中学习世界动态，再迁移到需要动作输出的机器人策略。",
+    "system_roles": [
+      "world_simulator",
+      "executor",
+      "planner_critic",
+      "world_encoder"
+    ],
+    "reusable_modules": [
+      "coupled_video_action_diffusion",
+      "modality_specific_diffusion_timesteps",
+      "joint_dit_denoiser",
+      "action_free_video_pretraining",
+      "forward_inverse_dynamics_modes",
+      "policy_as_conditional_generation"
+    ],
+    "evidence_level": "paper_read",
+    "next_action": "map_uwm_to_joint_wam_graph_interface",
+    "tags": [
+      "UWM",
+      "Unified World Models",
+      "World Action Model",
+      "video diffusion",
+      "action diffusion",
+      "DiT",
+      "action-free video",
+      "DROID"
+    ],
+    "authors": [
+      "Chuning Zhu",
+      "Raymond Yu",
+      "Siyuan Feng",
+      "Benjamin Burchfiel",
+      "Paarth Shah",
+      "Abhishek Gupta"
+    ],
+    "institutions": [
+      "University of Washington",
+      "Toyota Research Institute"
+    ],
+    "doi": "10.48550/arXiv.2504.02792",
+    "arxiv": "2504.02792",
+    "url": "https://arxiv.org/abs/2504.02792",
+    "project_url": "https://weirdlabuw.github.io/uwm/",
+    "code_url": "https://github.com/weirdlabuw/uwm",
+    "pdf_path": "",
+    "image_url": "",
+    "zotero_key": "",
+    "citekey": "zhu2025uwm",
+    "cites": [
+      "2020-ddpm-denoising-diffusion-probabilistic-models",
+      "2023-diffusion-policy-action-diffusion"
+    ],
+    "extends": [
+      "2023-diffusion-policy-action-diffusion"
+    ],
+    "uses": [
+      "2020-ddpm-denoising-diffusion-probabilistic-models"
+    ],
+    "enables": [
+      "2026-world-action-models-zero-shot-policies",
+      "2026-fast-wam-test-time-future-imagination"
+    ],
+    "contrasts": [
+      "2025-pi05-open-world-generalization"
+    ],
+    "published_value": 24303,
+    "relations": [
+      {
+        "type": "extends",
+        "target": "2023-diffusion-policy-action-diffusion"
+      },
+      {
+        "type": "uses",
+        "target": "2020-ddpm-denoising-diffusion-probabilistic-models"
+      },
+      {
+        "type": "enables",
+        "target": "2026-world-action-models-zero-shot-policies"
+      },
+      {
+        "type": "enables",
+        "target": "2026-fast-wam-test-time-future-imagination"
+      },
+      {
+        "type": "contrasts",
+        "target": "2025-pi05-open-world-generalization"
+      }
+    ],
+    "file": "papers/2025-uwm-coupling-video-action-diffusion.md",
+    "note_html": "notes/2025-uwm-coupling-video-action-diffusion.html",
+    "summary": "UWM 是 joint World Action Model 路线里的关键中间节点：它用一个多模态 DiT 同时耦合 video diffusion 和 action diffusion，并通过独立的扩散时间步控制 action、future observation 的生成与条件化。",
+    "research_question": "大规模机器人 imitation learning 依赖高质量动作标注，数据扩展困难；但互联网上和机器人采集中存在大量只有视觉、没有 action label 的视频。传统 action policy 只能吃 `(o, a, o')` 轨迹，传统 video world model 又不直接产出动作。\n\nUWM 追问的是：能否用同一个扩散模型同时覆盖机器人动作数据和 action-free 视频数据，让模型既学习世界动态，又学习从观测到动作的策略。",
+    "method": "UWM 把当前观测 `o`、动作 `a` 和未来观测 `o'` 放进一个 unified transformer / DiT。模型不是分别训练一个 action model 和一个 video model，而是在同一个 denoiser 中预测两类噪声：\n\n- `epsilon_a`：动作 token 上的噪声，对应 action diffusion。\n- `epsilon_o`：未来观测/video token 上的噪声，对应 video diffusion / future observation diffusion。\n\n关键控制量是两组独立扩散时间步：`t_a` 控制 action 的噪声水平，`t_o` 控制 future observation 的噪声水平。通过设置 `t_a` 和 `t_o`，同一个模型可以切换不同条件分布：\n\n```text\npolicy:           generate a      | condition on o\nforward dynamics: generate o'     | condition on o, a\ninverse dynamics: generate a      | condition on o, o'\nvideo prediction: generate o'     | condition on o\n```\n\n训练数据支持两种格式：\n\n- `(o, a, o')`：真实机器人采集轨迹。随机采样 `t_a` 和 `t_o`，模型同时预测 action epsilon 和 future observation epsilon。\n- `(o, o')`：action-free 视频。把缺失动作视为 fully noised / masked，等价于手动设置 `t_a = T`，让模型主要从视觉变化中学习动态表示。\n\n这使 UWM 可以把动作标注数据和无动作视频数据放在同一训练目标里，而不是为两类数据写两套模型。",
+    "contribution": "- 把 video diffusion 和 action diffusion 耦合到一个 unified DiT，而不是两个分离模块。\n- 用 modality-specific diffusion timesteps 作为统一控制接口，决定 action / future obs 哪个被生成、哪个作为条件、哪个被 mask。\n- 同时支持 `(o, a, o')` 机器人轨迹和 `(o, o')` action-free 视频，解决视频数据缺少动作标注时无法直接用于 policy learning 的问题。\n- 同一个模型可表示 policy、forward dynamics、inverse dynamics 和 video prediction，连接 imitation learning 与 world modeling。\n- 在 DROID 子集预训练、真实机器人任务、LIBERO 和 OOD 设置中展示了 pretraining 与 cotraining 的收益。",
+    "reading_highlights": "",
+    "limitation": "UWM 仍主要是单机器人 manipulation / robot learning 范式。它联合建模的是 observation 和 action，但还没有显式处理多机器人之间的通信、资源竞争、角色分配和任务依赖。把它扩展到多智能体任务规划时，`a` 需要从单体 action chunk 升级为 agent-time action graph，`o'` 也需要从视频帧升级为可解释的 scene graph / belief state。\n\n另一个风险是，action-free 视频只提供视觉动态，不提供执行意图和低层控制，因此它更适合增强 world representation，而不是直接替代机器人轨迹。",
+    "relation": "和 Diffusion Policy 相比，UWM 不只在动作空间做 diffusion policy，而是把 action diffusion 和 future observation diffusion 绑在一个模型中。Diffusion Policy 是动作生成根路线，UWM 把它推进到 world-action joint modeling。\n\n和 DreamZero / WAM 相比，UWM 更像前置的统一训练范式：它明确给出了 `(o, a, o')` 与 `(o, o')` 两类数据如何共训，以及如何用 `t_a/t_o` 切换 policy、forward dynamics、inverse dynamics 和 video prediction。DreamZero 更强调用 world action model 形成 zero-shot policy 和实时执行。\n\n和 Fast-WAM 相比，UWM 保留了训练/推理时的联合 video-action diffusion 接口；Fast-WAM 则进一步追问测试时是否需要显式 future imagination。两者可以形成一个很好的设计轴：UWM 负责说明“怎么统一训练”，Fast-WAM 负责说明“部署时哪些分支可以省掉”。",
+    "planning_insight": "UWM 可以直接启发我们的 joint graph WAM 设计。把单机器人格式推广为：\n\n```text\no_t       -> scene graph + agent graph + resource belief\na_t       -> agent-time action graph G_{I_t}\no_{t+H}   -> future scene / agent / resource graph\n```\n\n对应地，`t_a` 变成 action graph 的噪声水平，`t_o` 变成 future graph 的噪声水平。通过控制两者，可以让同一个模型完成：\n\n- 只生成计划：给定当前图，生成 `G_{I_t}`。\n- 只预测后果：给定当前图和候选计划，预测未来图。\n- 反推计划：给定当前图和目标未来图，生成可达计划。\n- 纯世界建模：用无动作视频或无动作轨迹学习未来状态。\n\n这比单纯 VLA 更接近任务规划，因为输出不只是低层动作，而是可以进一步约束、验证和调度的结构化 plan object。",
+    "reusable_module_text": "coupled video-action diffusion、modality-specific timesteps、joint DiT denoiser、action-free video pretraining、missing-action-as-noise masking、forward / inverse dynamics mode switching、policy as conditional generation。",
+    "evidence_risk": "证据来自 RSS 2025 论文、arXiv `2504.02792` 和项目页。项目页明确说明 UWM 使用 separate diffusion timesteps for actions and videos，并支持从 `(o, a, o')` 机器人轨迹与 `(o, o')` action-free 视频共训。风险在于它尚未验证多智能体联合计划、图结构输出和资源约束；迁移到我们的任务规划模型时，需要把 video/action token 接口改成 typed graph token 接口。",
+    "open_question": "在 joint graph WAM 中，`t_a/t_o` 是否足够表达所有条件化模式？例如有时我们还需要 mask 某些 agent、某些资源或某些时间段。更通用的版本可能需要 `t_plan`、`t_world`、`t_agent_i` 或 per-token mask schedule，而不是只有 action / observation 两个全局时间步。"
+  },
+  {
     "id": "2025-pi05-open-world-generalization",
     "title": "π0.5: a Vision-Language-Action Model with Open-World Generalization",
     "short_title": "π0.5",
@@ -4856,13 +5078,16 @@
     "zotero_key": "",
     "citekey": "guo2026coladlm",
     "cites": [
+      "2013-auto-encoding-variational-bayes",
       "2020-ddpm-denoising-diffusion-probabilistic-models",
       "2024-pi0-vla-flow-model"
     ],
     "extends": [
       "2020-ddpm-denoising-diffusion-probabilistic-models"
     ],
-    "uses": [],
+    "uses": [
+      "2013-auto-encoding-variational-bayes"
+    ],
     "enables": [],
     "complements": [
       "2026-elf-embedded-language-flows"
@@ -4873,6 +5098,10 @@
       {
         "type": "extends",
         "target": "2020-ddpm-denoising-diffusion-probabilistic-models"
+      },
+      {
+        "type": "uses",
+        "target": "2013-auto-encoding-variational-bayes"
       },
       {
         "type": "cites",

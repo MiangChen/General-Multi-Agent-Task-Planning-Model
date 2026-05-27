@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="robots" content="noindex,nofollow,noarchive">
-  <title>DreamZero / WAM · Paper Note</title>
+  <title>AEVB / VAE · Paper Note</title>
   <style>
     :root {
       --bg: #eef4fb;
@@ -434,15 +434,15 @@
   <main class="note-shell" id="top">
     <section class="note-hero">
       <div class="hero-main">
-        <div class="note-kicker">2026-02 · arXiv · World Action Model</div>
-        <h1>DreamZero / WAM</h1>
-        <div class="full-title">World Action Models are Zero-shot Policies</div>
-        <div class="note-summary"><p>World Action Model 的关键转向是：不只从视觉语言直接输出动作，而是联合预测未来视频世界状态和动作，用世界演化本身支持零样本策略。</p></div>
+        <div class="note-kicker">2013-12 · ICLR 2014 / arXiv · Variational Autoencoder</div>
+        <h1>AEVB / VAE</h1>
+        <div class="full-title">Auto-Encoding Variational Bayes</div>
+        <div class="note-summary"><p>AEVB/VAE 把深度生成模型、变分推断和 autoencoder 结合起来：encoder 学近似后验，decoder 学生成模型，中间用可微的 reparameterization trick 让 latent-variable model 可以端到端训练。</p></div>
       </div>
       <aside class="hero-side">
         <div class="metric-grid">
           <div class="metric">
-            <div class="metric-value">2026</div>
+            <div class="metric-value">2013</div>
             <div class="metric-label">Year</div>
           </div>
           <div class="metric">
@@ -454,19 +454,19 @@
             <div class="metric-label">Evidence</div>
           </div>
           <div class="metric">
-            <div class="metric-value">5</div>
+            <div class="metric-value">2</div>
             <div class="metric-label">Relations</div>
           </div>
         </div>
         <div>
           <div class="note-section-kicker">Authors</div>
-          <div>Ye, Ge, Zheng, Gao, Du, Chebotar, Reed, Kautz, Zhu, Fan, Jang</div>
+          <div>Diederik P. Kingma, Max Welling</div>
         </div>
         <div>
           <div class="note-section-kicker">Institutions</div>
-          <div>NVIDIA · University of Texas at Austin · Georgia Tech</div>
+          <div>University of Amsterdam</div>
         </div>
-        <div class="note-link-row"><a href="../pdfs/2026-02-01-DreamZero-world-action-model.pdf" target="_blank" rel="noreferrer">PDF</a><a href="https://arxiv.org/abs/2602.15922" target="_blank" rel="noreferrer">Paper</a><a href="https://dreamzero0.github.io/" target="_blank" rel="noreferrer">Project</a><a href="https://doi.org/10.48550/arXiv.2602.15922" target="_blank" rel="noreferrer">DOI</a><a href="https://arxiv.org/abs/2602.15922" target="_blank" rel="noreferrer">arXiv</a></div>
+        <div class="note-link-row"><a href="https://arxiv.org/abs/1312.6114" target="_blank" rel="noreferrer">Paper</a><a href="https://doi.org/10.48550/arXiv.1312.6114" target="_blank" rel="noreferrer">DOI</a><a href="https://arxiv.org/abs/1312.6114" target="_blank" rel="noreferrer">arXiv</a></div>
       </aside>
     </section>
 
@@ -475,53 +475,50 @@
 
     <section class="note-section impact">
       <div class="note-section-kicker">For Our Model</div>
-      <div class="note-section-body"><p>WAM 可以不只做执行器，还可以做 planner 的“行动后果预测器”：给定多个候选子任务分配，预测世界状态变化、冲突风险和可行性。</p>
-<p>对多机器人任务规划尤其关键的是三点。第一，diversity-first 数据策略提示我们不应只收集同一协作任务的大量重复轨迹，而要覆盖更多机器人组合、场景布局、任务依赖和失败模式。第二，asynchronous execution 可以变成多机器人系统的执行协议：每个机器人执行自己的 action chunk，同时中央 planner 或分布式 critic 在后台更新下一段联合计划。第三，cross-embodiment adaptation 提示多机器人系统可以把“机器人能力模型”和“任务语义模型”分开：少量 play data 用来适配新机器人身体，语义和世界预测能力尽量保留。</p></div>
+      <div class="note-section-body"><p>PlanObject 可以采用 VAE 式边界：</p>
+<p>```text<br>language + scene graph + agent graph + skill graph<br>-&gt; encoder q_phi(z | context)<br>-&gt; continuous latent PlanObject z<br>-&gt; diffusion / planner prior edits z<br>-&gt; decoder projects to task graph / Gantt / JSON plan<br>```</p>
+<p>这个分工的好处是：belief、partial observation、资源状态和技能约束可以先进入连续 latent；后续 diffusion planner 不必直接在离散 JSON 上采样，而是在更平滑的 latent space 中生成候选。</p></div>
     </section>
 
 
     <section class="note-section ">
       <div class="note-section-kicker">Research Question</div>
-      <div class="note-section-body"><p>VLA 语义泛化强，但对未见物理运动和新环境动作泛化弱。能否用预训练视频扩散模型学习物理动态，从而成为零样本策略。</p></div>
+      <div class="note-section-body"><p>很多有用的数据生成过程都包含不可观测的 latent variable，但真实后验通常难以解析计算。传统变分推断可以优化证据下界，却很难和大规模神经网络、连续 latent variable、随机采样训练自然结合。</p>
+<p>AEVB 要回答的是：能否用神经网络参数化近似后验 <code>q_phi(z|x)</code> 和生成模型 <code>p_theta(x|z)</code>，并通过一个可微采样技巧，让整个 latent-variable model 像 autoencoder 一样用梯度下降训练。</p></div>
     </section>
 
 
     <section class="note-section ">
       <div class="note-section-kicker">Method</div>
-      <div class="note-section-body"><p>DreamZero 基于预训练视频扩散/生成骨干，联合建模未来视频和动作，并做系统优化，使大规模视频生成模型能以约 7Hz 做实时闭环控制。关键工程链路包括：用 teacher forcing attention mask 降低闭环滚动中的误差累积，用 KV-cache 缓存历史视觉 token 以支持实时推理，并用 DreamZero-Flash 把扩散式多步生成压缩到更接近实时控制的单步推理。</p>
-<p>DreamZero-Flash 的核心是 decoupled noise schedules：训练时把视频噪声和动作噪声解绑，让视频更多处于高噪声、模糊状态，而动作仍保持可学习的均匀噪声。这样模型在单步推理时即使只能看到“模糊未来”，也要学会输出干净动作。这个设计可以理解成“抗大雾训练法”：故意让模型在视觉未来很不确定的条件下学习稳定控制。</p>
-<p>执行层采用 asynchronous execution：模型每次输出一段约 1.6 秒的 action chunk，机器人执行当前 chunk 的同时，GPU 在后台计算下一段动作。这样大模型推理不必阻塞低层控制循环，避免“停下思考再动一下”的同步卡顿。</p></div>
+      <div class="note-section-body"><p>模型由两部分组成：</p>
+<ul><li>encoder / recognition model：输入观测 <code>x</code>，输出 latent 后验分布参数，例如 <code>mu</code> 和 <code>sigma</code>。</li><li>decoder / generative model：从 latent <code>z</code> 重构或生成观测 <code>x</code>。</li></ul>
+<p>关键是 reparameterization trick：不直接从 <code>q_phi(z|x)</code> 采样阻断梯度，而是写成 <code>z = mu_phi(x) + sigma_phi(x) * epsilon</code>，其中 <code>epsilon</code> 来自固定噪声分布。这样随机性和可学习参数分离，ELBO 可以用 Monte Carlo 估计并反向传播。</p></div>
     </section>
 
 
     <section class="note-section ">
       <div class="note-section-kicker">Key Contributions</div>
-      <div class="note-section-body"><p>论文报告相比当时 VLA 在新任务和新环境上有显著泛化提升，并展示视频-only 演示和少量新具身数据下的跨具身迁移。更重要的是，它把 robotics 里的几个关键假设往前推了一步：</p>
-<ul><li>速度：DreamZero-Flash、KV-cache 和 Asynchronous Execution 共同服务于实时闭环，让 video diffusion 不再只是离线生成器。</li><li>数据：采用 Diversity &gt; Repetition 的数据哲学，不把采集预算耗在单任务重复熟练度上，而是通过 data deprecation 机制限制单任务重复次数，强迫数据覆盖更多任务和环境。</li><li>跨具身：Cross-Embodiment 利用人类第一人称纯视频和少量新机器人 play data，把视频模型里的物理常识和语义能力迁移到不同机器人身体上。</li><li>策略形式：WAM 不只是“看图出动作”的 VLA，而是用未来世界预测来支撑动作选择。</li></ul></div>
+      <div class="note-section-body"><ul><li>提出 Auto-Encoding Variational Bayes，把 amortized variational inference 做成可扩展神经网络训练流程。</li><li>用 reparameterization trick 解决连续 latent variable 的低方差梯度估计问题。</li><li>给出了 VAE 的标准结构：encoder 近似后验、decoder 生成数据、ELBO 同时约束重构质量和 latent prior。</li><li>为后续 latent generative model、latent diffusion、text VAE、representation learning 和可微世界模型提供基础接口。</li></ul></div>
     </section>
 
-
-    <section class="note-section ">
-      <div class="note-section-kicker">Reading Highlights</div>
-      <div class="note-section-body"><ol><li>DreamZero-Flash：为单步去噪设计的抗噪训练。通过解耦视频噪声和动作噪声，让模型习惯在模糊未来里仍输出精确动作。</li><li>Diversity &gt; Repetition：数据收集强调任务和场景广度，而不是对同一任务反复示教。data deprecation 让单任务达到上限后被停止采集，逼迫数据集覆盖新任务。</li><li>Asynchronous Execution：大脑推理和身体执行并行。动作 chunk 正在执行时，GPU 计算下一段 chunk，从而让大模型控制看起来连续。</li><li>Cross-Embodiment：模型不只学习某个机器人身体的动作映射，还尝试从人类视频和少量新机器人 play data 中迁移技能与逆动力学。</li></ol></div>
-    </section>
 
 
     <section class="note-section risk">
       <div class="note-section-kicker">Limitations</div>
-      <div class="note-section-body"><p>WAM 当前仍主要面向机器人操作策略。对于多机器人，关键挑战会变成多主体状态预测、交互建模、通信动作和联合任务奖励。</p></div>
+      <div class="note-section-body"><p>VAE 的 latent space 通常需要依赖先验假设和 KL 正则，容易出现 posterior collapse 或重构模糊。它本身不解决复杂条件生成中的高保真采样，也不直接表达任务图约束、资源冲突或多机器人执行逻辑。</p>
+<p>对我们的路线来说，VAE 更适合作为 latent interface，而不是完整 planner。它负责把复杂输入压进可微 latent；真正的生成、约束修复和计划选择还需要 diffusion / graph decoder / validator。</p></div>
     </section>
 
 
     <section class="note-section ">
       <div class="note-section-kicker">Reusable Modules</div>
-      <div class="note-section-body"><p>video-action world model、zero-shot policy rollout、action feasibility predictor、DreamZero-Flash / decoupled noise schedule、asynchronous action chunk executor、diversity-first data collector、cross-embodiment adapter。适合作为 planner critic、多机器人联合 rollout 和 planner-to-executor 接口的核心候选。</p></div>
+      <div class="note-section-body"><p>amortized variational inference、reparameterization trick、encoder-decoder latent model、ELBO objective、Gaussian latent space、latent compression interface。</p></div>
     </section>
 
 
     <section class="note-section risk">
       <div class="note-section-kicker">Evidence &amp; Risk</div>
-      <div class="note-section-body"><p>证据强在 zero-shot policy、视频-动作联合建模、实时推理工程、数据广度策略和跨具身迁移；风险是多主体交互、联合动作空间、通信动作和多机器人任务级同步尚未直接验证。DreamZero 证明了 WAM 可以成为强执行器和单机器人世界预测器，但把它升级成多机器人 planner critic 还需要额外验证：联合状态表示、冲突预测、角色分工、通信延迟和失败恢复是否能被同一个视频-动作模型稳定建模。</p></div>
+      <div class="note-section-body"><p>证据来自 ICLR 2014 / arXiv <code>1312.6114</code>。风险是 VAE 的 reconstruction-oriented objective 不保证计划可执行性；迁移到任务规划时必须额外加入 graph validity、resource constraints、execution feedback 和 uncertainty calibration。</p></div>
     </section>
 
         <div id="relations">
@@ -531,53 +528,23 @@
         <div>
           <h3>当前论文 -> 关联论文 / 前序工作</h3>
           <div class="relation-chip-grid">
-            <a class="relation-chip" style="--rel:#00a7c7" href="../notes/2024-pyramidal-flow-matching-video.html">
-              <span>使用/依赖</span>
-              <strong>Pyramidal Flow</strong>
+            <a class="relation-chip" style="--rel:#188aa6" href="../notes/2026-cola-dlm-continuous-latent-diffusion-language-model.html">
+              <span>提供模块</span>
+              <strong>Cola DLM</strong>
             </a>
 
-            <a class="relation-chip" style="--rel:#00a7c7" href="../notes/2023-dreamerv3-world-models.html">
-              <span>使用/依赖</span>
-              <strong>DreamerV3</strong>
-            </a>
-
-            <a class="relation-chip" style="--rel:#d14d72" href="../notes/2025-pi05-open-world-generalization.html">
+            <a class="relation-chip" style="--rel:#d14d72" href="../notes/2020-ddpm-denoising-diffusion-probabilistic-models.html">
               <span>对比路线</span>
-              <strong>π0.5</strong>
-            </a>
-
-            <a class="relation-chip" style="--rel:#d14d72" href="../notes/2024-pi0-vla-flow-model.html">
-              <span>对比路线</span>
-              <strong>π0</strong>
-            </a>
-
-            <a class="relation-chip" style="--rel:#d14d72" href="../notes/2023-rt-2-vla.html">
-              <span>对比路线</span>
-              <strong>RT-2</strong>
+              <strong>DDPM</strong>
             </a>
           </div>
         </div>
         <div>
           <h3>下游论文 -> 当前论文</h3>
           <div class="relation-chip-grid">
-            <a class="relation-chip incoming" style="--rel:#188aa6" href="../notes/2023-diffusion-policy-action-diffusion.html">
-              <span>提供模块</span>
-              <strong>Diffusion Policy</strong>
-            </a>
-
-            <a class="relation-chip incoming" style="--rel:#188aa6" href="../notes/2025-uwm-coupling-video-action-diffusion.html">
-              <span>提供模块</span>
-              <strong>UWM</strong>
-            </a>
-
-            <a class="relation-chip incoming" style="--rel:#d14d72" href="../notes/2026-fast-wam-test-time-future-imagination.html">
-              <span>对比路线</span>
-              <strong>Fast-WAM</strong>
-            </a>
-
-            <a class="relation-chip incoming" style="--rel:#4b6f96" href="../notes/2026-psibot-from-human-skill-to-robotic-mastery.html">
-              <span>引用/背景</span>
-              <strong>Psi-R2 / Psi-W0</strong>
+            <a class="relation-chip incoming" style="--rel:#00a7c7" href="../notes/2026-cola-dlm-continuous-latent-diffusion-language-model.html">
+              <span>使用/依赖</span>
+              <strong>Cola DLM</strong>
             </a>
           </div>
         </div>
@@ -587,13 +554,14 @@
 
     <section class="note-section ">
       <div class="note-section-kicker">Relation Notes</div>
-      <div class="note-section-body"><p>DreamZero 和 Dreamer 都是 world model 思路，但侧重点不同：Dreamer 在 latent world model 中用 RL 学行为，DreamZero 借视频生成模型和动作联合预测直接成为策略。Pyramidal Flow 是其视频生成和 flow matching 技术背景之一。</p></div>
+      <div class="note-section-body"><p>和 DDPM 相比，VAE 是一次前向的 latent-variable generator，训练核心是 ELBO 和 approximate posterior；DDPM 是逐步加噪-去噪的 iterative generator。两者都属于生成模型基础，但建模对象和采样机制不同。</p>
+<p>和 Cola DLM 的关系最直接：Cola DLM 用 Text VAE 把文本压缩到连续 latent，再用 diffusion / DiT 在 latent prior 中建模。因此 AEVB 是 Cola DLM 的 latent compression 思想来源。</p></div>
     </section>
 
         <div id="open-question">
     <section class="note-section impact">
       <div class="note-section-kicker">Open Question</div>
-      <div class="note-section-body"><p>如何把 WAM 从单机器人视频-动作预测扩展到多机器人联合动作预测，例如同时建模 A 机器人移动、B 机器人抓取、C 机器人等待带来的全局状态变化。</p></div>
+      <div class="note-section-body"><p>PlanObject latent 应该压缩哪些东西：自然语言任务、scene graph、agent state、skill library、belief uncertainty，还是完整历史轨迹。第一版可以只做 context encoder，后续再加入 decoder 到 typed graph。</p></div>
     </section>
   </div>
       </article>
@@ -601,19 +569,19 @@
       <aside class="note-aside">
         <section class="note-aside-panel">
           <h2>System Roles</h2>
-          <div class="pill-row"><span class="note-pill role-pill">世界模拟器</span><span class="note-pill role-pill">Planner critic</span><span class="note-pill role-pill">执行器</span></div>
+          <div class="pill-row"><span class="note-pill role-pill">latent encoder</span><span class="note-pill role-pill">latent decoder</span><span class="note-pill role-pill">representation learning</span><span class="note-pill role-pill">generative prior</span></div>
         </section>
         <section class="note-aside-panel">
           <h2>Reusable Modules</h2>
-          <div class="pill-row"><span class="note-pill module-pill">video action world model</span><span class="note-pill module-pill">zero shot policy rollout</span><span class="note-pill module-pill">action feasibility prediction</span><span class="note-pill module-pill">dreamzero flash</span><span class="note-pill module-pill">decoupled noise schedule</span><span class="note-pill module-pill">async chunk execution</span><span class="note-pill module-pill">diversity first data collection</span><span class="note-pill module-pill">cross embodiment adaptation</span></div>
+          <div class="pill-row"><span class="note-pill module-pill">amortized variational inference</span><span class="note-pill module-pill">reparameterization trick</span><span class="note-pill module-pill">encoder decoder latent model</span><span class="note-pill module-pill">elbo objective</span><span class="note-pill module-pill">gaussian latent space</span></div>
         </section>
         <section class="note-aside-panel">
           <h2>Next Action</h2>
-          <div class="note-pill role-pill">扩展多智能体 rollout</div>
+          <div class="note-pill role-pill">map vae to planobject latent</div>
         </section>
         <section class="note-aside-panel">
           <h2>Tags</h2>
-          <div class="pill-row"><span class="note-pill">World Action Model</span><span class="note-pill">DreamZero</span><span class="note-pill">video diffusion</span><span class="note-pill">zero-shot policy</span><span class="note-pill">cross-embodiment</span></div>
+          <div class="pill-row"><span class="note-pill">AEVB</span><span class="note-pill">VAE</span><span class="note-pill">variational inference</span><span class="note-pill">latent variable model</span><span class="note-pill">reparameterization trick</span><span class="note-pill">ELBO</span><span class="note-pill">generative model</span></div>
         </section>
         <section class="note-aside-panel">
           <h2>Reading Map</h2>
