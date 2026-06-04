@@ -47,6 +47,7 @@ const valueLabels = {
   continuous_embedding_language_flow: "Continuous Embedding Language Flow",
   continuous_latent_diffusion_language_model: "Continuous Latent Diffusion Language Model",
   variational_autoencoder: "Variational Autoencoder",
+  diffusion_policy_bc_convergence_theory: "Diffusion Policy BC Convergence Theory",
   unsupervised_task_graph_generation: "Unsupervised Task Graph Generation",
   llm_dependency_graph_planning: "LLM Dependency Graph Planning",
   semantic_grounding: "语义落地",
@@ -1395,6 +1396,8 @@ function inferGraphDomain(paper) {
 
   if (
     id === "2025-uwm-coupling-video-action-diffusion" ||
+    id === "2025-cosmos-world-foundation-model-platform" ||
+    tech === "world_foundation_model_platform" ||
     tech === "coupled_video_action_diffusion_world_model"
   ) {
     return "World Action Model / Joint";

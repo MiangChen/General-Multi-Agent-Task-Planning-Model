@@ -3018,6 +3018,132 @@
     "open_question": "多机器人 planner 应该把 π0 的能力建模成离散技能库，还是建模成带不确定性的连续可行动作模型。"
   },
   {
+    "id": "2025-cosmos-world-foundation-model-platform",
+    "title": "Cosmos World Foundation Model Platform for Physical AI",
+    "short_title": "Cosmos WFM",
+    "year": 2025,
+    "published": "2025-01",
+    "venue": "arXiv",
+    "status": "read",
+    "scope": "in_scope",
+    "readiness": "high",
+    "action": "deep_read",
+    "tech_paradigm": "world_foundation_model_platform",
+    "primary_domain": "World Action Model",
+    "domains": [
+      "World Action Model",
+      "World Model",
+      "Diffusion",
+      "VLA"
+    ],
+    "primary_technical_layer": "world_model_pretraining",
+    "primary_task_family": "physical_ai_world_simulation",
+    "platform": "physical_ai_world_foundation_model",
+    "planning_relevance": "Cosmos 提供面向 Physical AI 的 world foundation model 平台：视频数据处理、视频 tokenizer、预训练 world model 和 post-training 工具链。放在 joint WAM 分支，是因为它和 DreamZero 一样服务“用未来世界预测/生成支撑机器人策略和评估”，但它更偏平台和世界模拟基础模型，不是显式 action-output policy。",
+    "multi_robot_relevance": "对多机器人任务规划的价值在于大规模世界模拟、合成场景生成和行动后果预测。它可以作为 planner critic / simulator 的基础模型来源，用于生成不同场景、遮挡、相机视角、环境扰动和机器人动作后的未来视频，再投影成结构化状态检查。",
+    "system_roles": [
+      "world_simulator",
+      "planner_critic",
+      "data_curator",
+      "world_encoder"
+    ],
+    "reusable_modules": [
+      "world_foundation_model_pretraining",
+      "video_curation_pipeline",
+      "video_tokenizer",
+      "text_to_world_generation",
+      "video_to_world_generation",
+      "action_based_video_prediction",
+      "physical_ai_post_training"
+    ],
+    "evidence_level": "paper_read",
+    "next_action": "map_cosmos_to_joint_wam_simulator_interface",
+    "tags": [
+      "Cosmos",
+      "NVIDIA",
+      "World Foundation Model",
+      "Physical AI",
+      "world model",
+      "video generation",
+      "video tokenizer",
+      "robotics simulation"
+    ],
+    "authors": [
+      "NVIDIA",
+      "Niket Agarwal",
+      "Arslan Ali",
+      "Maciej Bala",
+      "Yogesh Balaji",
+      "Erik Barker",
+      "Sanja Fidler",
+      "Dieter Fox",
+      "Ming-Yu Liu"
+    ],
+    "institutions": [
+      "NVIDIA"
+    ],
+    "doi": "10.48550/arXiv.2501.03575",
+    "arxiv": "2501.03575",
+    "url": "https://arxiv.org/abs/2501.03575",
+    "project_url": "https://research.nvidia.com/labs/cosmos-lab/cosmos-predict1/",
+    "code_url": "https://github.com/nvidia-cosmos",
+    "pdf_path": "",
+    "image_url": "",
+    "zotero_key": "",
+    "citekey": "nvidia2025cosmosworldfoundationmodel",
+    "cites": [
+      "2020-ddpm-denoising-diffusion-probabilistic-models",
+      "2024-pyramidal-flow-matching-video"
+    ],
+    "extends": [],
+    "uses": [
+      "2020-ddpm-denoising-diffusion-probabilistic-models"
+    ],
+    "enables": [
+      "2026-world-action-models-zero-shot-policies",
+      "2026-fast-wam-test-time-future-imagination"
+    ],
+    "contrasts": [
+      "2025-uwm-coupling-video-action-diffusion"
+    ],
+    "published_value": 24300,
+    "relations": [
+      {
+        "type": "uses",
+        "target": "2020-ddpm-denoising-diffusion-probabilistic-models"
+      },
+      {
+        "type": "enables",
+        "target": "2026-world-action-models-zero-shot-policies"
+      },
+      {
+        "type": "enables",
+        "target": "2026-fast-wam-test-time-future-imagination"
+      },
+      {
+        "type": "contrasts",
+        "target": "2025-uwm-coupling-video-action-diffusion"
+      },
+      {
+        "type": "cites",
+        "target": "2024-pyramidal-flow-matching-video"
+      }
+    ],
+    "file": "papers/2025-cosmos-world-foundation-model-platform.md",
+    "note_html": "notes/2025-cosmos-world-foundation-model-platform.html",
+    "summary": "Cosmos 是 NVIDIA 面向 Physical AI 的 World Foundation Model 平台：它不是单篇窄方法，而是一套用于构建、微调和部署世界模型的基础设施，覆盖视频数据处理、tokenizer、预训练 WFM、post-training 和物理场景生成。",
+    "research_question": "Physical AI 需要在真实部署前先在数字世界中训练和验证。机器人和自动驾驶系统不仅需要 policy model，还需要一个“世界的数字孪生”：能够预测、生成和评估未来物理场景的 world model。\n\nCosmos 关注的问题是：如何把互联网级视频数据、物理 AI 场景数据、视频生成模型和后训练工具链组织成一个可复用平台，让开发者能为自己的机器人或自动驾驶系统定制 world model。",
+    "method": "Cosmos 把 World Foundation Model 定义为可被下游 Physical AI 系统微调的通用世界模型。平台主要包含四部分：\n\n- video curation pipeline：从大规模视频中清洗、筛选和组织对物理动态有用的数据。\n- video tokenizer：把高维视频压成可建模 token，使长视频生成和预测更可训练。\n- pre-trained WFMs：在大规模、多样视频数据上预训练的世界模型，学习通用物理动态、场景变化和时空一致性。\n- post-training recipes：把通用 WFM 适配到目标机器人、自动驾驶或仿真设置，prompt 可以是动作命令、轨迹、语言指令或其他控制信号。\n\n从 WAM 视角看，Cosmos 最重要的能力不是直接输出低层动作，而是提供未来世界生成和行动后果预测的基础模型接口，例如 text-to-world、video-to-world、camera control、instruction-based robotics prediction、action-based video prediction 和多视角驾驶生成。",
+    "contribution": "- 把 world model 扩展成 foundation model platform，而不是单任务视频预测器。\n- 给 Physical AI 明确提出“policy model + world model”双数字孪生结构。\n- 提供开放模型、开放权重、video tokenizer 和视频处理工具链，降低机器人/自动驾驶团队训练专用 world model 的成本。\n- 支持通过 action command、trajectory、instruction 等 prompt 做 post-training，使 WFM 能适配具体 physical AI setup。\n- 在 robotics prediction 和 autonomous driving generation 等场景中展示世界生成能力。",
+    "reading_highlights": "",
+    "limitation": "Cosmos 更像世界模拟平台，不是完整的 action policy 或任务 planner。它能生成未来视频和物理场景，但默认输出仍偏像素/视频层，和我们的多智能体任务规划需要的 typed graph、资源约束、agent-time plan、依赖关系、可执行 JSON / Gantt 之间还有表示鸿沟。\n\n同时，Cosmos 本身不等价于 UWM 那种显式耦合 `(o, a, o')` 的 action-output 模型。它可以支持 action-based video prediction，但不一定天然产出结构化动作图或多机器人联合计划。",
+    "relation": "和 DreamZero 同分支：两者都属于 joint WAM 视角下“世界模型支撑策略”的路线。Cosmos 更上游，提供通用 WFM、tokenizer、数据管线和 post-training；DreamZero 更下游，把未来视频预测和动作生成组织成 zero-shot policy。\n\n和 UWM 对比：UWM 的核心是一个 DiT 同时建模 action epsilon 和 future observation epsilon，用 `t_a/t_o` 控制谁生成、谁当条件。Cosmos 的重点不是这个双时间步动作-视频耦合，而是 world foundation model 平台、视频 tokenization、视频生成和面向 Physical AI 的数据/微调闭环。\n\n和 Fast-WAM 对比：Fast-WAM 追问测试时是否需要显式 future imagination；Cosmos 则提供可用于训练期世界建模、合成数据生成和离线评估的基础模型。两者结合时，Cosmos 可以主要服务训练/评估，Fast-WAM 思路决定部署时是否保留显式视频生成。",
+    "planning_insight": "Cosmos 可以作为 joint graph WAM 的视觉世界基础模型来源，但需要加一个结构化投影层：\n\n```text\nCosmos video/world simulation\n  -> scene graph extraction\n  -> agent/resource/belief graph update\n  -> planner critic / feasibility score\n  -> revise agent-time task graph\n```\n\n对多智能体任务规划来说，它最适合承担三类功能：\n\n- 生成多样环境和扰动场景，用于训练 planner 的鲁棒性。\n- 对候选计划做未来视频/状态 rollout，暴露遮挡、碰撞、资源不可达等问题。\n- 作为数据飞轮的一部分，把真实失败案例扩展成更多 counterfactual 场景。\n\n因此它应该放在 DreamZero 同一 joint WAM 分支，但在概念上更偏“world simulator / data engine”，不是直接的低层执行器。",
+    "reusable_module_text": "world foundation model pretraining、video curation pipeline、video tokenizer、text-to-world、video-to-world、action-based video prediction、camera control、physical AI post-training、synthetic data generation。",
+    "evidence_risk": "证据来自 arXiv `2501.03575` 和 NVIDIA Cosmos-Predict1 项目页。论文摘要说明 Cosmos 覆盖 video curation pipeline、pre-trained WFMs、post-training examples 和 video tokenizers；项目页展示 text-to-world、video-to-world、instruction-based robotics prediction、action-based video prediction 等能力。\n\n风险是 Cosmos 的论文和平台粒度较大，很多能力以平台组件和 demo 形式呈现，不像 UWM / DreamZero 那样直接给出一个清晰的 action-generation objective。纳入图谱时应避免把它误读成已经解决多智能体任务规划。",
+    "open_question": "Cosmos 生成的 future video 如何可靠地变成 planner 可用的 symbolic / graph state？第一版可以把它当作视觉 world simulator；真正接入多智能体规划时，需要额外的 scene graph parser、uncertainty estimator 和 plan validator。"
+  },
+  {
     "id": "2025-fast-action-tokenization-vla",
     "title": "FAST: Efficient Action Tokenization for Vision-Language-Action Models",
     "short_title": "FAST",
@@ -3523,6 +3649,119 @@
     "reusable_module_text": "layerwise DAG partition、source task layer generation、discrete diffusion for node attributes、diffusion edge generation、conditional DAG generation、cross-layer dependency generation、local re-denoising。",
     "evidence_risk": "论文在 synthetic DAG 和真实计算系统 DAG 数据上验证，能生成最多约 400 个节点的大规模 DAG，并在条件生成和 out-of-distribution label setting 中优于多个 baseline。\n\n风险是这些实验领域是计算图和硬件/编译器 flow graph，不是机器人任务图。迁移时最关键的是设计 task graph schema 和训练数据生成机制。",
     "open_question": "如何把自然语言、scene graph 和 robot skill library 编码成 LayerDAG 的 conditioning signal。\n\n如何把 task graph 的软约束和非 DAG 关系区分开：dependency edge 保持 DAG，coordination/resource/time-window edge 作为额外约束图交给 scheduler。\n\n如何在执行中只对受影响的局部 layer 进行 re-denoising，而不是重生成整张任务图。"
+  },
+  {
+    "id": "2025-diffusion-policy-bc-convergence-theory",
+    "title": "Diffusion Policy Theory for Behavior Cloning Convergence",
+    "short_title": "DP BC Theory",
+    "year": 2025,
+    "published": "2025-04",
+    "venue": "arXiv metadata pending",
+    "status": "candidate",
+    "scope": "in_scope",
+    "readiness": "medium",
+    "action": "verify_metadata",
+    "tech_paradigm": "diffusion_policy_bc_convergence_theory",
+    "primary_domain": "Diffusion",
+    "domains": [
+      "Diffusion",
+      "Imitation Learning",
+      "Behavior Cloning",
+      "Robot Policy",
+      "Theory"
+    ],
+    "primary_technical_layer": "action_diffusion_policy",
+    "primary_task_family": "imitation_learning_convergence",
+    "platform": "robot_imitation_learning",
+    "planning_relevance": "这篇论文的价值不在提出新架构，而在解释为什么 Diffusion Policy 相比普通 BC/IL 更可能缓解收敛性、分布偏移和多峰动作拟合问题；它应作为 Diffusion Policy 到 UWM / WAM action head 之间的理论支撑节点。",
+    "multi_robot_relevance": "多机器人任务规划如果使用 action diffusion 或 agent-time action graph diffusion，仍会遇到 BC 式 expert support 不足、状态覆盖不足和闭环误差累积问题。该理论节点提醒：只有数据多样性、chunk horizon 和采样随机性被设计进训练/推理流程，DP 的优势才会转化为多机器人鲁棒性。",
+    "system_roles": [
+      "executor_interface",
+      "planner_baseline",
+      "planner_critic"
+    ],
+    "reusable_modules": [
+      "expert_diversity_condition",
+      "action_chunk_ablation_protocol",
+      "stochastic_action_sampling",
+      "multimodal_bc_analysis",
+      "diffusion_policy_convergence_argument"
+    ],
+    "evidence_level": "user_reported_paper_pending_metadata",
+    "next_action": "verify_arxiv_id_and_title",
+    "tags": [
+      "Diffusion Policy",
+      "behavior cloning",
+      "imitation learning",
+      "convergence",
+      "action chunk",
+      "stochastic sampling",
+      "expert diversity"
+    ],
+    "authors": [],
+    "institutions": [],
+    "doi": "",
+    "arxiv": "",
+    "claimed_arxiv": "2504.09722",
+    "url": "",
+    "project_url": "",
+    "code_url": "",
+    "pdf_path": "",
+    "image_url": "",
+    "zotero_key": "",
+    "citekey": "diffusionpolicy2025bcconvergence",
+    "cites": [
+      "2023-diffusion-policy-action-diffusion",
+      "2020-ddpm-denoising-diffusion-probabilistic-models"
+    ],
+    "extends": [
+      "2023-diffusion-policy-action-diffusion"
+    ],
+    "uses": [
+      "2020-ddpm-denoising-diffusion-probabilistic-models"
+    ],
+    "enables": [
+      "2025-uwm-coupling-video-action-diffusion",
+      "2026-world-action-models-zero-shot-policies",
+      "2026-fast-wam-test-time-future-imagination"
+    ],
+    "contrasts": [],
+    "published_value": 24303,
+    "relations": [
+      {
+        "type": "extends",
+        "target": "2023-diffusion-policy-action-diffusion"
+      },
+      {
+        "type": "uses",
+        "target": "2020-ddpm-denoising-diffusion-probabilistic-models"
+      },
+      {
+        "type": "enables",
+        "target": "2025-uwm-coupling-video-action-diffusion"
+      },
+      {
+        "type": "enables",
+        "target": "2026-world-action-models-zero-shot-policies"
+      },
+      {
+        "type": "enables",
+        "target": "2026-fast-wam-test-time-future-imagination"
+      }
+    ],
+    "file": "papers/2025-diffusion-policy-bc-convergence-theory.md",
+    "note_html": "notes/2025-diffusion-policy-bc-convergence-theory.html",
+    "summary": "这篇理论节点说明：Diffusion Policy 并不是“自动替代 BC”就能解决 imitation learning 的收敛性问题；它需要足够多样的 expert data、合适的 action chunk horizon，并在推理时真正利用扩散策略的随机采样能力。",
+    "research_question": "普通 behavior cloning 把 `o -> a` 当作监督学习回归，容易遇到三个问题。第一，expert data 覆盖的状态分布太窄，部署时一旦偏离 expert manifold，误差会逐步累积。第二，同一个观测下可能有多个合理动作，MSE / 单峰高斯会把多峰动作压成平均动作。第三，单步动作预测缺少时间结构，容易在接触、绕障、抓取调整等阶段出现局部抖动。\n\n该论文的核心问题可以概括为：为什么 diffusion policy 的 action-distribution modeling、action chunking 和 stochastic denoising 有机会缓解 BC / IL 中的收敛性和多峰拟合问题，以及这些收益成立需要哪些条件。",
+    "method": "这条 note 暂按用户提供的理论结论和实验建议入库。核心分析对象是 Diffusion Policy 的条件生成形式：\n\n```text\no_t\n  -> sample noisy action chunk\n  -> denoise with score / epsilon model\n  -> produce action chunk a_{t:t+H}\n  -> execute first k steps\n  -> replan with new observation\n```\n\n相比普通 BC，DP 的关键区别有三点：\n\n- 学的是条件动作分布，而不是单点回归。\n- 输出 action chunk，让策略捕捉局部时间一致性。\n- 推理时可以采样多个候选动作 chunk，而不是固定一个 deterministic output。\n\n但这些区别只有在 expert data 足够覆盖多种合理行为、chunk 长度和闭环频率合适、采样随机性被用于候选生成或重排序时，才会变成可观测的鲁棒性收益。",
+    "contribution": "- 从理论视角解释 DP 为什么能缓解 BC/IL 中的多峰动作和收敛性问题。\n- 强调 expert data diversity 是必要条件：DP 的采样能力不能凭空生成训练分布之外的可靠行为。\n- 给出 action chunk size 的实验轴：`1, 2, 4, 8, 16`，用于区分单步 BC、短 chunk、长 chunk 和闭环重规划之间的 tradeoff。\n- 强调 DP 的随机性需要被使用：应该采样多个 action chunk，再用 critic、约束检查器或 world model 选择，而不是退化成固定均值策略。\n- 为后续 UWM / DreamZero / Fast-WAM 的 action head 设计提供理论约束。",
+    "reading_highlights": "",
+    "limitation": "如果 expert data 不够多样，DP 只会更好地拟合一个窄分布，不会解决分布外状态恢复。如果 chunk 太长，策略可能变得不够闭环；如果 chunk 太短，又会退化成 myopic BC。如果推理时不用随机采样，DP 的多峰表达优势也会被浪费。\n\n因此这篇论文更像一个设计约束：DP 可以缓解 BC/IL 的收敛问题，但前提是数据、chunk horizon 和采样/重排序机制一起设计。",
+    "relation": "和 Diffusion Policy 原论文相比，这篇不是提出 action diffusion 本身，而是解释它相对 BC 的理论/实验条件。Diffusion Policy 证明了 action diffusion 的经验有效性；这篇补上“什么时候有效、为什么有效、怎么做消融”的分析层。\n\n和 UWM 的关系：UWM 把 action diffusion 和 future observation diffusion 放进同一个 DiT。该理论节点提醒 UWM 的 action branch 仍需要数据多样性和采样式候选生成，否则 joint WAM 可能只是在更大模型里复现 BC 的窄分布问题。\n\n和 DreamZero / Fast-WAM 的关系：两者都依赖 action generation head 或 world-conditioned action generation。DP convergence theory 可作为它们 action head 设计的底层原则：采样多个候选、用世界模型/critic 选择、保留闭环重规划。",
+    "planning_insight": "把单机器人 action chunk 扩展到多智能体时，实验轴可以变成：\n\n```text\nagent-time action graph chunk size: 1, 2, 4, 8, 16\nsampled joint plans: K candidates\ncritic: resource / collision / dependency / success score\nexecution: execute prefix then replan\n```\n\n多机器人比单机器人更依赖 diversity，因为同一任务可能有多种角色分配、路径选择和资源使用方式。DP 的随机性可以变成多候选 joint plan 生成机制，再由 WAM 或 symbolic validator 做选择。",
+    "reusable_module_text": "expert diversity condition、action chunk ablation protocol、stochastic candidate sampling、critic-based chunk reranking、multimodal BC analysis、closed-loop prefix execution。",
+    "evidence_risk": "用户提供的论文编号 `2504.09722` 当前在 arXiv 上对应天体物理论文，而不是 DP / IL / BC 论文；因此本条先作为 metadata pending 的候选 note 入库，没有绑定错误 URL。待确认正确标题、作者和 arXiv 编号后，需要补齐元数据并把 evidence level 从 `user_reported_paper_pending_metadata` 更新为 `paper_read`。",
+    "open_question": "正确论文标题和 arXiv 编号需要复核。后续精读时应重点检查理论假设：是否要求 expert coverage、Lipschitz dynamics、score approximation error、finite-sample bound，还是只给经验型收敛解释。"
   },
   {
     "id": "2025-uwm-coupling-video-action-diffusion",

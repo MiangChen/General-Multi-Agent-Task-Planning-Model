@@ -424,6 +424,21 @@
       "note_html": "notes/2024-pi0-vla-flow-model.html"
     },
     {
+      "id": "2025-cosmos-world-foundation-model-platform",
+      "title": "Cosmos World Foundation Model Platform for Physical AI",
+      "short_title": "Cosmos WFM",
+      "published": "2025-01",
+      "published_value": 24300,
+      "primary_domain": "World Action Model",
+      "domains": [
+        "World Action Model",
+        "World Model",
+        "Diffusion",
+        "VLA"
+      ],
+      "note_html": "notes/2025-cosmos-world-foundation-model-platform.html"
+    },
+    {
       "id": "2025-fast-action-tokenization-vla",
       "title": "FAST: Efficient Action Tokenization for Vision-Language-Action Models",
       "short_title": "FAST",
@@ -491,6 +506,22 @@
         "Planning"
       ],
       "note_html": "notes/2025-layerdag-diffusion-dag-generation.html"
+    },
+    {
+      "id": "2025-diffusion-policy-bc-convergence-theory",
+      "title": "Diffusion Policy Theory for Behavior Cloning Convergence",
+      "short_title": "DP BC Theory",
+      "published": "2025-04",
+      "published_value": 24303,
+      "primary_domain": "Diffusion",
+      "domains": [
+        "Diffusion",
+        "Imitation Learning",
+        "Behavior Cloning",
+        "Robot Policy",
+        "Theory"
+      ],
+      "note_html": "notes/2025-diffusion-policy-bc-convergence-theory.html"
     },
     {
       "id": "2025-uwm-coupling-video-action-diffusion",
@@ -1759,6 +1790,96 @@
       ]
     },
     {
+      "id": "2020-ddpm-denoising-diffusion-probabilistic-models--2025-cosmos-world-foundation-model-platform--uses",
+      "type": "uses",
+      "endpoints": [
+        "2020-ddpm-denoising-diffusion-probabilistic-models",
+        "2025-cosmos-world-foundation-model-platform"
+      ],
+      "parent_id": "2020-ddpm-denoising-diffusion-probabilistic-models",
+      "child_id": "2025-cosmos-world-foundation-model-platform",
+      "parent_title": "DDPM",
+      "child_title": "Cosmos WFM",
+      "authored_links": [
+        {
+          "source": "2025-cosmos-world-foundation-model-platform",
+          "target": "2020-ddpm-denoising-diffusion-probabilistic-models"
+        }
+      ]
+    },
+    {
+      "id": "2025-cosmos-world-foundation-model-platform--2026-world-action-models-zero-shot-policies--enables",
+      "type": "enables",
+      "endpoints": [
+        "2025-cosmos-world-foundation-model-platform",
+        "2026-world-action-models-zero-shot-policies"
+      ],
+      "parent_id": "2025-cosmos-world-foundation-model-platform",
+      "child_id": "2026-world-action-models-zero-shot-policies",
+      "parent_title": "Cosmos WFM",
+      "child_title": "DreamZero / WAM",
+      "authored_links": [
+        {
+          "source": "2025-cosmos-world-foundation-model-platform",
+          "target": "2026-world-action-models-zero-shot-policies"
+        }
+      ]
+    },
+    {
+      "id": "2025-cosmos-world-foundation-model-platform--2026-fast-wam-test-time-future-imagination--enables",
+      "type": "enables",
+      "endpoints": [
+        "2025-cosmos-world-foundation-model-platform",
+        "2026-fast-wam-test-time-future-imagination"
+      ],
+      "parent_id": "2025-cosmos-world-foundation-model-platform",
+      "child_id": "2026-fast-wam-test-time-future-imagination",
+      "parent_title": "Cosmos WFM",
+      "child_title": "Fast-WAM",
+      "authored_links": [
+        {
+          "source": "2025-cosmos-world-foundation-model-platform",
+          "target": "2026-fast-wam-test-time-future-imagination"
+        }
+      ]
+    },
+    {
+      "id": "2025-cosmos-world-foundation-model-platform--2025-uwm-coupling-video-action-diffusion--contrasts",
+      "type": "contrasts",
+      "endpoints": [
+        "2025-cosmos-world-foundation-model-platform",
+        "2025-uwm-coupling-video-action-diffusion"
+      ],
+      "parent_id": "2025-cosmos-world-foundation-model-platform",
+      "child_id": "2025-uwm-coupling-video-action-diffusion",
+      "parent_title": "Cosmos WFM",
+      "child_title": "UWM",
+      "authored_links": [
+        {
+          "source": "2025-cosmos-world-foundation-model-platform",
+          "target": "2025-uwm-coupling-video-action-diffusion"
+        }
+      ]
+    },
+    {
+      "id": "2024-pyramidal-flow-matching-video--2025-cosmos-world-foundation-model-platform--cites",
+      "type": "cites",
+      "endpoints": [
+        "2024-pyramidal-flow-matching-video",
+        "2025-cosmos-world-foundation-model-platform"
+      ],
+      "parent_id": "2024-pyramidal-flow-matching-video",
+      "child_id": "2025-cosmos-world-foundation-model-platform",
+      "parent_title": "Pyramidal Flow",
+      "child_title": "Cosmos WFM",
+      "authored_links": [
+        {
+          "source": "2025-cosmos-world-foundation-model-platform",
+          "target": "2024-pyramidal-flow-matching-video"
+        }
+      ]
+    },
+    {
       "id": "2024-pi0-vla-flow-model--2025-fast-action-tokenization-vla--cites",
       "type": "cites",
       "endpoints": [
@@ -1953,6 +2074,96 @@
         {
           "source": "2025-layerdag-diffusion-dag-generation",
           "target": "2023-unsupervised-task-graph-generation"
+        }
+      ]
+    },
+    {
+      "id": "2023-diffusion-policy-action-diffusion--2025-diffusion-policy-bc-convergence-theory--extends",
+      "type": "extends",
+      "endpoints": [
+        "2023-diffusion-policy-action-diffusion",
+        "2025-diffusion-policy-bc-convergence-theory"
+      ],
+      "parent_id": "2023-diffusion-policy-action-diffusion",
+      "child_id": "2025-diffusion-policy-bc-convergence-theory",
+      "parent_title": "Diffusion Policy",
+      "child_title": "DP BC Theory",
+      "authored_links": [
+        {
+          "source": "2025-diffusion-policy-bc-convergence-theory",
+          "target": "2023-diffusion-policy-action-diffusion"
+        }
+      ]
+    },
+    {
+      "id": "2020-ddpm-denoising-diffusion-probabilistic-models--2025-diffusion-policy-bc-convergence-theory--uses",
+      "type": "uses",
+      "endpoints": [
+        "2020-ddpm-denoising-diffusion-probabilistic-models",
+        "2025-diffusion-policy-bc-convergence-theory"
+      ],
+      "parent_id": "2020-ddpm-denoising-diffusion-probabilistic-models",
+      "child_id": "2025-diffusion-policy-bc-convergence-theory",
+      "parent_title": "DDPM",
+      "child_title": "DP BC Theory",
+      "authored_links": [
+        {
+          "source": "2025-diffusion-policy-bc-convergence-theory",
+          "target": "2020-ddpm-denoising-diffusion-probabilistic-models"
+        }
+      ]
+    },
+    {
+      "id": "2025-diffusion-policy-bc-convergence-theory--2025-uwm-coupling-video-action-diffusion--enables",
+      "type": "enables",
+      "endpoints": [
+        "2025-diffusion-policy-bc-convergence-theory",
+        "2025-uwm-coupling-video-action-diffusion"
+      ],
+      "parent_id": "2025-diffusion-policy-bc-convergence-theory",
+      "child_id": "2025-uwm-coupling-video-action-diffusion",
+      "parent_title": "DP BC Theory",
+      "child_title": "UWM",
+      "authored_links": [
+        {
+          "source": "2025-diffusion-policy-bc-convergence-theory",
+          "target": "2025-uwm-coupling-video-action-diffusion"
+        }
+      ]
+    },
+    {
+      "id": "2025-diffusion-policy-bc-convergence-theory--2026-world-action-models-zero-shot-policies--enables",
+      "type": "enables",
+      "endpoints": [
+        "2025-diffusion-policy-bc-convergence-theory",
+        "2026-world-action-models-zero-shot-policies"
+      ],
+      "parent_id": "2025-diffusion-policy-bc-convergence-theory",
+      "child_id": "2026-world-action-models-zero-shot-policies",
+      "parent_title": "DP BC Theory",
+      "child_title": "DreamZero / WAM",
+      "authored_links": [
+        {
+          "source": "2025-diffusion-policy-bc-convergence-theory",
+          "target": "2026-world-action-models-zero-shot-policies"
+        }
+      ]
+    },
+    {
+      "id": "2025-diffusion-policy-bc-convergence-theory--2026-fast-wam-test-time-future-imagination--enables",
+      "type": "enables",
+      "endpoints": [
+        "2025-diffusion-policy-bc-convergence-theory",
+        "2026-fast-wam-test-time-future-imagination"
+      ],
+      "parent_id": "2025-diffusion-policy-bc-convergence-theory",
+      "child_id": "2026-fast-wam-test-time-future-imagination",
+      "parent_title": "DP BC Theory",
+      "child_title": "Fast-WAM",
+      "authored_links": [
+        {
+          "source": "2025-diffusion-policy-bc-convergence-theory",
+          "target": "2026-fast-wam-test-time-future-imagination"
         }
       ]
     },

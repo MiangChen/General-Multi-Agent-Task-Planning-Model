@@ -1438,13 +1438,13 @@
 
   <main class="page">
     <section class="hero">
-      <div class="eyebrow">Obsidian-first paper repository · generated 2026/5/27 14:12:18</div>
+      <div class="eyebrow">Obsidian-first paper repository · generated 2026/6/4 15:16:01</div>
       <h1>通用多智能体任务规划模型研究图谱</h1>
       <p>基于 Markdown note 的 typed relations 自动生成。当前版本聚焦 VLA、π 系列、World Action Model 和 Dreamer，把论文定位为端到端多智能体任务规划模型里的执行器、世界模拟器、planner critic、记忆模块或任务分配器。</p>
 
     <div class="stats">
       <div class="stat-card">
-        <div class="stat-value">50</div>
+        <div class="stat-value">52</div>
         <div class="stat-label">论文总数</div>
       </div>
       <div class="stat-card">
@@ -1452,11 +1452,11 @@
         <div class="stat-label">年份范围</div>
       </div>
       <div class="stat-card">
-        <div class="stat-value">111</div>
+        <div class="stat-value">121</div>
         <div class="stat-label">Typed relations</div>
       </div>
       <div class="stat-card">
-        <div class="stat-value">42</div>
+        <div class="stat-value">43</div>
         <div class="stat-label">高优先级</div>
       </div>
     </div>
@@ -2639,6 +2639,86 @@
         marker-end="url(#arrowhead-cites)"></path>
 <path class="graph-edge"
         style="--edge-color:#00a7c7; --edge-marker:url(#arrowhead-uses); --edge-start-marker:url(#arrowhead-start-uses)"
+        data-edge-a="2020-ddpm-denoising-diffusion-probabilistic-models"
+        data-edge-b="2025-cosmos-world-foundation-model-platform"
+        data-edge-parent="2020-ddpm-denoising-diffusion-probabilistic-models"
+        data-edge-child="2025-cosmos-world-foundation-model-platform"
+        data-edge-type="uses"
+        data-edge-label="使用/依赖"
+        data-edge-short="uses"
+        data-edge-description="当前论文借用了前序工作的模块、表示、训练路线或系统组件。"
+        data-edge-parent-title="DDPM"
+        data-edge-parent-note="notes/2020-ddpm-denoising-diffusion-probabilistic-models.html"
+        data-edge-child-title="Cosmos WFM"
+        data-edge-child-note="notes/2025-cosmos-world-foundation-model-platform.html"
+        d="M 626 282 C 810 282, 810 1704, 994 1704"
+        marker-end="url(#arrowhead-uses)"></path>
+<path class="graph-edge"
+        style="--edge-color:#188aa6; --edge-marker:url(#arrowhead-enables); --edge-start-marker:url(#arrowhead-start-enables)"
+        data-edge-a="2025-cosmos-world-foundation-model-platform"
+        data-edge-b="2026-world-action-models-zero-shot-policies"
+        data-edge-parent="2025-cosmos-world-foundation-model-platform"
+        data-edge-child="2026-world-action-models-zero-shot-policies"
+        data-edge-type="enables"
+        data-edge-label="提供模块"
+        data-edge-short="enables"
+        data-edge-description="前序工作提供了可被当前系统复用的关键模块。"
+        data-edge-parent-title="Cosmos WFM"
+        data-edge-parent-note="notes/2025-cosmos-world-foundation-model-platform.html"
+        data-edge-child-title="DreamZero / WAM"
+        data-edge-child-note="notes/2026-world-action-models-zero-shot-policies.html"
+        d="M 1096 1704 C 1130 1704, 1130 2138, 1096 2138"
+        marker-end="url(#arrowhead-enables)"></path>
+<path class="graph-edge"
+        style="--edge-color:#188aa6; --edge-marker:url(#arrowhead-enables); --edge-start-marker:url(#arrowhead-start-enables)"
+        data-edge-a="2025-cosmos-world-foundation-model-platform"
+        data-edge-b="2026-fast-wam-test-time-future-imagination"
+        data-edge-parent="2025-cosmos-world-foundation-model-platform"
+        data-edge-child="2026-fast-wam-test-time-future-imagination"
+        data-edge-type="enables"
+        data-edge-label="提供模块"
+        data-edge-short="enables"
+        data-edge-description="前序工作提供了可被当前系统复用的关键模块。"
+        data-edge-parent-title="Cosmos WFM"
+        data-edge-parent-note="notes/2025-cosmos-world-foundation-model-platform.html"
+        data-edge-child-title="Fast-WAM"
+        data-edge-child-note="notes/2026-fast-wam-test-time-future-imagination.html"
+        d="M 1096 1704 C 1130 1704, 1130 2178.5, 1096 2178.5"
+        marker-end="url(#arrowhead-enables)"></path>
+<path class="graph-edge"
+        style="--edge-color:#d14d72; --edge-marker:url(#arrowhead-contrasts); --edge-start-marker:url(#arrowhead-start-contrasts)"
+        data-edge-a="2025-cosmos-world-foundation-model-platform"
+        data-edge-b="2025-uwm-coupling-video-action-diffusion"
+        data-edge-parent="2025-cosmos-world-foundation-model-platform"
+        data-edge-child="2025-uwm-coupling-video-action-diffusion"
+        data-edge-type="contrasts"
+        data-edge-label="对比路线"
+        data-edge-short="contrasts"
+        data-edge-description="两篇论文代表不同建模范式，适合用来比较取舍。"
+        data-edge-parent-title="Cosmos WFM"
+        data-edge-parent-note="notes/2025-cosmos-world-foundation-model-platform.html"
+        data-edge-child-title="UWM"
+        data-edge-child-note="notes/2025-uwm-coupling-video-action-diffusion.html"
+        d="M 1096 1704 C 1130 1704, 1130 1878, 1096 1878"
+        marker-end="url(#arrowhead-contrasts)"></path>
+<path class="graph-edge"
+        style="--edge-color:#4b6f96; --edge-marker:url(#arrowhead-cites); --edge-start-marker:url(#arrowhead-start-cites)"
+        data-edge-a="2024-pyramidal-flow-matching-video"
+        data-edge-b="2025-cosmos-world-foundation-model-platform"
+        data-edge-parent="2024-pyramidal-flow-matching-video"
+        data-edge-child="2025-cosmos-world-foundation-model-platform"
+        data-edge-type="cites"
+        data-edge-label="引用/背景"
+        data-edge-short="cites"
+        data-edge-description="保留 bibliographic citation 或宽泛背景关系。"
+        data-edge-parent-title="Pyramidal Flow"
+        data-edge-parent-note="notes/2024-pyramidal-flow-matching-video.html"
+        data-edge-child-title="Cosmos WFM"
+        data-edge-child-note="notes/2025-cosmos-world-foundation-model-platform.html"
+        d="M 626 1608.5 C 810 1608.5, 810 1704, 994 1704"
+        marker-end="url(#arrowhead-cites)"></path>
+<path class="graph-edge"
+        style="--edge-color:#00a7c7; --edge-marker:url(#arrowhead-uses); --edge-start-marker:url(#arrowhead-start-uses)"
         data-edge-a="2023-unsupervised-task-graph-generation"
         data-edge-b="2025-lip-llm-dependency-graph-planning"
         data-edge-parent="2023-unsupervised-task-graph-generation"
@@ -2797,6 +2877,86 @@
         data-edge-child-note="notes/2025-dart-llm-dependency-aware-task-graph.html"
         d="M 400 1762 C 434 1762, 434 1820, 400 1820"
         marker-end="url(#arrowhead-contrasts)"></path>
+<path class="graph-edge"
+        style="--edge-color:#246bfe; --edge-marker:url(#arrowhead-extends); --edge-start-marker:url(#arrowhead-start-extends)"
+        data-edge-a="2023-diffusion-policy-action-diffusion"
+        data-edge-b="2025-diffusion-policy-bc-convergence-theory"
+        data-edge-parent="2023-diffusion-policy-action-diffusion"
+        data-edge-child="2025-diffusion-policy-bc-convergence-theory"
+        data-edge-type="extends"
+        data-edge-label="继承/扩展"
+        data-edge-short="extends"
+        data-edge-description="后续模型或系统直接建立在前序路线之上。"
+        data-edge-parent-title="Diffusion Policy"
+        data-edge-parent-note="notes/2023-diffusion-policy-action-diffusion.html"
+        data-edge-child-title="DP BC Theory"
+        data-edge-child-note="notes/2025-diffusion-policy-bc-convergence-theory.html"
+        d="M 632 1180 C 666 1180, 666 1878, 632 1878"
+        marker-end="url(#arrowhead-extends)"></path>
+<path class="graph-edge"
+        style="--edge-color:#00a7c7; --edge-marker:url(#arrowhead-uses); --edge-start-marker:url(#arrowhead-start-uses)"
+        data-edge-a="2020-ddpm-denoising-diffusion-probabilistic-models"
+        data-edge-b="2025-diffusion-policy-bc-convergence-theory"
+        data-edge-parent="2020-ddpm-denoising-diffusion-probabilistic-models"
+        data-edge-child="2025-diffusion-policy-bc-convergence-theory"
+        data-edge-type="uses"
+        data-edge-label="使用/依赖"
+        data-edge-short="uses"
+        data-edge-description="当前论文借用了前序工作的模块、表示、训练路线或系统组件。"
+        data-edge-parent-title="DDPM"
+        data-edge-parent-note="notes/2020-ddpm-denoising-diffusion-probabilistic-models.html"
+        data-edge-child-title="DP BC Theory"
+        data-edge-child-note="notes/2025-diffusion-policy-bc-convergence-theory.html"
+        d="M 632 282 C 666 282, 666 1878, 632 1878"
+        marker-end="url(#arrowhead-uses)"></path>
+<path class="graph-edge"
+        style="--edge-color:#188aa6; --edge-marker:url(#arrowhead-enables); --edge-start-marker:url(#arrowhead-start-enables)"
+        data-edge-a="2025-diffusion-policy-bc-convergence-theory"
+        data-edge-b="2025-uwm-coupling-video-action-diffusion"
+        data-edge-parent="2025-diffusion-policy-bc-convergence-theory"
+        data-edge-child="2025-uwm-coupling-video-action-diffusion"
+        data-edge-type="enables"
+        data-edge-label="提供模块"
+        data-edge-short="enables"
+        data-edge-description="前序工作提供了可被当前系统复用的关键模块。"
+        data-edge-parent-title="DP BC Theory"
+        data-edge-parent-note="notes/2025-diffusion-policy-bc-convergence-theory.html"
+        data-edge-child-title="UWM"
+        data-edge-child-note="notes/2025-uwm-coupling-video-action-diffusion.html"
+        d="M 626 1878 C 810 1878, 810 1878, 994 1878"
+        marker-end="url(#arrowhead-enables)"></path>
+<path class="graph-edge"
+        style="--edge-color:#188aa6; --edge-marker:url(#arrowhead-enables); --edge-start-marker:url(#arrowhead-start-enables)"
+        data-edge-a="2025-diffusion-policy-bc-convergence-theory"
+        data-edge-b="2026-world-action-models-zero-shot-policies"
+        data-edge-parent="2025-diffusion-policy-bc-convergence-theory"
+        data-edge-child="2026-world-action-models-zero-shot-policies"
+        data-edge-type="enables"
+        data-edge-label="提供模块"
+        data-edge-short="enables"
+        data-edge-description="前序工作提供了可被当前系统复用的关键模块。"
+        data-edge-parent-title="DP BC Theory"
+        data-edge-parent-note="notes/2025-diffusion-policy-bc-convergence-theory.html"
+        data-edge-child-title="DreamZero / WAM"
+        data-edge-child-note="notes/2026-world-action-models-zero-shot-policies.html"
+        d="M 626 1878 C 810 1878, 810 2138, 994 2138"
+        marker-end="url(#arrowhead-enables)"></path>
+<path class="graph-edge"
+        style="--edge-color:#188aa6; --edge-marker:url(#arrowhead-enables); --edge-start-marker:url(#arrowhead-start-enables)"
+        data-edge-a="2025-diffusion-policy-bc-convergence-theory"
+        data-edge-b="2026-fast-wam-test-time-future-imagination"
+        data-edge-parent="2025-diffusion-policy-bc-convergence-theory"
+        data-edge-child="2026-fast-wam-test-time-future-imagination"
+        data-edge-type="enables"
+        data-edge-label="提供模块"
+        data-edge-short="enables"
+        data-edge-description="前序工作提供了可被当前系统复用的关键模块。"
+        data-edge-parent-title="DP BC Theory"
+        data-edge-parent-note="notes/2025-diffusion-policy-bc-convergence-theory.html"
+        data-edge-child-title="Fast-WAM"
+        data-edge-child-note="notes/2026-fast-wam-test-time-future-imagination.html"
+        d="M 626 1878 C 810 1878, 810 2178.5, 994 2178.5"
+        marker-end="url(#arrowhead-enables)"></path>
 <path class="graph-edge"
         style="--edge-color:#246bfe; --edge-marker:url(#arrowhead-extends); --edge-start-marker:url(#arrowhead-start-extends)"
         data-edge-a="2024-pi0-vla-flow-model"
@@ -3832,6 +3992,18 @@
 
 
         <button class="graph-node"
+          style="--x:1042px; --y:1704px; --node:#7c67d8"
+          data-node-id="2025-cosmos-world-foundation-model-platform"
+          data-node-title="Cosmos WFM"
+          data-note-path="notes/2025-cosmos-world-foundation-model-platform.html"
+          aria-label="Cosmos WFM 2025-01">
+          <strong>Cosmos WFM</strong>
+          <span>joint WAM</span>
+          <em>World Action Model · World Model</em>
+        </button>
+
+
+        <button class="graph-node"
           style="--x:346px; --y:1762px; --node:#4f46e5"
           data-node-id="2025-lip-llm-dependency-graph-planning"
           data-node-title="LiP-LLM"
@@ -3876,6 +4048,18 @@
           <strong>DART-LLM</strong>
           <span>agent framework</span>
           <em>Task Graph · LLM</em>
+        </button>
+
+
+        <button class="graph-node"
+          style="--x:578px; --y:1878px; --node:#16a085"
+          data-node-id="2025-diffusion-policy-bc-convergence-theory"
+          data-node-title="DP BC Theory"
+          data-note-path="notes/2025-diffusion-policy-bc-convergence-theory.html"
+          aria-label="DP BC Theory 2025-04">
+          <strong>DP BC Theory</strong>
+          <span>base diffusion</span>
+          <em>Imitation Learning · Behavior Cloning</em>
         </button>
 
 
@@ -4273,25 +4457,25 @@
           </div>
 
           <div class="quality-card">
-            <div class="quality-value">40/50</div>
+            <div class="quality-value">42/52</div>
             <div class="quality-name">关系覆盖</div>
             <p>至少一条 typed relation</p>
           </div>
 
           <div class="quality-card">
-            <div class="quality-value">50/50</div>
+            <div class="quality-value">52/52</div>
             <div class="quality-name">系统角色覆盖</div>
             <p>能放入我们的模型架构</p>
           </div>
 
           <div class="quality-card">
-            <div class="quality-value">50/50</div>
+            <div class="quality-value">52/52</div>
             <div class="quality-name">复用模块覆盖</div>
             <p>可转成设计组件</p>
           </div>
 
           <div class="quality-card">
-            <div class="quality-value">50/50</div>
+            <div class="quality-value">52/52</div>
             <div class="quality-name">证据风险覆盖</div>
             <p>明确知道证据和风险</p>
           </div>
@@ -4461,7 +4645,7 @@ instruction + robot capabilities + scene state
         </article>
 
         <article class="role-card">
-          <div class="role-count">6</div>
+          <div class="role-count">7</div>
           <h3>世界模拟器</h3>
           <ul>
           <li>
@@ -4480,29 +4664,30 @@ instruction + robot capabilities + scene state
           </li>
 
           <li>
-            <strong>UWM</strong>
-            <span>UWM 可以直接启发我们的 joint graph WAM 设计。把单机器人格式推广为：
+            <strong>Cosmos WFM</strong>
+            <span>Cosmos 可以作为 joint graph WAM 的视觉世界基础模型来源，但需要加一个结构化投影层：
 
 ```text
-o_t       -&gt; scene graph + agent graph + resource belief
-a_t       -&gt; agent-time action graph G_{I_t}
-o_{t+H}   -&gt; future scene / agent / resource graph
+Cosmos video/world simulation
+  -&gt; scene graph extraction
+  -&gt; agent/resource/belief graph update
+  -&gt; planner critic / feasibility score
+  -&gt; revise agent-time task graph
 ```
 
-对应地，`t_a` 变成 action graph 的噪声水平，`t_o` 变成 future graph 的噪声水平。通过控制两者，可以让同一个模型完成：
+对多智能体任务规划来说，它最适合承担三类功能：
 
-- 只生成计划：给定当前图，生成 `G_{I_t}`。
-- 只预测后果：给定当前图和候选计划，预测未来图。
-- 反推计划：给定当前图和目标未来图，生成可达计划。
-- 纯世界建模：用无动作视频或无动作轨迹学习未来状态。
+- 生成多样环境和扰动场景，用于训练 planner 的鲁棒性。
+- 对候选计划做未来视频/状态 rollout，暴露遮挡、碰撞、资源不可达等问题。
+- 作为数据飞轮的一部分，把真实失败案例扩展成更多 counterfactual 场景。
 
-这比单纯 VLA 更接近任务规划，因为输出不只是低层动作，而是可以进一步约束、验证和调度的结构化 plan object。</span>
+因此它应该放在 DreamZero 同一 joint WAM 分支，但在概念上更偏“world simulator / data engine”，不是直接的低层执行器。</span>
           </li>
         </ul>
         </article>
 
         <article class="role-card">
-          <div class="role-count">7</div>
+          <div class="role-count">9</div>
           <h3>Planner critic</h3>
           <ul>
           <li>
@@ -4532,31 +4717,53 @@ unconditional graph prior
           </li>
 
           <li>
-            <strong>UWM</strong>
-            <span>UWM 可以直接启发我们的 joint graph WAM 设计。把单机器人格式推广为：
+            <strong>Cosmos WFM</strong>
+            <span>Cosmos 可以作为 joint graph WAM 的视觉世界基础模型来源，但需要加一个结构化投影层：
 
 ```text
-o_t       -&gt; scene graph + agent graph + resource belief
-a_t       -&gt; agent-time action graph G_{I_t}
-o_{t+H}   -&gt; future scene / agent / resource graph
+Cosmos video/world simulation
+  -&gt; scene graph extraction
+  -&gt; agent/resource/belief graph update
+  -&gt; planner critic / feasibility score
+  -&gt; revise agent-time task graph
 ```
 
-对应地，`t_a` 变成 action graph 的噪声水平，`t_o` 变成 future graph 的噪声水平。通过控制两者，可以让同一个模型完成：
+对多智能体任务规划来说，它最适合承担三类功能：
 
-- 只生成计划：给定当前图，生成 `G_{I_t}`。
-- 只预测后果：给定当前图和候选计划，预测未来图。
-- 反推计划：给定当前图和目标未来图，生成可达计划。
-- 纯世界建模：用无动作视频或无动作轨迹学习未来状态。
+- 生成多样环境和扰动场景，用于训练 planner 的鲁棒性。
+- 对候选计划做未来视频/状态 rollout，暴露遮挡、碰撞、资源不可达等问题。
+- 作为数据飞轮的一部分，把真实失败案例扩展成更多 counterfactual 场景。
 
-这比单纯 VLA 更接近任务规划，因为输出不只是低层动作，而是可以进一步约束、验证和调度的结构化 plan object。</span>
+因此它应该放在 DreamZero 同一 joint WAM 分支，但在概念上更偏“world simulator / data engine”，不是直接的低层执行器。</span>
           </li>
         </ul>
         </article>
 
         <article class="role-card">
-          <div class="role-count">2</div>
+          <div class="role-count">3</div>
           <h3>世界编码器</h3>
           <ul>
+          <li>
+            <strong>Cosmos WFM</strong>
+            <span>Cosmos 可以作为 joint graph WAM 的视觉世界基础模型来源，但需要加一个结构化投影层：
+
+```text
+Cosmos video/world simulation
+  -&gt; scene graph extraction
+  -&gt; agent/resource/belief graph update
+  -&gt; planner critic / feasibility score
+  -&gt; revise agent-time task graph
+```
+
+对多智能体任务规划来说，它最适合承担三类功能：
+
+- 生成多样环境和扰动场景，用于训练 planner 的鲁棒性。
+- 对候选计划做未来视频/状态 rollout，暴露遮挡、碰撞、资源不可达等问题。
+- 作为数据飞轮的一部分，把真实失败案例扩展成更多 counterfactual 场景。
+
+因此它应该放在 DreamZero 同一 joint WAM 分支，但在概念上更偏“world simulator / data engine”，不是直接的低层执行器。</span>
+          </li>
+
           <li>
             <strong>UWM</strong>
             <span>UWM 可以直接启发我们的 joint graph WAM 设计。把单机器人格式推广为：
@@ -4630,7 +4837,7 @@ o_{t+H}   -&gt; future scene / agent / resource graph
         </article>
 
         <article class="role-card">
-          <div class="role-count">3</div>
+          <div class="role-count">4</div>
           <h3>执行接口</h3>
           <ul>
           <li>
@@ -4643,6 +4850,20 @@ o_{t+H}   -&gt; future scene / agent / resource graph
           <li>
             <strong>FAST</strong>
             <span>如果多机器人 planner 需要训练统一执行器，动作 tokenizer 的效率会影响数据规模、推理速度和跨平台泛化。FAST 提醒我们动作接口设计本身就是模型能力的一部分。</span>
+          </li>
+
+          <li>
+            <strong>DP BC Theory</strong>
+            <span>把单机器人 action chunk 扩展到多智能体时，实验轴可以变成：
+
+```text
+agent-time action graph chunk size: 1, 2, 4, 8, 16
+sampled joint plans: K candidates
+critic: resource / collision / dependency / success score
+execution: execute prefix then replan
+```
+
+多机器人比单机器人更依赖 diversity，因为同一任务可能有多种角色分配、路径选择和资源使用方式。DP 的随机性可以变成多候选 joint plan 生成机制，再由 WAM 或 symbolic validator 做选择。</span>
           </li>
 
           <li>
@@ -4691,9 +4912,30 @@ o_{t+H}   -&gt; future scene / agent / resource graph
         </article>
 
         <article class="role-card">
-          <div class="role-count">1</div>
+          <div class="role-count">2</div>
           <h3>数据治理器</h3>
           <ul>
+          <li>
+            <strong>Cosmos WFM</strong>
+            <span>Cosmos 可以作为 joint graph WAM 的视觉世界基础模型来源，但需要加一个结构化投影层：
+
+```text
+Cosmos video/world simulation
+  -&gt; scene graph extraction
+  -&gt; agent/resource/belief graph update
+  -&gt; planner critic / feasibility score
+  -&gt; revise agent-time task graph
+```
+
+对多智能体任务规划来说，它最适合承担三类功能：
+
+- 生成多样环境和扰动场景，用于训练 planner 的鲁棒性。
+- 对候选计划做未来视频/状态 rollout，暴露遮挡、碰撞、资源不可达等问题。
+- 作为数据飞轮的一部分，把真实失败案例扩展成更多 counterfactual 场景。
+
+因此它应该放在 DreamZero 同一 joint WAM 分支，但在概念上更偏“world simulator / data engine”，不是直接的低层执行器。</span>
+          </li>
+
           <li>
             <strong>Psi-R2 / Psi-W0</strong>
             <span>对我们的多智能体任务规划模型来说，这篇博客最有价值的是数据飞轮设计。多机器人系统不能只训练“成功动作执行器”，还必须有一个能理解失败后果的 critic / world model。Psi-W0 的思路可以迁移成 Multi-Agent AC-WM：输入多机器人状态、语言目标、联合动作和通信动作，预测未来世界状态、冲突、接触事件和失败后果。
@@ -4827,7 +5069,7 @@ Global 3D scene graph
         </article>
 
         <article class="role-card">
-          <div class="role-count">13</div>
+          <div class="role-count">14</div>
           <h3>规划基线</h3>
           <ul>
           <li>
@@ -7237,6 +7479,19 @@ reward = task progress
 
         <article class="queue-card">
           <div class="queue-count">1</div>
+          <h3>map cosmos to joint wam simulator interface</h3>
+          <p>把这组论文转成更明确的系统设计动作。</p>
+          <ul>
+          <li>
+            <span>2025-01</span>
+            <strong>Cosmos WFM</strong>
+            <em>已读论文</em>
+          </li>
+        </ul>
+        </article>
+
+        <article class="queue-card">
+          <div class="queue-count">1</div>
           <h3>map d3pm to task graph tokens</h3>
           <p>把这组论文转成更明确的系统设计动作。</p>
           <ul>
@@ -7338,6 +7593,19 @@ reward = task progress
           </li>
         </ul>
         </article>
+
+        <article class="queue-card">
+          <div class="queue-count">1</div>
+          <h3>verify arxiv id and title</h3>
+          <p>把这组论文转成更明确的系统设计动作。</p>
+          <ul>
+          <li>
+            <span>2025-04</span>
+            <strong>DP BC Theory</strong>
+            <em>user reported paper pending metadata</em>
+          </li>
+        </ul>
+        </article>
       </div>
     </section>
 
@@ -7396,7 +7664,7 @@ reward = task progress
           <h2>论文列表</h2>
           <p>搜索会匹配标题、摘要、作者、机构、方法和标签。</p>
         </div>
-        <div id="result-count">50 篇</div>
+        <div id="result-count">52 篇</div>
       </div>
       <div class="control-panel">
         <input id="search" type="search" placeholder="搜索论文、作者、方法或标签">
@@ -7417,6 +7685,7 @@ reward = task progress
 <option value="decision_diffusion_modeling">decision_diffusion_modeling</option>
 <option value="denoising_diffusion_implicit_model">denoising_diffusion_implicit_model</option>
 <option value="denoising_diffusion_probabilistic_model">denoising_diffusion_probabilistic_model</option>
+<option value="diffusion_policy_bc_convergence_theory">Diffusion Policy BC Convergence Theory</option>
 <option value="diffusion_planning">diffusion_planning</option>
 <option value="discrete_denoising_diffusion">discrete_denoising_diffusion</option>
 <option value="discrete_graph_diffusion">discrete_graph_diffusion</option>
@@ -7448,6 +7717,7 @@ reward = task progress
 <option value="vla_flow_policy">VLA Flow Policy</option>
 <option value="world_action_model">World Action Model</option>
 <option value="world_model_rl">World Model RL</option>
+<option value="world_foundation_model_platform">world_foundation_model_platform</option>
         </select>
         <select id="layer-filter">
           <option value="">全部主技术层</option>
@@ -7491,6 +7761,7 @@ reward = task progress
 <option value="structure_generation">structure_generation</option>
 <option value="structure_prediction">structure_prediction</option>
 <option value="trajectory_planning">trajectory_planning</option>
+<option value="world_model_pretraining">world_model_pretraining</option>
         </select>
         <select id="role-filter">
           <option value="">全部系统角色</option>
@@ -9554,6 +9825,72 @@ seadag 更像：
         <article class="paper-card"
           data-paper-card
           data-year="2025"
+          data-tech_paradigm="world_foundation_model_platform"
+          data-primary_technical_layer="world_model_pretraining"
+          data-primary_task_family="physical_ai_world_simulation"
+          data-system_roles="world_simulator planner_critic data_curator world_encoder"
+          data-search="cosmos world foundation model platform for physical ai cosmos wfm arxiv cosmos 是 nvidia 面向 physical ai 的 world foundation model 平台：它不是单篇窄方法，而是一套用于构建、微调和部署世界模型的基础设施，覆盖视频数据处理、tokenizer、预训练 wfm、post-training 和物理场景生成。 cosmos 把 world foundation model 定义为可被下游 physical ai 系统微调的通用世界模型。平台主要包含四部分：
+
+- video curation pipeline：从大规模视频中清洗、筛选和组织对物理动态有用的数据。
+- video tokenizer：把高维视频压成可建模 token，使长视频生成和预测更可训练。
+- pre-trained wfms：在大规模、多样视频数据上预训练的世界模型，学习通用物理动态、场景变化和时空一致性。
+- post-training recipes：把通用 wfm 适配到目标机器人、自动驾驶或仿真设置，prompt 可以是动作命令、轨迹、语言指令或其他控制信号。
+
+从 wam 视角看，cosmos 最重要的能力不是直接输出低层动作，而是提供未来世界生成和行动后果预测的基础模型接口，例如 text-to-world、video-to-world、camera control、instruction-based robotics prediction、action-based video prediction 和多视角驾驶生成。 - 把 world model 扩展成 foundation model platform，而不是单任务视频预测器。
+- 给 physical ai 明确提出“policy model + world model”双数字孪生结构。
+- 提供开放模型、开放权重、video tokenizer 和视频处理工具链，降低机器人/自动驾驶团队训练专用 world model 的成本。
+- 支持通过 action command、trajectory、instruction 等 prompt 做 post-training，使 wfm 能适配具体 physical ai setup。
+- 在 robotics prediction 和 autonomous driving generation 等场景中展示世界生成能力。 2025-01 world action model paper_read map_cosmos_to_joint_wam_simulator_interface world action model world model diffusion vla cosmos nvidia world foundation model physical ai world model video generation video tokenizer robotics simulation world_simulator planner_critic data_curator world_encoder world_foundation_model_pretraining video_curation_pipeline video_tokenizer text_to_world_generation video_to_world_generation action_based_video_prediction physical_ai_post_training nvidia, niket agarwal, arslan ali, maciej bala, yogesh balaji, erik barker nvidia">
+          <div class="paper-media">
+            <div class="paper-placeholder">Cosmos WFM</div>
+            <span>2025-01</span>
+          </div>
+          <div class="paper-main">
+            <div class="paper-meta">
+              <strong>arXiv</strong>
+              <span>world_foundation_model_platform</span>
+              <span>world_model_pretraining</span>
+              <span>高优先级</span>
+            </div>
+            <h3>Cosmos WFM</h3>
+            <div class="paper-title">Cosmos World Foundation Model Platform for Physical AI</div>
+            <div class="paper-authors">NVIDIA, Niket Agarwal, Arslan Ali, Maciej Bala, Yogesh Balaji, Erik Barker · NVIDIA</div>
+            <div class="paper-summary"><p>Cosmos 是 NVIDIA 面向 Physical AI 的 World Foundation Model 平台：它不是单篇窄方法，而是一套用于构建、微调和部署世界模型的基础设施，覆盖视频数据处理、tokenizer、预训练 WFM、post-training 和物理场景生成。</p></div>
+            <details>
+              <summary>研究理解</summary>
+              <div class="detail-grid">
+                <div><b>研究问题</b><p>Physical AI 需要在真实部署前先在数字世界中训练和验证。机器人和自动驾驶系统不仅需要 policy model，还需要一个“世界的数字孪生”：能够预测、生成和评估未来物理场景的 world model。</p>
+<p>Cosmos 关注的问题是：如何把互联网级视频数据、物理 AI 场景数据、视频生成模型和后训练工具链组织成一个可复用平台，让开发者能为自己的机器人或自动驾驶系统定制 world model。</p></div>
+                <div><b>方法</b><p>Cosmos 把 World Foundation Model 定义为可被下游 Physical AI 系统微调的通用世界模型。平台主要包含四部分：</p>
+<ul><li>video curation pipeline：从大规模视频中清洗、筛选和组织对物理动态有用的数据。</li><li>video tokenizer：把高维视频压成可建模 token，使长视频生成和预测更可训练。</li><li>pre-trained WFMs：在大规模、多样视频数据上预训练的世界模型，学习通用物理动态、场景变化和时空一致性。</li><li>post-training recipes：把通用 WFM 适配到目标机器人、自动驾驶或仿真设置，prompt 可以是动作命令、轨迹、语言指令或其他控制信号。</li></ul>
+<p>从 WAM 视角看，Cosmos 最重要的能力不是直接输出低层动作，而是提供未来世界生成和行动后果预测的基础模型接口，例如 text-to-world、video-to-world、camera control、instruction-based robotics prediction、action-based video prediction 和多视角驾驶生成。</p></div>
+                <div><b>局限</b><p>Cosmos 更像世界模拟平台，不是完整的 action policy 或任务 planner。它能生成未来视频和物理场景，但默认输出仍偏像素/视频层，和我们的多智能体任务规划需要的 typed graph、资源约束、agent-time plan、依赖关系、可执行 JSON / Gantt 之间还有表示鸿沟。</p>
+<p>同时，Cosmos 本身不等价于 UWM 那种显式耦合 <code>(o, a, o&#39;)</code> 的 action-output 模型。它可以支持 action-based video prediction，但不一定天然产出结构化动作图或多机器人联合计划。</p></div>
+                <div><b>关系</b><p>和 DreamZero 同分支：两者都属于 joint WAM 视角下“世界模型支撑策略”的路线。Cosmos 更上游，提供通用 WFM、tokenizer、数据管线和 post-training；DreamZero 更下游，把未来视频预测和动作生成组织成 zero-shot policy。</p>
+<p>和 UWM 对比：UWM 的核心是一个 DiT 同时建模 action epsilon 和 future observation epsilon，用 <code>t_a/t_o</code> 控制谁生成、谁当条件。Cosmos 的重点不是这个双时间步动作-视频耦合，而是 world foundation model 平台、视频 tokenization、视频生成和面向 Physical AI 的数据/微调闭环。</p>
+<p>和 Fast-WAM 对比：Fast-WAM 追问测试时是否需要显式 future imagination；Cosmos 则提供可用于训练期世界建模、合成数据生成和离线评估的基础模型。两者结合时，Cosmos 可以主要服务训练/评估，Fast-WAM 思路决定部署时是否保留显式视频生成。</p></div>
+                <div><b>对多智能体任务规划模型的启发</b><p>Cosmos 可以作为 joint graph WAM 的视觉世界基础模型来源，但需要加一个结构化投影层：</p>
+<p>```text<br>Cosmos video/world simulation<br>-&gt; scene graph extraction<br>-&gt; agent/resource/belief graph update<br>-&gt; planner critic / feasibility score<br>-&gt; revise agent-time task graph<br>```</p>
+<p>对多智能体任务规划来说，它最适合承担三类功能：</p>
+<ul><li>生成多样环境和扰动场景，用于训练 planner 的鲁棒性。</li><li>对候选计划做未来视频/状态 rollout，暴露遮挡、碰撞、资源不可达等问题。</li><li>作为数据飞轮的一部分，把真实失败案例扩展成更多 counterfactual 场景。</li></ul>
+<p>因此它应该放在 DreamZero 同一 joint WAM 分支，但在概念上更偏“world simulator / data engine”，不是直接的低层执行器。</p></div>
+                <div><b>可复用模块</b><p>world foundation model pretraining、video curation pipeline、video tokenizer、text-to-world、video-to-world、action-based video prediction、camera control、physical AI post-training、synthetic data generation。</p></div>
+                <div><b>证据与风险</b><p>证据来自 arXiv <code>2501.03575</code> 和 NVIDIA Cosmos-Predict1 项目页。论文摘要说明 Cosmos 覆盖 video curation pipeline、pre-trained WFMs、post-training examples 和 video tokenizers；项目页展示 text-to-world、video-to-world、instruction-based robotics prediction、action-based video prediction 等能力。</p>
+<p>风险是 Cosmos 的论文和平台粒度较大，很多能力以平台组件和 demo 形式呈现，不像 UWM / DreamZero 那样直接给出一个清晰的 action-generation objective。纳入图谱时应避免把它误读成已经解决多智能体任务规划。</p></div>
+              </div>
+            </details>
+            <div class="paper-roles"><span class="tag role-tag">世界模拟器</span><span class="tag role-tag">Planner critic</span><span class="tag role-tag">数据治理器</span><span class="tag role-tag">世界编码器</span></div>
+            <div class="paper-modules"><span class="tag module-tag">world foundation model pretraining</span><span class="tag module-tag">video curation pipeline</span><span class="tag module-tag">video tokenizer</span><span class="tag module-tag">text to world generation</span><span class="tag module-tag">video to world generation</span></div>
+            <div class="paper-next">Evidence: 已读论文 · Next: map cosmos to joint wam simulator interface</div>
+            <div class="paper-tags"><span class="tag">Cosmos</span><span class="tag">NVIDIA</span><span class="tag">World Foundation Model</span><span class="tag">Physical AI</span><span class="tag">world model</span><span class="tag">video generation</span><span class="tag">video tokenizer</span><span class="tag">robotics simulation</span></div>
+            <div class="paper-links"><a href="../notes/2025-cosmos-world-foundation-model-platform.html" data-note-link="notes/2025-cosmos-world-foundation-model-platform.html" target="_blank" rel="noreferrer">Note</a><a href="https://arxiv.org/abs/2501.03575" target="_blank" rel="noreferrer">论文</a><a href="https://research.nvidia.com/labs/cosmos-lab/cosmos-predict1/" target="_blank" rel="noreferrer">项目页</a><a href="https://github.com/nvidia-cosmos" target="_blank" rel="noreferrer">代码</a><a href="https://doi.org/10.48550/arXiv.2501.03575" target="_blank" rel="noreferrer">DOI</a></div>
+          </div>
+        </article>
+
+
+        <article class="paper-card"
+          data-paper-card
+          data-year="2025"
           data-tech_paradigm="vla"
           data-primary_technical_layer="efficient_action_tokenization"
           data-primary_task_family="high_frequency_control"
@@ -9842,6 +10179,81 @@ seadag 更像：
             <div class="paper-next">Evidence: 已读论文 · Next: 适配 LayerDAG 到多机器人任务图 schema</div>
             <div class="paper-tags"><span class="tag">LayerDAG</span><span class="tag">Diffusion</span><span class="tag">Graph Generation</span><span class="tag">DAG generation</span><span class="tag">Task Graph</span><span class="tag">layerwise generation</span><span class="tag">autoregressive diffusion</span><span class="tag">discrete diffusion</span></div>
             <div class="paper-links"><a href="../pdfs/2025-03-04-LayerDAG-layerwise-autoregressive-diffusion-dag-generation.pdf" data-pdf-link="pdfs/2025-03-04-LayerDAG-layerwise-autoregressive-diffusion-dag-generation.pdf" target="_blank" rel="noreferrer">PDF</a><a href="../notes/2025-layerdag-diffusion-dag-generation.html" data-note-link="notes/2025-layerdag-diffusion-dag-generation.html" target="_blank" rel="noreferrer">Note</a><a href="https://arxiv.org/abs/2411.02322" target="_blank" rel="noreferrer">论文</a><a href="https://github.com/Graph-COM/LayerDAG" target="_blank" rel="noreferrer">项目页</a></div>
+          </div>
+        </article>
+
+
+        <article class="paper-card"
+          data-paper-card
+          data-year="2025"
+          data-tech_paradigm="diffusion_policy_bc_convergence_theory"
+          data-primary_technical_layer="action_diffusion_policy"
+          data-primary_task_family="imitation_learning_convergence"
+          data-system_roles="executor_interface planner_baseline planner_critic"
+          data-search="diffusion policy theory for behavior cloning convergence dp bc theory arxiv metadata pending 这篇理论节点说明：diffusion policy 并不是“自动替代 bc”就能解决 imitation learning 的收敛性问题；它需要足够多样的 expert data、合适的 action chunk horizon，并在推理时真正利用扩散策略的随机采样能力。 这条 note 暂按用户提供的理论结论和实验建议入库。核心分析对象是 diffusion policy 的条件生成形式：
+
+```text
+o_t
+  -&gt; sample noisy action chunk
+  -&gt; denoise with score / epsilon model
+  -&gt; produce action chunk a_{t:t+h}
+  -&gt; execute first k steps
+  -&gt; replan with new observation
+```
+
+相比普通 bc，dp 的关键区别有三点：
+
+- 学的是条件动作分布，而不是单点回归。
+- 输出 action chunk，让策略捕捉局部时间一致性。
+- 推理时可以采样多个候选动作 chunk，而不是固定一个 deterministic output。
+
+但这些区别只有在 expert data 足够覆盖多种合理行为、chunk 长度和闭环频率合适、采样随机性被用于候选生成或重排序时，才会变成可观测的鲁棒性收益。 - 从理论视角解释 dp 为什么能缓解 bc/il 中的多峰动作和收敛性问题。
+- 强调 expert data diversity 是必要条件：dp 的采样能力不能凭空生成训练分布之外的可靠行为。
+- 给出 action chunk size 的实验轴：`1, 2, 4, 8, 16`，用于区分单步 bc、短 chunk、长 chunk 和闭环重规划之间的 tradeoff。
+- 强调 dp 的随机性需要被使用：应该采样多个 action chunk，再用 critic、约束检查器或 world model 选择，而不是退化成固定均值策略。
+- 为后续 uwm / dreamzero / fast-wam 的 action head 设计提供理论约束。 2025-04 diffusion user_reported_paper_pending_metadata verify_arxiv_id_and_title diffusion imitation learning behavior cloning robot policy theory diffusion policy behavior cloning imitation learning convergence action chunk stochastic sampling expert diversity executor_interface planner_baseline planner_critic expert_diversity_condition action_chunk_ablation_protocol stochastic_action_sampling multimodal_bc_analysis diffusion_policy_convergence_argument  ">
+          <div class="paper-media">
+            <div class="paper-placeholder">DP BC Theory</div>
+            <span>2025-04</span>
+          </div>
+          <div class="paper-main">
+            <div class="paper-meta">
+              <strong>arXiv metadata pending</strong>
+              <span>Diffusion Policy BC Convergence Theory</span>
+              <span>动作扩散策略</span>
+              <span>中优先级</span>
+            </div>
+            <h3>DP BC Theory</h3>
+            <div class="paper-title">Diffusion Policy Theory for Behavior Cloning Convergence</div>
+            <div class="paper-authors"> · </div>
+            <div class="paper-summary"><p>这篇理论节点说明：Diffusion Policy 并不是“自动替代 BC”就能解决 imitation learning 的收敛性问题；它需要足够多样的 expert data、合适的 action chunk horizon，并在推理时真正利用扩散策略的随机采样能力。</p></div>
+            <details>
+              <summary>研究理解</summary>
+              <div class="detail-grid">
+                <div><b>研究问题</b><p>普通 behavior cloning 把 <code>o -&gt; a</code> 当作监督学习回归，容易遇到三个问题。第一，expert data 覆盖的状态分布太窄，部署时一旦偏离 expert manifold，误差会逐步累积。第二，同一个观测下可能有多个合理动作，MSE / 单峰高斯会把多峰动作压成平均动作。第三，单步动作预测缺少时间结构，容易在接触、绕障、抓取调整等阶段出现局部抖动。</p>
+<p>该论文的核心问题可以概括为：为什么 diffusion policy 的 action-distribution modeling、action chunking 和 stochastic denoising 有机会缓解 BC / IL 中的收敛性和多峰拟合问题，以及这些收益成立需要哪些条件。</p></div>
+                <div><b>方法</b><p>这条 note 暂按用户提供的理论结论和实验建议入库。核心分析对象是 Diffusion Policy 的条件生成形式：</p>
+<p>```text<br>o_t<br>-&gt; sample noisy action chunk<br>-&gt; denoise with score / epsilon model<br>-&gt; produce action chunk a_{t:t+H}<br>-&gt; execute first k steps<br>-&gt; replan with new observation<br>```</p>
+<p>相比普通 BC，DP 的关键区别有三点：</p>
+<ul><li>学的是条件动作分布，而不是单点回归。</li><li>输出 action chunk，让策略捕捉局部时间一致性。</li><li>推理时可以采样多个候选动作 chunk，而不是固定一个 deterministic output。</li></ul>
+<p>但这些区别只有在 expert data 足够覆盖多种合理行为、chunk 长度和闭环频率合适、采样随机性被用于候选生成或重排序时，才会变成可观测的鲁棒性收益。</p></div>
+                <div><b>局限</b><p>如果 expert data 不够多样，DP 只会更好地拟合一个窄分布，不会解决分布外状态恢复。如果 chunk 太长，策略可能变得不够闭环；如果 chunk 太短，又会退化成 myopic BC。如果推理时不用随机采样，DP 的多峰表达优势也会被浪费。</p>
+<p>因此这篇论文更像一个设计约束：DP 可以缓解 BC/IL 的收敛问题，但前提是数据、chunk horizon 和采样/重排序机制一起设计。</p></div>
+                <div><b>关系</b><p>和 Diffusion Policy 原论文相比，这篇不是提出 action diffusion 本身，而是解释它相对 BC 的理论/实验条件。Diffusion Policy 证明了 action diffusion 的经验有效性；这篇补上“什么时候有效、为什么有效、怎么做消融”的分析层。</p>
+<p>和 UWM 的关系：UWM 把 action diffusion 和 future observation diffusion 放进同一个 DiT。该理论节点提醒 UWM 的 action branch 仍需要数据多样性和采样式候选生成，否则 joint WAM 可能只是在更大模型里复现 BC 的窄分布问题。</p>
+<p>和 DreamZero / Fast-WAM 的关系：两者都依赖 action generation head 或 world-conditioned action generation。DP convergence theory 可作为它们 action head 设计的底层原则：采样多个候选、用世界模型/critic 选择、保留闭环重规划。</p></div>
+                <div><b>对多智能体任务规划模型的启发</b><p>把单机器人 action chunk 扩展到多智能体时，实验轴可以变成：</p>
+<p>```text<br>agent-time action graph chunk size: 1, 2, 4, 8, 16<br>sampled joint plans: K candidates<br>critic: resource / collision / dependency / success score<br>execution: execute prefix then replan<br>```</p>
+<p>多机器人比单机器人更依赖 diversity，因为同一任务可能有多种角色分配、路径选择和资源使用方式。DP 的随机性可以变成多候选 joint plan 生成机制，再由 WAM 或 symbolic validator 做选择。</p></div>
+                <div><b>可复用模块</b><p>expert diversity condition、action chunk ablation protocol、stochastic candidate sampling、critic-based chunk reranking、multimodal BC analysis、closed-loop prefix execution。</p></div>
+                <div><b>证据与风险</b><p>用户提供的论文编号 <code>2504.09722</code> 当前在 arXiv 上对应天体物理论文，而不是 DP / IL / BC 论文；因此本条先作为 metadata pending 的候选 note 入库，没有绑定错误 URL。待确认正确标题、作者和 arXiv 编号后，需要补齐元数据并把 evidence level 从 <code>user_reported_paper_pending_metadata</code> 更新为 <code>paper_read</code>。</p></div>
+              </div>
+            </details>
+            <div class="paper-roles"><span class="tag role-tag">执行接口</span><span class="tag role-tag">规划基线</span><span class="tag role-tag">Planner critic</span></div>
+            <div class="paper-modules"><span class="tag module-tag">expert diversity condition</span><span class="tag module-tag">action chunk ablation protocol</span><span class="tag module-tag">stochastic action sampling</span><span class="tag module-tag">multimodal bc analysis</span><span class="tag module-tag">diffusion policy convergence argument</span></div>
+            <div class="paper-next">Evidence: user reported paper pending metadata · Next: verify arxiv id and title</div>
+            <div class="paper-tags"><span class="tag">Diffusion Policy</span><span class="tag">behavior cloning</span><span class="tag">imitation learning</span><span class="tag">convergence</span><span class="tag">action chunk</span><span class="tag">stochastic sampling</span><span class="tag">expert diversity</span></div>
+            <div class="paper-links"><a href="../notes/2025-diffusion-policy-bc-convergence-theory.html" data-note-link="notes/2025-diffusion-policy-bc-convergence-theory.html" target="_blank" rel="noreferrer">Note</a></div>
           </div>
         </article>
 
@@ -10958,6 +11370,13 @@ psi-w0 则是动作条件世界模型。它输入图像、语言和动作轨迹�
 
 
       <div class="question-card">
+        <div class="question-meta">2025 · Cosmos WFM</div>
+        <h3>world_model_pretraining</h3>
+        <p>Cosmos 生成的 future video 如何可靠地变成 planner 可用的 symbolic / graph state？第一版可以把它当作视觉 world simulator；真正接入多智能体规划时，需要额外的 scene graph parser、uncertainty estimator 和 plan validator。</p>
+      </div>
+
+
+      <div class="question-card">
         <div class="question-meta">2025 · FAST</div>
         <h3>高效动作 token 化</h3>
         <p>多机器人动作是否也需要类似 FAST 的“联合动作 tokenization”，把多个 agent 的动作序列压缩成可学习的协同动作表示。</p>
@@ -10993,6 +11412,13 @@ psi-w0 则是动作条件世界模型。它输入图像、语言和动作轨迹�
         <p>如何把自然语言、scene graph 和 robot skill library 编码成 LayerDAG 的 conditioning signal。</p>
 <p>如何把 task graph 的软约束和非 DAG 关系区分开：dependency edge 保持 DAG，coordination/resource/time-window edge 作为额外约束图交给 scheduler。</p>
 <p>如何在执行中只对受影响的局部 layer 进行 re-denoising，而不是重生成整张任务图。</p>
+      </div>
+
+
+      <div class="question-card">
+        <div class="question-meta">2025 · DP BC Theory</div>
+        <h3>动作扩散策略</h3>
+        <p>正确论文标题和 arXiv 编号需要复核。后续精读时应重点检查理论假设：是否要求 expert coverage、Lipschitz dynamics、score approximation error、finite-sample bound，还是只给经验型收敛解释。</p>
       </div>
 
 
